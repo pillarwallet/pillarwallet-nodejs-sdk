@@ -18,7 +18,9 @@
   "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
   "dependencies": {
     "@types/node": "^9.6.6",
+    "bluebird": "^3.5.1",
     "node": "^9.11.0",
+    "request": "^2.85.0",
     "typescript": "^2.8.3"
   },
   "devDependencies": {}

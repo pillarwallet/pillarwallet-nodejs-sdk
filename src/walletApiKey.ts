@@ -1,2 +1,2 @@
-export enum WalletApiApiKeys {
+export enum WalletApiKeys {
 }

@@ -1,16 +1,16 @@
 import http = require('http');
+import localVarRequest = require('request');
+import Promise = require('bluebird');
+
 
 import {BASE_URL} from  './src/urlConstants';
+import {WalletCreationParams, WalletCreationResponse} from "./src/objectClasses";
 
 export class WalletApi {
     protected _basePath = BASE_URL;
     protected defaultHeaders: any = {};
     protected _useQuerystring: boolean = false;
 
-
-    constructor(basePath?: string){
-
-    }
 
     set basePath(basePath: string) {
         this._basePath = basePath;
@@ -26,7 +26,7 @@ export class WalletApi {
      * @param body request fields
      * @param xAPISignature signature over the hash of the input parameter JSON string
      */
-    public createWallet(body: Body9, xAPISignature: string): Promise<{ response:n; body: InlineResponse2011; }> {
+    public createWallet(body: WalletCreationParams, xAPISignature: string): Promise<{ response:n; body: WalletCreationResponse; }> {
         const localVarPath = this.basePath + '/wallet/create';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -53,10 +53,10 @@ export class WalletApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(body, "Body9")
+            body: ObjectSerializer.serialize(body, "WalletCreationParams")
         };
 
-        this.authentications.default.applyToRequest(localVarRequestOptions);
+        // this.authentications.default.applyToRequest(localVarRequestOptions);
 
         if (Object.keys(localVarFormParams).length) {
             if (localVarUseFormData) {
@@ -65,12 +65,12 @@ export class WalletApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.ClientResponse; body: InlineResponse2011; }>((resolve, reject) => {
+        return new Promise<{ response: http.ClientResponse; body: WalletCreationResponse; }>((resolve, reject) => {
             localVarRequest(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse2011");
+                    body = ObjectSerializer.deserialize(body, "WalletCreationResponse");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
                         resolve({response: response, body: body});
                     } else {

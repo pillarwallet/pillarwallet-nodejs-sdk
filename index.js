@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var localVarRequest = require("request");
+var Promise = require("bluebird");
 var urlConstants_1 = require("./src/urlConstants");
 var WalletApi = /** @class */ (function () {
-    function WalletApi(basePath) {
+    function WalletApi() {
         this._basePath = urlConstants_1.BASE_URL;
         this.defaultHeaders = {};
         this._useQuerystring = false;
@@ -45,9 +47,9 @@ var WalletApi = /** @class */ (function () {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(body, "Body9")
+            body: ObjectSerializer.serialize(body, "WalletCreationParams")
         };
-        this.authentications.default.applyToRequest(localVarRequestOptions);
+        // this.authentications.default.applyToRequest(localVarRequestOptions);
         if (Object.keys(localVarFormParams).length) {
             if (localVarUseFormData) {
                 localVarRequestOptions.formData = localVarFormParams;
@@ -62,7 +64,7 @@ var WalletApi = /** @class */ (function () {
                     reject(error);
                 }
                 else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse2011");
+                    body = ObjectSerializer.deserialize(body, "WalletCreationResponse");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
                         resolve({ response: response, body: body });
                     }

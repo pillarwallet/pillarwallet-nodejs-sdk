@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var WalletApiApiKeys;
-(function (WalletApiApiKeys) {
-})(WalletApiApiKeys = exports.WalletApiApiKeys || (exports.WalletApiApiKeys = {}));
+var WalletApiKeys;
+(function (WalletApiKeys) {
+})(WalletApiKeys = exports.WalletApiKeys || (exports.WalletApiKeys = {}));
