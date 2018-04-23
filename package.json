@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk/issues"
   },
-  "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme"
+  "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
+  "dependencies": {
+    "typescript": "^2.8.3"
+  },
+  "devDependencies": {}
 }
