@@ -1,4 +1,4 @@
-let primitives = [
+var primitives = [
     "string",
     "boolean",
     "double",
@@ -8,115 +8,118 @@ let primitives = [
     "number",
     "any"
 ];
-
-let enumsMap: {[index: string]: any} = {
-}
-
-let typeMap: {[index: string]: any} = {
-}
-
-class ObjectSerializer {
+var enumsMap = {};
+var typeMap = {};
+var ObjectSerializer = /** @class */ (function () {
+    function ObjectSerializer() {
+    }
     /* tslint:disable:no-unused-variable */
-
-
-    public static findCorrectType(data: any, expectedType: string) {
+    ObjectSerializer.findCorrectType = function (data, expectedType) {
         if (data == undefined) {
             return expectedType;
-        } else if (primitives.indexOf(expectedType.toLowerCase()) !== -1) {
+        }
+        else if (primitives.indexOf(expectedType.toLowerCase()) !== -1) {
             return expectedType;
-        } else if (expectedType === "Date") {
+        }
+        else if (expectedType === "Date") {
             return expectedType;
-        } else {
+        }
+        else {
             if (enumsMap[expectedType]) {
                 return expectedType;
             }
-
             if (!typeMap[expectedType]) {
                 return expectedType; // w/e we don't know the type
             }
-
             // Check the discriminator
-            let discriminatorProperty = typeMap[expectedType].discriminator;
+            var discriminatorProperty = typeMap[expectedType].discriminator;
             if (discriminatorProperty == null) {
                 return expectedType; // the type does not have a discriminator. use it.
-            } else {
+            }
+            else {
                 if (data[discriminatorProperty]) {
                     return data[discriminatorProperty]; // use the type given in the discriminator
-                } else {
+                }
+                else {
                     return expectedType; // discriminator was not present (or an empty string)
                 }
             }
         }
-    }
-
-    public static serialize(data: any, type: string) {
+    };
+    ObjectSerializer.serialize = function (data, type) {
         if (data == undefined) {
             return data;
-        } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
+        }
+        else if (primitives.indexOf(type.toLowerCase()) !== -1) {
             return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
+        }
+        else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
+            var subType = type.replace("Array<", ""); // Array<Type> => Type>
             subType = subType.substring(0, subType.length - 1); // Type> => Type
-            let transformedData: any[] = [];
-            for (let index in data) {
-                let date = data[index];
+            var transformedData = [];
+            for (var index in data) {
+                var date = data[index];
                 transformedData.push(ObjectSerializer.serialize(date, subType));
             }
             return transformedData;
-        } else if (type === "Date") {
+        }
+        else if (type === "Date") {
             return data.toString();
-        } else {
+        }
+        else {
             if (enumsMap[type]) {
                 return data;
             }
             if (!typeMap[type]) { // in case we dont know the type
                 return data;
             }
-
             // get the map for the correct type.
-            let attributeTypes = typeMap[type].getAttributeTypeMap();
-            let instance: { [index: string]: any } = {};
-            for (let index in attributeTypes) {
-                let attributeType = attributeTypes[index];
+            var attributeTypes = typeMap[type].getAttributeTypeMap();
+            var instance = {};
+            for (var index in attributeTypes) {
+                var attributeType = attributeTypes[index];
                 instance[attributeType.baseName] = ObjectSerializer.serialize(data[attributeType.name], attributeType.type);
             }
             return instance;
         }
-    }
-
-    public static deserialize(data: any, type: string) {
+    };
+    ObjectSerializer.deserialize = function (data, type) {
         // polymorphism may change the actual type.
         type = ObjectSerializer.findCorrectType(data, type);
         if (data == undefined) {
             return data;
-        } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
+        }
+        else if (primitives.indexOf(type.toLowerCase()) !== -1) {
             return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
+        }
+        else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
+            var subType = type.replace("Array<", ""); // Array<Type> => Type>
             subType = subType.substring(0, subType.length - 1); // Type> => Type
-            let transformedData: any[] = [];
-            for (let index in data) {
-                let date = data[index];
+            var transformedData = [];
+            for (var index in data) {
+                var date = data[index];
                 transformedData.push(ObjectSerializer.deserialize(date, subType));
             }
             return transformedData;
-        } else if (type === "Date") {
+        }
+        else if (type === "Date") {
             return new Date(data);
-        } else {
-            if (enumsMap[type]) {// is Enum
+        }
+        else {
+            if (enumsMap[type]) { // is Enum
                 return data;
             }
-
             if (!typeMap[type]) { // dont know the type
                 return data;
             }
-            let instance = new typeMap[type]();
-            let attributeTypes = typeMap[type].getAttributeTypeMap();
-            for (let index in attributeTypes) {
-                let attributeType = attributeTypes[index];
+            var instance = new typeMap[type]();
+            var attributeTypes = typeMap[type].getAttributeTypeMap();
+            for (var index in attributeTypes) {
+                var attributeType = attributeTypes[index];
                 instance[attributeType.name] = ObjectSerializer.deserialize(data[attributeType.baseName], attributeType.type);
             }
             return instance;
         }
-    }
-}
+    };
+    return ObjectSerializer;
+}());

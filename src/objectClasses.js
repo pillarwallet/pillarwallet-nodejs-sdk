@@ -1,14 +1,13 @@
-export class Wallet {
-    'publicKey': string;
-    'userId': number;
-    'ethAddress': string;
-    'fcmToken': string;
-    'signalRegistrationId': string;
-    'bcxRegistered': boolean;
-
-    static discriminator = undefined;
-
-    static attributeTypeMap: Array<{name: string, baseName: string, type: string}> = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Wallet = /** @class */ (function () {
+    function Wallet() {
+    }
+    Wallet.getAttributeTypeMap = function () {
+        return Wallet.attributeTypeMap;
+    };
+    Wallet.discriminator = undefined;
+    Wallet.attributeTypeMap = [
         {
             "name": "publicKey",
             "baseName": "publicKey",
@@ -38,10 +37,8 @@ export class Wallet {
             "name": "bcxRegistered",
             "baseName": "bcxRegistered",
             "type": "boolean"
-        }    ];
-
-    static getAttributeTypeMap() {
-        return Wallet.attributeTypeMap;
-    }
-}
-
+        }
+    ];
+    return Wallet;
+}());
+exports.Wallet = Wallet;

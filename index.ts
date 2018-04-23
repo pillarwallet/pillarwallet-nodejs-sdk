@@ -1,44 +1,52 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var urlConstants_1 = require("./src/urlConstants");
-var WalletApi = /** @class */ (function () {
-    function WalletApi(basePath) {
-        this._basePath = urlConstants_1.BASE_URL;
-        this.defaultHeaders = {};
-        this._useQuerystring = false;
+import http = require('http');
+
+import {BASE_URL} from  './src/urlConstants';
+
+export class WalletApi {
+    protected _basePath = BASE_URL;
+    protected defaultHeaders: any = {};
+    protected _useQuerystring: boolean = false;
+
+
+    constructor(basePath?: string){
+
     }
-    Object.defineProperty(WalletApi.prototype, "basePath", {
-        get: function () {
-            return this._basePath;
-        },
-        set: function (basePath) {
-            this._basePath = basePath;
-        },
-        enumerable: true,
-        configurable: true
-    });
+
+    set basePath(basePath: string) {
+        this._basePath = basePath;
+    }
+
+    get basePath() {
+        return this._basePath;
+    }
+
     /**
      * Create a new Wallet and User on Database. And return the identification  number of each.
      * @summary create a new wallet
      * @param body request fields
      * @param xAPISignature signature over the hash of the input parameter JSON string
      */
-    WalletApi.prototype.createWallet = function (body, xAPISignature) {
-        var localVarPath = this.basePath + '/wallet/create';
-        var localVarQueryParameters = {};
-        var localVarHeaderParams = Object.assign({}, this.defaultHeaders);
-        var localVarFormParams = {};
+    public createWallet(body: Body9, xAPISignature: string): Promise<{ response:n; body: InlineResponse2011; }> {
+        const localVarPath = this.basePath + '/wallet/create';
+        let localVarQueryParameters: any = {};
+        let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
+        let localVarFormParams: any = {};
+
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createWallet.');
         }
+
         // verify required parameter 'xAPISignature' is not null or undefined
         if (xAPISignature === null || xAPISignature === undefined) {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
         }
+
         localVarHeaderParams['X-API-Signature'] = ObjectSerializer.serialize(xAPISignature, "string");
-        var localVarUseFormData = false;
-        var localVarRequestOptions = {
+
+        let localVarUseFormData = false;
+
+        let localVarRequestOptions: localVarRequest.Options = {
             method: 'PUT',
             qs: localVarQueryParameters,
             headers: localVarHeaderParams,
@@ -47,32 +55,29 @@ var WalletApi = /** @class */ (function () {
             json: true,
             body: ObjectSerializer.serialize(body, "Body9")
         };
+
         this.authentications.default.applyToRequest(localVarRequestOptions);
+
         if (Object.keys(localVarFormParams).length) {
             if (localVarUseFormData) {
-                localVarRequestOptions.formData = localVarFormParams;
-            }
-            else {
+                (<any>localVarRequestOptions).formData = localVarFormParams;
+            } else {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise(function (resolve, reject) {
-            localVarRequest(localVarRequestOptions, function (error, response, body) {
+        return new Promise<{ response: http.ClientResponse; body: InlineResponse2011; }>((resolve, reject) => {
+            localVarRequest(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
-                }
-                else {
+                } else {
                     body = ObjectSerializer.deserialize(body, "InlineResponse2011");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    }
-                    else {
-                        reject({ response: response, body: body });
+                        resolve({response: response, body: body});
+                    } else {
+                        reject({response: response, body: body});
                     }
                 }
             });
         });
-    };
-    return WalletApi;
-}());
-exports.WalletApi = WalletApi;
+    }
+}
