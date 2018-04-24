@@ -1,3 +1,5 @@
+"use strict";
+exports.__esModule = true;
 var primitives = [
     "string",
     "boolean",
@@ -119,5 +121,5 @@ var ObjectSerializer = (function () {
     };
     return ObjectSerializer;
 }());
-export { ObjectSerializer };
+exports.ObjectSerializer = ObjectSerializer;
 //# sourceMappingURL=objectSerializer.js.map

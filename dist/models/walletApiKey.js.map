@@ -1,1 +1,1 @@
-{"version":3,"file":"walletApiKey.js","sourceRoot":"","sources":["../../src/models/walletApiKey.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,aACX;AADD,WAAY,aAAa;AACzB,CAAC,EADW,aAAa,KAAb,aAAa,QACxB"}
+{"version":3,"file":"walletApiKey.js","sourceRoot":"","sources":["../../src/models/walletApiKey.ts"],"names":[],"mappings":";;AAAA,IAAY,aACX;AADD,WAAY,aAAa;AACzB,CAAC,EADW,aAAa,GAAb,qBAAa,KAAb,qBAAa,QACxB"}

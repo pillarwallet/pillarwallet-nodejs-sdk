@@ -1,84 +1,100 @@
-import * as http from 'http';
-import * as localVarRequest from 'request';
-import * as Promise from 'bluebird';
+import { Request } from 'request';
+import { request } from 'http';
 
-import {BASE_URL} from './urls/urlConstants';
-import {WalletCreationParams, WalletCreationResponse} from "./models/objectClasses";
-import {ObjectSerializer} from "./utils/objectSerializer";
-import {signPayload} from './utils/signPayload';
+import { Wallet } from './lib/wallet';
 
-export class WalletApi {
-    protected _basePath = BASE_URL;
-    protected defaultHeaders: any = {};
-    protected _useQuerystring: boolean = false;
+export class PillarSdk {
+    publicKey: string;
+    privateKey: string;
+    wallet: Wallet = new Wallet();
 
-
-    set basePath(basePath: string) {
-        this._basePath = basePath;
+    constructor(incomingPublicKey: string, incomingPrivateKey: string) {
+        this.publicKey = incomingPublicKey;
+        this.privateKey = incomingPrivateKey;
     }
 
-    get basePath() {
-        return this._basePath;
-    }
-
-    /**
-     * Create a new Wallet and User on Database. And return the identification  number of each.
-     * @summary create a new wallet
-     * @param walletCreationParams request fields
-     * @param privateKey input parameter JSON string
-     */
-    public createWallet(walletCreationParams: WalletCreationParams, privateKey: string): Promise<{ response:n; body: WalletCreationResponse; }> {
-        //get signature
-        const xAPISignature = signPayload(WalletCreationParams,privateKey);
-        const localVarPath = this.basePath + '/wallet/create';
-        let localVarQueryParameters: any = {};
-        let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-        let localVarFormParams: any = {};
-
-        // verify required parameter 'body' is not null or undefined
-        if (walletCreationParams === null || walletCreationParams === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling createWallet.');
-        }
-
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
-        }
-
-        localVarHeaderParams['X-API-Signature'] = ObjectSerializer.serialize(xAPISignature, "string");
-
-        let localVarUseFormData = false;
-
-        let localVarRequestOptions: localVarRequest.Options = {
-            method: 'PUT',
-            qs: localVarQueryParameters,
-            headers: localVarHeaderParams,
-            uri: localVarPath,
-            useQuerystring: this._useQuerystring,
-            json: true,
-            body: ObjectSerializer.serialize(walletCreationParams, "WalletCreationParams")
-        };
-
-        if (Object.keys(localVarFormParams).length) {
-            if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-            } else {
-                localVarRequestOptions.form = localVarFormParams;
-            }
-        }
-        return new Promise<{ response: http.ClientResponse; body: WalletCreationResponse; }>((resolve, reject) => {
-            localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "WalletCreationResponse");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({response: response, body: body});
-                    } else {
-                        reject({response: response, body: body});
-                    }
-                }
-            });
-        });
+    dumpConfig() {
+        console.log(this);
     }
 }
+
+// import {BASE_URL} from './urls/urlConstants';
+// import {WalletCreationParams, WalletCreationResponse} from "./models/objectClasses";
+// import {ObjectSerializer} from "./utils/objectSerializer";
+// import {signPayload} from './utils/signPayload';
+
+// export class WalletApi {
+//     protected _basePath = BASE_URL;
+//     protected defaultHeaders: any = {};
+//     protected _useQuerystring: boolean = false;
+
+
+//     set basePath(basePath: string) {
+//         this._basePath = basePath;
+//     }
+
+//     get basePath() {
+//         return this._basePath;
+//     }
+
+//     /**
+//      * Create a new Wallet and User on Database. And return the identification  number of each.
+//      * @summary create a new wallet
+//      * @param walletCreationParams request fields
+//      * @param privateKey input parameter JSON string
+//      */
+//     public createWallet(walletCreationParams: WalletCreationParams, privateKey: string): Promise<{ response:n; body: WalletCreationResponse; }> {
+//         //get signature
+//         const xAPISignature = signPayload(WalletCreationParams,privateKey);
+//         const localVarPath = this.basePath + '/wallet/create';
+//         let localVarQueryParameters: any = {};
+//         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
+//         let localVarFormParams: any = {};
+
+//         // verify required parameter 'body' is not null or undefined
+//         if (walletCreationParams === null || walletCreationParams === undefined) {
+//             throw new Error('Required parameter body was null or undefined when calling createWallet.');
+//         }
+
+//         // verify required parameter 'xAPISignature' is not null or undefined
+//         if (xAPISignature === null || xAPISignature === undefined) {
+//             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
+//         }
+
+//         localVarHeaderParams['X-API-Signature'] = ObjectSerializer.serialize(xAPISignature, "string");
+
+//         let localVarUseFormData = false;
+
+//         let localVarRequestOptions: localVarRequest.Options = {
+//             method: 'PUT',
+//             qs: localVarQueryParameters,
+//             headers: localVarHeaderParams,
+//             uri: localVarPath,
+//             useQuerystring: this._useQuerystring,
+//             json: true,
+//             body: ObjectSerializer.serialize(walletCreationParams, "WalletCreationParams")
+//         };
+
+//         if (Object.keys(localVarFormParams).length) {
+//             if (localVarUseFormData) {
+//                 (<any>localVarRequestOptions).formData = localVarFormParams;
+//             } else {
+//                 localVarRequestOptions.form = localVarFormParams;
+//             }
+//         }
+//         return new Promise<{ response: http.ClientResponse; body: WalletCreationResponse; }>((resolve, reject) => {
+//             localVarRequest(localVarRequestOptions, (error, response, body) => {
+//                 if (error) {
+//                     reject(error);
+//                 } else {
+//                     body = ObjectSerializer.deserialize(body, "WalletCreationResponse");
+//                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
+//                         resolve({response: response, body: body});
+//                     } else {
+//                         reject({response: response, body: body});
+//                     }
+//                 }
+//             });
+//         });
+//     }
+// }
