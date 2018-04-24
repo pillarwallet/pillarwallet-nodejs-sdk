@@ -9,7 +9,13 @@ let primitives = [
     "any"
 ];
 
-class ObjectSerializer {
+let enumsMap: {[index: string]: any} = {
+}
+
+let typeMap: {[index: string]: any} = {
+}
+
+export class ObjectSerializer {
     /* tslint:disable:no-unused-variable */
 
 
