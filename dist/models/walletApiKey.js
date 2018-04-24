@@ -1,4 +1,6 @@
-export var WalletApiKeys;
+"use strict";
+exports.__esModule = true;
+var WalletApiKeys;
 (function (WalletApiKeys) {
-})(WalletApiKeys || (WalletApiKeys = {}));
+})(WalletApiKeys = exports.WalletApiKeys || (exports.WalletApiKeys = {}));
 //# sourceMappingURL=walletApiKey.js.map
