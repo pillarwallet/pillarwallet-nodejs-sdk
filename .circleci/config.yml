@@ -21,9 +21,9 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-  deployment:
-    npm:
-        tag: /v[0-9]+(\.[0-9]+)*/
-            commands:
-              - npm publish
-              - git push --follow-tags
+      - deployment:
+          npm:
+            tag: /v[0-9]+(\.[0-9]+)*/
+              commands:
+                - npm publish
+                - git push --follow-tags
