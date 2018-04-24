@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var primitives = [
     "string",
     "boolean",
@@ -123,3 +125,4 @@ var ObjectSerializer = /** @class */ (function () {
     };
     return ObjectSerializer;
 }());
+exports.ObjectSerializer = ObjectSerializer;

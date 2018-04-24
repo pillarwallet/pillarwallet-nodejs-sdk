@@ -19,8 +19,10 @@
   "dependencies": {
     "@types/node": "^9.6.6",
     "bluebird": "^3.5.1",
+    "ethereumjs-util": "^5.1.5",
     "node": "^9.11.0",
     "request": "^2.85.0",
+    "secp256k1": "^3.5.0",
     "typescript": "^2.8.3"
   },
   "devDependencies": {}

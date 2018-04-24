@@ -1,10 +1,11 @@
-import http = require('http');
-import localVarRequest = require('request');
-import Promise = require('bluebird');
+import * as http from 'http';
+import * as localVarRequest from 'request';
+import * as Promise from 'bluebird';
 
-
-import {BASE_URL} from  './src/urlConstants';
-import {WalletCreationParams, WalletCreationResponse} from "./src/objectClasses";
+import {BASE_URL} from './urls/urlConstants';
+import {WalletCreationParams, WalletCreationResponse} from "./models/objectClasses";
+import {ObjectSerializer} from "./utils/objectSerializer";
+import {signPayload} from './utils/signPayload';
 
 export class WalletApi {
     protected _basePath = BASE_URL;
@@ -23,17 +24,19 @@ export class WalletApi {
     /**
      * Create a new Wallet and User on Database. And return the identification  number of each.
      * @summary create a new wallet
-     * @param body request fields
-     * @param xAPISignature signature over the hash of the input parameter JSON string
+     * @param walletCreationParams request fields
+     * @param privateKey input parameter JSON string
      */
-    public createWallet(body: WalletCreationParams, xAPISignature: string): Promise<{ response:n; body: WalletCreationResponse; }> {
+    public createWallet(walletCreationParams: WalletCreationParams, privateKey: string): Promise<{ response:n; body: WalletCreationResponse; }> {
+        //get signature
+        const xAPISignature = signPayload(WalletCreationParams,privateKey);
         const localVarPath = this.basePath + '/wallet/create';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
         let localVarFormParams: any = {};
 
         // verify required parameter 'body' is not null or undefined
-        if (body === null || body === undefined) {
+        if (walletCreationParams === null || walletCreationParams === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createWallet.');
         }
 
@@ -53,10 +56,8 @@ export class WalletApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(body, "WalletCreationParams")
+            body: ObjectSerializer.serialize(walletCreationParams, "WalletCreationParams")
         };
-
-        // this.authentications.default.applyToRequest(localVarRequestOptions);
 
         if (Object.keys(localVarFormParams).length) {
             if (localVarUseFormData) {

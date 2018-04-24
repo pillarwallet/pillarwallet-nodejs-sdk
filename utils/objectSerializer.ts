@@ -15,7 +15,7 @@ let enumsMap: {[index: string]: any} = {
 let typeMap: {[index: string]: any} = {
 }
 
-class ObjectSerializer {
+export class ObjectSerializer {
     /* tslint:disable:no-unused-variable */
 
 
