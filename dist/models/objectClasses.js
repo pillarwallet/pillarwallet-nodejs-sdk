@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var Wallet = /** @class */ (function () {
+var Wallet = (function () {
     function Wallet() {
     }
     Wallet.getAttributeTypeMap = function () {
@@ -41,8 +39,8 @@ var Wallet = /** @class */ (function () {
     ];
     return Wallet;
 }());
-exports.Wallet = Wallet;
-var WalletCreationParams = /** @class */ (function () {
+export { Wallet };
+var WalletCreationParams = (function () {
     function WalletCreationParams() {
     }
     WalletCreationParams.getAttributeTypeMap = function () {
@@ -68,8 +66,8 @@ var WalletCreationParams = /** @class */ (function () {
     ];
     return WalletCreationParams;
 }());
-exports.WalletCreationParams = WalletCreationParams;
-var WalletCreationResponse = /** @class */ (function () {
+export { WalletCreationParams };
+var WalletCreationResponse = (function () {
     function WalletCreationResponse() {
     }
     WalletCreationResponse.getAttributeTypeMap = function () {
@@ -100,4 +98,5 @@ var WalletCreationResponse = /** @class */ (function () {
     ];
     return WalletCreationResponse;
 }());
-exports.WalletCreationResponse = WalletCreationResponse;
+export { WalletCreationResponse };
+//# sourceMappingURL=objectClasses.js.map
