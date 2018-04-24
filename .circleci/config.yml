@@ -21,7 +21,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - deployment:
+      - deploy:
           npm:
             tag: /v[0-9]+(\.[0-9]+)*/
               commands:
