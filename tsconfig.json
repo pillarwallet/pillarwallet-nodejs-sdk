@@ -5,7 +5,8 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "outDir": "./dist",
-        "sourceMap": true
+        "sourceMap": true,
+        "lib": ["es6"]
     },
     "include": [
         "src/**/*",

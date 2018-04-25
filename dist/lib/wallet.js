@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var errorMessages_1 = require("./constants/errorMessages");
+var requester_1 = require("../utils/requester");
 var Wallet = (function () {
     function Wallet(incomingWalletId) {
         this.walletId = incomingWalletId;
@@ -12,6 +13,7 @@ var Wallet = (function () {
         this.walletId = Math.floor(Math.random() * Math.floor(99999)).toString();
         console.log('Wallet registered!');
         console.log("Wallet ID is now " + this.walletId);
+        return requester_1.Requester.invoke();
     };
     Wallet.prototype.dumpConfig = function () {
         console.log(this);

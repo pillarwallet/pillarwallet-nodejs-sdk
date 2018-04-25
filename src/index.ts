@@ -1,20 +1,17 @@
-import { Request } from 'request';
-import { request } from 'http';
-
 import { Wallet } from './lib/wallet';
 
 export class PillarSdk {
-    publicKey: string;
-    privateKey: string;
+    static publicKey: string;
+    static privateKey: string;
+    static config: PillarSdkConfiguration;
     wallet: Wallet = new Wallet();
 
-    constructor(incomingPublicKey: string, incomingPrivateKey: string) {
-        this.publicKey = incomingPublicKey;
-        this.privateKey = incomingPrivateKey;
+    constructor(configuration: PillarSdkConfiguration) {
+        PillarSdk.config = configuration;
     }
 
     dumpConfig() {
-        console.log(this);
+        console.log(PillarSdk);
     }
 }
 

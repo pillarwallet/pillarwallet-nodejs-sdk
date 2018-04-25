@@ -2,13 +2,12 @@
 exports.__esModule = true;
 var wallet_1 = require("./lib/wallet");
 var PillarSdk = (function () {
-    function PillarSdk(incomingPublicKey, incomingPrivateKey) {
+    function PillarSdk(configuration) {
         this.wallet = new wallet_1.Wallet();
-        this.publicKey = incomingPublicKey;
-        this.privateKey = incomingPrivateKey;
+        PillarSdk.config = configuration;
     }
     PillarSdk.prototype.dumpConfig = function () {
-        console.log(this);
+        console.log(PillarSdk);
     };
     return PillarSdk;
 }());
