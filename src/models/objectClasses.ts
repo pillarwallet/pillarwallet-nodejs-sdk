@@ -45,7 +45,7 @@
 //     }
 // }
 
-// export class WalletCreationParams {
+// export class WalletRegisterParams {
 //     'publicKey': string;
 //     'ethAddress': string;
 //     'fcmToken': string;
@@ -70,7 +70,7 @@
 //         }    ];
 
 //     static getAttributeTypeMap() {
-//         return WalletCreationParams.attributeTypeMap;
+//         return WalletRegisterParams.attributeTypeMap;
 //     }
 // }
 

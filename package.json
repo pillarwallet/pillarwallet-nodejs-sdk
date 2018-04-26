@@ -25,6 +25,7 @@
     "@types/request-promise": "^4.1.41",
     "bluebird": "^3.5.1",
     "ethereumjs-util": "^5.1.5",
+    "hdkey": "^0.8.0",
     "node": "^9.11.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
