@@ -23,7 +23,7 @@ jobs:
             - ./node_modules
       - run:
           name: Install TypeScript packages globally
-          command: npm i typescript tsc ts-node -g
+          command: sudo npm i typescript tsc ts-node -g
       - run:
           name: Compile TypeScript to JS
           command: tsc
