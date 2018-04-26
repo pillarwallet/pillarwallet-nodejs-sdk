@@ -27,7 +27,9 @@ jobs:
       - run:
           name: Compile TypeScript to JS
           command: tsc
-  deployment:
-    release:
-      tag: /release-.*/
-        command: npm publish
+      - run:
+          name: Publish to NPM
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+          command: npm publish
