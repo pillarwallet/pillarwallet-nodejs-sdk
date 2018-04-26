@@ -27,6 +27,7 @@ jobs:
       - run:
           name: Compile TypeScript to JS
           command: tsc
-      - run:
-          name: Publish to NPM
-          command: npm publish
+    deployment:
+      release:
+        tag: /release-.*/
+        command: npm publish
