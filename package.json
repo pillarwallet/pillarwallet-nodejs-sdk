@@ -1,6 +1,6 @@
 {
   "name": "@pillarwallet/pillarwallet-nodejs-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
@@ -26,13 +26,14 @@
     "bluebird": "^3.5.1",
     "ethereumjs-util": "^5.1.5",
     "hdkey": "^0.8.0",
-    "node": "^9.11.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
-    "secp256k1": "^3.5.0",
+    "secp256k1": "^3.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.8.3",
     "ts-node": "^6.0.0",
     "tslint": "^5.9.1",
-    "typescript": "^2.8.3"
-  },
-  "devDependencies": {}
+    "node": "^9.11.0"
+  }
 }
