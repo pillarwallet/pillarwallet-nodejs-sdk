@@ -22,5 +22,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: Compile Typescript to JS
+          name: Install TypeScript packages globally
+          command: npm i typescript tsc ts-node -g
+      - run:
+          name: Compile TypeScript to JS
           command: tsc
