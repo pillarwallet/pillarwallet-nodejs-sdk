@@ -3,6 +3,7 @@ import { Wallet } from './lib/wallet';
 export class PillarSdk {
     static publicKey: string;
     static privateKey: string;
+
     static config: PillarSdkConfiguration;
     wallet: Wallet = new Wallet();
 
@@ -16,7 +17,7 @@ export class PillarSdk {
 }
 
 // import {BASE_URL} from './urls/urlConstants';
-// import {WalletCreationParams, WalletCreationResponse} from "./models/objectClasses";
+// import {WalletRegisterParams, WalletCreationResponse} from "./models/objectClasses";
 // import {ObjectSerializer} from "./utils/objectSerializer";
 // import {signPayload} from './utils/signPayload';
 
@@ -40,9 +41,9 @@ export class PillarSdk {
 //      * @param walletCreationParams request fields
 //      * @param privateKey input parameter JSON string
 //      */
-//     public createWallet(walletCreationParams: WalletCreationParams, privateKey: string): Promise<{ response:n; body: WalletCreationResponse; }> {
+//     public createWallet(walletCreationParams: WalletRegisterParams, privateKey: string): Promise<{ response:n; body: WalletCreationResponse; }> {
 //         //get signature
-//         const xAPISignature = signPayload(WalletCreationParams,privateKey);
+//         const xAPISignature = signPayload(WalletRegisterParams,privateKey);
 //         const localVarPath = this.basePath + '/wallet/create';
 //         let localVarQueryParameters: any = {};
 //         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -69,7 +70,7 @@ export class PillarSdk {
 //             uri: localVarPath,
 //             useQuerystring: this._useQuerystring,
 //             json: true,
-//             body: ObjectSerializer.serialize(walletCreationParams, "WalletCreationParams")
+//             body: ObjectSerializer.serialize(walletCreationParams, "WalletRegisterParams")
 //         };
 
 //         if (Object.keys(localVarFormParams).length) {
