@@ -16,7 +16,7 @@ export class Wallet {
         if (walletCreationParams === null || walletCreationParams === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createWallet.');
         }
-        const xAPISignature = auth.sign(walletCreationParams,privateKey,'sha3');
+        const xAPISignature = auth.sign(walletCreationParams,privateKey,'secp256k1');
         // verify required parameter 'xAPISignature' is not null or undefined
         if (xAPISignature === null || xAPISignature === undefined) {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');

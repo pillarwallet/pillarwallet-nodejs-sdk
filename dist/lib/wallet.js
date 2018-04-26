@@ -1,19 +1,21 @@
 "use strict";
 exports.__esModule = true;
-var errorMessages_1 = require("./constants/errorMessages");
 var requester_1 = require("../utils/requester");
+var auth = require('@pillarwallet/plr-auth-sdk');
 var Wallet = (function () {
     function Wallet(incomingWalletId) {
         this.walletId = incomingWalletId;
     }
-    Wallet.prototype.register = function () {
-        if (this.walletId) {
-            throw new Error(errorMessages_1.ErrorMessages.WalletAlreadyRegistered);
+    Wallet.prototype.register = function (walletCreationParams, privateKey) {
+        console.log(walletCreationParams);
+        if (walletCreationParams === null || walletCreationParams === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling createWallet.');
         }
-        this.walletId = Math.floor(Math.random() * Math.floor(99999)).toString();
-        console.log('Wallet registered!');
-        console.log("Wallet ID is now " + this.walletId);
-        return requester_1.Requester.invoke();
+        var xAPISignature = auth.sign(walletCreationParams, privateKey, 'secp256k1');
+        if (xAPISignature === null || xAPISignature === undefined) {
+            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
+        }
+        return requester_1.Requester.invoke(xAPISignature, walletCreationParams);
     };
     Wallet.prototype.dumpConfig = function () {
         console.log(this);
