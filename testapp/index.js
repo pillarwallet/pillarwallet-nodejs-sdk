@@ -1,8 +1,7 @@
 const { PillarSdk } = require('../dist');
 
 const p = new PillarSdk({
-  publicKey: 'llololololololl',
-  sdkUri: 'http://localhost:8080',
+  privateKey: 'llololololololl'
 });
 
 // Initialise
