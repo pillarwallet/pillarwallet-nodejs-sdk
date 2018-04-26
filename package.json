@@ -1,8 +1,8 @@
 {
-  "name": "pillarwallet-nodejs-sdk",
+  "name": "@pillarwallet/pillarwallet-nodejs-sdk",
   "version": "0.0.3",
   "description": "Simple SDK wrap for CW Backend",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc"
