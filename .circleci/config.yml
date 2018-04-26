@@ -10,14 +10,23 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - checkout
       - run:
-          name: update-npm
+          name: NPM - Self Update
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install-npm
-          command: npm install
+          name: NPM - Install
+          command: npm i
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: Install TypeScript packages globally
+          command: sudo npm i typescript tsc ts-node -g
+      - run:
+          name: Compile TypeScript to JS
+          command: tsc
+      - run:
+          name: Publish to NPM
+          command: npm publish

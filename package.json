@@ -1,6 +1,6 @@
 {
   "name": "pillarwallet-nodejs-sdk",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "Simple SDK wrap for CW Backend",
   "main": "index.js",
   "scripts": {
