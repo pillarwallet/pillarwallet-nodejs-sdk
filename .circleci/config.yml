@@ -31,7 +31,7 @@ jobs:
           name: Publish to NPM if release branch
           command: |
             echo "Checking for release branch..."
-            if [ "$CIRCLE_BRANCH" == "release" ];
+            if [ "$CIRCLE_BRANCH" == "release/v?.?.?" ];
             then
               echo "Release branch found. Attempting to publisn to NPM..."
               npm publish
