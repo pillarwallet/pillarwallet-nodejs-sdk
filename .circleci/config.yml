@@ -28,5 +28,14 @@ jobs:
           name: Compile TypeScript to JS
           command: tsc
       - run:
-          name: Publish to NPM
-          command: npm publish
+          name: Publish to NPM if release branch
+          command: |
+            echo "Checking for release branch..."
+            if [ "$CIRCLE_BRANCH" == "release" ];
+            then
+              echo "Release branch found. Attempting to publisn to NPM..."
+              npm publish
+              echo "Publish to NPM complete."
+            else
+              echo "This is not release branch (currently $CIRCLE_BRANCH)"
+            fi
