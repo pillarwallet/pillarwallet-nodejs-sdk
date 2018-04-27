@@ -4,12 +4,21 @@ import {WalletRegisterParams} from "../models/walletRegisterParams";
 
 export class Requester {
 
-  static invoke(signature:string, payload: WalletRegisterParams): request.RequestPromise {
+  static register(signature:string, payload: WalletRegisterParams): request.RequestPromise {
     return request(HttpEndpoints.BASE + HttpEndpoints.WALLET_REGISTER, {
         method: 'POST',
         headers: { 'X-API-Signature': signature},
         body: payload,
         json: true
     });
+  }
+  static defaults(signature:string,walletId: number): request.RequestPromise {
+        return request(HttpEndpoints.BASE + HttpEndpoints.ASSET_DEFAULT, {
+            method: 'GET',
+            headers: { 'X-API-Signature': signature},
+            qs: {
+                walletId: walletId,
+            },
+        });
   }
 }
