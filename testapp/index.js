@@ -13,14 +13,24 @@ const myParams = {
 
 // Create wallet
 p.wallet.register(myParams,hdkey.privateKey)
-  .then((result) => {
-    console.log('THEN! p.wallet.register()');
-    console.log(result);
-  })
-  .catch((error) => {
-    console.log('ERROR! p.wallet.register()');
-    console.error(error);
-  });
+    .then((result) => {
+        console.log('THEN! p.wallet.register()');
+        console.log(result);
+    })
+    .catch((error) => {
+        console.log('ERROR! p.wallet.register()');
+        console.error(error);
+    });
+
+p.asset.defaults(1,hdkey.privateKey)
+    .then((result) => {
+        console.log('THEN! p.wallet.register()');
+        console.log(result);
+    })
+    .catch((error) => {
+        console.log('ERROR! p.wallet.register()');
+        console.error(error);
+    });
 
 console.log('After wallet register:');
 

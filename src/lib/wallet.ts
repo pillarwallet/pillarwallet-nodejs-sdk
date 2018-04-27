@@ -11,7 +11,6 @@ export class Wallet {
     }
 
     register(walletCreationParams: WalletRegisterParams, privateKey: string): RequestPromise {
-        console.log(walletCreationParams);
         // verify required parameter 'body' is not null or undefined
         if (walletCreationParams === null || walletCreationParams === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createWallet.');
@@ -22,7 +21,7 @@ export class Wallet {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
         }
        // localVarHeaderParams['X-API-Signature'] = ObjectSerializer.serialize(xAPISignature, "string");
-        return Requester.invoke(xAPISignature, walletCreationParams);
+        return Requester.register(xAPISignature, walletCreationParams);
     }
 
     dumpConfig() {
