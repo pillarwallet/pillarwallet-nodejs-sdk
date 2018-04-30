@@ -1,6 +1,5 @@
 version: 2
 jobs:
-
   test:
     docker:
       - image: circleci/node:8.9.4
@@ -30,7 +29,6 @@ jobs:
       -run:
         name: test
         command: echo - please write some test
-
   publish:
     docker:
       - image: circleci/node:8.9.4
@@ -42,7 +40,6 @@ jobs:
       - run:
           name: Publish
           command: npm publish
-
 workflows:
   version: 2
   build_and_test:
