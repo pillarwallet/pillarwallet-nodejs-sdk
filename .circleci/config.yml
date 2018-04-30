@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Compile TypeScript to JS
           command: tsc
-      -run:
+      - run: 
         name: test
         command: echo - please write some test
   publish:
