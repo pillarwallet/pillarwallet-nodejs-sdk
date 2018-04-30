@@ -2,8 +2,6 @@ import { Wallet } from './lib/wallet';
 import { Asset } from './lib/asset';
 
 export class PillarSdk {
-    static publicKey: string;
-    static privateKey: string;
 
     static config: PillarSdkConfiguration;
     wallet: Wallet = new Wallet();
