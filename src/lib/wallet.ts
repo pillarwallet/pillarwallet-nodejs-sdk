@@ -1,7 +1,6 @@
 import {WalletRegisterParams} from '../models/walletRegisterParams';
 import {Requester} from '../utils/requester';
 import {RequestPromise} from 'request-promise';
-const auth = require('@pillarwallet/plr-auth-sdk');
 
 export class Wallet {
     walletId: string;
@@ -15,7 +14,7 @@ export class Wallet {
         if (walletCreationParams === null || walletCreationParams === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createWallet.');
         }
-        const xAPISignature = auth.sign(walletCreationParams,privateKey,'secp256k1');
+        const xAPISignature = Requester.sign(walletCreationParams,privateKey);
         // verify required parameter 'xAPISignature' is not null or undefined
         if (xAPISignature === null || xAPISignature === undefined) {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
@@ -26,5 +25,9 @@ export class Wallet {
 
     dumpConfig() {
         console.log(this);
+    }
+
+    testFunction() {
+        return 'hello';
     }
 }

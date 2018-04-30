@@ -4,8 +4,22 @@
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "compile": "tsc"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "repository": {
     "type": "git",
@@ -31,9 +45,13 @@
     "secp256k1": "^3.5.0"
   },
   "devDependencies": {
-    "typescript": "^2.8.3",
+    "@types/jest": "^22.2.3",
+    "jest": "^22.4.3",
+    "node": "^9.11.0",
+    "supertest": "^3.0.0",
+    "ts-jest": "^22.4.4",
     "ts-node": "^6.0.0",
     "tslint": "^5.9.1",
-    "node": "^9.11.0"
+    "typescript": "^2.8.3"
   }
 }
