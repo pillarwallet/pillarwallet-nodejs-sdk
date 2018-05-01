@@ -1,10 +1,11 @@
 import {HttpEndpoints} from "../../lib/constants/httpEndpoints";
 
 export default {
-    url: HttpEndpoints.BASE + HttpEndpoints.ASSET_SEARCH,
-    method: 'GET',
+    url: HttpEndpoints.BASE + HttpEndpoints.WALLET_UPDATE,
+    method: 'POST',
     headers: {
         'X-API-Signature': ''
     },
-    qs: null,
+    body: null,
+    json: true,
 };
