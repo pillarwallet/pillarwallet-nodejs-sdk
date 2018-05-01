@@ -1,0 +1,3 @@
+interface UserInfo {
+    walletId: number,
+}
