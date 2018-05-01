@@ -6,7 +6,7 @@ var Requester = (function () {
     function Requester() {
     }
     Requester.sign = function (SignParams, privateKey) {
-        return auth.sign(SignParams, privateKey, { curve: 'secp256k1' });
+        return auth.sign(SignParams, privateKey);
     };
     Requester.execute = function (incomingRequestOptions) {
         return request(incomingRequestOptions);
