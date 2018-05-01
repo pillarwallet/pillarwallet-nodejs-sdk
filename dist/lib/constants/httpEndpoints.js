@@ -11,5 +11,6 @@ var HttpEndpoints;
     HttpEndpoints["USER_INFO"] = "/user/info";
     HttpEndpoints["USER_SEARCH"] = "/user/search";
     HttpEndpoints["USER_DELETE"] = "/user/delete";
+    HttpEndpoints["NOTIFICATION_LIST"] = "/notification/list";
 })(HttpEndpoints = exports.HttpEndpoints || (exports.HttpEndpoints = {}));
 //# sourceMappingURL=httpEndpoints.js.map
