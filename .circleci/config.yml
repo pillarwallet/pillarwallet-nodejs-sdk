@@ -1,5 +1,76 @@
 version: 2
 jobs:
+  build:
+    working_directory: ~/pillar
+    docker:
+      - image: circleci/node:8.9.4
+    steps:
+      - checkout
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Install TypeScript packages globally
+          command: sudo npm i typescript tsc ts-node -g
+      - run:
+          name: Compile TypeScript to JS
+          command: tsc
+  test:
+    docker:
+      - image: circleci/node:4.8.2
+    steps:
+      - checkout
+      - run:
+          name: Test
+          command: echo please write some unit-tests
+  publish:
+    docker:
+      - image: circleci/node:4.8.2
+    steps:
+      - checkout
+      - run:
+          name: Add NPM_TOKEN to .npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - checkout
+      - run:
+          name: Publish
+          command: npm publish
+
+workflows:
+  version: 2
+  build_test_and_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - test:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+
+
+
+
+
+
+
+
+
+
+version: 2
+jobs:
   test:
     docker:
       - image: circleci/node:8.9.4
@@ -42,7 +113,7 @@ jobs:
           command: npm publish
 workflows:
   version: 2
-  build_and_test:
+  test_and_publish:
     jobs:
       - test
       - publish
