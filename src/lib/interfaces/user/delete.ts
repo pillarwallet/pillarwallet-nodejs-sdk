@@ -1,0 +1,3 @@
+interface UserDelete {
+    walletId: number,
+}

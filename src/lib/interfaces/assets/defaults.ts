@@ -1,0 +1,3 @@
+interface AssetDefaults {
+    walletId: number
+}
