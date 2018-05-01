@@ -1,6 +1,6 @@
 {
   "name": "@pillarwallet/pillarwallet-nodejs-sdk",
-  "version": "0.0.8-3",
+  "version": "0.0.8-4",
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
