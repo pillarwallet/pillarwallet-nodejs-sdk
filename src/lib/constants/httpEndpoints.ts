@@ -8,4 +8,5 @@ export enum HttpEndpoints {
   USER_INFO = '/user/info',
   USER_SEARCH = '/user/search',
   USER_DELETE = '/user/delete',
+  NOTIFICATION_LIST = '/notification/list',
 }
