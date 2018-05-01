@@ -53,7 +53,7 @@ workflows:
       - test:
           requires:
             - build
-      - test:
+      - publish:
           requires:
             - test
           filters:
