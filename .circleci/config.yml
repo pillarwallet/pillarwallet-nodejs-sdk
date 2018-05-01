@@ -42,6 +42,11 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - checkout
       - run:
+          name: Append circleCI build number to version
+          command: |
+            chmod 777 ./appendBuildToVersion.sh
+            ./appendBuildToVersion.sh
+      - run:
           name: Publish
           command: npm publish
 
@@ -58,4 +63,4 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only: workflowCi
