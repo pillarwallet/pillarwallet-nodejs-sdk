@@ -6,7 +6,13 @@ var Requester = (function () {
     function Requester() {
     }
     Requester.sign = function (SignParams, privateKey) {
-        return auth.sign(SignParams, privateKey);
+        try {
+            var signature = auth.sign(SignParams, privateKey);
+            return signature;
+        }
+        catch (e) {
+            return null;
+        }
     };
     Requester.execute = function (incomingRequestOptions) {
         return request(incomingRequestOptions);

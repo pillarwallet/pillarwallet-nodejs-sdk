@@ -6,5 +6,5 @@ export default {
     headers: {
         'X-API-Signature': ''
     },
-    qs: null,
+    qs: {},
 };

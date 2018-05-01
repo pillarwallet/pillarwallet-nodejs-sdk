@@ -7,9 +7,12 @@ var Wallet = (function () {
     function Wallet() {
     }
     Wallet.prototype.register = function (walletRegister, privateKey) {
+        if (!walletRegister.publicKey || !walletRegister.fcmToken || !walletRegister.ethAddress) {
+            throw new TypeError('Required data is missing.');
+        }
         var xAPISignature = requester_1.Requester.sign(walletRegister, privateKey);
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
+        if (!xAPISignature) {
+            throw new Error('There was a problem signing this request. Please check your credentials and try again.');
         }
         wallet_register_1["default"].headers['X-API-Signature'] = xAPISignature;
         wallet_register_1["default"].body = walletRegister;

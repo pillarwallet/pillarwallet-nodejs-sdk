@@ -6,14 +6,18 @@ import {default as walletUpdateConfiguration } from '../utils/requester-configur
 export class Wallet {
 
     register(walletRegister: WalletRegister, privateKey: string): RequestPromise {
-        // verify required parameter 'body' is not null or undefined
-        const xAPISignature = Requester.sign(walletRegister,privateKey);
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
+        if (!walletRegister.publicKey || !walletRegister.fcmToken || !walletRegister.ethAddress) {
+            throw new TypeError('Required data is missing.');
         }
+
+        const xAPISignature = Requester.sign(walletRegister, privateKey);
+        if (!xAPISignature) {
+            throw new Error('There was a problem signing this request. Please check your credentials and try again.');
+        }
+
         walletRegisterConfiguration.headers['X-API-Signature'] = xAPISignature;
         walletRegisterConfiguration.body = walletRegister;
+
         return Requester.execute(walletRegisterConfiguration);
     }
 
