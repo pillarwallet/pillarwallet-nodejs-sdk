@@ -1,26 +1,19 @@
-import {WalletRegisterParams} from '../models/walletRegisterParams';
 import {Requester} from '../utils/requester';
 import {RequestPromise} from 'request-promise';
+import {default as walletConfiguration } from '../utils/requester-configurations/wallet-register';
 
 export class Wallet {
-    walletId: string;
 
-    constructor(incomingWalletId?: string) {
-        this.walletId = incomingWalletId;
-    }
-
-    register(walletCreationParams: WalletRegisterParams, privateKey: string): RequestPromise {
+    register(walletRegister: WalletRegister, privateKey: string): RequestPromise {
         // verify required parameter 'body' is not null or undefined
-        if (walletCreationParams === null || walletCreationParams === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling createWallet.');
-        }
-        const xAPISignature = Requester.sign(walletCreationParams,privateKey);
+        const xAPISignature = Requester.sign(walletRegister,privateKey);
         // verify required parameter 'xAPISignature' is not null or undefined
         if (xAPISignature === null || xAPISignature === undefined) {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
         }
-       // localVarHeaderParams['X-API-Signature'] = ObjectSerializer.serialize(xAPISignature, "string");
-        return Requester.register(xAPISignature, walletCreationParams);
+        walletConfiguration.headers['X-API-Signature'] = xAPISignature;
+        walletConfiguration.body = walletRegister;
+        return Requester.execute(walletConfiguration);
     }
 
     dumpConfig() {

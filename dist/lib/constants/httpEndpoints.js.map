@@ -1,1 +1,1 @@
-{"version":3,"file":"httpEndpoints.js","sourceRoot":"","sources":["../../../src/lib/constants/httpEndpoints.ts"],"names":[],"mappings":";;AAEA,IAAY,aAGX;AAHD,WAAY,aAAa;IACvB,+CAA8B,CAAA;IAC9B,qDAAoC,CAAA;AACtC,CAAC,EAHW,aAAa,GAAb,qBAAa,KAAb,qBAAa,QAGxB"}
+{"version":3,"file":"httpEndpoints.js","sourceRoot":"","sources":["../../../src/lib/constants/httpEndpoints.ts"],"names":[],"mappings":";;AAAA,IAAY,aAKX;AALD,WAAY,aAAa;IACvB,+CAA8B,CAAA;IAC9B,qDAAoC,CAAA;IACpC,kDAAiC,CAAA;IACjC,+CAA8B,CAAA;AAChC,CAAC,EALW,aAAa,GAAb,qBAAa,KAAb,qBAAa,QAKxB"}

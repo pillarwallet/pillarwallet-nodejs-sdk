@@ -14,10 +14,7 @@ describe('wallet endpoints', () => {
                 fcmToken: 'cMctpybZfwk:APA91bFP_IarnIblW0UDSDGs_w7buoP2apxFIzI6YUOuib_FdSFPLe2ANR-OrFiaAvJ8v1zHyFTyRJBo4gf3EHpJSpfhToexCshEArkq6ho4gR3AqomxpgoF2JWf-tlJc8fB0Swrq0z7',
                 public_key: hdkey._publicKey.toString('hex'),
             };
-            let test = await p.wallet.register(myParams,hdkey.privateKey);
-           console.log(myParams);
-           console.log(test);
-
+            await p.wallet.register(myParams,hdkey.privateKey);
         });
     });
 });
