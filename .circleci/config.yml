@@ -45,6 +45,8 @@ jobs:
           name: Append circleCI build number to version
           command: |
             chmod 777 ./appendBuildToVersion.sh
+            git config user.email "devops@pillar.io"
+            git config user.name "Issabot"
             ./appendBuildToVersion.sh
       - run:
           name: Publish
