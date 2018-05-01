@@ -1,12 +1,13 @@
 import { Wallet } from './lib/wallet';
 import { Asset } from './lib/asset';
+import { Connection } from './lib/connection';
 
 export class PillarSdk {
 
     static config: PillarSdkConfiguration;
     wallet: Wallet = new Wallet();
     asset: Asset = new Asset();
-
+    connection: Connection = new Connection();
 
     constructor(configuration: PillarSdkConfiguration) {
         PillarSdk.config = configuration;

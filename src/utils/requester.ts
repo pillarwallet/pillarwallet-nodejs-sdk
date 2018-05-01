@@ -8,10 +8,13 @@ import {WalletRegisterParams} from "../models/walletRegisterParams";
 
 export class Requester {
 
-    static sign(SignParams: Object,privateKey: string) {
-        return auth.sign(SignParams,privateKey, { curve: 'secp256k1' });
+    static execute(incomingRequestOptions: any) {
+        return request(incomingRequestOptions);
     }
 
+    static sign(SignParams: Object, privateKey: string) {
+        return auth.sign(SignParams, privateKey, { curve: 'secp256k1' });
+    }
 
     static register(signature: string, payload: WalletRegisterParams): request.RequestPromise {
         return request(HttpEndpoints.BASE + HttpEndpoints.WALLET_REGISTER, {
