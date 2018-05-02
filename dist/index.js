@@ -14,9 +14,6 @@ var PillarSdk = (function () {
         this.notification = new notification_1.Notification();
         PillarSdk.config = configuration;
     }
-    PillarSdk.prototype.dumpConfig = function () {
-        console.log(PillarSdk);
-    };
     return PillarSdk;
 }());
 exports.PillarSdk = PillarSdk;

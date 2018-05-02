@@ -5,9 +5,9 @@ var auth = require('@pillarwallet/plr-auth-sdk');
 var Requester = (function () {
     function Requester() {
     }
-    Requester.sign = function (SignParams, privateKey) {
+    Requester.sign = function (signParams, privateKey) {
         try {
-            var signature = auth.sign(SignParams, privateKey);
+            var signature = auth.sign(signParams, privateKey);
             return signature;
         }
         catch (e) {

@@ -1,4 +1,4 @@
 interface PillarSdkConfiguration {
-  publicKey: string,
-  sdkUri: string,
+  publicKey: string;
+  sdkUri: string;
 }

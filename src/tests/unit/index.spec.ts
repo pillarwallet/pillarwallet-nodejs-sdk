@@ -8,8 +8,8 @@ import { Wallet } from '../../lib/wallet';
 describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
     const pSdk = new PillarSdk({
-      sdkUri: 'http://localhost:8080',
-      publicKey: '123',
+      sdkUri: 'http://localhost:8080', // currently not used
+      publicKey: '123', // currently not used
     });
 
     expect(pSdk).toBeInstanceOf(PillarSdk);

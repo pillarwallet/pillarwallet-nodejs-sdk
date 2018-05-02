@@ -1,7 +1,7 @@
 import { Asset } from  '../../lib/asset';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-let assetSdk = new Asset();
+const assetSdk = new Asset();
 
 describe('The Asset Class: Defaults method', () => {
   it ('should successfully call with valid data', () => {
@@ -20,7 +20,7 @@ describe('The Asset Class: Defaults method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const assetDefaultsData = {
-      walletId: null
+      walletId: null,
     };
 
     const privateKey = '3874hkwhjkdwa';

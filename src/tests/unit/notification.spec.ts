@@ -1,13 +1,13 @@
 import { Notification } from  '../../lib/notification';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-let notificationSdk = new Notification();
+const notificationSdk = new Notification();
 
 describe('The Notification Class: List method', () => {
   it ('should successfully call with valid data', () => {
     const notificationData = {
       walletId: '1',
-      fromTimestamp: '1525263620'
+      fromTimestamp: '1525263620',
     };
 
     const privateKey = '3874hkwhjkdwa';
@@ -22,7 +22,7 @@ describe('The Notification Class: List method', () => {
     let errorThrown;
     const notificationData = {
       walletId: '1',
-      fromTimestamp: null
+      fromTimestamp: null,
     };
 
     const privateKey = '3874hkwhjkdwa';
@@ -40,7 +40,7 @@ describe('The Notification Class: List method', () => {
     let errorThrown;
     const notificationData = {
       walletId: '1',
-      fromTimestamp: '1525263620'
+      fromTimestamp: '1525263620',
     };
 
     const privateKey = null;

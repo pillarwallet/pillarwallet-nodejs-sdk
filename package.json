@@ -40,16 +40,19 @@
   "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
   "dependencies": {
     "@pillarwallet/plr-auth-sdk": "^0.1.0",
+    "@types/ajv": "^1.0.0",
     "@types/bluebird": "^3.5.20",
     "@types/node": "^9.6.6",
     "@types/request": "^2.47.0",
     "@types/request-promise": "^4.1.41",
+    "ajv": "^6.4.0",
     "bluebird": "^3.5.1",
     "ethereumjs-util": "^5.1.5",
     "hdkey": "^0.8.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
-    "secp256k1": "^3.5.0"
+    "secp256k1": "^3.5.0",
+    "tslint-config-airbnb": "^5.8.0"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",

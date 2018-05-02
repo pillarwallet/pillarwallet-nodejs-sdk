@@ -2,8 +2,8 @@ export default {
   url: '',
   method: 'POST',
   headers: {
-    'X-API-Signature': ''
+    'X-API-Signature': '',
   },
   body: {},
   json: true,
-}
+};

@@ -2,7 +2,7 @@ import { Connection } from  '../../lib/connection';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
 
-let connectionSdk = new Connection();
+const connectionSdk = new Connection();
 
 /**
  * Connection: Invite method

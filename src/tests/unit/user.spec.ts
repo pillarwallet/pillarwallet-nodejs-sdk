@@ -1,7 +1,7 @@
 import { User } from  '../../lib/user';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-let userSdk = new User();
+const userSdk = new User();
 
 describe('The User Class: Update method', () => {
   it ('should successfully call with valid data', () => {

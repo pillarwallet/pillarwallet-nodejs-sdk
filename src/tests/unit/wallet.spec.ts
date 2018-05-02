@@ -1,7 +1,7 @@
 import { Wallet } from  '../../lib/wallet';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-let walletSdk = new Wallet();
+const walletSdk = new Wallet();
 
 describe('The Wallet Class: Register method', () => {
   it ('should successfully call with valid data', () => {

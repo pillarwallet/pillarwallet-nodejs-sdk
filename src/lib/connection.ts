@@ -1,11 +1,17 @@
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
-import { default as requestInviteConfiguration } from '../utils/requester-configurations/connections-invite';
-import { default as requestAcceptConfiguration } from '../utils/requester-configurations/connections-accept';
-import { default as requestRejectConfiguration } from '../utils/requester-configurations/connections-reject';
-import { default as requestCancelConfiguration } from '../utils/requester-configurations/connections-cancel';
-import { default as requestBlockConfiguration } from '../utils/requester-configurations/connections-block';
-import { default as requestMuteConfiguration } from '../utils/requester-configurations/connections-mute';
+import { default as requestInviteConfiguration }
+  from '../utils/requester-configurations/connections-invite';
+import { default as requestAcceptConfiguration }
+  from '../utils/requester-configurations/connections-accept';
+import { default as requestRejectConfiguration }
+  from '../utils/requester-configurations/connections-reject';
+import { default as requestCancelConfiguration }
+  from '../utils/requester-configurations/connections-cancel';
+import { default as requestBlockConfiguration }
+  from '../utils/requester-configurations/connections-block';
+import { default as requestMuteConfiguration }
+  from '../utils/requester-configurations/connections-mute';
 import { ErrorMessages } from './constants/errorMessages';
 
 export class Connection {

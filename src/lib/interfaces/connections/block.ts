@@ -1,4 +1,4 @@
 interface ConnectionBlock {
-  accessKey: string,
-  walletId: number,
+  accessKey: string;
+  walletId: number;
 }

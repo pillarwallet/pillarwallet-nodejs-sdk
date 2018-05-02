@@ -1,4 +1,4 @@
 interface ConnectionMute {
-  accessKey: string,
-  walletId: number,
+  accessKey: string;
+  walletId: number;
 }
