@@ -19,6 +19,12 @@ var Wallet = (function () {
         return requester_1.Requester.execute(wallet_register_1["default"]);
     };
     Wallet.prototype.update = function (walletUpdate, privateKey) {
+        if (!walletUpdate.walletId ||
+            !walletUpdate.fcmToken ||
+            !walletUpdate.ethAddress ||
+            !walletUpdate.signalRegistrationId) {
+            throw new TypeError('Required data is missing.');
+        }
         var xAPISignature = requester_1.Requester.sign(walletUpdate, privateKey);
         if (xAPISignature === null || xAPISignature === undefined) {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');

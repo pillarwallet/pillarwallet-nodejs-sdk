@@ -22,6 +22,13 @@ export class Wallet {
     }
 
     update(walletUpdate: WalletUpdate, privateKey: string): RequestPromise {
+        if (!walletUpdate.walletId || 
+            !walletUpdate.fcmToken || 
+            !walletUpdate.ethAddress || 
+            !walletUpdate.signalRegistrationId
+        ) {
+            throw new TypeError('Required data is missing.');
+        }
         // verify required parameter 'body' is not null or undefined
         const xAPISignature = Requester.sign(walletUpdate,privateKey);
         // verify required parameter 'xAPISignature' is not null or undefined
