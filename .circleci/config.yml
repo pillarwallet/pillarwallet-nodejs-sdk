@@ -44,10 +44,9 @@ jobs:
       - run:
           name: Append circleCI build number to version
           command: |
-            chmod 777 ./appendBuildToVersion.sh
             git config user.email "devops@pillar.io"
             git config user.name "Issabot"
-            ./appendBuildToVersion.sh
+            npm version $(node -e "console.log( require('./package.json').version )")-$CIRCLE_BUILD_NUM
       - run:
           name: Publish
           command: npm publish
@@ -65,4 +64,4 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only: workflowCi
