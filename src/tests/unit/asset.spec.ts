@@ -12,7 +12,7 @@ describe('The Asset Class: Defaults method', () => {
     const privateKey = '3874hkwhjkdwa';
 
     const spy = jest.spyOn(Requester, 'execute');
-    const walletRegistrationPromise = assetSdk.defaults(assetDefaultsData, privateKey);
+    const assetDefaultsPromise = assetSdk.defaults(assetDefaultsData, privateKey);
 
     expect(spy).toBeCalled();
   });
@@ -62,7 +62,7 @@ describe('The Asset Class: Search method', () => {
     const privateKey = '3874hkwhjkdwa';
 
     const spy = jest.spyOn(Requester, 'execute');
-    const walletRegistrationPromise = assetSdk.search(assetSearchData, privateKey);
+    const assetSearchPromise = assetSdk.search(assetSearchData, privateKey);
 
     expect(spy).toBeCalled();
   });

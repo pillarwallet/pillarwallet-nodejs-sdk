@@ -15,8 +15,4 @@ export class PillarSdk {
     constructor(configuration: PillarSdkConfiguration) {
         PillarSdk.config = configuration;
     }
-
-    dumpConfig() {
-        console.log(PillarSdk);
-    }
 }

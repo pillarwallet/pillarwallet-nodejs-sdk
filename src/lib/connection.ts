@@ -6,6 +6,7 @@ import { default as requestRejectConfiguration } from '../utils/requester-config
 import { default as requestCancelConfiguration } from '../utils/requester-configurations/connections-cancel';
 import { default as requestBlockConfiguration } from '../utils/requester-configurations/connections-block';
 import { default as requestMuteConfiguration } from '../utils/requester-configurations/connections-mute';
+import { ErrorMessages } from './constants/errorMessages';
 
 export class Connection {
 
@@ -17,12 +18,12 @@ export class Connection {
     if (!inviteConfiguration.accessKey ||
         !inviteConfiguration.targetUserId ||
         !inviteConfiguration.walletId) {
-      throw new TypeError('Required data missing.');
+      throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
     const xAPISignature = Requester.sign(inviteConfiguration, privateKey);
 
     if (!xAPISignature) {
-      throw new Error('Required parameter xAPISignature was null or undefined when calling connection.invite.');
+      throw new Error(ErrorMessages.SigningError);
     }
 
     requestInviteConfiguration.headers['X-API-Signature'] = xAPISignature;
@@ -37,13 +38,13 @@ export class Connection {
         !acceptConfiguration.targetUserId ||
         !acceptConfiguration.sourceUserAccessKey ||
         !acceptConfiguration.targetUserAccessKey) {
-      throw new TypeError('Required data missing.');
+      throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
     const xAPISignature = Requester.sign(acceptConfiguration, privateKey);
 
     if (!xAPISignature) {
-      throw new Error('Required parameter xAPISignature was null or undefined when calling connection.accept.');
+      throw new Error(ErrorMessages.SigningError);
     }
 
     requestAcceptConfiguration.headers['X-API-Signature'] = xAPISignature;
@@ -57,12 +58,12 @@ export class Connection {
     if (!rejectConfiguration.accessKey ||
       !rejectConfiguration.targetUserId ||
       !rejectConfiguration.walletId) {
-      throw new TypeError('Required data missing.');
+      throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
     const xAPISignature = Requester.sign(rejectConfiguration, privateKey);
 
     if (!xAPISignature) {
-      throw new Error('Required parameter xAPISignature was null or undefined when calling connection.reject.');
+      throw new Error(ErrorMessages.SigningError);
     }
 
     requestRejectConfiguration.headers['X-API-Signature'] = xAPISignature;
@@ -76,12 +77,12 @@ export class Connection {
     if (!cancelConfiguration.accessKey ||
       !cancelConfiguration.targetUserId ||
       !cancelConfiguration.walletId) {
-      throw new TypeError('Required data missing.');
+      throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
     const xAPISignature = Requester.sign(cancelConfiguration, privateKey);
 
     if (!xAPISignature) {
-      throw new Error('Required parameter xAPISignature was null or undefined when calling connection.cancel.');
+      throw new Error(ErrorMessages.SigningError);
     }
 
     requestCancelConfiguration.headers['X-API-Signature'] = xAPISignature;
@@ -93,13 +94,13 @@ export class Connection {
 
   block(blockConfiguration: ConnectionBlock, privateKey: string) {
     if (!blockConfiguration.accessKey || !blockConfiguration.walletId) {
-      throw new TypeError('Required data missing.');
+      throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
     const xAPISignature = Requester.sign(blockConfiguration, privateKey);
 
     if (!xAPISignature) {
-      throw new Error('Required parameter xAPISignature was null or undefined when calling connection.block.');
+      throw new Error(ErrorMessages.SigningError);
     }
 
     requestBlockConfiguration.headers['X-API-Signature'] = xAPISignature;
@@ -111,13 +112,13 @@ export class Connection {
 
   mute(muteConfiguration: ConnectionMute, privateKey: string) {
     if (!muteConfiguration.accessKey || !muteConfiguration.walletId) {
-      throw new TypeError('Required data missing.');
+      throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
     const xAPISignature = Requester.sign(muteConfiguration, privateKey);
 
     if (!xAPISignature) {
-      throw new Error('Required parameter xAPISignature was null or undefined when calling connection.mute.');
+      throw new Error(ErrorMessages.SigningError);
     }
 
     requestMuteConfiguration.headers['X-API-Signature'] = xAPISignature;
