@@ -14,9 +14,14 @@ export class Connection {
   }
 
   invite(inviteConfiguration: ConnectionInvite, privateKey: string) {
+    if (!inviteConfiguration.accessKey ||
+        !inviteConfiguration.targetUserId ||
+        !inviteConfiguration.walletId) {
+      throw new TypeError('Required data missing.');
+    }
     const xAPISignature = Requester.sign(inviteConfiguration, privateKey);
 
-    if (xAPISignature === null || xAPISignature === undefined) {
+    if (!xAPISignature) {
       throw new Error('Required parameter xAPISignature was null or undefined when calling connection.invite.');
     }
 
@@ -28,9 +33,16 @@ export class Connection {
   }
 
   accept(acceptConfiguration: ConnectionAccept, privateKey: string) {
+    if (!acceptConfiguration.walletId ||
+        !acceptConfiguration.targetUserId ||
+        !acceptConfiguration.sourceUserAccessKey ||
+        !acceptConfiguration.targetUserAccessKey) {
+      throw new TypeError('Required data missing.');
+    }
+
     const xAPISignature = Requester.sign(acceptConfiguration, privateKey);
 
-    if (xAPISignature === null || xAPISignature === undefined) {
+    if (!xAPISignature) {
       throw new Error('Required parameter xAPISignature was null or undefined when calling connection.accept.');
     }
 
@@ -42,9 +54,14 @@ export class Connection {
   }
 
   reject(rejectConfiguration: ConnectionReject, privateKey: string) {
+    if (!rejectConfiguration.accessKey ||
+      !rejectConfiguration.targetUserId ||
+      !rejectConfiguration.walletId) {
+      throw new TypeError('Required data missing.');
+    }
     const xAPISignature = Requester.sign(rejectConfiguration, privateKey);
 
-    if (xAPISignature === null || xAPISignature === undefined) {
+    if (!xAPISignature) {
       throw new Error('Required parameter xAPISignature was null or undefined when calling connection.reject.');
     }
 
@@ -56,9 +73,14 @@ export class Connection {
   }
 
   cancel(cancelConfiguration: ConnectionCancel, privateKey: string) {
+    if (!cancelConfiguration.accessKey ||
+      !cancelConfiguration.targetUserId ||
+      !cancelConfiguration.walletId) {
+      throw new TypeError('Required data missing.');
+    }
     const xAPISignature = Requester.sign(cancelConfiguration, privateKey);
 
-    if (xAPISignature === null || xAPISignature === undefined) {
+    if (!xAPISignature) {
       throw new Error('Required parameter xAPISignature was null or undefined when calling connection.cancel.');
     }
 
@@ -70,9 +92,13 @@ export class Connection {
   }
 
   block(blockConfiguration: ConnectionBlock, privateKey: string) {
+    if (!blockConfiguration.accessKey || !blockConfiguration.walletId) {
+      throw new TypeError('Required data missing.');
+    }
+
     const xAPISignature = Requester.sign(blockConfiguration, privateKey);
 
-    if (xAPISignature === null || xAPISignature === undefined) {
+    if (!xAPISignature) {
       throw new Error('Required parameter xAPISignature was null or undefined when calling connection.block.');
     }
 
@@ -84,9 +110,13 @@ export class Connection {
   }
 
   mute(muteConfiguration: ConnectionMute, privateKey: string) {
+    if (!muteConfiguration.accessKey || !muteConfiguration.walletId) {
+      throw new TypeError('Required data missing.');
+    }
+
     const xAPISignature = Requester.sign(muteConfiguration, privateKey);
 
-    if (xAPISignature === null || xAPISignature === undefined) {
+    if (!xAPISignature) {
       throw new Error('Required parameter xAPISignature was null or undefined when calling connection.mute.');
     }
 

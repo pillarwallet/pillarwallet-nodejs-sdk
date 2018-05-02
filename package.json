@@ -8,6 +8,13 @@
     "compile": "tsc"
   },
   "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{ts}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
