@@ -1,18 +1,21 @@
 const { PillarSdk } = require('../dist');
 
-const p = new PillarSdk();
 const generateKeyPair = require('../tests/glue/generateKeyPair');
 // Initialise
-p.dumpConfig();
 const hdkey = generateKeyPair();
+
+const p = new PillarSdk({
+  privateKey: hdkey.privateKey
+});
+
 const myParams = {
-    eth_address: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+    ethAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
     fcmToken: 'cMctpybZfwk:APA91bFP_IarnIblW0UDSDGs_w7buoP2apxFIzI6YUOuib_FdSFPLe2ANR-OrFiaAvJ8v1zHyFTyRJBo4gf3EHpJSpfhToexCshEArkq6ho4gR3AqomxpgoF2JWf-tlJc8fB0Swrq0z7',
-    public_key: hdkey.publicKey.toString('hex'),
+    publicKey: hdkey.publicKey.toString('hex'),
 };
 
 // Create wallet
-p.wallet.register(myParams,hdkey.privateKey)
+p.wallet.register(myParams)
     .then((result) => {
         console.log('THEN! p.wallet.register()');
         console.log(result);
@@ -22,7 +25,7 @@ p.wallet.register(myParams,hdkey.privateKey)
         console.error(error);
     });
 
-p.asset.defaults(1,hdkey.privateKey)
+p.asset.defaults({walletId: 1})
     .then((result) => {
         console.log('THEN! p.wallet.register()');
         console.log(result);
@@ -35,7 +38,7 @@ p.asset.defaults(1,hdkey.privateKey)
 console.log('After wallet register:');
 
 // Dump again
-p.dumpConfig();
+// p.dumpConfig();
 
 console.log('Wallet ID is: ' + p.wallet.walletId);
 

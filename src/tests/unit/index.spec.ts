@@ -9,8 +9,8 @@ import { Configuration } from '../../lib/configuration';
 describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
     const pSdk = new PillarSdk({
-      sdkUri: 'http://localhost:8080', // currently not used
-      publicKey: '123', // currently not used
+      apiUrl: 'http://localhost:8080',
+      privateKey: '123',
     });
 
     expect(pSdk).toBeInstanceOf(PillarSdk);
