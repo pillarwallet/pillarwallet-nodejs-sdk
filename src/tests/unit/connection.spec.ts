@@ -1,8 +1,13 @@
-import { Connection } from  '../../lib/connection';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
+import { PillarSdk } from '../..';
+let pSdk;
 
-const connectionSdk = new Connection();
+beforeEach(() => {
+  pSdk = new PillarSdk({
+    privateKey: '123',
+  });
+});
 
 /**
  * Connection: Invite method
@@ -16,10 +21,8 @@ describe('The Connection Class: Invite method', () => {
       walletId: '1',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = connectionSdk.invite(connectionInviteData, privateKey);
+    const connectionInvitePromise = pSdk.connection.invite(connectionInviteData);
 
     expect(spy).toBeCalled();
   });
@@ -31,10 +34,8 @@ describe('The Connection Class: Invite method', () => {
       accessKey: 'abc123',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      connectionSdk.invite(invalidConnectionData, privateKey);
+      pSdk.connection.invite(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -50,10 +51,12 @@ describe('The Connection Class: Invite method', () => {
       walletId: '1',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      connectionSdk.invite(invalidConnectionData, privateKey);
+      pSdk.connection.invite(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -76,10 +79,8 @@ describe('The Connection Class: Accept method', () => {
       targetUserAccessKey: 'hello',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = connectionSdk.accept(connectionAcceptData, privateKey);
+    const connectionInvitePromise = pSdk.connection.accept(connectionAcceptData);
 
     expect(spy).toBeCalled();
   });
@@ -92,10 +93,8 @@ describe('The Connection Class: Accept method', () => {
       targetUserAccessKey: 'hello',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      connectionSdk.accept(invalidConnectionData, privateKey);
+      pSdk.connection.accept(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -112,10 +111,12 @@ describe('The Connection Class: Accept method', () => {
       targetUserAccessKey: 'hello',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      connectionSdk.accept(invalidConnectionData, privateKey);
+      pSdk.connection.accept(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -137,10 +138,8 @@ describe('The Connection Class: Reject method', () => {
       walletId: '1',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = connectionSdk.reject(connectionRejectData, privateKey);
+    const connectionInvitePromise = pSdk.connection.reject(connectionRejectData);
 
     expect(spy).toBeCalled();
   });
@@ -153,10 +152,8 @@ describe('The Connection Class: Reject method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      connectionSdk.reject(invalidConnectionData, privateKey);
+      pSdk.connection.reject(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -172,10 +169,12 @@ describe('The Connection Class: Reject method', () => {
       walletId: '1',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      connectionSdk.reject(connectionData, privateKey);
+      pSdk.connection.reject(connectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -197,10 +196,8 @@ describe('The Connection Class: Cancel method', () => {
       walletId: '1',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = connectionSdk.cancel(connectionCancelData, privateKey);
+    const connectionInvitePromise = pSdk.connection.cancel(connectionCancelData);
 
     expect(spy).toBeCalled();
   });
@@ -213,10 +210,8 @@ describe('The Connection Class: Cancel method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      connectionSdk.cancel(invalidConnectionData, privateKey);
+      pSdk.connection.cancel(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -232,10 +227,12 @@ describe('The Connection Class: Cancel method', () => {
       walletId: '1',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      connectionSdk.cancel(connectionData, privateKey);
+      pSdk.connection.cancel(connectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -256,10 +253,8 @@ describe('The Connection Class: Block method', () => {
       walletId: '1',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = connectionSdk.block(connectionBlockData, privateKey);
+    const connectionInvitePromise = pSdk.connection.block(connectionBlockData);
 
     expect(spy).toBeCalled();
   });
@@ -271,10 +266,8 @@ describe('The Connection Class: Block method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      connectionSdk.block(invalidConnectionData, privateKey);
+      pSdk.connection.block(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -289,10 +282,12 @@ describe('The Connection Class: Block method', () => {
       walletId: '1',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      connectionSdk.block(connectionData, privateKey);
+      pSdk.connection.block(connectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -313,10 +308,8 @@ describe('The Connection Class: Mute method', () => {
       walletId: '1',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = connectionSdk.mute(connectionMuteData, privateKey);
+    const connectionInvitePromise = pSdk.connection.mute(connectionMuteData);
 
     expect(spy).toBeCalled();
   });
@@ -328,10 +321,8 @@ describe('The Connection Class: Mute method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      connectionSdk.mute(invalidConnectionData, privateKey);
+      pSdk.connection.mute(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -346,10 +337,12 @@ describe('The Connection Class: Mute method', () => {
       walletId: '1',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      connectionSdk.mute(connectionData, privateKey);
+      pSdk.connection.mute(connectionData);
     } catch (e) {
       errorThrown = e;
     }

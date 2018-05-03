@@ -1,7 +1,13 @@
-import { Asset } from  '../../lib/asset';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-const assetSdk = new Asset();
+import { PillarSdk } from '../..';
+let pSdk;
+
+beforeEach(() => {
+  pSdk = new PillarSdk({
+    privateKey: '123',
+  });
+});
 
 describe('The Asset Class: Defaults method', () => {
   it ('should successfully call with valid data', () => {
@@ -9,10 +15,8 @@ describe('The Asset Class: Defaults method', () => {
       walletId: '1',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const assetDefaultsPromise = assetSdk.defaults(assetDefaultsData, privateKey);
+    const assetDefaultsPromise = pSdk.asset.defaults(assetDefaultsData);
 
     expect(spy).toBeCalled();
   });
@@ -23,10 +27,8 @@ describe('The Asset Class: Defaults method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      assetSdk.defaults(assetDefaultsData, privateKey);
+      pSdk.asset.defaults(assetDefaultsData);
     } catch (e) {
       errorThrown = e;
     }
@@ -40,10 +42,12 @@ describe('The Asset Class: Defaults method', () => {
       walletId: '1',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      assetSdk.defaults(assetDefaultsData, privateKey);
+      pSdk.asset.defaults(assetDefaultsData);
     } catch (e) {
       errorThrown = e;
     }
@@ -59,10 +63,8 @@ describe('The Asset Class: Search method', () => {
       query: 'searchthis',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const assetSearchPromise = assetSdk.search(assetSearchData, privateKey);
+    const assetSearchPromise = pSdk.asset.search(assetSearchData);
 
     expect(spy).toBeCalled();
   });
@@ -74,10 +76,8 @@ describe('The Asset Class: Search method', () => {
       query: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      assetSdk.search(assetSearchData, privateKey);
+      pSdk.asset.search(assetSearchData);
     } catch (e) {
       errorThrown = e;
     }
@@ -92,10 +92,12 @@ describe('The Asset Class: Search method', () => {
       query: 'searchthis',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      assetSdk.search(assetSearchData, privateKey);
+      pSdk.asset.search(assetSearchData);
     } catch (e) {
       errorThrown = e;
     }

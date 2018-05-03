@@ -3,19 +3,23 @@ import { RequestPromise } from 'request-promise';
 import { default as defaultsConfiguration } from '../utils/requester-configurations/assets-defauts';
 import { default as searchConfiguration } from '../utils/requester-configurations/assets-search';
 import { ErrorMessages } from './constants/errorMessages';
+import { Configuration }  from './configuration';
 
-export class Asset {
+export class Asset extends Configuration {
 
   constructor() {
-    //
+    super();
   }
 
-  defaults(assetDefaults: AssetDefaults, privateKey: string): RequestPromise {
+  defaults(assetDefaults: AssetDefaults): RequestPromise {
     if (!assetDefaults.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(assetDefaults.walletId, privateKey);
+    const xAPISignature = Requester.sign(
+      assetDefaults.walletId,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -27,12 +31,15 @@ export class Asset {
     return Requester.execute(defaultsConfiguration);
   }
 
-  search(assetSearch: AssetSearch,privateKey: string): RequestPromise {
+  search(assetSearch: AssetSearch): RequestPromise {
     if (!assetSearch.walletId || !assetSearch.query) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(assetSearch,privateKey);
+    const xAPISignature = Requester.sign(
+      assetSearch,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);

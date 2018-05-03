@@ -5,14 +5,15 @@ import { default as userInfoConfiguration } from '../utils/requester-configurati
 import { default as userSearchConfiguration } from '../utils/requester-configurations/user-search';
 import { default as userDeleteConfiguration } from '../utils/requester-configurations/user-delete';
 import { ErrorMessages } from './constants/errorMessages';
+import { Configuration } from './configuration';
 
-export class User {
+export class User extends Configuration {
 
   constructor() {
-    //
+    super();
   }
 
-  update(userUpdate:UserUpdate,privateKey: string): RequestPromise {
+  update(userUpdate:UserUpdate): RequestPromise {
     if (!userUpdate.city ||
         !userUpdate.country ||
         !userUpdate.email ||
@@ -28,7 +29,10 @@ export class User {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(userUpdate, privateKey);
+    const xAPISignature = Requester.sign(
+      userUpdate,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -40,12 +44,15 @@ export class User {
     return Requester.execute(userUpdateConfiguration);
   }
 
-  info(userInfo:UserInfo, privateKey: string): RequestPromise {
+  info(userInfo:UserInfo): RequestPromise {
     if (!userInfo.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(userInfo, privateKey);
+    const xAPISignature = Requester.sign(
+      userInfo,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -57,12 +64,15 @@ export class User {
     return Requester.execute(userInfoConfiguration);
   }
 
-  search(userSearch:UserSearch,privateKey: string): RequestPromise {
+  search(userSearch:UserSearch): RequestPromise {
     if (!userSearch.walletId || !userSearch.query) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(userSearch, privateKey);
+    const xAPISignature = Requester.sign(
+      userSearch,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -74,12 +84,15 @@ export class User {
     return Requester.execute(userSearchConfiguration);
   }
 
-  delete(userDelete:UserDelete,privateKey: string): RequestPromise {
+  delete(userDelete:UserDelete): RequestPromise {
     if (!userDelete.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(userDelete, privateKey);
+    const xAPISignature = Requester.sign(
+      userDelete,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);

@@ -5,19 +5,24 @@ import { default as walletRegisterConfiguration }
 import { default as walletUpdateConfiguration }
     from '../utils/requester-configurations/wallet-update';
 import { ErrorMessages } from './constants/errorMessages';
+import { Configuration } from './configuration';
 
-export class Wallet {
+export class Wallet extends Configuration {
 
   constructor() {
-    //
+    super();
   }
 
-  register(walletRegister: WalletRegister, privateKey: string): RequestPromise {
+  register(walletRegister: WalletRegister): RequestPromise {
     if (!walletRegister.publicKey || !walletRegister.fcmToken || !walletRegister.ethAddress) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(walletRegister, privateKey);
+    const xAPISignature = Requester.sign(
+      walletRegister,
+      Configuration.accessKeys.privateKey,
+    );
+
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
     }
@@ -28,16 +33,19 @@ export class Wallet {
     return Requester.execute(walletRegisterConfiguration);
   }
 
-  update(walletUpdate: WalletUpdate, privateKey: string): RequestPromise {
-    if (!walletUpdate.walletId || 
-        !walletUpdate.fcmToken || 
-        !walletUpdate.ethAddress || 
+  update(walletUpdate: WalletUpdate): RequestPromise {
+    if (!walletUpdate.walletId ||
+        !walletUpdate.fcmToken ||
+        !walletUpdate.ethAddress ||
         !walletUpdate.signalRegistrationId
     ) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(walletUpdate,privateKey);
+    const xAPISignature = Requester.sign(
+      walletUpdate,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);

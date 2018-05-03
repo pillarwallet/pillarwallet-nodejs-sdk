@@ -1,7 +1,14 @@
 import { User } from  '../../lib/user';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-const userSdk = new User();
+import { PillarSdk } from '../..';
+let pSdk;
+
+beforeEach(() => {
+  pSdk = new PillarSdk({
+    privateKey: '123',
+  });
+});
 
 describe('The User Class: Update method', () => {
   it ('should successfully call with valid data', () => {
@@ -20,10 +27,8 @@ describe('The User Class: Update method', () => {
       profileImage: 'http://homer.jpg',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = userSdk.update(userUpdateData, privateKey);
+    const userPromise = pSdk.user.update(userUpdateData);
 
     expect(spy).toBeCalled();
   });
@@ -44,10 +49,8 @@ describe('The User Class: Update method', () => {
       userSearchable: 'dunno',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      userSdk.update(userUpdateData, privateKey);
+      pSdk.user.update(userUpdateData);
     } catch (e) {
       errorThrown = e;
     }
@@ -72,10 +75,12 @@ describe('The User Class: Update method', () => {
       profileImage: 'http://homer.jpg',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      userSdk.update(userUpdateData, privateKey);
+      pSdk.user.update(userUpdateData);
     } catch (e) {
       errorThrown = e;
     }
@@ -90,10 +95,8 @@ describe('The User Class: Info method', () => {
       walletId: '123',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = userSdk.info(userInfoData, privateKey);
+    const userPromise = pSdk.user.info(userInfoData);
 
     expect(spy).toBeCalled();
   });
@@ -104,10 +107,8 @@ describe('The User Class: Info method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      userSdk.info(userInfoData, privateKey);
+      pSdk.user.info(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -121,10 +122,12 @@ describe('The User Class: Info method', () => {
       walletId: '123',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      userSdk.info(userInfoData, privateKey);
+      pSdk.user.info(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -140,10 +143,8 @@ describe('The User Class: Search method', () => {
       query: 'searchforme',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = userSdk.search(userSearchData, privateKey);
+    const userPromise = pSdk.user.search(userSearchData);
 
     expect(spy).toBeCalled();
   });
@@ -155,10 +156,8 @@ describe('The User Class: Search method', () => {
       query: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      userSdk.search(userInfoData, privateKey);
+      pSdk.user.search(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -173,10 +172,12 @@ describe('The User Class: Search method', () => {
       query: 'searchforme',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      userSdk.search(userInfoData, privateKey);
+      pSdk.user.search(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -191,10 +192,8 @@ describe('The User Class: Delete method', () => {
       walletId: 123,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = userSdk.delete(userInfoData, privateKey);
+    const userPromise = pSdk.user.delete(userInfoData);
 
     expect(spy).toBeCalled();
   });
@@ -205,10 +204,8 @@ describe('The User Class: Delete method', () => {
       walletId: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      userSdk.delete(userInfoData, privateKey);
+      pSdk.user.delete(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -222,10 +219,12 @@ describe('The User Class: Delete method', () => {
       walletId: '123',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      userSdk.delete(userInfoData, privateKey);
+      pSdk.user.delete(userInfoData);
     } catch (e) {
       errorThrown = e;
     }

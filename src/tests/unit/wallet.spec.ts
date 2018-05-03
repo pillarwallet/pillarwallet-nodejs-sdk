@@ -1,7 +1,14 @@
 import { Wallet } from  '../../lib/wallet';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-const walletSdk = new Wallet();
+import { PillarSdk } from '../..';
+let pSdk;
+
+beforeEach(() => {
+  pSdk = new PillarSdk({
+    privateKey: '123',
+  });
+});
 
 describe('The Wallet Class: Register method', () => {
   it ('should successfully call with valid data', () => {
@@ -11,10 +18,8 @@ describe('The Wallet Class: Register method', () => {
       fcmToken: '987qwe',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const walletRegistrationPromise = walletSdk.register(walletRegistrationData, privateKey);
+    const walletRegistrationPromise = pSdk.wallet.register(walletRegistrationData);
 
     expect(spy).toBeCalled();
   });
@@ -26,10 +31,8 @@ describe('The Wallet Class: Register method', () => {
       fcmToken: '987qwe',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      walletSdk.register(walletRegistrationData, privateKey);
+      pSdk.wallet.register(walletRegistrationData);
     } catch (e) {
       errorThrown = e;
     }
@@ -45,10 +48,12 @@ describe('The Wallet Class: Register method', () => {
       fcmToken: '987qwe',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      walletSdk.register(walletRegistrationData, privateKey);
+      pSdk.wallet.register(walletRegistrationData);
     } catch (e) {
       errorThrown = e;
     }
@@ -66,10 +71,8 @@ describe('The Wallet Class: Update method', () => {
       signalRegistrationId: '123abc',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const walletRegistrationPromise = walletSdk.update(walletUpdateData, privateKey);
+    const walletRegistrationPromise = pSdk.wallet.update(walletUpdateData);
 
     expect(spy).toBeCalled();
   });
@@ -81,10 +84,8 @@ describe('The Wallet Class: Update method', () => {
       fcmToken: '987qwe',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      walletSdk.update(walletUpdateData, privateKey);
+      pSdk.wallet.update(walletUpdateData);
     } catch (e) {
       errorThrown = e;
     }
@@ -100,10 +101,12 @@ describe('The Wallet Class: Update method', () => {
       fcmToken: '987qwe',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      walletSdk.update(walletRegistrationData, privateKey);
+      pSdk.wallet.update(walletRegistrationData);
     } catch (e) {
       errorThrown = e;
     }

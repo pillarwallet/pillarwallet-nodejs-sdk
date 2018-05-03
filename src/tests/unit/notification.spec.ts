@@ -1,7 +1,14 @@
 import { Notification } from  '../../lib/notification';
 import { Requester } from '../../utils/requester';
 import { RequestPromise } from 'request-promise';
-const notificationSdk = new Notification();
+import { PillarSdk } from '../..';
+let pSdk;
+
+beforeEach(() => {
+  pSdk = new PillarSdk({
+    privateKey: '123',
+  });
+});
 
 describe('The Notification Class: List method', () => {
   it ('should successfully call with valid data', () => {
@@ -10,10 +17,8 @@ describe('The Notification Class: List method', () => {
       fromTimestamp: '1525263620',
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     const spy = jest.spyOn(Requester, 'execute');
-    const notificationListPromise = notificationSdk.list(notificationData, privateKey);
+    const notificationListPromise = pSdk.notification.list(notificationData);
 
     expect(spy).toBeCalled();
   });
@@ -25,10 +30,8 @@ describe('The Notification Class: List method', () => {
       fromTimestamp: null,
     };
 
-    const privateKey = '3874hkwhjkdwa';
-
     try {
-      notificationSdk.list(notificationData, privateKey);
+      pSdk.notification.list(notificationData);
     } catch (e) {
       errorThrown = e;
     }
@@ -43,10 +46,12 @@ describe('The Notification Class: List method', () => {
       fromTimestamp: '1525263620',
     };
 
-    const privateKey = null;
+    pSdk = new PillarSdk({
+      privateKey: null,
+    });
 
     try {
-      notificationSdk.list(notificationData, privateKey);
+      pSdk.notification.list(notificationData);
     } catch (e) {
       errorThrown = e;
     }

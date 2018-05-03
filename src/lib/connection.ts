@@ -13,20 +13,24 @@ import { default as requestBlockConfiguration }
 import { default as requestMuteConfiguration }
   from '../utils/requester-configurations/connections-mute';
 import { ErrorMessages } from './constants/errorMessages';
+import { Configuration } from './configuration';
 
-export class Connection {
+export class Connection extends Configuration {
 
   constructor() {
-    //
+    super();
   }
 
-  invite(inviteConfiguration: ConnectionInvite, privateKey: string) {
+  invite(inviteConfiguration: ConnectionInvite) {
     if (!inviteConfiguration.accessKey ||
         !inviteConfiguration.targetUserId ||
         !inviteConfiguration.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
-    const xAPISignature = Requester.sign(inviteConfiguration, privateKey);
+    const xAPISignature = Requester.sign(
+      inviteConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -39,7 +43,7 @@ export class Connection {
     return Requester.execute(requestInviteConfiguration);
   }
 
-  accept(acceptConfiguration: ConnectionAccept, privateKey: string) {
+  accept(acceptConfiguration: ConnectionAccept) {
     if (!acceptConfiguration.walletId ||
         !acceptConfiguration.targetUserId ||
         !acceptConfiguration.sourceUserAccessKey ||
@@ -47,7 +51,10 @@ export class Connection {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(acceptConfiguration, privateKey);
+    const xAPISignature = Requester.sign(
+      acceptConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -60,13 +67,16 @@ export class Connection {
     return Requester.execute(requestAcceptConfiguration);
   }
 
-  reject(rejectConfiguration: ConnectionReject, privateKey: string) {
+  reject(rejectConfiguration: ConnectionReject) {
     if (!rejectConfiguration.accessKey ||
       !rejectConfiguration.targetUserId ||
       !rejectConfiguration.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
-    const xAPISignature = Requester.sign(rejectConfiguration, privateKey);
+    const xAPISignature = Requester.sign(
+      rejectConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -79,13 +89,16 @@ export class Connection {
     return Requester.execute(requestRejectConfiguration);
   }
 
-  cancel(cancelConfiguration: ConnectionCancel, privateKey: string) {
+  cancel(cancelConfiguration: ConnectionCancel) {
     if (!cancelConfiguration.accessKey ||
       !cancelConfiguration.targetUserId ||
       !cancelConfiguration.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
-    const xAPISignature = Requester.sign(cancelConfiguration, privateKey);
+    const xAPISignature = Requester.sign(
+      cancelConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -98,12 +111,15 @@ export class Connection {
     return Requester.execute(requestCancelConfiguration);
   }
 
-  block(blockConfiguration: ConnectionBlock, privateKey: string) {
+  block(blockConfiguration: ConnectionBlock) {
     if (!blockConfiguration.accessKey || !blockConfiguration.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(blockConfiguration, privateKey);
+    const xAPISignature = Requester.sign(
+      blockConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -116,12 +132,15 @@ export class Connection {
     return Requester.execute(requestBlockConfiguration);
   }
 
-  mute(muteConfiguration: ConnectionMute, privateKey: string) {
+  mute(muteConfiguration: ConnectionMute) {
     if (!muteConfiguration.accessKey || !muteConfiguration.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
     }
 
-    const xAPISignature = Requester.sign(muteConfiguration, privateKey);
+    const xAPISignature = Requester.sign(
+      muteConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);

@@ -1,17 +1,30 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
 var requester_1 = require("../utils/requester");
 var wallet_register_1 = require("../utils/requester-configurations/wallet-register");
 var wallet_update_1 = require("../utils/requester-configurations/wallet-update");
 var errorMessages_1 = require("./constants/errorMessages");
-var Wallet = (function () {
+var configuration_1 = require("./configuration");
+var Wallet = (function (_super) {
+    __extends(Wallet, _super);
     function Wallet() {
+        return _super.call(this) || this;
     }
-    Wallet.prototype.register = function (walletRegister, privateKey) {
+    Wallet.prototype.register = function (walletRegister) {
         if (!walletRegister.publicKey || !walletRegister.fcmToken || !walletRegister.ethAddress) {
             throw new TypeError(errorMessages_1.ErrorMessages.MissingOrInvalidData);
         }
-        var xAPISignature = requester_1.Requester.sign(walletRegister, privateKey);
+        var xAPISignature = requester_1.Requester.sign(walletRegister, configuration_1.Configuration.accessKeys.privateKey);
         if (!xAPISignature) {
             throw new Error(errorMessages_1.ErrorMessages.SigningError);
         }
@@ -19,14 +32,14 @@ var Wallet = (function () {
         wallet_register_1["default"].body = walletRegister;
         return requester_1.Requester.execute(wallet_register_1["default"]);
     };
-    Wallet.prototype.update = function (walletUpdate, privateKey) {
+    Wallet.prototype.update = function (walletUpdate) {
         if (!walletUpdate.walletId ||
             !walletUpdate.fcmToken ||
             !walletUpdate.ethAddress ||
             !walletUpdate.signalRegistrationId) {
             throw new TypeError(errorMessages_1.ErrorMessages.MissingOrInvalidData);
         }
-        var xAPISignature = requester_1.Requester.sign(walletUpdate, privateKey);
+        var xAPISignature = requester_1.Requester.sign(walletUpdate, configuration_1.Configuration.accessKeys.privateKey);
         if (!xAPISignature) {
             throw new Error(errorMessages_1.ErrorMessages.SigningError);
         }
@@ -35,6 +48,6 @@ var Wallet = (function () {
         return requester_1.Requester.execute(wallet_update_1["default"]);
     };
     return Wallet;
-}());
+}(configuration_1.Configuration));
 exports.Wallet = Wallet;
 //# sourceMappingURL=wallet.js.map
