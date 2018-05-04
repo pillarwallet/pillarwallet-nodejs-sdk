@@ -1,7 +1,6 @@
 import { Requester } from '../../utils/requester';
-import { RequestPromise } from 'request-promise';
 import { PillarSdk } from '../..';
-let pSdk;
+let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
@@ -16,7 +15,7 @@ describe('The Asset Class: Defaults method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const assetDefaultsPromise = pSdk.asset.defaults(assetDefaultsData);
+    pSdk.asset.defaults(assetDefaultsData);
 
     expect(spy).toBeCalled();
   });
@@ -64,7 +63,7 @@ describe('The Asset Class: Search method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const assetSearchPromise = pSdk.asset.search(assetSearchData);
+    pSdk.asset.search(assetSearchData);
 
     expect(spy).toBeCalled();
   });

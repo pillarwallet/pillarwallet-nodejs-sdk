@@ -6,6 +6,7 @@ import { RequestPromise } from 'request-promise';
 import { default as notificationListConfiguration }
     from '../utils/requester-configurations/notification-list';
 import { ErrorMessages } from './constants/errorMessages';
+const notificationListSchema = require('../schemas/notification/list.json');
 
 let ajv: any;
 
@@ -22,6 +23,11 @@ export class Notification extends Configuration {
   list(notificationList: NotificationList): RequestPromise {
     if (!notificationList.fromTimestamp || !notificationList.walletId) {
       throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    }
+
+    const valid = ajv.validate(notificationListSchema, notificationList);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
     const xAPISignature = Requester.sign(

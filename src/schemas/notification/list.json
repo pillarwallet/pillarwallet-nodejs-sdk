@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Notification Class - Search",
+  "description": "Schema definition for Notification Class - List method",
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "number"
+    },
+    "fromTimestamp": {
+      "description": "Time and date of notification",
+      "type": "string"
+    }
+  },
+  "required": [ "walletId", "fromTimestamp" ]
+}

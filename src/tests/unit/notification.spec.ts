@@ -1,8 +1,6 @@
-import { Notification } from  '../../lib/notification';
 import { Requester } from '../../utils/requester';
-import { RequestPromise } from 'request-promise';
 import { PillarSdk } from '../..';
-let pSdk;
+let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
@@ -13,12 +11,12 @@ beforeEach(() => {
 describe('The Notification Class: List method', () => {
   it ('should successfully call with valid data', () => {
     const notificationData = {
-      walletId: '1',
+      walletId: 1,
       fromTimestamp: '1525263620',
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const notificationListPromise = pSdk.notification.list(notificationData);
+    pSdk.notification.list(notificationData);
 
     expect(spy).toBeCalled();
   });
@@ -26,7 +24,7 @@ describe('The Notification Class: List method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const notificationData = {
-      walletId: '1',
+      walletId: 1,
       fromTimestamp: null,
     };
 
@@ -42,7 +40,7 @@ describe('The Notification Class: List method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const notificationData = {
-      walletId: '1',
+      walletId: 1,
       fromTimestamp: '1525263620',
     };
 

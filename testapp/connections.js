@@ -1,5 +1,5 @@
 const { PillarSdk } = require('../dist');
-const generateKeyPair = require('../tests/glue/generateKeyPair');
+const generateKeyPair = require('./glue/generateKeyPair');
 
 const PSDK = new PillarSdk();
 const hdkey = generateKeyPair();

@@ -15,12 +15,24 @@ var wallet_register_1 = require("../utils/requester-configurations/wallet-regist
 var wallet_update_1 = require("../utils/requester-configurations/wallet-update");
 var errorMessages_1 = require("./constants/errorMessages");
 var configuration_1 = require("./configuration");
+var Ajv = require("ajv");
+var walletRegisterSchema = require('../schemas/wallet/register.json');
+var walletUpdateSchema = require('../schemas/wallet/update.json');
+var ajv;
 var Wallet = (function (_super) {
     __extends(Wallet, _super);
     function Wallet() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        ajv = new Ajv({
+            allErrors: true
+        });
+        return _this;
     }
     Wallet.prototype.register = function (walletRegister) {
+        var valid = ajv.validate(walletRegisterSchema, walletRegister);
+        if (!valid && ajv.errors) {
+            throw new TypeError(ajv.errorsText(ajv.errors));
+        }
         if (!walletRegister.publicKey || !walletRegister.fcmToken || !walletRegister.ethAddress) {
             throw new TypeError(errorMessages_1.ErrorMessages.MissingOrInvalidData);
         }
@@ -33,6 +45,10 @@ var Wallet = (function (_super) {
         return requester_1.Requester.execute(wallet_register_1["default"]);
     };
     Wallet.prototype.update = function (walletUpdate) {
+        var valid = ajv.validate(walletUpdateSchema, walletUpdate);
+        if (!valid && ajv.errors) {
+            throw new TypeError(ajv.errorsText(ajv.errors));
+        }
         if (!walletUpdate.walletId ||
             !walletUpdate.fcmToken ||
             !walletUpdate.ethAddress ||

@@ -1,7 +1,6 @@
 import { Requester } from '../../utils/requester';
-import { RequestPromise } from 'request-promise';
 import { PillarSdk } from '../..';
-let pSdk;
+let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
@@ -22,7 +21,7 @@ describe('The Connection Class: Invite method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = pSdk.connection.invite(connectionInviteData);
+    pSdk.connection.invite(connectionInviteData);
 
     expect(spy).toBeCalled();
   });
@@ -80,7 +79,7 @@ describe('The Connection Class: Accept method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = pSdk.connection.accept(connectionAcceptData);
+    pSdk.connection.accept(connectionAcceptData);
 
     expect(spy).toBeCalled();
   });
@@ -139,7 +138,7 @@ describe('The Connection Class: Reject method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = pSdk.connection.reject(connectionRejectData);
+    pSdk.connection.reject(connectionRejectData);
 
     expect(spy).toBeCalled();
   });
@@ -254,7 +253,7 @@ describe('The Connection Class: Block method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = pSdk.connection.block(connectionBlockData);
+    pSdk.connection.block(connectionBlockData);
 
     expect(spy).toBeCalled();
   });
@@ -309,7 +308,7 @@ describe('The Connection Class: Mute method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = pSdk.connection.mute(connectionMuteData);
+    pSdk.connection.mute(connectionMuteData);
 
     expect(spy).toBeCalled();
   });

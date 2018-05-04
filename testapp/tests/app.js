@@ -1,5 +1,5 @@
-const generateKeyPair = require('../../tests/glue/generateKeyPair');
-// import {PillarSdk} from '../dist';
+const generateKeyPair = require('../glue/generateKeyPair');
+
 const { PillarSdk } = require('../../dist');
 
 let p = new PillarSdk();

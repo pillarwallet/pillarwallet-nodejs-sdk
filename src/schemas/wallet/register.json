@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wallet Class - register",
+  "description": "Schema definition for Wallet Class - Register method",
+  "type": "object",
+  "properties": {
+    "publicKey": {
+      "description": "The publicKey of one wallet",
+      "type": "string"
+    },
+    "ethAddress": {
+      "description": "The Ethereum address of one wallet",
+      "type": "string"
+    },
+    "fcmToken": {
+      "description": "The Firebase Cloud Messaging Token  of one wallet",
+      "type": "string"
+    }
+  },
+  "required": [
+    "publicKey",
+    "ethAddress",
+    "fcmToken"
+  ]
+}

@@ -1,8 +1,6 @@
-import { User } from  '../../lib/user';
 import { Requester } from '../../utils/requester';
-import { RequestPromise } from 'request-promise';
 import { PillarSdk } from '../..';
-let pSdk;
+let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
@@ -13,7 +11,7 @@ beforeEach(() => {
 describe('The User Class: Update method', () => {
   it ('should successfully call with valid data', () => {
     const userUpdateData = {
-      walletId: '123',
+      walletId: 123,
       firstName: 'Homer',
       lastName: 'Simpson',
       email: 'chunkylover69@aol.com',
@@ -28,7 +26,7 @@ describe('The User Class: Update method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = pSdk.user.update(userUpdateData);
+    pSdk.user.update(userUpdateData);
 
     expect(spy).toBeCalled();
   });
@@ -96,7 +94,7 @@ describe('The User Class: Info method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = pSdk.user.info(userInfoData);
+    pSdk.user.info(userInfoData);
 
     expect(spy).toBeCalled();
   });
@@ -144,7 +142,7 @@ describe('The User Class: Search method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = pSdk.user.search(userSearchData);
+    pSdk.user.search(userSearchData);
 
     expect(spy).toBeCalled();
   });
@@ -193,7 +191,7 @@ describe('The User Class: Delete method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const userPromise = pSdk.user.delete(userInfoData);
+    pSdk.user.delete(userInfoData);
 
     expect(spy).toBeCalled();
   });
