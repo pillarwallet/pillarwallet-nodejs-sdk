@@ -46,6 +46,7 @@
     "@types/request": "^2.47.0",
     "@types/request-promise": "^4.1.41",
     "ajv": "^6.4.0",
+    "ajv-keywords": "^3.2.0",
     "bluebird": "^3.5.1",
     "ethereumjs-util": "^5.1.5",
     "hdkey": "^0.8.0",

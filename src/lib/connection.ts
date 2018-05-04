@@ -14,19 +14,33 @@ import { default as requestMuteConfiguration }
   from '../utils/requester-configurations/connections-mute';
 import { ErrorMessages } from './constants/errorMessages';
 import { Configuration } from './configuration';
+import * as Ajv from 'ajv';
+
+const connectionInviteSchema = require('../schemas/connection/invite.json');
+const connectionAcceptSchema = require('../schemas/connection/accept.json');
+const connectionRejectSchema = require('../schemas/connection/reject.json');
+const connectionCancelSchema = require('../schemas/connection/cancel.json');
+const connectionBlockSchema = require('../schemas/connection/block.json');
+const connectionMuteSchema = require('../schemas/connection/mute.json');
+
+let ajv: any;
 
 export class Connection extends Configuration {
 
   constructor() {
     super();
+
+    ajv = new Ajv({
+      allErrors: true,
+    });
   }
 
   invite(inviteConfiguration: ConnectionInvite) {
-    if (!inviteConfiguration.accessKey ||
-        !inviteConfiguration.targetUserId ||
-        !inviteConfiguration.walletId) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(connectionInviteSchema, inviteConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
+
     const xAPISignature = Requester.sign(
       inviteConfiguration,
       Configuration.accessKeys.privateKey,
@@ -44,11 +58,9 @@ export class Connection extends Configuration {
   }
 
   accept(acceptConfiguration: ConnectionAccept) {
-    if (!acceptConfiguration.walletId ||
-        !acceptConfiguration.targetUserId ||
-        !acceptConfiguration.sourceUserAccessKey ||
-        !acceptConfiguration.targetUserAccessKey) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(connectionAcceptSchema, acceptConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
     const xAPISignature = Requester.sign(
@@ -68,11 +80,11 @@ export class Connection extends Configuration {
   }
 
   reject(rejectConfiguration: ConnectionReject) {
-    if (!rejectConfiguration.accessKey ||
-      !rejectConfiguration.targetUserId ||
-      !rejectConfiguration.walletId) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(connectionRejectSchema, rejectConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
+
     const xAPISignature = Requester.sign(
       rejectConfiguration,
       Configuration.accessKeys.privateKey,
@@ -90,11 +102,11 @@ export class Connection extends Configuration {
   }
 
   cancel(cancelConfiguration: ConnectionCancel) {
-    if (!cancelConfiguration.accessKey ||
-      !cancelConfiguration.targetUserId ||
-      !cancelConfiguration.walletId) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(connectionCancelSchema, cancelConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
+
     const xAPISignature = Requester.sign(
       cancelConfiguration,
       Configuration.accessKeys.privateKey,
@@ -112,8 +124,9 @@ export class Connection extends Configuration {
   }
 
   block(blockConfiguration: ConnectionBlock) {
-    if (!blockConfiguration.accessKey || !blockConfiguration.walletId) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(connectionBlockSchema, blockConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
     const xAPISignature = Requester.sign(
@@ -133,8 +146,9 @@ export class Connection extends Configuration {
   }
 
   mute(muteConfiguration: ConnectionMute) {
-    if (!muteConfiguration.accessKey || !muteConfiguration.walletId) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(connectionMuteSchema, muteConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
     const xAPISignature = Requester.sign(

@@ -12,7 +12,7 @@ beforeEach(() => {
 describe('The Asset Class: Defaults method', () => {
   it ('should successfully call with valid data', () => {
     const assetDefaultsData = {
-      walletId: '1',
+      walletId: 1,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -39,7 +39,7 @@ describe('The Asset Class: Defaults method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const assetDefaultsData = {
-      walletId: '1',
+      walletId: 1,
     };
 
     pSdk = new PillarSdk({
@@ -59,7 +59,7 @@ describe('The Asset Class: Defaults method', () => {
 describe('The Asset Class: Search method', () => {
   it ('should successfully call with valid data', () => {
     const assetSearchData = {
-      walletId: '1',
+      walletId: 1,
       query: 'searchthis',
     };
 
@@ -72,7 +72,7 @@ describe('The Asset Class: Search method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const assetSearchData = {
-      walletId: '1',
+      walletId: 1,
       query: null,
     };
 
@@ -88,7 +88,7 @@ describe('The Asset Class: Search method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const assetSearchData = {
-      walletId: '1',
+      walletId: 1,
       query: 'searchthis',
     };
 

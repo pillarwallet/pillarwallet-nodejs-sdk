@@ -16,6 +16,9 @@ var connection_1 = require("./lib/connection");
 var user_1 = require("./lib/user");
 var notification_1 = require("./lib/notification");
 var configuration_1 = require("./lib/configuration");
+var Ajv = require("ajv");
+var pillarSdkConstructorSchema = require('../src/schemas/pillarsdk-constructor.json');
+var ajv;
 var PillarSdk = (function (_super) {
     __extends(PillarSdk, _super);
     function PillarSdk(incomingConfiguration) {
@@ -26,6 +29,14 @@ var PillarSdk = (function (_super) {
         _this.user = new user_1.User();
         _this.notification = new notification_1.Notification();
         _this.configuration = new configuration_1.Configuration();
+        ajv = new Ajv({
+            allErrors: true
+        });
+        require('ajv-keywords')(ajv, 'instanceof');
+        var valid = ajv.validate(pillarSdkConstructorSchema, incomingConfiguration);
+        if (!valid && ajv.errors) {
+            throw new TypeError(ajv.errorsText(ajv.errors));
+        }
         _this.configuration.initialise(incomingConfiguration);
         return _this;
     }

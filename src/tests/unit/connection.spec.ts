@@ -16,9 +16,9 @@ beforeEach(() => {
 describe('The Connection Class: Invite method', () => {
   it ('should successfully call with valid data', () => {
     const connectionInviteData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: 'abc123',
-      walletId: '1',
+      walletId: 1,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -30,7 +30,7 @@ describe('The Connection Class: Invite method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const invalidConnectionData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: 'abc123',
     };
 
@@ -46,9 +46,9 @@ describe('The Connection Class: Invite method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const invalidConnectionData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: 'abc123',
-      walletId: '1',
+      walletId: 1,
     };
 
     pSdk = new PillarSdk({
@@ -73,8 +73,8 @@ describe('The Connection Class: Invite method', () => {
 describe('The Connection Class: Accept method', () => {
   it ('should successfully call with valid data', () => {
     const connectionAcceptData = {
-      targetUserId: '2',
-      walletId: '1',
+      targetUserId: 2,
+      walletId: 1,
       sourceUserAccessKey: 'hello',
       targetUserAccessKey: 'hello',
     };
@@ -88,7 +88,7 @@ describe('The Connection Class: Accept method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const invalidConnectionData = {
-      walletId: '1',
+      walletId: 1,
       sourceUserAccessKey: 'hello',
       targetUserAccessKey: 'hello',
     };
@@ -105,8 +105,8 @@ describe('The Connection Class: Accept method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const invalidConnectionData = {
-      targetUserId: '2',
-      walletId: '1',
+      targetUserId: 2,
+      walletId: 1,
       sourceUserAccessKey: 'hello',
       targetUserAccessKey: 'hello',
     };
@@ -133,9 +133,9 @@ describe('The Connection Class: Accept method', () => {
 describe('The Connection Class: Reject method', () => {
   it ('should successfully call with valid data', () => {
     const connectionRejectData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -147,7 +147,7 @@ describe('The Connection Class: Reject method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const invalidConnectionData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: '123abc',
       walletId: null,
     };
@@ -164,9 +164,9 @@ describe('The Connection Class: Reject method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const connectionData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     pSdk = new PillarSdk({
@@ -191,9 +191,9 @@ describe('The Connection Class: Reject method', () => {
 describe('The Connection Class: Cancel method', () => {
   it ('should successfully call with valid data', () => {
     const connectionCancelData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -205,7 +205,7 @@ describe('The Connection Class: Cancel method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const invalidConnectionData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: '123abc',
       walletId: null,
     };
@@ -222,9 +222,9 @@ describe('The Connection Class: Cancel method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const connectionData = {
-      targetUserId: '2',
+      targetUserId: 2,
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     pSdk = new PillarSdk({
@@ -250,7 +250,7 @@ describe('The Connection Class: Block method', () => {
   it ('should successfully call with valid data', () => {
     const connectionBlockData = {
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -279,7 +279,7 @@ describe('The Connection Class: Block method', () => {
     let errorThrown;
     const connectionData = {
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     pSdk = new PillarSdk({
@@ -305,7 +305,7 @@ describe('The Connection Class: Mute method', () => {
   it ('should successfully call with valid data', () => {
     const connectionMuteData = {
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -334,7 +334,7 @@ describe('The Connection Class: Mute method', () => {
     let errorThrown;
     const connectionData = {
       accessKey: '123abc',
-      walletId: '1',
+      walletId: 1,
     };
 
     pSdk = new PillarSdk({

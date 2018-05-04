@@ -4,16 +4,27 @@ import { default as defaultsConfiguration } from '../utils/requester-configurati
 import { default as searchConfiguration } from '../utils/requester-configurations/assets-search';
 import { ErrorMessages } from './constants/errorMessages';
 import { Configuration }  from './configuration';
+import * as Ajv from 'ajv';
+
+const assetDefaultsSchema = require('../schemas/assets/defaults.json');
+const assetSearchSchema = require('../schemas/assets/search.json');
+
+let ajv: any;
 
 export class Asset extends Configuration {
 
   constructor() {
     super();
+
+    ajv = new Ajv({
+      allErrors: true,
+    });
   }
 
   defaults(assetDefaults: AssetDefaults): RequestPromise {
-    if (!assetDefaults.walletId) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(assetDefaultsSchema, assetDefaults);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
     const xAPISignature = Requester.sign(
@@ -32,8 +43,9 @@ export class Asset extends Configuration {
   }
 
   search(assetSearch: AssetSearch): RequestPromise {
-    if (!assetSearch.walletId || !assetSearch.query) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
+    const valid = ajv.validate(assetSearchSchema, assetSearch);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
     const xAPISignature = Requester.sign(

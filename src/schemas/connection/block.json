@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Connection Class - Block",
+  "description": "Schema definition for Notification Class - Block method",
+  "type": "object",
+  "properties": {
+    "accessKey": {
+      "description": "The shared access key",
+      "type": "string"
+    },
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "number"
+    }
+  },
+  "required": [ "accessKey", "walletId" ]
+}

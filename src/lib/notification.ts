@@ -1,14 +1,22 @@
+import { Configuration } from './configuration';
+import * as Ajv from 'ajv';
+
 import { Requester } from '../utils/requester';
 import { RequestPromise } from 'request-promise';
 import { default as notificationListConfiguration }
     from '../utils/requester-configurations/notification-list';
 import { ErrorMessages } from './constants/errorMessages';
-import { Configuration } from './configuration';
+
+let ajv: any;
 
 export class Notification extends Configuration {
 
   constructor() {
     super();
+
+    ajv = new Ajv({
+      allErrors: true,
+    });
   }
 
   list(notificationList: NotificationList): RequestPromise {

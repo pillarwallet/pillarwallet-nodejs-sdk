@@ -4,6 +4,11 @@ import { Connection } from './lib/connection';
 import { User } from './lib/user';
 import { Notification } from './lib/notification';
 import { Configuration } from './lib/configuration';
+import * as Ajv from 'ajv';
+
+const pillarSdkConstructorSchema = require('../src/schemas/pillarsdk-constructor.json');
+
+let ajv;
 
 export class PillarSdk extends Configuration {
   wallet: Wallet = new Wallet();
@@ -15,6 +20,17 @@ export class PillarSdk extends Configuration {
 
   constructor(incomingConfiguration: PillarSdkConfiguration) {
     super();
+
+    ajv = new Ajv({
+      allErrors: true,
+    });
+
+    require('ajv-keywords')(ajv, 'instanceof');
+
+    const valid = ajv.validate(pillarSdkConstructorSchema, incomingConfiguration);
+    if (!valid && ajv.errors) {
+      throw new TypeError(ajv.errorsText(ajv.errors));
+    }
 
     this.configuration.initialise(incomingConfiguration);
   }
