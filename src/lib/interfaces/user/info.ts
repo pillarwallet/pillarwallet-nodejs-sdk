@@ -1,3 +1,3 @@
 interface UserInfo {
-    walletId: number,
+  walletId: number;
 }

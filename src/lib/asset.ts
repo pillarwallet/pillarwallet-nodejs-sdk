@@ -1,36 +1,49 @@
-import {Requester} from '../utils/requester';
-import {RequestPromise} from 'request-promise';
-import {default as defaultsConfiguration} from '../utils/requester-configurations/assets-defauts';
-import {default as searchConfiguration} from '../utils/requester-configurations/assets-search';
+///<reference path="configuration.ts"/>
+import { RequestPromise } from 'request-promise';
 
-export class Asset {
+import { Requester } from '../utils/requester';
+import { default as defaultsConfiguration } from '../utils/requester-configurations/assets-defauts';
+import { default as searchConfiguration } from '../utils/requester-configurations/assets-search';
+import { Configuration }  from './configuration';
 
-    defaults(assetDefaults: AssetDefaults,privateKey: string): RequestPromise {
+const assetDefaultsSchema = require('../schemas/assets/defaults.json');
+const assetSearchSchema = require('../schemas/assets/search.json');
 
-        const xAPISignature = Requester.sign(assetDefaults.walletId, privateKey);
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
-        }
-        //config
-        defaultsConfiguration.headers['X-API-Signature'] = xAPISignature;
-        defaultsConfiguration.qs = assetDefaults;
-        return Requester.execute(defaultsConfiguration);
-    }
+export class Asset extends Configuration {
 
-    search(assetSearch: AssetSearch,privateKey: string): RequestPromise {
+  constructor() {
+    super();
+  }
 
-        const xAPISignature = Requester.sign(assetSearch,privateKey);
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
-        }
-        searchConfiguration.headers['X-API-Signature'] = xAPISignature;
-        searchConfiguration.qs = assetSearch;
-        return Requester.execute(searchConfiguration);
-    }
+  /**
+   * Returns a list of assets that are marked as default assets.
+   * @param {AssetDefaults} assetDefaults
+   * @returns {requestPromise.RequestPromise}
+   */
+  defaults(assetDefaults: AssetDefaults): RequestPromise {
+    //validation
+    this.validation(assetDefaultsSchema,assetDefaults);
+    //setting the request
+    defaultsConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(assetDefaults.walletId, Configuration.accessKeys.privateKey);
+    defaultsConfiguration.qs = assetDefaults;
 
-    dumpConfig() {
-        console.log(this);
-    }
+    return Requester.execute(defaultsConfiguration);
+  }
+
+  /**
+   * Returns a list of assets that contain the search criteria which would be the name,
+   * token symbol or smartcontract hexadecimal.
+   * @param {AssetSearch} assetSearch
+   * @returns {requestPromise.RequestPromise}
+   */
+  search(assetSearch: AssetSearch): RequestPromise {
+    this.validation(assetSearchSchema, assetSearch);
+
+    searchConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(assetSearch, Configuration.accessKeys.privateKey);
+    searchConfiguration.qs = assetSearch;
+
+    return Requester.execute(searchConfiguration);
+  }
 }

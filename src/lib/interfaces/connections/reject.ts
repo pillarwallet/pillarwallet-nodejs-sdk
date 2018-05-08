@@ -1,5 +1,5 @@
 interface ConnectionReject {
-  targetUserId: number,
-  accessKey: string,
-  walletId: number,
+  targetUserId: number;
+  accessKey: string;
+  walletId: number;
 }

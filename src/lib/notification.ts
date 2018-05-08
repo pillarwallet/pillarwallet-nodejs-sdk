@@ -1,23 +1,31 @@
-import {Requester} from '../utils/requester';
-import {RequestPromise} from 'request-promise';
-import {default as notificationListConfiguration} from '../utils/requester-configurations/notification-list';
+import { Configuration } from './configuration';
 
-export class Notification {
+import { Requester } from '../utils/requester';
+import { RequestPromise } from 'request-promise';
+import { default as notificationListConfiguration }
+    from '../utils/requester-configurations/notification-list';
 
-    list(notificationList: NotificationList,privateKey: string): RequestPromise {
+const notificationListSchema = require('../schemas/notification/list.json');
 
-        const xAPISignature = Requester.sign(notificationList, privateKey);
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
-        }
-        //config
-        notificationListConfiguration.headers['X-API-Signature'] = xAPISignature;
-        notificationListConfiguration.qs = notificationList;
-        return Requester.execute(notificationListConfiguration);
-    }
+export class Notification extends Configuration {
 
-    dumpConfig() {
-        console.log(this);
-    }
+  constructor() {
+    super();
+  }
+
+  /**
+   * Provides a list of notifications for a specific wallet user.
+   * @param {NotificationList} notificationList
+   * @returns {requestPromise.RequestPromise}
+   */
+  list(notificationList: NotificationList): RequestPromise {
+
+    this.validation(notificationListSchema,notificationList);
+
+    notificationListConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(notificationList,Configuration.accessKeys.privateKey);
+    notificationListConfiguration.qs = notificationList;
+
+    return Requester.execute(notificationListConfiguration);
+  }
 }

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Connection Class - Accept",
+  "description": "Schema definition for Notification Class - Accept method",
+  "type": "object",
+  "properties": {
+    "targetUserId": {
+      "description": "The target user ID",
+      "type": "number"
+    },
+    "accessKey": {
+      "description": "The shared access key",
+      "type": "string"
+    },
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "number"
+    }
+  },
+  "required": [ "targetUserId", "accessKey", "walletId" ]
+}

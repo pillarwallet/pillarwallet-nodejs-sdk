@@ -1,40 +1,49 @@
-import {Requester} from '../utils/requester';
-import {RequestPromise} from 'request-promise';
-import {default as walletRegisterConfiguration } from '../utils/requester-configurations/wallet-register';
-import {default as walletUpdateConfiguration } from '../utils/requester-configurations/wallet-update';
+import { RequestPromise } from 'request-promise';
 
-export class Wallet {
+import { default as walletRegisterConfiguration }
+    from '../utils/requester-configurations/wallet-register';
+import { default as walletUpdateConfiguration }
+    from '../utils/requester-configurations/wallet-update';
+import { Configuration } from './configuration';
+import { Requester } from '../utils/requester';
+const walletRegisterSchema = require('../schemas/wallet/register.json');
+const walletUpdateSchema = require('../schemas/wallet/update.json');
 
-    register(walletRegister: WalletRegister, privateKey: string): RequestPromise {
-        // verify required parameter 'body' is not null or undefined
-        const xAPISignature = Requester.sign(walletRegister,privateKey);
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
-        }
-        walletRegisterConfiguration.headers['X-API-Signature'] = xAPISignature;
-        walletRegisterConfiguration.body = walletRegister;
-        return Requester.execute(walletRegisterConfiguration);
-    }
+export class Wallet extends Configuration {
 
-    update(walletUpdate: WalletUpdate, privateKey: string): RequestPromise {
-        // verify required parameter 'body' is not null or undefined
-        const xAPISignature = Requester.sign(walletUpdate,privateKey);
-        // verify required parameter 'xAPISignature' is not null or undefined
-        if (xAPISignature === null || xAPISignature === undefined) {
-            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
-        }
-        walletUpdateConfiguration.headers['X-API-Signature'] = xAPISignature;
-        walletUpdateConfiguration.body = walletUpdate;
-        return Requester.execute(walletUpdateConfiguration);
-    }
+  constructor() {
+    super();
+  }
 
+  /**
+   * Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
+   * @param {WalletRegister} walletRegister
+   * @returns {requestPromise.RequestPromise}
+   */
+  register(walletRegister: WalletRegister): RequestPromise {
 
-    dumpConfig() {
-        console.log(this);
-    }
+    this.validation(walletRegisterSchema,walletRegister);
 
-    testFunction() {
-        return 'hello';
-    }
+    walletRegisterConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
+    walletRegisterConfiguration.body = walletRegister;
+
+    return Requester.execute(walletRegisterConfiguration);
+  }
+
+  /**
+   * Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
+   * @param {WalletUpdate} walletUpdate
+   * @returns {requestPromise.RequestPromise}
+   */
+  update(walletUpdate: WalletUpdate): RequestPromise {
+
+    this.validation(walletUpdateSchema,walletUpdate);
+
+    walletUpdateConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletUpdate,Configuration.accessKeys.privateKey);
+    walletUpdateConfiguration.body = walletUpdate;
+
+    return Requester.execute(walletUpdateConfiguration);
+  }
 }

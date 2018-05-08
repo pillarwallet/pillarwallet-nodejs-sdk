@@ -2,11 +2,27 @@ import * as request from 'request-promise';
 const auth = require('@pillarwallet/plr-auth-sdk');
 
 export class Requester {
-    static sign(SignParams: Object,privateKey: string) {
-        return auth.sign(SignParams,privateKey);
+  /**
+   * Call the Signature SDK
+   * @param {Object} signParams
+   * @param {string} privateKey
+   * @returns {any}
+   */
+  static sign(signParams: Object,privateKey: string) {
+    try {
+      const signature = auth.sign(signParams,privateKey) as string;
+      return signature;
+    } catch (e) {
+      return null;
     }
-        
-    static execute(incomingRequestOptions: any) {
-        return request(incomingRequestOptions);
-    }
+  }
+
+  /**
+   * Execute a http request
+   * @param incomingRequestOptions
+   * @returns {requestPromise.RequestPromise}
+   */
+  static execute(incomingRequestOptions: any) {
+    return request(incomingRequestOptions);
+  }
 }

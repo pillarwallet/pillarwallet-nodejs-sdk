@@ -1,8 +1,10 @@
 const { PillarSdk } = require('../dist');
-const generateKeyPair = require('../tests/glue/generateKeyPair');
-
-const PSDK = new PillarSdk();
+const generateKeyPair = require('./glue/generateKeyPair');
 const hdkey = generateKeyPair();
+
+const PSDK = new PillarSdk({
+  privateKey: hdkey.privateKey
+});
 
 PSDK.connection.invite({
   targetUserId: 1,

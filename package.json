@@ -1,13 +1,22 @@
 {
   "name": "@pillarwallet/pillarwallet-nodejs-sdk",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "compile": "tsc"
+    "compile": "tsc",
+    "build": "webpack",
+    "build-production": "webpack --mode=production"
   },
   "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{ts}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -32,17 +41,21 @@
   },
   "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
   "dependencies": {
-    "@pillarwallet/plr-auth-sdk": "^0.1.0",
+    "@pillarwallet/plr-auth-sdk": "^0.1.0-55",
+    "@types/ajv": "^1.0.0",
     "@types/bluebird": "^3.5.20",
     "@types/node": "^9.6.6",
     "@types/request": "^2.47.0",
     "@types/request-promise": "^4.1.41",
+    "ajv": "^6.4.0",
+    "ajv-keywords": "^3.2.0",
     "bluebird": "^3.5.1",
     "ethereumjs-util": "^5.1.5",
     "hdkey": "^0.8.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
-    "secp256k1": "^3.5.0"
+    "secp256k1": "^3.5.0",
+    "tslint-config-airbnb": "^5.8.0"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
@@ -50,8 +63,11 @@
     "node": "^9.11.0",
     "supertest": "^3.0.0",
     "ts-jest": "^22.4.4",
+    "ts-loader": "^4.3.0",
     "ts-node": "^6.0.0",
     "tslint": "^5.9.1",
-    "typescript": "^2.8.3"
+    "typescript": "^2.8.3",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3"
   }
 }
