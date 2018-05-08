@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/pillar
+    working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:8.9.4
     steps:
@@ -31,6 +31,7 @@ jobs:
           name: Compile TypeScript to JS
           command: tsc
   test:
+    working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:4.8.2
     steps:
@@ -39,6 +40,7 @@ jobs:
           name: Test
           command: echo please write some unit-tests
   publish:
+    working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:4.8.2
     steps:
