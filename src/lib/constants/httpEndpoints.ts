@@ -1,5 +1,18 @@
 export enum HttpEndpoints {
   BASE = 'http://localhost:8080',
   WALLET_REGISTER = '/wallet/register',
+  WALLET_UPDATE = '/wallet/update',
   ASSET_DEFAULT = '/asset/defaults',
+  ASSET_SEARCH = '/asset/search',
+  CONNECTION_INVITE = '/connection/invite',
+  CONNECTION_ACCEPT = '/connection/accept',
+  CONNECTION_REJECT = '/connection/reject',
+  CONNECTION_CANCEL = '/connection/cancel',
+  CONNECTION_BLOCK = '/connection/block',
+  CONNECTION_MUTE = '/connection/mute',
+  USER_UPDATE = '/user/update',
+  USER_INFO = '/user/info',
+  USER_SEARCH = '/user/search',
+  USER_DELETE = '/user/delete',
+  NOTIFICATION_LIST = '/notification/list',
 }

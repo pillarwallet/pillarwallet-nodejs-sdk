@@ -1,24 +1,34 @@
 "use strict";
 exports.__esModule = true;
 var requester_1 = require("../utils/requester");
-var auth = require('@pillarwallet/plr-auth-sdk');
+var wallet_register_1 = require("../utils/requester-configurations/wallet-register");
+var wallet_update_1 = require("../utils/requester-configurations/wallet-update");
 var Wallet = (function () {
-    function Wallet(incomingWalletId) {
-        this.walletId = incomingWalletId;
+    function Wallet() {
     }
-    Wallet.prototype.register = function (walletCreationParams, privateKey) {
-        console.log(walletCreationParams);
-        if (walletCreationParams === null || walletCreationParams === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling createWallet.');
-        }
-        var xAPISignature = auth.sign(walletCreationParams, privateKey, 'secp256k1');
+    Wallet.prototype.register = function (walletRegister, privateKey) {
+        var xAPISignature = requester_1.Requester.sign(walletRegister, privateKey);
         if (xAPISignature === null || xAPISignature === undefined) {
             throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
         }
-        return requester_1.Requester.invoke(xAPISignature, walletCreationParams);
+        wallet_register_1["default"].headers['X-API-Signature'] = xAPISignature;
+        wallet_register_1["default"].body = walletRegister;
+        return requester_1.Requester.execute(wallet_register_1["default"]);
+    };
+    Wallet.prototype.update = function (walletUpdate, privateKey) {
+        var xAPISignature = requester_1.Requester.sign(walletUpdate, privateKey);
+        if (xAPISignature === null || xAPISignature === undefined) {
+            throw new Error('Required parameter xAPISignature was null or undefined when calling createWallet.');
+        }
+        wallet_update_1["default"].headers['X-API-Signature'] = xAPISignature;
+        wallet_update_1["default"].body = walletUpdate;
+        return requester_1.Requester.execute(wallet_update_1["default"]);
     };
     Wallet.prototype.dumpConfig = function () {
         console.log(this);
+    };
+    Wallet.prototype.testFunction = function () {
+        return 'hello';
     };
     return Wallet;
 }());
