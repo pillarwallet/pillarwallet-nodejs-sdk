@@ -88,8 +88,8 @@ const inputParams = {
   }
 ```
 
- Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId, create the UserProfile
- Table and register in BCX.For every request, one wallet privatekey<myPrivateKeyVariable> should be passed as argument.
+  Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
+ For every request, one wallet privatekey<myPrivateKeyVariable> should be passed as argument.
 
 ```
 pSdk.wallet.update(inputParams, <myPrivateKeyVariable>)
@@ -156,7 +156,7 @@ const inputParams =
 
 ```
 
-Creates a connection invitation for a user to create a relationship with another contact
+Accept a connection invitation from another user
 
 ```
 pSdk.connection.accept(inputParams, <myPrivateKeyVariable>)
@@ -221,7 +221,7 @@ const inputParams = {
  };
 ```
 
-Mutes a connection request from another user
+Mutes another user
 
 ```
 pSdk.connection.mute(inputParams, <myPrivateKeyVariable>)

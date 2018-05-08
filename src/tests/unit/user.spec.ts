@@ -20,8 +20,8 @@ describe('The User Class: Update method', () => {
       state: 'NA',
       city: 'Springfield',
       tagline: 'Tagline',
-      taglineStatus: 'Busy',
-      userSearchable: 'dunno',
+      taglineStatus: true,
+      userSearchable: true,
       profileImage: 'http://homer.jpg',
     };
 
@@ -59,7 +59,7 @@ describe('The User Class: Update method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const userUpdateData = {
-      walletId: '123',
+      walletId: 123,
       firstName: 'Homer',
       lastName: 'Simpson',
       email: 'chunkylover69@aol.com',
@@ -68,8 +68,8 @@ describe('The User Class: Update method', () => {
       state: 'NA',
       city: 'Springfield',
       tagline: 'Tagline',
-      taglineStatus: 'Busy',
-      userSearchable: 'dunno',
+      taglineStatus: true,
+      userSearchable: true,
       profileImage: 'http://homer.jpg',
     };
 
@@ -90,7 +90,7 @@ describe('The User Class: Update method', () => {
 describe('The User Class: Info method', () => {
   it ('should successfully call with valid data', () => {
     const userInfoData = {
-      walletId: '123',
+      walletId: 123,
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -117,7 +117,7 @@ describe('The User Class: Info method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: '123',
+      walletId: 123,
     };
 
     pSdk = new PillarSdk({
@@ -137,7 +137,7 @@ describe('The User Class: Info method', () => {
 describe('The User Class: Search method', () => {
   it ('should successfully call with valid data', () => {
     const userSearchData = {
-      walletId: '123',
+      walletId: 123,
       query: 'searchforme',
     };
 
@@ -150,7 +150,7 @@ describe('The User Class: Search method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: '123',
+      walletId: 123,
       query: null,
     };
 
@@ -166,7 +166,7 @@ describe('The User Class: Search method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: '123',
+      walletId: 123,
       query: 'searchforme',
     };
 
@@ -214,7 +214,7 @@ describe('The User Class: Delete method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: '123',
+      walletId: 123,
     };
 
     pSdk = new PillarSdk({

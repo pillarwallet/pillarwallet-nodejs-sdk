@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User Class - update",
+  "description": "Schema definition for User Class - Update method",
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "number"
+    },
+    "firstName": {
+      "description": "The first name of one user",
+      "type": "string"
+    },
+    "lastName": {
+      "description": "The last name of one user",
+      "type": "string"
+    },
+    "email": {
+      "description": "The user's email",
+      "type": "string"
+    },
+    "phone": {
+      "description": "The user's phone",
+      "type": "string"
+    },
+    "country": {
+      "description": "The user's country",
+      "type": "string"
+    },
+    "state": {
+      "description": "The user's state",
+      "type": "string"
+    },
+    "city": {
+      "description": "The user's city",
+      "type": "string"
+    },
+    "tagline": {
+      "description": "The user's tagline",
+      "type": "string"
+    },
+    "taglineStatus": {
+      "description": "Conditional for tagline",
+      "type": "boolean"
+    },
+    "userSearchable": {
+      "description": "Conditional for this user be searchable by others",
+      "type": "boolean"
+    },
+    "profileImage": {
+      "description": "The user's profileImage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "walletId",
+    "firstName",
+    "lastName",
+    "email",
+    "phone",
+    "country",
+    "state",
+    "city",
+    "tagline",
+    "taglineStatus",
+    "userSearchable",
+    "profileImage"
+    ]
+}
+
+

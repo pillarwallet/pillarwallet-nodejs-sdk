@@ -18,6 +18,10 @@ export class PillarSdk extends Configuration {
   notification : Notification = new Notification();
   configuration: Configuration = new Configuration();
 
+  /**
+   * Set the SDK variables
+   * @param {PillarSdkConfiguration} incomingConfiguration
+   */
   constructor(incomingConfiguration: PillarSdkConfiguration) {
     super();
 

@@ -1,78 +1,47 @@
-import { Requester } from '../utils/requester';
 import { RequestPromise } from 'request-promise';
+
 import { default as walletRegisterConfiguration }
     from '../utils/requester-configurations/wallet-register';
 import { default as walletUpdateConfiguration }
     from '../utils/requester-configurations/wallet-update';
-import { ErrorMessages } from './constants/errorMessages';
 import { Configuration } from './configuration';
-
-import * as Ajv from 'ajv';
-
+import { Requester } from '../utils/requester';
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
-
-let ajv: any;
 
 export class Wallet extends Configuration {
 
   constructor() {
     super();
-
-    ajv = new Ajv({
-      allErrors: true,
-    });
   }
 
+  /**
+   * Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
+   * @param {WalletRegister} walletRegister
+   * @returns {requestPromise.RequestPromise}
+   */
   register(walletRegister: WalletRegister): RequestPromise {
-    const valid = ajv.validate(walletRegisterSchema, walletRegister);
-    if (!valid && ajv.errors) {
-      throw new TypeError(ajv.errorsText(ajv.errors));
-    }
 
-    if (!walletRegister.publicKey || !walletRegister.fcmToken || !walletRegister.ethAddress) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
-    }
+    this.validation(walletRegisterSchema,walletRegister);
 
-    const xAPISignature = Requester.sign(
-      walletRegister,
-      Configuration.accessKeys.privateKey,
-    );
-
-    if (!xAPISignature) {
-      throw new Error(ErrorMessages.SigningError);
-    }
-
-    walletRegisterConfiguration.headers['X-API-Signature'] = xAPISignature;
+    walletRegisterConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
     walletRegisterConfiguration.body = walletRegister;
 
     return Requester.execute(walletRegisterConfiguration);
   }
 
+  /**
+   * Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
+   * @param {WalletUpdate} walletUpdate
+   * @returns {requestPromise.RequestPromise}
+   */
   update(walletUpdate: WalletUpdate): RequestPromise {
-    const valid = ajv.validate(walletUpdateSchema, walletUpdate);
-    if (!valid && ajv.errors) {
-      throw new TypeError(ajv.errorsText(ajv.errors));
-    }
 
-    if (!walletUpdate.walletId ||
-        !walletUpdate.fcmToken ||
-        !walletUpdate.ethAddress ||
-        !walletUpdate.signalRegistrationId
-    ) {
-      throw new TypeError(ErrorMessages.MissingOrInvalidData);
-    }
+    this.validation(walletUpdateSchema,walletUpdate);
 
-    const xAPISignature = Requester.sign(
-      walletUpdate,
-      Configuration.accessKeys.privateKey,
-    );
-
-    if (!xAPISignature) {
-      throw new Error(ErrorMessages.SigningError);
-    }
-
-    walletUpdateConfiguration.headers['X-API-Signature'] = xAPISignature;
+    walletUpdateConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletUpdate,Configuration.accessKeys.privateKey);
     walletUpdateConfiguration.body = walletUpdate;
 
     return Requester.execute(walletUpdateConfiguration);
