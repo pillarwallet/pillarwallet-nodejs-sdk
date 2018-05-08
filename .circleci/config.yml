@@ -21,8 +21,8 @@ jobs:
           name: Install TypeScript packages globally
           command: sudo yarn global add typescript tsc ts-node
       - run:
-          name: Compile TypeScript to JS
-          command: tsc
+          name: Webpack bundle SDK for Production
+          command: npm run build-production
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
