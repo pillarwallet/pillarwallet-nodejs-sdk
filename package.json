@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
   "dependencies": {
-    "@pillarwallet/plr-auth-sdk": "^0.1.0",
+    "@pillarwallet/plr-auth-sdk": "^0.1.0-55",
     "@types/bluebird": "^3.5.20",
     "@types/node": "^9.6.6",
     "@types/request": "^2.47.0",
