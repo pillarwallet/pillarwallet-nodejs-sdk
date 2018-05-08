@@ -1,6 +1,6 @@
 # Pillar Wallet SDK 
 
-The Pillar Wallet SDK aims to make it easy for developers to get started using Pillar Wallet backend services.
+The Pillar Wallet SDK aims to make it easy for developers to get started using [Pillar Wallet backend services](https://github.com/pillarwallet/core-wallet-backend).
 
 ## Getting Started
 
@@ -18,12 +18,12 @@ Instantiate an instance of the Pillar SDK:
 
 #### Config
 
-Here you can set the Api Url and Wallet privateKey for future use.
+Here you can set the Api Url and Wallet privateKey variables.
 
 ```
 const pSdk = new PillarSdk({
   apiUrl: 'http://localhost:8080',
-  privateKey: '123',
+  privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
 
@@ -45,7 +45,7 @@ to get the response and error doing:
    ethAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
    fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
    publicKey: 'dfhuodhv8jdv8hsd9nvdvfh',
-  }, myPrivateKeyVariable)
+  })
  .then((response) => {
    // Successful response!
  })
@@ -67,10 +67,9 @@ const inputParams = {
 ```
 
  Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
-For every request, one wallet privatekey<myPrivateKeyVariable> should be passed as argument.
 
 ```
-pSdk.wallet.register(inputParams, <myPrivateKeyVariable>)
+pSdk.wallet.register(inputParams)
 ```
 
 ### Methods
@@ -81,7 +80,7 @@ Input Parameters
 
 ```
 const inputParams = {
- walletId: 123456,
+ walletId: 126,
  ethAddress: "0x3948yhudfh97h3r78hf78hsdi",
  fcmToken: "dfj8hjs9dahfdbf7dsbfbds7f",
  signalRegistrationId: "dcn98adcbsdgc6sbd7csd8gds78"
@@ -89,24 +88,23 @@ const inputParams = {
 ```
 
   Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
- For every request, one wallet privatekey<myPrivateKeyVariable> should be passed as argument.
 
 ```
-pSdk.wallet.update(inputParams, <myPrivateKeyVariable>)
+pSdk.wallet.update(inputParams)
 ```
 
 * Asset Defaults
 
 ```
 const inputParams = {
- walletId: '1',
+ walletId: 12,
  };
 ```
 
  Method asset defaults returns a list of assets that are marked as default assets.
 
 ```
-pSdk.asset.defaults(inputParams, <myPrivateKeyVariable>)
+pSdk.asset.defaults(inputParams)
 
 ```
 
@@ -121,10 +119,10 @@ const inputParams = {
 ```
 
 Method asset defaults returns a list of assets that contain the search criteria which would be the name, 
-token symbol or smartcontract hexadecimal.
+token symbol or smartcontract hexadecimal address.
 
 ```
-pSdk.asset.search(inputParams, <myPrivateKeyVariable>)
+pSdk.asset.search(inputParams)
 ```
 
 * Connection Invite
@@ -140,7 +138,7 @@ const inputParams = {
 Creates a connection invitation for a user to create a relationship with another contact.
 
 ```
-pSdk.connection.invite(inputParams, <myPrivateKeyVariable>)
+pSdk.connection.invite(inputParams)
 ```
 
 * Connection Accept
@@ -159,7 +157,7 @@ const inputParams =
 Accept a connection invitation from another user
 
 ```
-pSdk.connection.accept(inputParams, <myPrivateKeyVariable>)
+pSdk.connection.accept(inputParams)
 ```
 
 * Connection Reject
@@ -175,7 +173,7 @@ const inputParams = {
 Reject a connection invitation from another user
 
 ```
-pSdk.connection.reject(inputParams, <myPrivateKeyVariable>)
+pSdk.connection.reject(inputParams)
 
 ```
 
@@ -192,7 +190,7 @@ const inputParams = {
 Cancels a connection invitation that a user previously initiated
 
 ```
-pSdk.connection.reject(inputParams, <myPrivateKeyVariable>)
+pSdk.connection.reject(inputParams)
 
 ```
 
@@ -208,7 +206,7 @@ const inputParams = {
 Blocks a connection request from another user
 
 ```
-pSdk.connection.reject(inputParams, <myPrivateKeyVariable>)
+pSdk.connection.reject(inputParams)
 
 ```
 
@@ -221,10 +219,10 @@ const inputParams = {
  };
 ```
 
-Mutes another user
+Mutes future communication from another contact.
 
 ```
-pSdk.connection.mute(inputParams, <myPrivateKeyVariable>)
+pSdk.connection.mute(inputParams)
 
 ```
 
@@ -240,7 +238,7 @@ const inputParams = {
 Provides a list of notifications for a specific wallet user.
 
 ```
-pSdk.notification.list(inputParams, <myPrivateKeyVariable>);
+pSdk.notification.list(inputParams);
 ```
 
 * User Update
@@ -265,7 +263,7 @@ const inputParams = {
 Updates data elements on an existing wallet user.
 
 ```
-pSdk.user.update(inputParams, <myPrivateKeyVariable>y);
+pSdk.user.update(inputParams);
 ```
 
 * User Info
@@ -279,7 +277,7 @@ const inputParams = {
 Retrieve information on an existing wallet user
 
 ```
-pSdk.user.info(inputParams, <myPrivateKeyVariable>);
+pSdk.user.info(inputParams);
 ```
 
 * User Search
@@ -291,11 +289,12 @@ const inputParams = {
 };
 ``` 
 
-Provides a list of users that contain the search criteria in either their first name or last name, and is not the current wallet user. 
-Also it performs a check if the search string term is at least 2 characters and if the user allows their profile to be searched.
+Provides a list of users that contain the search criteria in either their first name or last name,
+and is not the current wallet user. Also it performs a check if the search string term is at least 2 
+characters and if the user allows their profile to be searched.
 
 ```
-pSdk.user.search(inputParams, <myPrivateKeyVariable>);
+pSdk.user.search(inputParams);
 ```
 
 * User Delete
@@ -309,7 +308,7 @@ const inputParams = {
 Remove an existing wallet user profile from the database
 
 ```
-pSdk.user.delete(inputParams, <myPrivateKeyVariable>);
+pSdk.user.delete(inputParams);
 ```
 
 ## Running the tests
@@ -342,4 +341,5 @@ This project is licensed under the MIT License.
 
 ## Acknowledgments
 
-* We are using Pillar Authentication SDK to create Signatures. You can find more detais here : [plr-auth-sdk](https://github.com/pillarwallet/pillar-authentication-sdk)
+* We are using Pillar Authentication SDK to create Signatures. You can find more detais here : 
+    [plr-auth-sdk](https://github.com/pillarwallet/pillar-authentication-sdk)
