@@ -17,7 +17,7 @@ jobs:
           command: yarn install
       - run:
           name: Install TypeScript packages globally
-          command: sudo yarn i typescript tsc ts-node -g
+          command: sudo yarn install typescript tsc ts-node -g
       - run:
           name: Compile TypeScript to JS
           command: tsc
