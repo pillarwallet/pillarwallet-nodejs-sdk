@@ -22,8 +22,8 @@ jobs:
           name: Install TypeScript packages globally
           command: sudo npm i typescript tsc ts-node -g
       - run:
-          name: Compile TypeScript to JS
-          command: tsc
+          name: Run webpack for production
+          command: npm run build-production
   test:
     docker:
       - image: circleci/node:4.8.2
