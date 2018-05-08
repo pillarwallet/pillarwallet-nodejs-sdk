@@ -47,7 +47,7 @@ jobs:
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
       - run:
           name: Publish Package to Artifactory
-          command: yarn publish   --registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
+          command: npm publish   --registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
 
 workflows:
   version: 2
