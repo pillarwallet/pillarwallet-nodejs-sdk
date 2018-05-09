@@ -1,18 +1,17 @@
-export enum HttpEndpoints {
-  BASE = 'http://localhost:8080',
-  WALLET_REGISTER = '/wallet/register',
-  WALLET_UPDATE = '/wallet/update',
-  ASSET_DEFAULT = '/asset/defaults',
-  ASSET_SEARCH = '/asset/search',
-  CONNECTION_INVITE = '/connection/invite',
-  CONNECTION_ACCEPT = '/connection/accept',
-  CONNECTION_REJECT = '/connection/reject',
-  CONNECTION_CANCEL = '/connection/cancel',
-  CONNECTION_BLOCK = '/connection/block',
-  CONNECTION_MUTE = '/connection/mute',
-  USER_UPDATE = '/user/update',
-  USER_INFO = '/user/info',
-  USER_SEARCH = '/user/search',
-  USER_DELETE = '/user/delete',
-  NOTIFICATION_LIST = '/notification/list',
+export class HttpEndpoints {
+  static WALLET_REGISTER = '/wallet/register';
+  static WALLET_UPDATE = '/wallet/update';
+  static ASSET_DEFAULT = '/asset/defaults';
+  static ASSET_SEARCH = '/asset/search';
+  static CONNECTION_INVITE = '/connection/invite';
+  static CONNECTION_ACCEPT = '/connection/accept';
+  static CONNECTION_REJECT = '/connection/reject';
+  static CONNECTION_CANCEL = '/connection/cancel';
+  static CONNECTION_BLOCK = '/connection/block';
+  static CONNECTION_MUTE = '/connection/mute';
+  static USER_UPDATE = '/user/update';
+  static USER_INFO = '/user/info';
+  static USER_SEARCH = '/user/search';
+  static USER_DELETE = '/user/delete';
+  static NOTIFICATION_LIST = '/notification/list';
 }

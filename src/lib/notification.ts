@@ -1,9 +1,8 @@
 import { Configuration } from './configuration';
-
 import { Requester } from '../utils/requester';
 import { RequestPromise } from 'request-promise';
-import { default as notificationListConfiguration }
-    from '../utils/requester-configurations/notification-list';
+import {default as getConfiguration} from "../utils/requester-configurations/get";
+import {HttpEndpoints} from "./constants/httpEndpoints";
 
 const notificationListSchema = require('../schemas/notification/list.json');
 
@@ -22,10 +21,11 @@ export class Notification extends Configuration {
 
     this.validation(notificationListSchema,notificationList);
 
-    notificationListConfiguration.headers['X-API-Signature'] =
+    getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(notificationList,Configuration.accessKeys.privateKey);
-    notificationListConfiguration.qs = notificationList;
+    getConfiguration.qs = notificationList;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.NOTIFICATION_LIST;
 
-    return Requester.execute(notificationListConfiguration);
+    return Requester.execute(getConfiguration);
   }
 }
