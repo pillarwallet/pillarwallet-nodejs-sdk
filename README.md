@@ -29,7 +29,7 @@ const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');
 
 ## Config
 
-**IMPORTANT! First, you should take these 2 following steps to use this SDK: **
+**IMPORTANT! First, you should take these 2 following steps to use this SDK:**
 
 #### 1- Create An Instance
 
@@ -200,14 +200,14 @@ const inputParams = {
 
 Cancels a connection invitation that a user previously initiated
 
-```
+```typescript
 pillarSdk.connection.cancel(inputParams)
 
 ```
 
 * Connection Block
 
-```
+```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
   walletId: 1
@@ -216,14 +216,14 @@ const inputParams = {
 
 Blocks a connection request from another user
 
-```
+```typescript
 pillarSdk.connection.block(inputParams)
 
 ```
 
 * Connection Mute
 
-```
+```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
   walletId: 1
@@ -232,14 +232,14 @@ const inputParams = {
 
 Mutes future communication from another contact.
 
-```
+```typescript
 pillarSdk.connection.mute(inputParams)
 
 ```
 
 * Notification List
 
-```
+```typescript
 const inputParams = {
   walletId: 1,
   fromTimestamp: '1525263620',
@@ -248,13 +248,13 @@ const inputParams = {
 
 Provides a list of notifications for a specific wallet user.
 
-```
+```typescript
 pillarSdk.notification.list(inputParams);
 ```
 
 * User Update
 
-```
+```typescript
 const inputParams = {
   walletId: 123,
   firstName: 'Homer',
@@ -273,13 +273,13 @@ const inputParams = {
 
 Updates data elements on an existing wallet user.
 
-```
+```typescript
 pillarSdk.user.update(inputParams);
 ```
 
 * User Info
 
-```
+```typescript
 const inputParams = {
   walletId: 123,
 };
@@ -287,13 +287,13 @@ const inputParams = {
 
 Retrieve information on an existing wallet user
 
-```
+```typescript
 pillarSdk.user.info(inputParams);
 ```
 
 * User Search
 
-```
+```typescript
 const inputParams = {
   walletId: 1,
   query: 'searchforme',
@@ -304,13 +304,13 @@ Provides a list of users that contain the search criteria in either their first 
 and is not the current wallet user. Also it performs a check if the search string term is at least 2 
 characters and if the user allows their profile to be searched.
 
-```
+```typescript
 pillarSdk.user.search(inputParams);
 ```
 
 * User Delete
 
-```
+```typescript
 const inputParams = {
   walletId: 123,
 };
