@@ -1,6 +1,6 @@
 export default {
-  url: '',
-  method: 'POST',
+  url:'',
+  method: 'DELETE',
   headers: {
     'X-API-Signature': '',
   },

@@ -4,7 +4,7 @@ let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
-    privateKey: '123',
+    privateKey: 'abd23eddea',
   });
 });
 
