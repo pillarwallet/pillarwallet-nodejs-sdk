@@ -1,5 +1,5 @@
 interface WalletRegister {
-  publicKey: string;
-  ethAddress: string;
+  publicKey?: string;
+  ethAddress?: string;
   fcmToken: string;
 }
