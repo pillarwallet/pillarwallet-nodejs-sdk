@@ -21,5 +21,5 @@
       "type": "string"
     }
   },
-  "required": [ "walletId","signalRegistrationId","ethAddress","fcmToken" ]
+  "required": [ "walletId" ]
 }

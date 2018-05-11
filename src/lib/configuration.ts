@@ -1,6 +1,6 @@
 import * as Ajv from 'ajv';
 import {ErrorMessages} from "./constants/errorMessages";
-import {Requester} from "../utils/requester";
+import {Authentication} from "../utils/authentication";
 
 let ajv: any;
 export class Configuration {
@@ -44,7 +44,7 @@ export class Configuration {
    * @returns {string}
    */
   checkSignature(signParams: Object,privateKey: string){
-    const xAPISignature = Requester.sign(
+    const xAPISignature = Authentication.sign(
       signParams,
       privateKey
     );

@@ -11,8 +11,6 @@ beforeEach(() => {
 describe('The Wallet Class: Register method', () => {
   it ('should successfully call with valid data', () => {
     const walletRegistrationData = {
-      publicKey: '123abc',
-      ethAddress: '0x02999',
       fcmToken: '987qwe',
     };
 
@@ -24,10 +22,7 @@ describe('The Wallet Class: Register method', () => {
 
   it ('should fail when called with invalid data', () => {
     let errorThrown;
-    const walletRegistrationData = {
-      ethAddress: '0x02999',
-      fcmToken: '987qwe',
-    };
+    const walletRegistrationData = {};
 
     try {
       pSdk.wallet.register(walletRegistrationData);
@@ -64,9 +59,7 @@ describe('The Wallet Class: Update method', () => {
   it ('should successfully call with valid data', () => {
     const walletUpdateData = {
       walletId: 1,
-      ethAddress: '0x02999',
       fcmToken: '987qwe',
-      signalRegistrationId: '123abc',
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -94,6 +87,7 @@ describe('The Wallet Class: Update method', () => {
   it ('should fail when called with invalid key', () => {
     let errorThrown;
     const walletRegistrationData = {
+      walletId: 1,
       publicKey: '123abc',
       ethAddress: '0x02999',
       fcmToken: '987qwe',
