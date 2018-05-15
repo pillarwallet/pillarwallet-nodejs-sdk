@@ -5,7 +5,7 @@ const ellipticCurve =  new EC("secp256k1");
 export class PrivateKeyDerivation {
 
   /**
-   *
+   * Get the Public Key from PrivateKey
    * @param privateKey
    * @returns {any}
    */
@@ -17,7 +17,7 @@ export class PrivateKeyDerivation {
   }
 
   /**
-   *
+   * Get Eth Address from Public key
    * @param privateKey
    * @returns {string}
    */

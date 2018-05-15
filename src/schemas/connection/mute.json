@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Connection Class - Mute",
   "description": "Schema definition for Notification Class - Mute method",
+  "additionalProperties": false,
   "type": "object",
   "properties": {
     "accessKey": {
@@ -10,7 +11,8 @@
     },
     "walletId": {
       "description": "The wallet ID",
-      "type": "number"
+      "type": "number",
+      "exclusiveMinimum": 0
     }
   },
   "required": [ "accessKey", "walletId" ]
