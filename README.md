@@ -15,9 +15,9 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
-## Getting Started Sdk
+## Get Started
 
-Install npm package:
+Install the npm package:
 
 `npm i @pillarwallet/pillarwallet-nodejs-sdk`
 
@@ -29,12 +29,11 @@ const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');
 
 ## Config
 
-**IMPORTANT! First, you should take these 2 following steps to use this SDK:**
+**IMPORTANT! Complete these steps to use this SDK:**
 
-#### 1- Create An Instance
+#### 1 - Create An Instance
 
-Instantiate an instance of the Pillar SDK, you can set the Api Url 
-and Wallet privateKey variables.
+Instantiate the Pillar SDK, then set the apiUrl(Optional) and wallet privateKey variables.
 
 ```typescript
 const pillarSdk = new PillarSdk({
@@ -43,17 +42,15 @@ const pillarSdk = new PillarSdk({
 });
 ```
 
-In order to use Backend services, you shall first register Wallet.
-As explained bellow:
+#### 2 - Register the Wallet
 
-#### 2- First Registration
+To use backend services, register the wallet:
 
 ```typescript
 pillarSdk.wallet.register(inputParams)
 ```
 
-Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
-Input Parameters
+Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX. 
 
 ```typescript
 const inputParams = {
@@ -64,7 +61,7 @@ const inputParams = {
 ```
 ## Response And Error
 
-For every method presented here, it is possible to get the response and error doing:
+To get the response and error for these methods, use: 
     
  ```typescript
  pillarSdk.wallet.register(
@@ -85,9 +82,7 @@ For every method presented here, it is possible to get the response and error do
 
 **IMPORTANT! All methods return promises.**
 
-* Wallet Update
-
-Input Parameters
+**Wallet Update**
 
 ```typescript
 const inputParams = {
@@ -98,13 +93,13 @@ const inputParams = {
   }
 ```
 
-Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
+Updates ethAddress and FcmToken in the backend and sets signalRegistrationId.
 
 ```typescript
 pillarSdk.wallet.update(inputParams)
 ```
 
-* Asset Defaults
+**Asset Defaults**
 
 ```typescript
 const inputParams = {
@@ -112,14 +107,14 @@ const inputParams = {
  };
 ```
 
- Method asset defaults returns a list of assets that are marked as default assets.
+ Returns a list of assets that are marked as default assets.
 
 ```typescript
 pillarSdk.asset.defaults(inputParams)
 
 ```
 
-* Asset Search
+**Asset Search**
 
 ```typescript
 const inputParams = {
@@ -129,14 +124,13 @@ const inputParams = {
 
 ```
 
-Method asset defaults returns a list of assets that contain the search criteria which would be the name, 
-token symbol or smartcontract hexadecimal address.
+Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
 
 ```typescript
 pillarSdk.asset.search(inputParams)
 ```
 
-* Connection Invite
+**Connection Invite**
 
 ```typescript
 const inputParams = {
@@ -152,7 +146,7 @@ Creates a connection invitation for a user to create a relationship with another
 pillarSdk.connection.invite(inputParams)
 ```
 
-* Connection Accept
+**Connection Accept**
 
 ```typescript
 const inputParams =
@@ -165,13 +159,13 @@ const inputParams =
 
 ```
 
-Accept a connection invitation from another user
+Accepts a connection invitation from another user.
 
 ```typescript
 pillarSdk.connection.accept(inputParams)
 ```
 
-* Connection Reject
+**Connection Reject**
 
 ```typescript
 const inputParams = {
@@ -181,14 +175,14 @@ const inputParams = {
  };
 ```
 
-Reject a connection invitation from another user
+Rejects a connection invitation from another user.
 
 ```typescript
 pillarSdk.connection.reject(inputParams)
 
 ```
 
-* Connection Cancel
+**Connection Cancel**
 
 ```typescript
 const inputParams = {
@@ -198,14 +192,14 @@ const inputParams = {
  };
 ```
 
-Cancels a connection invitation that a user previously initiated
+Cancels a connection invitation from another user.
 
 ```typescript
 pillarSdk.connection.cancel(inputParams)
 
 ```
 
-* Connection Block
+**Connection Block**
 
 ```typescript
 const inputParams = {
@@ -214,14 +208,14 @@ const inputParams = {
  };
 ```
 
-Blocks a connection request from another user
+Blocks a connection request from another user.
 
 ```typescript
 pillarSdk.connection.block(inputParams)
 
 ```
 
-* Connection Mute
+**Connection Mute**
 
 ```typescript
 const inputParams = {
@@ -237,7 +231,7 @@ pillarSdk.connection.mute(inputParams)
 
 ```
 
-* Notification List
+**Notification List**
 
 ```typescript
 const inputParams = {
@@ -252,7 +246,7 @@ Provides a list of notifications for a specific wallet user.
 pillarSdk.notification.list(inputParams);
 ```
 
-* User Update
+**User Update**
 
 ```typescript
 const inputParams = {
@@ -271,13 +265,13 @@ const inputParams = {
 };
 ``` 
 
-Updates data elements on an existing wallet user.
+Updates data elements on a wallet user.
 
 ```typescript
 pillarSdk.user.update(inputParams);
 ```
 
-* User Info
+**User Info**
 
 ```typescript
 const inputParams = {
@@ -285,13 +279,13 @@ const inputParams = {
 };
 ``` 
 
-Retrieve information on an existing wallet user
+Retrieves information on an existing wallet user.
 
 ```typescript
 pillarSdk.user.info(inputParams);
 ```
 
-* User Search
+**User Search**
 
 ```typescript
 const inputParams = {
@@ -300,15 +294,14 @@ const inputParams = {
 };
 ``` 
 
-Provides a list of users that contain the search criteria in either their first name or last name,
-and is not the current wallet user. Also it performs a check if the search string term is at least 2 
-characters and if the user allows their profile to be searched.
+Provides a list of users that contain the search criteria for first or last name, and is not the current wallet user.
+ Also checks if the search string term is at least two characters and if the user allows their profile to be searched.
 
 ```typescript
 pillarSdk.user.search(inputParams);
 ```
 
-* User Delete
+**User Delete**
 
 ```typescript
 const inputParams = {
@@ -316,29 +309,28 @@ const inputParams = {
 };
 ``` 
 
-Remove an existing wallet user profile from the database
+Removes a wallet user profile from the database.
 
 
  pillarSdk.user.delete(inputParams);
 
 ## Tests
 
-Run the test
+Run the test:
 
 ```
 npm test
 ```
 
-or
+or:
 
 ```
 jest
 ```
 
-## Coding style Guide
+## Coding Style Guide
 
-We are using TSLint Config Airbnb for Style Guide.
-You can find more details [here](https://github.com/airbnb/javascript).
+We use the [TSLint Config Airbnb Style Guide](https://github.com/airbnb/javascript).
 
 ## Versioning
 
@@ -346,9 +338,8 @@ We use [Swagger](https://app.swaggerhub.com/apis/Pillar-Project7/core-wallet-bac
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT license.
 
 ## Acknowledgments
 
-* We are using Pillar Authentication SDK to create Signatures. You can find more detais here : 
-    [plr-auth-sdk](https://github.com/pillarwallet/pillar-authentication-sdk)
+We use the [Pillar Authentication SDK](https://github.com/pillarwallet/pillar-authentication-sdk) to create signatures.
