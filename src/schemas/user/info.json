@@ -2,11 +2,13 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "User Class - Info",
   "description": "Schema definition for User Class - Info method",
+  "additionalProperties": false,
   "type": "object",
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number"
+      "type": "number",
+      "exclusiveMinimum": 0
     }
   },
   "required": [ "walletId" ]

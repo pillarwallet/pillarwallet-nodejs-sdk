@@ -3,10 +3,13 @@
   "title": "SDK Instantiation",
   "description": "User profile with connections",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "privateKey": {
       "description": "Private Key buffer",
-      "typeof": [ "Buffer" ]
+      "type": [ "string" ],
+      "pattern":"[a-fA-F0-9]{64}$",
+      "maxLength": 64
     },
     "apiUrl": {
       "description": "API Url definition",

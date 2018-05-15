@@ -3,10 +3,12 @@
   "title": "User Class - update",
   "description": "Schema definition for User Class - Update method",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number"
+      "type": "number",
+      "exclusiveMinimum": 0
     },
     "firstName": {
       "description": "The first name of one user",
@@ -18,7 +20,8 @@
     },
     "email": {
       "description": "The user's email",
-      "type": "string"
+      "type": "string",
+      "format": "email"
     },
     "phone": {
       "description": "The user's phone",
@@ -50,7 +53,8 @@
     },
     "profileImage": {
       "description": "The user's profileImage",
-      "type": "string"
+      "type": "string",
+      "format": "uri"
     }
   },
   "required": [

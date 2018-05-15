@@ -3,10 +3,12 @@
   "title": "Assets Class - Search",
   "description": "Schema definition for Asset Class - Search method",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number"
+      "type": "number",
+      "exclusiveMinimum": 0
     },
     "query": {
       "description": "The query string to search for",

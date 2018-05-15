@@ -4,7 +4,7 @@ let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
-    privateKey: '123',
+    privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
 
@@ -34,7 +34,7 @@ describe('The User Class: Update method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const userUpdateData = {
-      walletId: '123',
+      walletId: 123,
       firstName: 'Homer',
       lastName: 'Simpson',
       email: 'chunkylover69@aol.com',
@@ -43,8 +43,8 @@ describe('The User Class: Update method', () => {
       state: 'NA',
       city: 'Springfield',
       tagline: 'Tagline',
-      taglineStatus: 'Busy',
-      userSearchable: 'dunno',
+      taglineStatus: 'Busy',    //here
+      userSearchable: 'dunno', //here
     };
 
     try {
@@ -56,13 +56,13 @@ describe('The User Class: Update method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid email', () => {
     let errorThrown;
     const userUpdateData = {
       walletId: 123,
       firstName: 'Homer',
       lastName: 'Simpson',
-      email: 'chunkylover69@aol.com',
+      email: '@aol.com',
       phone: '911',
       country: 'United States',
       state: 'NA',
@@ -73,9 +73,31 @@ describe('The User Class: Update method', () => {
       profileImage: 'http://homer.jpg',
     };
 
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
+    try {
+      pSdk.user.update(userUpdateData);
+    } catch (e) {
+      errorThrown = e;
+    }
+
+    expect(errorThrown).toBeInstanceOf(Error);
+  });
+
+  it ('should fail when called with invalid profileImageUri', () => {
+    let errorThrown;
+    const userUpdateData = {
+      walletId: 123,
+      firstName: 'Homer',
+      lastName: 'Simpson',
+      email: '@aol.com',
+      phone: '911',
+      country: 'United States',
+      state: 'NA',
+      city: 'Springfield',
+      tagline: 'Tagline',
+      taglineStatus: true,
+      userSearchable: true,
+      profileImage: 'homer.jpg',
+    };
 
     try {
       pSdk.user.update(userUpdateData);
@@ -114,15 +136,11 @@ describe('The User Class: Info method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid id', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: 123,
+      walletId: -123,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.user.info(userInfoData);
@@ -163,16 +181,12 @@ describe('The User Class: Search method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid id', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: 123,
+      walletId: -123,
       query: 'searchforme',
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.user.search(userInfoData);
@@ -211,15 +225,11 @@ describe('The User Class: Delete method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid id', () => {
     let errorThrown;
     const userInfoData = {
-      walletId: 123,
+      walletId: -123,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.user.delete(userInfoData);

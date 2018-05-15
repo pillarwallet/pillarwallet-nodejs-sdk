@@ -4,7 +4,7 @@ let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
-    privateKey: '123',
+    privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
 
@@ -42,17 +42,13 @@ describe('The Connection Class: Invite method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const invalidConnectionData = {
       targetUserId: 2,
       accessKey: 'abc123',
-      walletId: 1,
+      walletId: -1,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.connection.invite(invalidConnectionData);
@@ -101,18 +97,14 @@ describe('The Connection Class: Accept method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const invalidConnectionData = {
       targetUserId: 2,
-      walletId: 1,
+      walletId: -1,
       sourceUserAccessKey: 'hello',
       targetUserAccessKey: 'hello',
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.connection.accept(invalidConnectionData);
@@ -160,17 +152,13 @@ describe('The Connection Class: Reject method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const connectionData = {
       targetUserId: 2,
       accessKey: '123abc',
-      walletId: 1,
+      walletId: -1,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.connection.reject(connectionData);
@@ -196,7 +184,7 @@ describe('The Connection Class: Cancel method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    const connectionInvitePromise = pSdk.connection.cancel(connectionCancelData);
+    pSdk.connection.cancel(connectionCancelData);
 
     expect(spy).toBeCalled();
   });
@@ -218,17 +206,13 @@ describe('The Connection Class: Cancel method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const connectionData = {
       targetUserId: 2,
       accessKey: '123abc',
-      walletId: 1,
+      walletId: -1,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.connection.cancel(connectionData);
@@ -274,16 +258,12 @@ describe('The Connection Class: Block method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const connectionData = {
       accessKey: '123abc',
-      walletId: 1,
+      walletId: -1,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.connection.block(connectionData);
@@ -329,16 +309,12 @@ describe('The Connection Class: Mute method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const connectionData = {
       accessKey: '123abc',
-      walletId: 1,
+      walletId: -1,
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.connection.mute(connectionData);

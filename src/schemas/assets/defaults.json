@@ -3,10 +3,12 @@
   "title": "Assets Class - Defaults",
   "description": "Schema definition for Asset Class - Defaults method",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number"
+      "type": "number",
+      "exclusiveMinimum": 0
     }
   },
   "required": [ "walletId" ]

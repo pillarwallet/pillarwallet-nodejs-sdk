@@ -4,7 +4,7 @@ let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
-    privateKey: 'abd23eddea',
+    privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
 
@@ -23,7 +23,7 @@ describe('The Asset Class: Defaults method', () => {
   it ('should fail when called with invalid data', () => {
     let errorThrown;
     const assetDefaultsData = {
-      walletId: null,
+      walletId: -1,
     };
 
     try {
@@ -35,24 +35,6 @@ describe('The Asset Class: Defaults method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
-    let errorThrown;
-    const assetDefaultsData = {
-      walletId: 1,
-    };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
-
-    try {
-      pSdk.asset.defaults(assetDefaultsData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
 });
 
 describe('The Asset Class: Search method', () => {
@@ -84,16 +66,12 @@ describe('The Asset Class: Search method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid WalletId', () => {
     let errorThrown;
     const assetSearchData = {
-      walletId: 1,
+      walletId: -1,
       query: 'searchthis',
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.asset.search(assetSearchData);
