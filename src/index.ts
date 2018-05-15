@@ -36,6 +36,6 @@ export class PillarSdk extends Configuration {
       throw new TypeError(ajv.errorsText(ajv.errors));
     }
 
-    this.configuration.initialise(incomingConfiguration);
+    this.initialise(incomingConfiguration);
   }
 }

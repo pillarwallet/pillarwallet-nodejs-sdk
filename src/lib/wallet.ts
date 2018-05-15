@@ -1,11 +1,11 @@
 import { RequestPromise } from 'request-promise';
 
-import { default as walletRegisterConfiguration }
-    from '../utils/requester-configurations/wallet-register';
-import { default as walletUpdateConfiguration }
-    from '../utils/requester-configurations/wallet-update';
+import { default as postConfiguration } from '../utils/requester-configurations/post';
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
+import { HttpEndpoints } from "./constants/httpEndpoints";
+import { PrivateKeyDerivation } from "../utils/private-key-derivation";
+
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 
@@ -23,12 +23,14 @@ export class Wallet extends Configuration {
   register(walletRegister: WalletRegister): RequestPromise {
 
     this.validation(walletRegisterSchema,walletRegister);
-
-    walletRegisterConfiguration.headers['X-API-Signature'] =
+    postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
-    walletRegisterConfiguration.body = walletRegister;
+    walletRegister.publicKey = PrivateKeyDerivation.getPublicKey(Configuration.accessKeys.privateKey);
+    walletRegister.ethAddress = PrivateKeyDerivation.getEthAddress(Configuration.accessKeys.privateKey);
+    postConfiguration.body = walletRegister;
+    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
 
-    return Requester.execute(walletRegisterConfiguration);
+    return Requester.execute(postConfiguration);
   }
 
   /**
@@ -40,10 +42,11 @@ export class Wallet extends Configuration {
 
     this.validation(walletUpdateSchema,walletUpdate);
 
-    walletUpdateConfiguration.headers['X-API-Signature'] =
+    postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletUpdate,Configuration.accessKeys.privateKey);
-    walletUpdateConfiguration.body = walletUpdate;
+    postConfiguration.body = walletUpdate;
+    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UPDATE;
 
-    return Requester.execute(walletUpdateConfiguration);
+    return Requester.execute(postConfiguration);
   }
 }

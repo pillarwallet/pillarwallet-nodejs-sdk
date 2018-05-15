@@ -1,10 +1,12 @@
 import { Requester } from '../utils/requester';
 import { RequestPromise } from 'request-promise';
-import { default as userUpdateConfiguration } from '../utils/requester-configurations/user-update';
-import { default as userInfoConfiguration } from '../utils/requester-configurations/user-info';
-import { default as userSearchConfiguration } from '../utils/requester-configurations/user-search';
-import { default as userDeleteConfiguration } from '../utils/requester-configurations/user-delete';
+import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
+import { default as postConfiguration } from '../utils/requester-configurations/post';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
+
 import { Configuration } from './configuration';
+
+import {HttpEndpoints} from "./constants/httpEndpoints";
 
 const userInfoSchema = require('../schemas/user/info.json');
 const userUpdateSchema = require('../schemas/user/update.json');
@@ -26,11 +28,12 @@ export class User extends Configuration {
 
     this.validation(userUpdateSchema,userUpdate);
 
-    userUpdateConfiguration.headers['X-API-Signature'] =
+    postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userUpdate,Configuration.accessKeys.privateKey);
-    userUpdateConfiguration.body = userUpdate;
+    postConfiguration.body = userUpdate;
+    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
 
-    return Requester.execute(userUpdateConfiguration);
+    return Requester.execute(postConfiguration);
   }
 
   /**
@@ -42,11 +45,12 @@ export class User extends Configuration {
 
     this.validation(userInfoSchema,userInfo);
 
-    userInfoConfiguration.headers['X-API-Signature'] =
+    getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userInfo,Configuration.accessKeys.privateKey);
-    userInfoConfiguration.qs = userInfo;
+    getConfiguration.qs = userInfo;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO;
 
-    return Requester.execute(userInfoConfiguration);
+    return Requester.execute(getConfiguration);
   }
 
   /**
@@ -61,11 +65,12 @@ export class User extends Configuration {
 
     this.validation(userSearchSchema,userSearch);
 
-    userSearchConfiguration.headers['X-API-Signature'] =
+    getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userSearch,Configuration.accessKeys.privateKey);
-    userSearchConfiguration.qs = userSearch;
+    getConfiguration.qs = userSearch;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_SEARCH;
 
-    return Requester.execute(userSearchConfiguration);
+    return Requester.execute(getConfiguration);
   }
 
   /**
@@ -77,10 +82,11 @@ export class User extends Configuration {
 
     this.validation(userDeleteSchema,userDelete);
 
-    userDeleteConfiguration.headers['X-API-Signature'] =
+    deleteConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userDelete,Configuration.accessKeys.privateKey);
-    userDeleteConfiguration.body = userDelete;
+    deleteConfiguration.body = userDelete;
+    deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
 
-    return Requester.execute(userDeleteConfiguration);
+    return Requester.execute(deleteConfiguration);
   }
 }

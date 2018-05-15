@@ -1,18 +1,17 @@
-import { Requester } from '../../utils/requester';
-import { PillarSdk } from '../..';
+import {Requester} from '../../utils/requester';
+import {PillarSdk} from '../..';
+
 let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
-    privateKey: '123',
+    privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
 
 describe('The Wallet Class: Register method', () => {
-  it ('should successfully call with valid data', () => {
+  it('should successfully call with valid data', () => {
     const walletRegistrationData = {
-      publicKey: '123abc',
-      ethAddress: '0x02999',
       fcmToken: '987qwe',
     };
 
@@ -22,11 +21,11 @@ describe('The Wallet Class: Register method', () => {
     expect(spy).toBeCalled();
   });
 
-  it ('should fail when called with invalid data', () => {
+  it('should fail when called with invalid data', () => {
     let errorThrown;
     const walletRegistrationData = {
-      ethAddress: '0x02999',
       fcmToken: '987qwe',
+      ethAddress: '0xc1912fee45d61c87cc5ea59dae31190fffff232' // ethAddress invalid with 1 char less than expected
     };
 
     try {
@@ -38,20 +37,30 @@ describe('The Wallet Class: Register method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it('should fail when called with invalid public key ', () => {
     let errorThrown;
     const walletRegistrationData = {
-      publicKey: '123abc',
-      ethAddress: '0x02999',
       fcmToken: '987qwe',
+      publicKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312aae' +
+      'f23212dbaadfa322321231231313123131312312312312312312312312312' // publicKey invalid with 1 char less than expected
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.wallet.register(walletRegistrationData);
+    } catch (e) {
+      errorThrown = e;
+    }
+
+    expect(errorThrown).toBeInstanceOf(TypeError);
+  });
+
+  it('should fail when called with invalid key', () => {
+    let errorThrown;
+
+    try {
+      pSdk = new PillarSdk({
+        privateKey: null,
+      });
     } catch (e) {
       errorThrown = e;
     }
@@ -61,12 +70,10 @@ describe('The Wallet Class: Register method', () => {
 });
 
 describe('The Wallet Class: Update method', () => {
-  it ('should successfully call with valid data', () => {
+  it('should successfully call with valid data', () => {
     const walletUpdateData = {
       walletId: 1,
-      ethAddress: '0x02999',
-      fcmToken: '987qwe',
-      signalRegistrationId: '123abc',
+      fcmToken: '987qwe'
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -75,36 +82,30 @@ describe('The Wallet Class: Update method', () => {
     expect(spy).toBeCalled();
   });
 
-  it ('should fail when called with invalid data', () => {
+  it('should fail when called with invalid data', () => {
     let errorThrown;
     const walletUpdateData = {
-      ethAddress: '0x02999',
-      fcmToken: '987qwe',
+      walletId: -1,
+      fcmToken: '987qwe'
     };
 
     try {
       pSdk.wallet.update(walletUpdateData);
-    } catch (e) {
-      errorThrown = e;
+    } catch (error) {
+      errorThrown = error;
     }
 
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
-    let errorThrown;
-    const walletRegistrationData = {
-      publicKey: '123abc',
-      ethAddress: '0x02999',
-      fcmToken: '987qwe',
-    };
 
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
+  it('should fail when called with invalid key', () => {
+    let errorThrown;
 
     try {
-      pSdk.wallet.update(walletRegistrationData);
+      pSdk = new PillarSdk({
+        privateKey: null,
+      });
     } catch (e) {
       errorThrown = e;
     }

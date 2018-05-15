@@ -2,12 +2,13 @@
 import { RequestPromise } from 'request-promise';
 
 import { Requester } from '../utils/requester';
-import { default as defaultsConfiguration } from '../utils/requester-configurations/assets-defauts';
-import { default as searchConfiguration } from '../utils/requester-configurations/assets-search';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
 import { Configuration }  from './configuration';
+import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 
 const assetDefaultsSchema = require('../schemas/assets/defaults.json');
 const assetSearchSchema = require('../schemas/assets/search.json');
+
 
 export class Asset extends Configuration {
 
@@ -24,11 +25,12 @@ export class Asset extends Configuration {
     //validation
     this.validation(assetDefaultsSchema,assetDefaults);
     //setting the request
-    defaultsConfiguration.headers['X-API-Signature'] =
+    getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetDefaults.walletId, Configuration.accessKeys.privateKey);
-    defaultsConfiguration.qs = assetDefaults;
+    getConfiguration.qs = assetDefaults;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DEFAULT;
 
-    return Requester.execute(defaultsConfiguration);
+    return Requester.execute(getConfiguration);
   }
 
   /**
@@ -40,10 +42,11 @@ export class Asset extends Configuration {
   search(assetSearch: AssetSearch): RequestPromise {
     this.validation(assetSearchSchema, assetSearch);
 
-    searchConfiguration.headers['X-API-Signature'] =
+    getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetSearch, Configuration.accessKeys.privateKey);
-    searchConfiguration.qs = assetSearch;
+    getConfiguration.qs = assetSearch;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_SEARCH;
 
-    return Requester.execute(searchConfiguration);
+    return Requester.execute(getConfiguration);
   }
 }

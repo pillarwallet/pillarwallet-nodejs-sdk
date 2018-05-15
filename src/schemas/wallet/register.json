@@ -3,23 +3,27 @@
   "title": "Wallet Class - register",
   "description": "Schema definition for Wallet Class - Register method",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "publicKey": {
       "description": "The publicKey of one wallet",
-      "type": "string"
+      "type": "string",
+      "pattern":"[a-fA-F0-9]{128}$",
+      "maxLength": 128
     },
     "ethAddress": {
       "description": "The Ethereum address of one wallet",
-      "type": "string"
+      "type": "string",
+      "pattern":"^0x[a-fA-F0-9]{40}$",
+      "maxLength": 42
     },
     "fcmToken": {
       "description": "The Firebase Cloud Messaging Token  of one wallet",
-      "type": "string"
+      "type": "string",
+      "pattern": "[0-9a-zA-z]*"
     }
   },
   "required": [
-    "publicKey",
-    "ethAddress",
     "fcmToken"
   ]
 }

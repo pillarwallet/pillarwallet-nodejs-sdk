@@ -4,7 +4,7 @@ let pSdk: any;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
-    privateKey: '123',
+    privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
 
@@ -12,7 +12,7 @@ describe('The Notification Class: List method', () => {
   it ('should successfully call with valid data', () => {
     const notificationData = {
       walletId: 1,
-      fromTimestamp: '1525263620',
+      fromTimestamp: '2016-05-24T15:54:14.876Z',
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -37,16 +37,12 @@ describe('The Notification Class: List method', () => {
     expect(errorThrown).toBeInstanceOf(TypeError);
   });
 
-  it ('should fail when called with invalid key', () => {
+  it ('should fail when called with invalid walletId', () => {
     let errorThrown;
     const notificationData = {
-      walletId: 1,
-      fromTimestamp: '1525263620',
+      walletId: -1,
+      fromTimestamp: '2016-05-24T15:54:14.876Z',
     };
-
-    pSdk = new PillarSdk({
-      privateKey: null,
-    });
 
     try {
       pSdk.notification.list(notificationData);
