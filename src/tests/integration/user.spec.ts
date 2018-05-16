@@ -13,7 +13,7 @@ describe('user endpoints', () => {
 
   describe('User', () => {
     it('User update', async () => {
-      const userUpdateData = {
+      const inputParams = {
         walletId: 5,
         firstName: 'Charlie',
         lastName: 'Hedex',
@@ -30,7 +30,7 @@ describe('user endpoints', () => {
 
       let result:any = {};
 
-      await pSdk.user.update(userUpdateData)
+      await pSdk.user.update(inputParams)
         .then((response:any) => {
           // Successful response!
           result = response;
@@ -42,6 +42,66 @@ describe('user endpoints', () => {
 
       expect(result.result).toBe('success');
     });
+
+    it('User info', async () => {
+      const inputParams = {
+        walletId: 4
+      };
+
+      let result:any = {};
+
+      await pSdk.user.info(inputParams)
+        .then((response:any) => {
+          // Successful response!
+          result = response;
+        })
+        .catch((error:any) => {
+          // Unsuccessful response.
+          result = error;
+        });
+
+    });
+
+    it('User search', async () => {
+      const inputParams = {
+        walletId: 4,
+        query: 'Homer',
+      };
+
+      let result:any = {};
+
+      await pSdk.user.search(inputParams)
+        .then((response:any) => {
+          // Successful response!
+          result = response;
+        })
+        .catch((error:any) => {
+          // Unsuccessful response.
+          result = error;
+        });
+
+    });
+
+    it('User delete', async () => {
+      const inputParams = {
+        walletId: 45,
+      };
+
+      let result:any = {};
+
+      await pSdk.user.delete(inputParams)
+        .then((response:any) => {
+          // Successful response!
+          result = response;
+        })
+        .catch((error:any) => {
+          // Unsuccessful response.
+          result = error;
+        });
+
+      expect(result.result).toBe('success');
+    });
+
   });
 
 });
