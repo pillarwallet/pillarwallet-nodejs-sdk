@@ -8,14 +8,13 @@
     "publicKey": {
       "description": "The publicKey of one wallet",
       "type": "string",
-      "pattern":"[a-fA-F0-9]{128}$",
-      "maxLength": 128
+      "pattern":"[a-fA-F0-9]{128}$"
+
     },
     "ethAddress": {
       "description": "The Ethereum address of one wallet",
       "type": "string",
-      "pattern":"^0x[a-fA-F0-9]{40}$",
-      "maxLength": 42
+      "pattern":"^0x[a-fA-F0-9]{40}$"
     },
     "fcmToken": {
       "description": "The Firebase Cloud Messaging Token  of one wallet",
