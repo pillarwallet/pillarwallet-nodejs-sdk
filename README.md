@@ -42,8 +42,8 @@ const pillarSdk = new PillarSdk({
 });
 ```
 - Input
-    -apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
-    -privateKey : hexadecimal string and 64 characters length.
+    - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
+    - privateKey : hexadecimal string and 64 characters length.
 
 #### 2 - Register the Wallet
 
@@ -63,7 +63,7 @@ const inputParams = {
 ```
 
 - Input
-    -fcmToken : string
+    - fcmToken : string
     
 - Expected Output
     - result : 'success'(String),
@@ -355,21 +355,21 @@ const inputParams = {
      - result : 'success'(String),
      - message : 'User was successfully updated'(String),
      - Payload JSON Object
-             - ethAddress : String
-             - fcmToken : String
-             - signalRegistrationId : String
-             - id : Integer
-             - firstName : String
-             - lastName : String
-             - country : String
-             - state : String
-             - city : String
-             - email : String
-             - phone : String
-             - tagline : Boolean
-             - taglineStatus : Boolean
-             - userSearchable : Boolean
-             - profileImage : String(Url)
+       - ethAddress : String
+       - fcmToken : String
+       - signalRegistrationId : String
+       - id : Integer
+       - firstName : String
+       - lastName : String
+       - country : String
+       - state : String
+       - city : String
+       - email : String
+       - phone : String
+       - tagline : Boolean
+       - taglineStatus : Boolean
+       - userSearchable : Boolean
+       - profileImage : String(Url)
 
 **User Info**
 
