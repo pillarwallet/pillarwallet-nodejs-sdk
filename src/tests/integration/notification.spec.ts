@@ -11,9 +11,26 @@ describe('notification endpoints', () => {
     });
   });
 
-  describe('notification', () => {
-    it('Expect something', async () => {
+  describe('Notification list', () => {
+    it('Expect success', async () => {
+      const inputParams = {
+        walletId: 1,
+        fromTimestamp: '2016-05-24T15:54:14.876Z'
+      };
 
+      let result:any = {};
+
+      pSdk.notification.list(inputParams)
+        .then((response:any) => {
+          // Successful response!
+          result = response;
+        })
+        .catch((error:any) => {
+          // Unsuccessful response.
+          result = error;
+        });
+
+      console.log(result);
     });
   });
 
