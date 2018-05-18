@@ -204,6 +204,14 @@ const inputParams = {
 };
 ```
 
+- Input
+    - targetUserId : Integer
+    - accessKey : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection invitation was successfully sent'(String)
+
 **Connection Accept**
 
 ```typescript
@@ -223,6 +231,15 @@ const inputParams =
 
 ```
 
+- Input
+    - targetUserId : Integer
+    - walletId : Integer
+    - sourceUserAccessKey : String
+    - targetUserAccessKey : String
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection invitation accepted'(String)
+
 **Connection Reject**
 
 ```typescript
@@ -239,6 +256,14 @@ const inputParams = {
      walletId: 1
  };
 ```
+
+- Input
+    - targetUserId : Integer
+    - accessKey : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection invitation rejected'(String)
 
 **Connection Cancel**
 
@@ -257,6 +282,14 @@ const inputParams = {
  };
 ```
 
+- Input
+    - targetUserId : Integer
+    - accessKey : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection canceled'(String)
+
 **Connection Block**
 
 ```typescript
@@ -273,6 +306,13 @@ const inputParams = {
  };
 ```
 
+- Input
+    - accessKey : String 
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection blocked'(String)
+
 **Connection Mute**
 
 ```typescript
@@ -288,6 +328,13 @@ const inputParams = {
   walletId: 1
  };
 ```
+
+- Input
+    - accessKey : String 
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection muted'(String)
 
 **Notification List**
 
