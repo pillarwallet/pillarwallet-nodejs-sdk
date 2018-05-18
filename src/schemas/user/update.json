@@ -53,23 +53,11 @@
     },
     "profileImage": {
       "description": "The user's profileImage",
-      "type": "string",
-      "format": "uri"
+      "type": "string"
     }
   },
   "required": [
-    "walletId",
-    "firstName",
-    "lastName",
-    "email",
-    "phone",
-    "country",
-    "state",
-    "city",
-    "tagline",
-    "taglineStatus",
-    "userSearchable",
-    "profileImage"
+    "walletId"
     ]
 }
 

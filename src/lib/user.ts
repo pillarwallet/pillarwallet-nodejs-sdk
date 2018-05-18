@@ -31,7 +31,7 @@ export class User extends Configuration {
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userUpdate,Configuration.accessKeys.privateKey);
     postConfiguration.body = userUpdate;
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
+    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_UPDATE;
 
     return Requester.execute(postConfiguration);
   }

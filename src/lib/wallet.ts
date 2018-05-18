@@ -21,15 +21,19 @@ export class Wallet extends Configuration {
    * @returns {requestPromise.RequestPromise}
    */
   register(walletRegister: WalletRegister): RequestPromise {
-
+    //validating Input
+    if(!walletRegister.publicKey)
+    walletRegister.publicKey = PrivateKeyDerivation.getPublicKey(Configuration.accessKeys.privateKey);
+    if(!walletRegister.ethAddress)
+    walletRegister.ethAddress = PrivateKeyDerivation.getEthAddress(Configuration.accessKeys.privateKey);
     this.validation(walletRegisterSchema,walletRegister);
+
+    //Signing Header
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
-    walletRegister.publicKey = PrivateKeyDerivation.getPublicKey(Configuration.accessKeys.privateKey);
-    walletRegister.ethAddress = PrivateKeyDerivation.getEthAddress(Configuration.accessKeys.privateKey);
     postConfiguration.body = walletRegister;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
-
+    //http request
     return Requester.execute(postConfiguration);
   }
 
