@@ -356,7 +356,7 @@ const inputParams = {
     - fromTimestamp : String (ISO 8601 timestamp format)
 - Expected Output
     - result : 'success'(String)
-    - Notification
+    - Notifications
         - userId : Integer
         - message: Text
     
@@ -472,8 +472,6 @@ const inputParams = {
     - walletId : Integer
     - query : String
 - Expected Output
-    - result : 'success'(String),
-    - message : 'User was successfully deleted'(String),
     - user : JSON Object
       - id : Integer
       - firstName : String
@@ -481,8 +479,7 @@ const inputParams = {
       - country : String
       - state : String
       - city : String
-      - profileImage : Text(Url)
-        
+      - profileImage : Text(Url)       
 
 **User Delete**
 
