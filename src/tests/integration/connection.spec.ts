@@ -52,7 +52,7 @@ describe('connection endpoints', () => {
         // Unsuccessful response.
         result = error;
       });
-    console.log(result);
+    //console.log(result);
     //expect(result.result).toBe('success');
   });
 
@@ -74,7 +74,7 @@ describe('connection endpoints', () => {
         // Unsuccessful response.
         result = error;
       });
-    console.log(result);
+    //console.log(result);
     //expect(result.result).toBe('success');
   });
 
@@ -96,7 +96,7 @@ describe('connection endpoints', () => {
         // Unsuccessful response.
         result = error;
       });
-    console.log(result);
+   // console.log(result);
    // expect(result.result).toBe('success');
   });
 
@@ -117,7 +117,8 @@ describe('connection endpoints', () => {
         // Unsuccessful response.
         result = error;
       });
-    console.log(result);
+
+    // console.log(result);
    // expect(result.result).toBe('success');
   });
 
@@ -138,7 +139,7 @@ describe('connection endpoints', () => {
         // Unsuccessful response.
         result = error;
       });
-    console.log(result);
+    // console.log(result);
    // expect(result.result).toBe('success');
   });
 });

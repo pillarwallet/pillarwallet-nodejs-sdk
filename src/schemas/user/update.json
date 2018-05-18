@@ -53,8 +53,7 @@
     },
     "profileImage": {
       "description": "The user's profileImage",
-      "type": "string",
-      "format": "uri"
+      "type": "string"
     }
   },
   "required": [

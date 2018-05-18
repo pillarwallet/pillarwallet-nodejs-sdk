@@ -413,10 +413,10 @@ const inputParams = {
        - city : String
        - email : String
        - phone : String
-       - tagline : Boolean
+       - tagline : Text
        - taglineStatus : Boolean
        - userSearchable : Boolean
-       - profileImage : String(Url)
+       - profileImage : Text(Url)
 
 **User Info**
 
@@ -447,10 +447,10 @@ const inputParams = {
         - city : String
         - email : String
         - phone : String
-        - tagline : Boolean
+        - tagline : Text
         - taglineStatus : Boolean
         - userSearchable : Boolean
-        - profileImage : String(Url)
+        - profileImage : Text(Url)
         
 **User Search**
 
@@ -475,13 +475,13 @@ const inputParams = {
     - result : 'success'(String),
     - message : 'User was successfully deleted'(String),
     - user : JSON Object
-        - id : Integer
-        - firstName : String
-        - lastName : String
-        - country : String
-        - state : String
-        - city : String
-        - profileImage : String(Url)
+      - id : Integer
+      - firstName : String
+      - lastName : String
+      - country : String
+      - state : String
+      - city : String
+      - profileImage : Text(Url)
         
 
 **User Delete**
@@ -503,9 +503,9 @@ const inputParams = {
     - result : 'success'(String),
     - message : 'User was successfully deleted'(String),
     - user : JSON Object
-        - ethAddress : String
-        - fcmToken : String
-        - signalRegistrationId : String
+        - ethAddress : Text
+        - fcmToken : Text
+        - signalRegistrationId : Text
         
 ## Tests
 
