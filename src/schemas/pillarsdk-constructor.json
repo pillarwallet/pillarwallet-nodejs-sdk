@@ -8,8 +8,7 @@
     "privateKey": {
       "description": "Private Key buffer",
       "type": [ "string" ],
-      "pattern":"[a-fA-F0-9]{64}$",
-      "maxLength": 64
+      "pattern":"[a-fA-F0-9]{64}$"
     },
     "apiUrl": {
       "description": "API Url definition",
