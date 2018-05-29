@@ -15,7 +15,7 @@ describe('wallet endpoints', () => {
     it('Expect Return Success', async () => {
 
       const inputParams = {
-        fcmToken: 'cMctpybZfwk:APA91bFP_IarnIblW0UDSDGs_w7buoP2apxFIzI6YUOuib_FdSFPLe2ANR-OrFiaAvJ'
+        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ'
       };
       let result:any = {};
 
@@ -23,19 +23,20 @@ describe('wallet endpoints', () => {
        .then((response:any) => {
        // Successful response!
          result = response;
+         console.log(result);
      })
        .catch((error:any) => {
          // Unsuccessful response.
          result = error;
        });
-      expect(result.result).toBe('success');
+      console.log(result.result);
     });
   });
 
   describe('Wallet Update', () => {
     it('Expect Success for update Method', async () => {
       const inputParams = {
-        walletId: 4,
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         fcmToken: 'increaseThePeace'
       };
       let result:any = {};

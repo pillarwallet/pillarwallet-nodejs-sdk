@@ -1,6 +1,7 @@
 import { RequestPromise } from 'request-promise';
 
 import { default as postConfiguration } from '../utils/requester-configurations/post';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from "./constants/httpEndpoints";
@@ -8,6 +9,7 @@ import { PrivateKeyDerivatives } from "../utils/private-key-derivatives";
 
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
+const walletValidateSchema = require('../schemas/wallet/validate.json');
 
 export class Wallet extends Configuration {
 
@@ -23,9 +25,9 @@ export class Wallet extends Configuration {
   register(walletRegister: WalletRegister): RequestPromise {
     //validating Input
     if(!walletRegister.publicKey)
-    walletRegister.publicKey = PrivateKeyDerivation.getPublicKey(Configuration.accessKeys.privateKey);
+    walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(Configuration.accessKeys.privateKey);
     if(!walletRegister.ethAddress)
-    walletRegister.ethAddress = PrivateKeyDerivation.getEthAddress(Configuration.accessKeys.privateKey);
+    walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(Configuration.accessKeys.privateKey);
     this.validation(walletRegisterSchema,walletRegister);
 
     //Signing Header
@@ -54,4 +56,22 @@ export class Wallet extends Configuration {
 
     return Requester.execute(postConfiguration);
   }
+
+  /**
+   * Validates that a user/wallet record exists and returns its status
+   * @param {WalletValidate} walletValidate
+   * @returns {requestPromise.RequestPromise}
+   */
+  validate(walletValidate: WalletValidate): RequestPromise {
+
+    this.validation(walletValidateSchema,walletValidate);
+
+    getConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletValidate,Configuration.accessKeys.privateKey);
+    getConfiguration.qs = walletValidate;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_VALIDATE;
+
+    return Requester.execute(getConfiguration);
+  }
+
 }
