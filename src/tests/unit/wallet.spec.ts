@@ -41,8 +41,7 @@ describe('The Wallet Class: Register method', () => {
     let errorThrown;
     const walletRegistrationData = {
       fcmToken: '987qwe',
-      publicKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312aae' +
-      'f23212dbaadfa322321231231313123131312312312312312312312312312' // publicKey invalid with 1 char less than expected
+      publicKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312aaef23212dbaadfa322321231231313123131312312312312312312312312abb'// publicKey invalid with 1 char less than expected
     };
 
     try {

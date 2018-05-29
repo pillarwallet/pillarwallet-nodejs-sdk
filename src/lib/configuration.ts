@@ -21,7 +21,7 @@ export class Configuration {
   initialise(incomingConfiguration: PillarSdkConfiguration) {
     Configuration.accessKeys = incomingConfiguration;
     if(!Configuration.accessKeys.apiUrl)
-      Configuration.accessKeys.apiUrl = 'localhost:8080';
+      Configuration.accessKeys.apiUrl = 'http://localhost:8080';
   }
 
   /**
