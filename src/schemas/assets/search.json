@@ -7,8 +7,8 @@
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number",
-      "exclusiveMinimum": 0
+      "type": "string",
+      "format": "uuid"
     },
     "query": {
       "description": "The query string to search for",
