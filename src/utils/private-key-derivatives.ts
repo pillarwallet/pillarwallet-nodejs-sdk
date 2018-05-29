@@ -2,7 +2,7 @@ const EC = require("elliptic").ec;
 const keccak256 = require('js-sha3').keccak256;
 const ellipticCurve =  new EC("secp256k1");
 
-export class PrivateKeyDerivation {
+export class PrivateKeyDerivatives {
 
   /**
    * Get the Public Key from PrivateKey
