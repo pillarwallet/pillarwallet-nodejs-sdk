@@ -9,7 +9,6 @@
       "description": "The publicKey of one wallet",
       "type": "string",
       "pattern":"[a-fA-F0-9]{128}$"
-
     },
     "ethAddress": {
       "description": "The Ethereum address of one wallet",

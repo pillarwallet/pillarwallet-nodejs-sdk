@@ -4,7 +4,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from "./constants/httpEndpoints";
-import { PrivateKeyDerivation } from "../utils/private-key-derivation";
+import { PrivateKeyDerivatives } from "../utils/private-key-derivatives";
 
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
@@ -31,6 +31,7 @@ export class Wallet extends Configuration {
     //Signing Header
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
+
     postConfiguration.body = walletRegister;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
     //http request

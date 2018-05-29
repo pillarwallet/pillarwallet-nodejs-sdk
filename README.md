@@ -1,133 +1,202 @@
 # Pillar Wallet SDK 
 
-The Pillar Wallet SDK aims to make it easy for developers to get started using [Pillar Wallet backend services](https://github.com/pillarwallet/core-wallet-backend).
+The Pillar Wallet SDK aims to make it easy for developers to get started using 
+[Pillar Wallet backend services](https://github.com/pillarwallet/core-wallet-backend).
 
-## Getting Started
+## Contents
 
-Install npm package:
+- [Getting started](#getting-started-sdk)
+- [Config](#config)
+- [Response and Error](#response-and-error)
+- [Methods](#methods)
+- [Tests](#tests)
+- [Coding Style Guide](#coding-style-guide)
+- [Versioning](#versioning)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+## Get Started
+
+Install the npm package:
 
 `npm i @pillarwallet/pillarwallet-nodejs-sdk`
 
 In your project:
 
-`const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');`
+`
+const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');
+`
 
-Instantiate an instance of the Pillar SDK:
+## Config
 
-`const pSdk = new PillarSdk();`
+**IMPORTANT! Complete these steps to use this SDK:**
 
-#### Config
+#### 1 - Create An Instance
 
-Here you can set the Api Url and Wallet privateKey variables.
+Instantiate the Pillar SDK, then set the apiUrl(Optional) and wallet privateKey variables.
 
 ```
-const pSdk = new PillarSdk({
+const pillarSdk = new PillarSdk({
   apiUrl: 'http://localhost:8080',
   privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
+- Input
+    - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
+    - privateKey : hexadecimal string and 64 characters length.
 
-In order to use Backend services, you shall first register Wallet.
-As explained bellow:
+#### 2 - Register the Wallet
 
-### First Registration
+To use backend services, register the wallet:
 
-**IMPORTANT! All methods return promises.**
+```typescript
+pillarSdk.wallet.register(inputParams)
+```
 
-* Getting Response and error
+Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX. 
 
-    For every method presented here, it is possible 
-to get the response and error doing:
+
+```typescript
+const inputParams = {
+   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
+ }
+```
+
+- Input
+    - fcmToken : string
+    
+- Expected Output
+    - result : 'success'(String),
+    - message : 'Wallet created successfully.'(String),
+    - walletId : Integer
+    - userId: Integer
+
+## Response And Error
+
+To get the response and error for these methods, use: 
     
  ```
- pSdk.wallet.register(
+ pillarSdk.wallet.register(
  {
-   ethAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
    fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
-   publicKey: 'dfhuodhv8jdv8hsd9nvdvfh',
   })
  .then((response) => {
    // Successful response!
+   result = response.result;
+   message = response.message;
+   walletId = response.walletId;
+   userId = response.userId;
  })
  .catch((error) => {
    // Unsuccessful response.
+   name = error.name;
+   status = error.statusCode; 
+   message = error.message;
+   error = error.error;
  });
  ```
+ 
+## Methods
 
-* Wallet Register
+**IMPORTANT! All methods return promises.**
 
-Input Parameters
+**Wallet Update**
 
-```
-const inputParams = {
-   ethAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
-   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
-   publicKey: 'dfhuodhv8jdv8hsd9nvdvfh',
-  }
+```typescript
+pillarSdk.wallet.update(inputParams)
 ```
 
- Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
+Updates FcmToken in the backend.
 
-```
-pSdk.wallet.register(inputParams)
-```
-
-### Methods
-
-* Wallet Update
-
-Input Parameters
-
-```
+```typescript
 const inputParams = {
  walletId: 126,
- ethAddress: "0x3948yhudfh97h3r78hf78hsdi",
  fcmToken: "dfj8hjs9dahfdbf7dsbfbds7f",
- signalRegistrationId: "dcn98adcbsdgc6sbd7csd8gds78"
   }
 ```
 
-  Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
+- Input
+    -fcmToken : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String),
+    - message : 'OK'(String)
 
-```
-pSdk.wallet.update(inputParams)
+**Asset Defaults**
+
+```typescript
+pillarSdk.asset.defaults(inputParams)
 ```
 
-* Asset Defaults
+Returns a list of assets that are marked as default assets.
 
-```
+```typescript
 const inputParams = {
  walletId: 12,
  };
 ```
 
- Method asset defaults returns a list of assets that are marked as default assets.
+- Input
+    - walletId : Integer
+- Expected Output
+    JSON Collection of Objects with respective Values
+    - address: Text,
+    - decimals: Integer,
+    - description: Text,
+    - name: Text,
+    - symbol: Text,
+    - wallpaperUrl: Text,
+    - iconUrl: Text,
+    - email: Text,
+    - telegram: Text,
+    - twitter: Text,
+    - website: Text,
+    - whitepaper: Text,
+    - isDefault: 1 (Boolean).
 
-```
-pSdk.asset.defaults(inputParams)
+**Asset Search**
 
-```
-
-* Asset Search
-
-```
+```typescript
 const inputParams = {
    walletId: 123,
    query: 'search query here',
  };
-
 ```
 
-Method asset defaults returns a list of assets that contain the search criteria which would be the name, 
-token symbol or smartcontract hexadecimal address.
+Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
 
-```
-pSdk.asset.search(inputParams)
+```typescript
+pillarSdk.asset.search(inputParams)
 ```
 
-* Connection Invite
+- Input
+    - walletId : Integer
+    - query : String
+- Expected Output
+    JSON Collection of Objects with respective Values
+    - address: Text,
+    - decimals: Integer,
+    - description: Text,
+    - name: Text,
+    - symbol: Text,
+    - wallpaperUrl: Text,
+    - iconUrl: Text,
+    - email: Text,
+    - telegram: Text,
+    - twitter: Text,
+    - website: Text,
+    - whitepaper: Text,
+    - isDefault: Boolean.
 
+**Connection Invite**
+
+```typescript
+pillarSdk.connection.invite(inputParams)
 ```
+
+Creates a connection invitation for a user to create a relationship with another contact.
+
+```typescript
 const inputParams = {
   targetUserId: 1,
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
@@ -135,15 +204,23 @@ const inputParams = {
 };
 ```
 
-Creates a connection invitation for a user to create a relationship with another contact.
+- Input
+    - targetUserId : Integer
+    - accessKey : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection invitation was successfully sent'(String)
 
-```
-pSdk.connection.invite(inputParams)
+**Connection Accept**
+
+```typescript
+pillarSdk.connection.accept(inputParams)
 ```
 
-* Connection Accept
+Accepts a connection invitation from another user.
 
-```
+```typescript
 const inputParams =
  {
    targetUserId: 1,
@@ -154,15 +231,25 @@ const inputParams =
 
 ```
 
-Accept a connection invitation from another user
+- Input
+    - targetUserId : Integer
+    - walletId : Integer
+    - sourceUserAccessKey : String
+    - targetUserAccessKey : String
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection invitation accepted'(String)
+
+**Connection Reject**
+
+```typescript
+pillarSdk.connection.reject(inputParams)
 
 ```
-pSdk.connection.accept(inputParams)
-```
 
-* Connection Reject
+Rejects a connection invitation from another user.
 
-```
+```typescript
 const inputParams = {
      targetUserId: 1,
      accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
@@ -170,16 +257,24 @@ const inputParams = {
  };
 ```
 
-Reject a connection invitation from another user
+- Input
+    - targetUserId : Integer
+    - accessKey : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection invitation rejected'(String)
+
+**Connection Cancel**
+
+```typescript
+pillarSdk.connection.cancel(inputParams)
 
 ```
-pSdk.connection.reject(inputParams)
 
-```
+Cancels a connection invitation from another user.
 
-* Connection Cancel
-
-```
+```typescript
 const inputParams = {
      targetUserId: 1,
      accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
@@ -187,63 +282,93 @@ const inputParams = {
  };
 ```
 
-Cancels a connection invitation that a user previously initiated
+- Input
+    - targetUserId : Integer
+    - accessKey : String
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection canceled'(String)
+
+**Connection Block**
+
+```typescript
+pillarSdk.connection.block(inputParams)
 
 ```
-pSdk.connection.reject(inputParams)
 
-```
+Blocks a connection request from another user.
 
-* Connection Block
-
-```
+```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
   walletId: 1
  };
 ```
 
-Blocks a connection request from another user
+- Input
+    - accessKey : String 
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection blocked'(String)
 
-```
-pSdk.connection.reject(inputParams)
+**Connection Mute**
 
-```
+```typescript
+pillarSdk.connection.mute(inputParams)
 
-* Connection Mute
-
-```
-const inputParams = {
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
- };
 ```
 
 Mutes future communication from another contact.
 
-```
-pSdk.connection.mute(inputParams)
-
-```
-
-* Notification List
-
-```
+```typescript
 const inputParams = {
-  walletId: 1,
-  fromTimestamp: '1525263620',
-};
+  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
+  walletId: 1
+ };
+```
+
+- Input
+    - accessKey : String 
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String)
+    - message : 'Connection muted'(String)
+
+**Notification List**
+
+```typescript
+pillarSdk.notification.list(inputParams);
 ```
 
 Provides a list of notifications for a specific wallet user.
 
-```
-pSdk.notification.list(inputParams);
+```typescript
+const inputParams = {
+  walletId: 1,
+  fromTimestamp: '2016-05-24T15:54:14.876Z',
+};
 ```
 
-* User Update
+- Input
+    - walletId : Integer
+    - fromTimestamp : String (ISO 8601 timestamp format)
+- Expected Output
+    - result : 'success'(String)
+    - Notifications
+        - userId : Integer
+        - message: Text
+    
+**User Update**
 
+```typescript
+pillarSdk.user.update(inputParams);
 ```
+
+Updates data elements on a wallet user.
+
+```typescript
 const inputParams = {
   walletId: 123,
   firstName: 'Homer',
@@ -254,82 +379,148 @@ const inputParams = {
   state: 'NA',
   city: 'Springfield',
   tagline: 'Tagline',
-  taglineStatus: 'Busy',
-  userSearchable: 'dunno',
+  taglineStatus: true ,
+  userSearchable: true ,
   profileImage: 'http://homer.jpg',
 };
 ``` 
 
-Updates data elements on an existing wallet user.
+- Input
+    - walletId : Integer
+    - firstName : String
+    - lastName : String
+    - country : String
+    - state : String
+    - city : String
+    - email : String
+    - phone : String
+    - tagline : String
+    - taglineStatus : Boolean
+    - userSearchable : Boolean
+    - profileImage : String(Url)
+- Expected Output
+     - result : 'success'(String),
+     - message : 'User was successfully updated'(String),
+     - Payload JSON Object
+       - ethAddress : String
+       - fcmToken : String
+       - signalRegistrationId : String
+       - id : Integer
+       - firstName : String
+       - lastName : String
+       - country : String
+       - state : String
+       - city : String
+       - email : String
+       - phone : String
+       - tagline : Text
+       - taglineStatus : Boolean
+       - userSearchable : Boolean
+       - profileImage : Text(Url)
 
-```
-pSdk.user.update(inputParams);
+**User Info**
+
+```typescript
+pillarSdk.user.info(inputParams);
 ```
 
-* User Info
+Retrieves information on an existing wallet user.
 
-```
+```typescript
 const inputParams = {
   walletId: 123,
 };
-``` 
-
-Retrieve information on an existing wallet user
-
-```
-pSdk.user.info(inputParams);
 ```
 
-* User Search
+- Input
+    - walletId : Integer
+- Expected Output
+    - Payload JSON Object
+        - ethAddress : String
+        - fcmToken : String
+        - signalRegistrationId : String
+        - id : Integer
+        - firstName : String
+        - lastName : String
+        - country : String
+        - state : String
+        - city : String
+        - email : String
+        - phone : String
+        - tagline : Text
+        - taglineStatus : Boolean
+        - userSearchable : Boolean
+        - profileImage : Text(Url)
+        
+**User Search**
 
+```typescript
+pillarSdk.user.search(inputParams);
 ```
+
+Provides a list of users that contain the search criteria for first or last name, and is not the current wallet user.
+ Also checks if the search string term is at least two characters and if the user allows their profile to be searched.
+
+```typescript
 const inputParams = {
   walletId: 1,
   query: 'searchforme',
 };
-``` 
-
-Provides a list of users that contain the search criteria in either their first name or last name,
-and is not the current wallet user. Also it performs a check if the search string term is at least 2 
-characters and if the user allows their profile to be searched.
-
-```
-pSdk.user.search(inputParams);
 ```
 
-* User Delete
+- Input
+    - walletId : Integer
+    - query : String
+- Expected Output
+    - user : JSON Object
+      - id : Integer
+      - firstName : String
+      - lastName : String
+      - country : String
+      - state : String
+      - city : String
+      - profileImage : Text(Url)       
+
+**User Delete**
 
 ```
+ pillarSdk.user.delete(inputParams);
+```
+
+Removes a wallet user profile from the database.
+
+```typescript
 const inputParams = {
   walletId: 123,
 };
-``` 
-
-Remove an existing wallet user profile from the database
-
 ```
-pSdk.user.delete(inputParams);
-```
+- Input
+    - walletId : Integer
+- Expected Output
+    - result : 'success'(String),
+    - message : 'User was successfully deleted'(String),
+    - user : JSON Object
+        - ethAddress : Text
+        - fcmToken : Text
+        - signalRegistrationId : Text
+        
+## Tests
 
-## Running the tests
-
-Run the tests
+Run the test:
 
 ```
 npm test
 ```
 
-or
+or:
 
 ```
 jest
 ```
 
+## Coding Style Guide
 
-### Coding style Guide
-
-We are using TSLint Config Airbnb for Style Guide.
-You can find more details [here](https://github.com/airbnb/javascript).
+We use the [TSLint Config Airbnb Style Guide](https://github.com/airbnb/javascript).
 
 ## Versioning
 
@@ -337,9 +528,8 @@ We use [Swagger](https://app.swaggerhub.com/apis/Pillar-Project7/core-wallet-bac
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT license.
 
 ## Acknowledgments
 
-* We are using Pillar Authentication SDK to create Signatures. You can find more detais here : 
-    [plr-auth-sdk](https://github.com/pillarwallet/pillar-authentication-sdk)
+We use the [Pillar Authentication SDK](https://github.com/pillarwallet/pillar-authentication-sdk) to create signatures.
