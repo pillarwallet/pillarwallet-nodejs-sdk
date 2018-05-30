@@ -23,9 +23,9 @@ export class Wallet extends Configuration {
   register(walletRegister: WalletRegister): RequestPromise {
     //validating Input
     if(!walletRegister.publicKey)
-    walletRegister.publicKey = PrivateKeyDerivation.getPublicKey(Configuration.accessKeys.privateKey);
+    walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(Configuration.accessKeys.privateKey);
     if(!walletRegister.ethAddress)
-    walletRegister.ethAddress = PrivateKeyDerivation.getEthAddress(Configuration.accessKeys.privateKey);
+    walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(Configuration.accessKeys.privateKey);
     this.validation(walletRegisterSchema,walletRegister);
 
     //Signing Header
