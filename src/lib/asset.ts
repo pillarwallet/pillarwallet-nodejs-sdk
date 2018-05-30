@@ -3,12 +3,15 @@ import { RequestPromise } from 'request-promise';
 
 import { Requester } from '../utils/requester';
 import { default as getConfiguration } from '../utils/requester-configurations/get';
+import { default as putConfiguration } from '../utils/requester-configurations/put';
+import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
 import { Configuration }  from './configuration';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 
 const assetDefaultsSchema = require('../schemas/assets/defaults.json');
 const assetSearchSchema = require('../schemas/assets/search.json');
-
+const assetUpdateSchema = require('../schemas/assets/update.json');
+const assetDeleteSchema = require('../schemas/assets/delete.json');
 
 export class Asset extends Configuration {
 
@@ -48,5 +51,37 @@ export class Asset extends Configuration {
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_SEARCH;
 
     return Requester.execute(getConfiguration);
+  }
+
+  /**
+   * Update data elements on an existing asset record or create a new asset record
+   * @param {AssetUpdate} assetUpdate
+   * @returns {requestPromise.RequestPromise}
+   */
+  update(assetUpdate: AssetUpdate): RequestPromise {
+    this.validation(assetUpdateSchema, assetUpdate);
+
+    putConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(assetUpdate, Configuration.accessKeys.privateKey);
+    putConfiguration.body = assetUpdate;
+    putConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_UPDATE;
+
+    return Requester.execute(putConfiguration);
+  }
+
+  /**
+   * Remove an existing asset from the database
+   * @param {AssetDelete} assetDelete
+   * @returns {requestPromise.RequestPromise}
+   */
+  delete(assetDelete: AssetDelete): RequestPromise {
+    this.validation(assetDeleteSchema, assetDelete);
+
+    deleteConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(assetDelete, Configuration.accessKeys.privateKey);
+    deleteConfiguration.body = assetDelete;
+    deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DELETE;
+
+    return Requester.execute(deleteConfiguration);
   }
 }
