@@ -71,7 +71,7 @@ describe('The Wallet Class: Register method', () => {
 describe('The Wallet Class: Update method', () => {
   it('should successfully call with valid data', () => {
     const walletUpdateData = {
-      walletId: 1,
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       fcmToken: '987qwe'
     };
 

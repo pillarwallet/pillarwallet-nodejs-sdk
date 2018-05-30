@@ -7,8 +7,7 @@
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "string",
-      "format": "uuid"
+      "type": "string"
     },
     "ethAddress": {
       "description": "The Ethereum address of one wallet",

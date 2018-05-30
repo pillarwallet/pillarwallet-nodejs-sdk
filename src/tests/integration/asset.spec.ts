@@ -29,7 +29,7 @@ describe('asset endpoints', () => {
           return error;
         });
 
-      console.log(result);
+      expect(result).toBeTruthy();
     });
   });
 
@@ -52,7 +52,7 @@ describe('asset endpoints', () => {
           return error;
         });
 
-      console.log(result);
+      expect(result).toBeTruthy();
 
     });
   });
