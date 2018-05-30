@@ -16,7 +16,7 @@
     "address": {
       "description": "The address of one token",
       "type": "string",
-      "pattern":"^0x[a-fA-F0-9]{40}$"
+      "pattern": "^0x[a-fA-F0-9]{40}$"
     },
     "decimals": {
       "description": "Number of decimals of one token",
@@ -28,12 +28,12 @@
     },
     "wallpaperUrl": {
       "description": "wallpaper Url of one token",
-      "type": [ "string" ],
+      "type": "string",
       "format": "uri"
     },
     "iconUrl": {
       "description": "Icon Url of one token",
-      "type": [ "string" ],
+      "type": "string",
       "format": "uri"
     },
     "email": {
@@ -51,18 +51,18 @@
     },
     "website": {
       "description": "Website of the asset",
-      "type": [ "string" ],
+      "type": "string",
       "format": "uri"
     },
     "whitepaper": {
       "description": "Whitepaper of one token",
-      "type": [ "string" ],
+      "type": "string",
       "format": "uri"
     },
     "isDefault": {
       "description": "Sets this token as default to User list",
       "type": "boolean"
-    },
+    }
   },
-  "required": [ "name" ]
+  "required": ["name"]
 }
