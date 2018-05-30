@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Assets Class - Update",
+  "description": "Schema definition for Asset Class - Update method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The name of the token to be updated",
+      "type": "string"
+    },
+    "symbol": {
+      "description": "Ticker symbol of one token",
+      "type": "string"
+    },
+    "address": {
+      "description": "The address of one token",
+      "type": "string",
+      "pattern":"^0x[a-fA-F0-9]{40}$"
+    },
+    "decimals": {
+      "description": "Number of decimals of one token",
+      "type": "number"
+    },
+    "description": {
+      "description": "Description of one token",
+      "type": "string"
+    },
+    "wallpaperUrl": {
+      "description": "wallpaper Url of one token",
+      "type": [ "string" ],
+      "format": "uri"
+    },
+    "iconUrl": {
+      "description": "Icon Url of one token",
+      "type": [ "string" ],
+      "format": "uri"
+    },
+    "email": {
+      "description": "The token's email",
+      "type": "string",
+      "format": "email"
+    },
+    "telegram": {
+      "description": "Telegram link of one token",
+      "type": "string"
+    },
+    "twitter": {
+      "description": "Twitter of one token",
+      "type": "string"
+    },
+    "website": {
+      "description": "Website of the asset",
+      "type": [ "string" ],
+      "format": "uri"
+    },
+    "whitepaper": {
+      "description": "Whitepaper of one token",
+      "type": [ "string" ],
+      "format": "uri"
+    },
+    "isDefault": {
+      "description": "Sets this token as default to User list",
+      "type": "boolean"
+    },
+  },
+  "required": [ "name" ]
+}

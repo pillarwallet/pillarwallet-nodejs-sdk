@@ -3,6 +3,8 @@ export class HttpEndpoints {
   static WALLET_UPDATE = '/wallet/update';
   static ASSET_DEFAULT = '/asset/defaults';
   static ASSET_SEARCH = '/asset/search';
+  static ASSET_DELETE = '/asset/delete';
+  static ASSET_UPDATE = '/asset/update';
   static CONNECTION_INVITE = '/connection/invite';
   static CONNECTION_ACCEPT = '/connection/accept';
   static CONNECTION_REJECT = '/connection/reject';
