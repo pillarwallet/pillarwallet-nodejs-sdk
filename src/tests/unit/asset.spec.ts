@@ -11,7 +11,7 @@ beforeEach(() => {
 describe('The Asset Class: Defaults method', () => {
   it ('should successfully call with valid data', () => {
     const assetDefaultsData = {
-      walletId: 1,
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -40,7 +40,7 @@ describe('The Asset Class: Defaults method', () => {
 describe('The Asset Class: Search method', () => {
   it ('should successfully call with valid data', () => {
     const assetSearchData = {
-      walletId: 1,
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       query: 'searchthis',
     };
 

@@ -15,23 +15,21 @@ describe('asset endpoints', () => {
     it('Expect success', async () => {
 
       const inputParams = {
-        walletId: 1,
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
-      let result:any = {};
-
-      pSdk.asset.defaults(inputParams)
-        .then((response:any) => {
+      const result = await pSdk.asset.defaults(inputParams)
+        .then((response: any) => {
           // Successful response!
-          result = response;
+          //console.log(response);
+          return response;
         })
-        .catch((error:any) => {
+        .catch((error: any) => {
           // Unsuccessful response.
-          result = error;
+          return error;
         });
 
-      console.log(result);
-
+      expect(result).toBeTruthy();
     });
   });
 
@@ -39,23 +37,22 @@ describe('asset endpoints', () => {
     it('Expect success', async () => {
 
       const inputParams = {
-        walletId: 1,
-        query: 'a',
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        query: 'p',
       };
 
-      let result:any = {};
-
-      pSdk.asset.search(inputParams)
-        .then((response:any) => {
+      const result = await pSdk.asset.search(inputParams)
+        .then((response: any) => {
           // Successful response!
-          result = response;
+          //console.log(response);
+          return response;
         })
-        .catch((error:any) => {
+        .catch((error: any) => {
           // Unsuccessful response.
-          result = error;
+          return error;
         });
 
-      console.log(result);
+      expect(result).toBeTruthy();
 
     });
   });
