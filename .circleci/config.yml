@@ -48,10 +48,7 @@ jobs:
           command: |
             git config user.email "devops@pillar.io"
             git config user.name "Issabot"
-            export currentVersion=$(node -p "require('./package.json').version")
-            export newVersion=$currentVersion$(echo .$CIRCLE_BUILD_NUM)
-            echo $newVersion
-            npm version $newVersion
+            npm version $(node -e "const currentVersion=require('./package.json').version; const firstTwoDots=currentVersion.substring(0, currentVersion.lastIndexOf('.')); const newVersion=firstTwoDots+'.$CIRCLECI_BUILD_NUM'; console.log(newVersion);")
       - run:
             name: Authenticate with registry
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
