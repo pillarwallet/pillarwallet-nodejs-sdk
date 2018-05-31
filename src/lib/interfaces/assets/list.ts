@@ -1,0 +1,3 @@
+interface AssetList {
+  walletId: number;
+}

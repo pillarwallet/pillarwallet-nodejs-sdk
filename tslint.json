@@ -2,7 +2,7 @@
   "extends": "tslint-config-airbnb",
   "linterOptions": {
     "exclude": [
-        "dist",
+        "dist"
     ]
   }
 }
