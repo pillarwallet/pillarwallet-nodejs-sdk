@@ -1,8 +1,6 @@
-const HDKey = require('hdkey');
-
-module.exports = () => {
-  const seed = 'a0c42a9c3ac6abf2ba6a9946ae83af18f51bf1c9fa7dacc4c92513cc4dd015834341c775dcd4c0fac73547c5662d81a9e9361a0aac604a73a321bd9103bce8af';
-  const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'));
-
-  return hdkey;
+module.exports = {
+  privateKey: 'e47d7c7a35949192026b392b3f2195926ebc020a8df820bb63fdf56b653302',
+  privateKeyString: 'e47d7c7a35949192026b392b3f2195926ebc020a8df820bb63fdf56b653302',
+  publicKey: '04d3a5315537d5cda37305bd2ad3752e40c668ffc2075aa216454cfd3e4e6d7280f0e39b49cc4a346db71308c4fbdadc7aec161679ea6b9f1bbacba32efdccd414',
+  publicKeyString: '04d3a5315537d5cda37305bd2ad3752e40c668ffc2075aa216454cfd3e4e6d7280f0e39b49cc4a346db71308c4fbdadc7aec161679ea6b9f1bbacba32efdccd414',
 };
