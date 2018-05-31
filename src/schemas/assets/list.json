@@ -1,0 +1,13 @@
+{
+  "title": "Assets Class - List",
+  "description": "Schema definition for Asset Class - Defaults method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    }
+  },
+  "required": [ "walletId" ]
+}

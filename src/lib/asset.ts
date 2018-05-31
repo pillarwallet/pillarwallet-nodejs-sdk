@@ -10,6 +10,7 @@ import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 
 const assetDefaultsSchema = require('../schemas/assets/defaults.json');
 const assetSearchSchema = require('../schemas/assets/search.json');
+const assetListSchema = require('../schemas/assets/list.json');
 const assetUpdateSchema = require('../schemas/assets/update.json');
 const assetDeleteSchema = require('../schemas/assets/delete.json');
 
@@ -25,9 +26,9 @@ export class Asset extends Configuration {
    * @returns {requestPromise.RequestPromise}
    */
   defaults(assetDefaults: AssetDefaults): RequestPromise {
-    //validation
+    // validation
     this.validation(assetDefaultsSchema,assetDefaults);
-    //setting the request
+    // setting the request
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetDefaults.walletId, Configuration.accessKeys.privateKey);
     getConfiguration.qs = assetDefaults;
@@ -49,6 +50,22 @@ export class Asset extends Configuration {
       this.checkSignature(assetSearch, Configuration.accessKeys.privateKey);
     getConfiguration.qs = assetSearch;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_SEARCH;
+
+    return Requester.execute(getConfiguration);
+  }
+
+  /**
+   * Returns a list of assets.
+   * @param {AssetList} assetList
+   * @returns {requestPromise.RequestPromise}
+   */
+  list(assetList:AssetList): RequestPromise {
+    this.validation(assetListSchema, assetList);
+
+    getConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(assetList, Configuration.accessKeys.privateKey);
+    getConfiguration.qs = assetList;
+    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_LIST;
 
     return Requester.execute(getConfiguration);
   }

@@ -6,6 +6,7 @@ export class HttpEndpoints {
   static ASSET_SEARCH = '/asset/search';
   static ASSET_DELETE = '/asset/delete';
   static ASSET_UPDATE = '/asset/update';
+  static ASSET_LIST = '/asset/list';
   static CONNECTION_INVITE = '/connection/invite';
   static CONNECTION_ACCEPT = '/connection/accept';
   static CONNECTION_REJECT = '/connection/reject';
