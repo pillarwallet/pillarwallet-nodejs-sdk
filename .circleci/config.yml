@@ -31,7 +31,7 @@ jobs:
   test:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
-      - image: circleci/node:4.8.2
+      - image: circleci/node:8.9.4
     steps:
       - checkout
       - run:
@@ -40,9 +40,12 @@ jobs:
   publish:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
-      - image: circleci/node:4.8.2
+      - image: circleci/node:8.9.4
     steps:
       - checkout
+      - run:
+          name: get latest npm
+          command: 'sudo npm install -g npm@latest'
       - run:
           name: Append circleCI build number to version
           command: |
