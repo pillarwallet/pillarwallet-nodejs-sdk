@@ -1,6 +1,6 @@
-# Pillar Wallet SDK 
+# Pillar Wallet SDK
 
-The Pillar Wallet SDK aims to make it easy for developers to get started using 
+The Pillar Wallet SDK aims to make it easy for developers to get started using
 [Pillar Wallet backend services](https://github.com/pillarwallet/core-wallet-backend).
 
 ## Contents
@@ -26,6 +26,13 @@ In your project:
 `
 const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');
 `
+
+## A quick note on versioning
+
+During the pipeline process, we need to automatically ensure our version number is unique. To to this we replace the last semver digit of the package.json's Version setting with the current circle CI build number. It's a bit of a hack but it means we don't need to think about the version number before commiting+pushing.
+
+eg. if you give us version=2.3.1, and this is picked up by circle's 492nd build job, your package will be published as version=2.3.492
+
 
 ## Config
 
@@ -53,7 +60,7 @@ To use backend services, register the wallet:
 pillarSdk.wallet.register(inputParams)
 ```
 
-Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX. 
+Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX.
 
 
 ```typescript
@@ -64,7 +71,7 @@ const inputParams = {
 
 - Input
     - fcmToken : string
-    
+
 - Expected Output
     - result : 'success'(String),
     - message : 'Wallet created successfully.'(String),
@@ -73,8 +80,8 @@ const inputParams = {
 
 ## Response And Error
 
-To get the response and error for these methods, use: 
-    
+To get the response and error for these methods, use:
+
  ```
  pillarSdk.wallet.register(
  {
@@ -90,12 +97,12 @@ To get the response and error for these methods, use:
  .catch((error) => {
    // Unsuccessful response.
    name = error.name;
-   status = error.statusCode; 
+   status = error.statusCode;
    message = error.message;
    error = error.error;
  });
  ```
- 
+
 ## Methods
 
 **IMPORTANT! All methods return promises.**
@@ -307,7 +314,7 @@ const inputParams = {
 ```
 
 - Input
-    - accessKey : String 
+    - accessKey : String
     - walletId : Integer
 - Expected Output
     - result : 'success'(String)
@@ -330,7 +337,7 @@ const inputParams = {
 ```
 
 - Input
-    - accessKey : String 
+    - accessKey : String
     - walletId : Integer
 - Expected Output
     - result : 'success'(String)
@@ -359,7 +366,7 @@ const inputParams = {
     - Notifications
         - userId : Integer
         - message: Text
-    
+
 **User Update**
 
 ```typescript
@@ -383,7 +390,7 @@ const inputParams = {
   userSearchable: true ,
   profileImage: 'http://homer.jpg',
 };
-``` 
+```
 
 - Input
     - walletId : Integer
@@ -451,7 +458,7 @@ const inputParams = {
         - taglineStatus : Boolean
         - userSearchable : Boolean
         - profileImage : Text(Url)
-        
+
 **User Search**
 
 ```typescript
@@ -503,7 +510,7 @@ const inputParams = {
         - ethAddress : Text
         - fcmToken : Text
         - signalRegistrationId : Text
-        
+
 ## Tests
 
 Run the test:
