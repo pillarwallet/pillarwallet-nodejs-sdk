@@ -48,7 +48,10 @@ jobs:
           command: |
             git config user.email "devops@pillar.io"
             git config user.name "Issabot"
-            npm version $(node -p "require('./package.json').version")$(echo .$CIRCLE_BUILD_NUM)
+            export currentVersion=$(node -p "require('./package.json').version")
+            export newVersion=$currentVersion$(echo .$CIRCLE_BUILD_NUM)
+            echo $newVersion
+            npm version $newVersion
       - run:
             name: Authenticate with registry
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
@@ -69,4 +72,4 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only: fix_version_number_issue
