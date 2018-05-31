@@ -6,7 +6,7 @@ import { default as getConfiguration } from '../utils/requester-configurations/g
 
 import { Configuration } from './configuration';
 
-import {HttpEndpoints} from "./constants/httpEndpoints";
+import { HttpEndpoints } from './constants/httpEndpoints';
 
 const userInfoSchema = require('../schemas/user/info.json');
 const userUpdateSchema = require('../schemas/user/update.json');
@@ -54,10 +54,10 @@ export class User extends Configuration {
   }
 
   /**
-   * Provides a list of users that contain the search criteria in either their first name or last name,
-   * and is not the current wallet user.
-   * Also it performs a check if the search string term is at least 2 characters and if the user allows
-   * their profile to be searched.
+   * Provides a list of users that contain the search criteria in either their first name or last
+   * name, and is not the current wallet user.
+   * Also it performs a check if the search string term is at least 2 characters and if the user
+   * allows their profile to be searched.
    * @param {UserSearch} userSearch
    * @returns {requestPromise.RequestPromise}
    */
