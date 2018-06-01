@@ -4,13 +4,16 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "publicKey": {
-      "description": "The publicKey of one wallet",
-      "type": "string",
-      "pattern":"[a-fA-F0-9]{128}$"
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
     },
-    "ethAddress": {
-      "description": "The Ethereum address of one wallet",
+    "blockchain": {
+      "description": "Specify blockchain",
+      "type": "string"
+    },
+    "blockchainAddress": {
+      "description": "The blockchain address of one wallet",
       "type": "string",
       "pattern":"^0x[a-fA-F0-9]{40}$"
     },
@@ -20,5 +23,5 @@
       "pattern": "[0-9a-zA-z]*"
     }
   },
-  "required": ["fcmToken"]
+  "required": ["walletId","blockchain","blockchainAddress","fcmToken"]
 }

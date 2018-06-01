@@ -1,4 +1,4 @@
 interface AssetSearch {
-  walletId: number;
+  walletId: string;
   query: string;
 }

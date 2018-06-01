@@ -111,4 +111,101 @@ describe('The Wallet Class: Update method', () => {
 
     expect(errorThrown).toBeInstanceOf(Error);
   });
+
+  describe('The Wallet Class: Validate method', () => {
+    it('should successfully call with valid data', () => {
+      const walletValidateData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        ethAddress: '0xc1912fee45d61c87cc5ea59dae31190fffff232b'
+      };
+
+      const spy = jest.spyOn(Requester, 'execute');
+      pSdk.wallet.validate(walletValidateData);
+
+      expect(spy).toBeCalled();
+    });
+
+    it('should fail when called with invalid data', () => {
+      let errorThrown;
+      const walletValidateData = {
+        walletId: -1,
+        fcmToken: '987qwe'
+      };
+
+      try {
+        pSdk.wallet.validate(walletValidateData);
+      } catch (error) {
+        errorThrown = error;
+      }
+
+      expect(errorThrown).toBeInstanceOf(TypeError);
+    });
+  });
+
+  describe('The Wallet Class: Register Address method', () => {
+    it('should successfully call with valid data', () => {
+      const registerAddressData = {
+        walletId: 'd85b4694-9255-44f1-b110-ed7ab7e7e42a',
+        blockchain: 'ethereum',
+        blockchainAddress: '0xc1912fee45d61c87cc5ea59dae31190fffff232b',
+        fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f'
+      };
+
+      const spy = jest.spyOn(Requester, 'execute');
+      pSdk.wallet.registerAddress(registerAddressData);
+
+      expect(spy).toBeCalled();
+    });
+
+    it('should fail when called with invalid data', () => {
+      let errorThrown;
+      const walletValidateData = {
+        walletId: -1,
+        blockchain: 'ethereum',
+        blockchainAddress: '0xc1912fee45d61c87cc5ea59dae31190fffff232b',
+        fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f'
+      };
+
+      try {
+        pSdk.wallet.registerAddress(walletValidateData);
+      } catch (error) {
+        errorThrown = error;
+      }
+
+      expect(errorThrown).toBeInstanceOf(TypeError);
+    });
+  });
+
+  describe('The Wallet Class: Unregister Address method', () => {
+    it('should successfully call with valid data', () => {
+      const unregisterAddressData = {
+        walletId: 'd85b4694-9255-44f1-b110-ed7ab7e7e42a',
+        blockchain: 'ethereum',
+        blockchainAddress: '0xc1912fee45d61c87cc5ea59dae31190fffff232b'
+      };
+
+      const spy = jest.spyOn(Requester, 'execute');
+      pSdk.wallet.unregisterAddress(unregisterAddressData);
+
+      expect(spy).toBeCalled();
+    });
+
+    it('should fail when called with invalid data', () => {
+      let errorThrown;
+      const walletValidateData = {
+        walletId: -1,
+        blockchain: 'ethereum',
+        blockchainAddress: '0xc1912fee45d61c87cc5ea59dae31190fffff232b',
+        fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f'
+      };
+
+      try {
+        pSdk.wallet.unregisterAddress(walletValidateData);
+      } catch (error) {
+        errorThrown = error;
+      }
+
+      expect(errorThrown).toBeInstanceOf(TypeError);
+    });
+  });
 });

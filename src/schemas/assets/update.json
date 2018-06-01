@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Assets Class - Update",
   "description": "Schema definition for Asset Class - Update method",
   "type": "object",

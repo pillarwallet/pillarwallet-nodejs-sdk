@@ -10,6 +10,8 @@ import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 const walletValidateSchema = require('../schemas/wallet/validate.json');
+const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.json');
+const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddress.json');
 
 export class Wallet extends Configuration {
 
@@ -78,4 +80,27 @@ export class Wallet extends Configuration {
     return Requester.execute(getConfiguration);
   }
 
+  registerAddress(walletRegisterAddress: WalletRegisterAddress): RequestPromise {
+
+    this.validation(walletRegisterAddressSchema,walletRegisterAddress);
+
+    postConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletRegisterAddress,Configuration.accessKeys.privateKey);
+    postConfiguration.body = walletRegisterAddress;
+    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER_ADDRESS;
+
+    return Requester.execute(postConfiguration);
+  }
+
+  unregisterAddress(walletUnregisterAddress: WalletUnregisterAddress): RequestPromise {
+
+    this.validation(walletUnregisterAddressSchema,walletUnregisterAddress);
+
+    postConfiguration.headers['X-API-Signature'] =
+      this.checkSignature(walletUnregisterAddress,Configuration.accessKeys.privateKey);
+    postConfiguration.body = walletUnregisterAddress;
+    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UNREGISTER_ADDRESS;
+
+    return Requester.execute(postConfiguration);
+  }
 }

@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Assets Class - Search",
   "description": "Schema definition for Asset Class - Search method",
   "type": "object",

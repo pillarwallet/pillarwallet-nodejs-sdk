@@ -1,5 +1,7 @@
 export class HttpEndpoints {
   static WALLET_REGISTER = '/wallet/register';
+  static WALLET_REGISTER_ADDRESS = '/wallet/registerAddress';
+  static WALLET_UNREGISTER_ADDRESS = '/wallet/unregisterAddress';
   static WALLET_UPDATE = '/wallet/update';
   static WALLET_VALIDATE = '/wallet/validate-wallet';
   static ASSET_DEFAULT = '/asset/defaults';
