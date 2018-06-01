@@ -1,6 +1,6 @@
 import * as Ajv from 'ajv';
-import {ErrorMessages} from "./constants/errorMessages";
-import {Authentication} from "../utils/authentication";
+import { ErrorMessages } from './constants/errorMessages';
+import { Authentication } from '../utils/authentication';
 
 let ajv: any;
 export class Configuration {
@@ -20,8 +20,9 @@ export class Configuration {
    */
   initialise(incomingConfiguration: PillarSdkConfiguration) {
     Configuration.accessKeys = incomingConfiguration;
-    if(!Configuration.accessKeys.apiUrl)
+    if (!Configuration.accessKeys.apiUrl) {
       Configuration.accessKeys.apiUrl = 'http://localhost:8080';
+    }
   }
 
   /**
@@ -30,7 +31,7 @@ export class Configuration {
    * @param {Object} schema
    * @param data
    */
-  validation(schema: Object, data: any){
+  validation(schema: Object, data: any) {
     const valid = ajv.validate(schema, data);
     if (!valid && ajv.errors) {
       throw new TypeError(ajv.errorsText(ajv.errors));
@@ -43,10 +44,10 @@ export class Configuration {
    * @param {string} privateKey
    * @returns {string}
    */
-  checkSignature(signParams: Object,privateKey: string){
+  checkSignature(signParams: Object,privateKey: string) {
     const xAPISignature = Authentication.sign(
       signParams,
-      privateKey
+      privateKey,
     );
 
     if (!xAPISignature) {

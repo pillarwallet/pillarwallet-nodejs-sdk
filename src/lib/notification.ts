@@ -1,8 +1,8 @@
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { RequestPromise } from 'request-promise';
-import {default as getConfiguration} from "../utils/requester-configurations/get";
-import {HttpEndpoints} from "./constants/httpEndpoints";
+import { default as getConfiguration } from '../utils/requester-configurations/get';
+import { HttpEndpoints } from './constants/httpEndpoints';
 
 const notificationListSchema = require('../schemas/notification/list.json');
 

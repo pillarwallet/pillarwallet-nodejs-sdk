@@ -7,7 +7,9 @@
     "test": "jest",
     "compile": "tsc",
     "build": "webpack",
-    "build-production": "webpack --mode=production"
+    "build-production": "webpack --mode=production",
+    "lint": "tslint -p '.'",
+    "lint:fix": "tslint -p '.'"
   },
   "jest": {
     "verbose": true,
