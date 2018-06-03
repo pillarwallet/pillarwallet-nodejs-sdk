@@ -1,9 +1,8 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
-let pSdk: any;
 
 beforeEach(() => {
-  pSdk = new PillarSdk({
+  this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
@@ -26,7 +25,7 @@ describe('The User Class: Update method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.update(userUpdateData);
+    this.pSdk.user.update(userUpdateData);
 
     expect(spy).toBeCalled();
   });
@@ -48,7 +47,7 @@ describe('The User Class: Update method', () => {
     };
 
     try {
-      pSdk.user.update(userUpdateData);
+      this.pSdk.user.update(userUpdateData);
     } catch (e) {
       errorThrown = e;
     }
@@ -74,7 +73,7 @@ describe('The User Class: Update method', () => {
     };
 
     try {
-      pSdk.user.update(userUpdateData);
+      this.pSdk.user.update(userUpdateData);
     } catch (e) {
       errorThrown = e;
     }
@@ -100,7 +99,7 @@ describe('The User Class: Update method', () => {
     };
 
     try {
-      pSdk.user.update(userUpdateData);
+      this.pSdk.user.update(userUpdateData);
     } catch (e) {
       errorThrown = e;
     }
@@ -116,7 +115,7 @@ describe('The User Class: Info method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.info(userInfoData);
+    this.pSdk.user.info(userInfoData);
 
     expect(spy).toBeCalled();
   });
@@ -128,7 +127,7 @@ describe('The User Class: Info method', () => {
     };
 
     try {
-      pSdk.user.info(userInfoData);
+      this.pSdk.user.info(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -143,7 +142,7 @@ describe('The User Class: Info method', () => {
     };
 
     try {
-      pSdk.user.info(userInfoData);
+      this.pSdk.user.info(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -160,7 +159,7 @@ describe('The User Class: Search method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.search(userSearchData);
+    this.pSdk.user.search(userSearchData);
 
     expect(spy).toBeCalled();
   });
@@ -173,7 +172,7 @@ describe('The User Class: Search method', () => {
     };
 
     try {
-      pSdk.user.search(userInfoData);
+      this.pSdk.user.search(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -189,7 +188,7 @@ describe('The User Class: Search method', () => {
     };
 
     try {
-      pSdk.user.search(userInfoData);
+      this.pSdk.user.search(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -205,7 +204,7 @@ describe('The User Class: Delete method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.delete(userInfoData);
+    this.pSdk.user.delete(userInfoData);
 
     expect(spy).toBeCalled();
   });
@@ -217,7 +216,7 @@ describe('The User Class: Delete method', () => {
     };
 
     try {
-      pSdk.user.delete(userInfoData);
+      this.pSdk.user.delete(userInfoData);
     } catch (e) {
       errorThrown = e;
     }
@@ -232,7 +231,7 @@ describe('The User Class: Delete method', () => {
     };
 
     try {
-      pSdk.user.delete(userInfoData);
+      this.pSdk.user.delete(userInfoData);
     } catch (e) {
       errorThrown = e;
     }

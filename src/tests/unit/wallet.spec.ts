@@ -1,10 +1,8 @@
 import {Requester} from '../../utils/requester';
 import {PillarSdk} from '../..';
 
-let pSdk: any;
-
 beforeEach(() => {
-  pSdk = new PillarSdk({
+  this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
@@ -16,7 +14,7 @@ describe('The Wallet Class: Register method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.wallet.register(walletRegistrationData);
+    this.pSdk.wallet.register(walletRegistrationData);
 
     expect(spy).toBeCalled();
   });
@@ -29,7 +27,7 @@ describe('The Wallet Class: Register method', () => {
     };
 
     try {
-      pSdk.wallet.register(walletRegistrationData);
+      this.pSdk.wallet.register(walletRegistrationData);
     } catch (e) {
       errorThrown = e;
     }
@@ -45,7 +43,7 @@ describe('The Wallet Class: Register method', () => {
     };
 
     try {
-      pSdk.wallet.register(walletRegistrationData);
+      this.pSdk.wallet.register(walletRegistrationData);
     } catch (e) {
       errorThrown = e;
     }
@@ -57,7 +55,7 @@ describe('The Wallet Class: Register method', () => {
     let errorThrown;
 
     try {
-      pSdk = new PillarSdk({
+      this.pSdk = new PillarSdk({
         privateKey: null,
       });
     } catch (e) {
@@ -76,7 +74,7 @@ describe('The Wallet Class: Update method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.wallet.update(walletUpdateData);
+    this.pSdk.wallet.update(walletUpdateData);
 
     expect(spy).toBeCalled();
   });
@@ -89,7 +87,7 @@ describe('The Wallet Class: Update method', () => {
     };
 
     try {
-      pSdk.wallet.update(walletUpdateData);
+      this.pSdk.wallet.update(walletUpdateData);
     } catch (error) {
       errorThrown = error;
     }
@@ -102,7 +100,7 @@ describe('The Wallet Class: Update method', () => {
     let errorThrown;
 
     try {
-      pSdk = new PillarSdk({
+      this.pSdk = new PillarSdk({
         privateKey: null,
       });
     } catch (e) {
@@ -120,7 +118,7 @@ describe('The Wallet Class: Update method', () => {
       };
 
       const spy = jest.spyOn(Requester, 'execute');
-      pSdk.wallet.validate(walletValidateData);
+      this.pSdk.wallet.validate(walletValidateData);
 
       expect(spy).toBeCalled();
     });
@@ -133,7 +131,7 @@ describe('The Wallet Class: Update method', () => {
       };
 
       try {
-        pSdk.wallet.validate(walletValidateData);
+        this.pSdk.wallet.validate(walletValidateData);
       } catch (error) {
         errorThrown = error;
       }
@@ -152,7 +150,7 @@ describe('The Wallet Class: Update method', () => {
       };
 
       const spy = jest.spyOn(Requester, 'execute');
-      pSdk.wallet.registerAddress(registerAddressData);
+      this.pSdk.wallet.registerAddress(registerAddressData);
 
       expect(spy).toBeCalled();
     });
@@ -167,7 +165,7 @@ describe('The Wallet Class: Update method', () => {
       };
 
       try {
-        pSdk.wallet.registerAddress(walletValidateData);
+        this.pSdk.wallet.registerAddress(walletValidateData);
       } catch (error) {
         errorThrown = error;
       }
@@ -185,7 +183,7 @@ describe('The Wallet Class: Update method', () => {
       };
 
       const spy = jest.spyOn(Requester, 'execute');
-      pSdk.wallet.unregisterAddress(unregisterAddressData);
+      this.pSdk.wallet.unregisterAddress(unregisterAddressData);
 
       expect(spy).toBeCalled();
     });
@@ -200,7 +198,7 @@ describe('The Wallet Class: Update method', () => {
       };
 
       try {
-        pSdk.wallet.unregisterAddress(walletValidateData);
+        this.pSdk.wallet.unregisterAddress(walletValidateData);
       } catch (error) {
         errorThrown = error;
       }

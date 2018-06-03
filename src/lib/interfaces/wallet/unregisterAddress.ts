@@ -1,5 +1,5 @@
 interface WalletUnregisterAddress {
-  walletId: string,
-  blockchain: string,
-  blockchainAddress: string
+  walletId: string;
+  blockchain: string;
+  blockchainAddress: string;
 }

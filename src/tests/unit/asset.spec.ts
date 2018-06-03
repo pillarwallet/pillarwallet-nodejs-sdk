@@ -1,9 +1,9 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
-let pSdk: any;
+
 
 beforeEach(() => {
-  pSdk = new PillarSdk({
+  this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
@@ -15,7 +15,7 @@ describe('The Asset Class: Defaults method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.asset.defaults(assetDefaultsData);
+    this.pSdk.asset.defaults(assetDefaultsData);
 
     expect(spy).toBeCalled();
   });
@@ -27,7 +27,7 @@ describe('The Asset Class: Defaults method', () => {
     };
 
     try {
-      pSdk.asset.defaults(assetDefaultsData);
+      this.pSdk.asset.defaults(assetDefaultsData);
     } catch (e) {
       errorThrown = e;
     }
@@ -45,7 +45,7 @@ describe('The Asset Class: Search method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.asset.search(assetSearchData);
+    this.pSdk.asset.search(assetSearchData);
 
     expect(spy).toBeCalled();
   });
@@ -58,7 +58,7 @@ describe('The Asset Class: Search method', () => {
     };
 
     try {
-      pSdk.asset.search(assetSearchData);
+      this.pSdk.asset.search(assetSearchData);
     } catch (e) {
       errorThrown = e;
     }
@@ -74,7 +74,7 @@ describe('The Asset Class: Search method', () => {
     };
 
     try {
-      pSdk.asset.search(assetSearchData);
+      this.pSdk.asset.search(assetSearchData);
     } catch (e) {
       errorThrown = e;
     }
@@ -89,7 +89,7 @@ describe('The Asset Class: Search method', () => {
       };
 
       const spy = jest.spyOn(Requester, 'execute');
-      pSdk.asset.list(assetListData);
+      this.pSdk.asset.list(assetListData);
 
       expect(spy).toBeCalled();
     });
@@ -101,7 +101,7 @@ describe('The Asset Class: Search method', () => {
       };
 
       try {
-        pSdk.asset.list(assetListData);
+        this.pSdk.asset.list(assetListData);
       } catch (e) {
         errorThrown = e;
       }
@@ -117,7 +117,7 @@ describe('The Asset Class: Search method', () => {
       };
 
       const spy = jest.spyOn(Requester, 'execute');
-      pSdk.asset.delete(assetDeleteData);
+      this.pSdk.asset.delete(assetDeleteData);
 
       expect(spy).toBeCalled();
     });
@@ -129,7 +129,7 @@ describe('The Asset Class: Search method', () => {
       };
 
       try {
-        pSdk.asset.delete(assetDeleteData);
+        this.pSdk.asset.delete(assetDeleteData);
       } catch (e) {
         errorThrown = e;
       }
@@ -157,7 +157,7 @@ describe('The Asset Class: Search method', () => {
       };
 
       const spy = jest.spyOn(Requester, 'execute');
-      pSdk.asset.update(assetUpdateData);
+      this.pSdk.asset.update(assetUpdateData);
 
       expect(spy).toBeCalled();
     });
@@ -181,7 +181,7 @@ describe('The Asset Class: Search method', () => {
       };
 
       try {
-        pSdk.asset.update(assetUpdateData);
+        this.pSdk.asset.update(assetUpdateData);
       } catch (e) {
         errorThrown = e;
       }

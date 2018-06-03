@@ -99,7 +99,8 @@ export class Wallet extends Configuration {
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletUnregisterAddress,Configuration.accessKeys.privateKey);
     postConfiguration.body = walletUnregisterAddress;
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UNREGISTER_ADDRESS;
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UNREGISTER_ADDRESS;
 
     return Requester.execute(postConfiguration);
   }

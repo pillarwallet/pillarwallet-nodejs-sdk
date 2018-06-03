@@ -1,9 +1,8 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
-let pSdk: any;
 
 beforeEach(() => {
-  pSdk = new PillarSdk({
+  this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
@@ -21,7 +20,7 @@ describe('The Connection Class: Invite method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.connection.invite(connectionInviteData);
+    this.pSdk.connection.invite(connectionInviteData);
 
     expect(spy).toBeCalled();
   });
@@ -34,7 +33,7 @@ describe('The Connection Class: Invite method', () => {
     };
 
     try {
-      pSdk.connection.invite(invalidConnectionData);
+      this.pSdk.connection.invite(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -51,7 +50,7 @@ describe('The Connection Class: Invite method', () => {
     };
 
     try {
-      pSdk.connection.invite(invalidConnectionData);
+      this.pSdk.connection.invite(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -75,7 +74,7 @@ describe('The Connection Class: Accept method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.connection.accept(connectionAcceptData);
+    this.pSdk.connection.accept(connectionAcceptData);
 
     expect(spy).toBeCalled();
   });
@@ -89,7 +88,7 @@ describe('The Connection Class: Accept method', () => {
     };
 
     try {
-      pSdk.connection.accept(invalidConnectionData);
+      this.pSdk.connection.accept(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -107,7 +106,7 @@ describe('The Connection Class: Accept method', () => {
     };
 
     try {
-      pSdk.connection.accept(invalidConnectionData);
+      this.pSdk.connection.accept(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -130,7 +129,7 @@ describe('The Connection Class: Reject method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.connection.reject(connectionRejectData);
+    this.pSdk.connection.reject(connectionRejectData);
 
     expect(spy).toBeCalled();
   });
@@ -144,7 +143,7 @@ describe('The Connection Class: Reject method', () => {
     };
 
     try {
-      pSdk.connection.reject(invalidConnectionData);
+      this.pSdk.connection.reject(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -161,7 +160,7 @@ describe('The Connection Class: Reject method', () => {
     };
 
     try {
-      pSdk.connection.reject(connectionData);
+      this.pSdk.connection.reject(connectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -184,7 +183,7 @@ describe('The Connection Class: Cancel method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.connection.cancel(connectionCancelData);
+    this.pSdk.connection.cancel(connectionCancelData);
 
     expect(spy).toBeCalled();
   });
@@ -198,7 +197,7 @@ describe('The Connection Class: Cancel method', () => {
     };
 
     try {
-      pSdk.connection.cancel(invalidConnectionData);
+      this.pSdk.connection.cancel(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -215,7 +214,7 @@ describe('The Connection Class: Cancel method', () => {
     };
 
     try {
-      pSdk.connection.cancel(connectionData);
+      this.pSdk.connection.cancel(connectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -237,7 +236,7 @@ describe('The Connection Class: Block method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.connection.block(connectionBlockData);
+    this.pSdk.connection.block(connectionBlockData);
 
     expect(spy).toBeCalled();
   });
@@ -250,7 +249,7 @@ describe('The Connection Class: Block method', () => {
     };
 
     try {
-      pSdk.connection.block(invalidConnectionData);
+      this.pSdk.connection.block(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -266,7 +265,7 @@ describe('The Connection Class: Block method', () => {
     };
 
     try {
-      pSdk.connection.block(connectionData);
+      this.pSdk.connection.block(connectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -288,7 +287,7 @@ describe('The Connection Class: Mute method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.connection.mute(connectionMuteData);
+    this.pSdk.connection.mute(connectionMuteData);
 
     expect(spy).toBeCalled();
   });
@@ -301,7 +300,7 @@ describe('The Connection Class: Mute method', () => {
     };
 
     try {
-      pSdk.connection.mute(invalidConnectionData);
+      this.pSdk.connection.mute(invalidConnectionData);
     } catch (e) {
       errorThrown = e;
     }
@@ -317,7 +316,7 @@ describe('The Connection Class: Mute method', () => {
     };
 
     try {
-      pSdk.connection.mute(connectionData);
+      this.pSdk.connection.mute(connectionData);
     } catch (e) {
       errorThrown = e;
     }

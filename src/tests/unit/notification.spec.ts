@@ -1,9 +1,8 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
-let pSdk: any;
 
 beforeEach(() => {
-  pSdk = new PillarSdk({
+  this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
@@ -16,7 +15,7 @@ describe('The Notification Class: List method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.notification.list(notificationData);
+    this.pSdk.notification.list(notificationData);
 
     expect(spy).toBeCalled();
   });
@@ -29,7 +28,7 @@ describe('The Notification Class: List method', () => {
     };
 
     try {
-      pSdk.notification.list(notificationData);
+      this.pSdk.notification.list(notificationData);
     } catch (e) {
       errorThrown = e;
     }
@@ -45,7 +44,7 @@ describe('The Notification Class: List method', () => {
     };
 
     try {
-      pSdk.notification.list(notificationData);
+      this.pSdk.notification.list(notificationData);
     } catch (e) {
       errorThrown = e;
     }
