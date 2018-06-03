@@ -18,6 +18,11 @@
       "description": "The Firebase Cloud Messaging Token  of one wallet",
       "type": "string",
       "pattern": "[0-9a-zA-z]*"
+    },
+    "phone": {
+      "description": "The phone associated of one wallet",
+      "type": "string",
+      "pattern":"^\\+(?:[0-9] ?){6,14}[0-9]$"
     }
   },
   "required": ["fcmToken"]
