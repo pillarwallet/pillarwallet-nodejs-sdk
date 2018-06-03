@@ -80,6 +80,11 @@ export class Wallet extends Configuration {
     return Requester.execute(getConfiguration);
   }
 
+  /**
+   * Register the specified blockchain address for notifications and for BCX monitoring
+   * @param {WalletRegisterAddress} walletRegisterAddress
+   * @returns {requestPromise.RequestPromise}
+   */
   registerAddress(walletRegisterAddress: WalletRegisterAddress): RequestPromise {
 
     this.validation(walletRegisterAddressSchema,walletRegisterAddress);
@@ -92,6 +97,11 @@ export class Wallet extends Configuration {
     return Requester.execute(postConfiguration);
   }
 
+  /**
+   * Unregister the specified blockchain address for notifications and for BCX monitoring
+   * @param {WalletUnregisterAddress} walletUnregisterAddress
+   * @returns {requestPromise.RequestPromise}
+   */
   unregisterAddress(walletUnregisterAddress: WalletUnregisterAddress): RequestPromise {
 
     this.validation(walletUnregisterAddressSchema,walletUnregisterAddress);
