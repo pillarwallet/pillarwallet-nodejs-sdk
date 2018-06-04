@@ -1,0 +1,35 @@
+{
+  "title": "User Class - Create",
+  "description": "Schema definition for User Class - Create method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "description": "The user's first name",
+      "type": "string"
+    },
+    "lastName": {
+      "description": "The user's last name",
+      "type": "string"
+    },
+    "email": {
+      "description": "The user's email",
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "description": "The phone associated of one wallet",
+      "type": "string",
+      "pattern":"^\\+(?:[0-9] ?){6,14}[0-9]$"
+    },
+    "username": {
+      "description": "The username",
+      "type": "string"
+    },
+    "sendEmail": {
+      "description": "Conditional for Email flag",
+      "type": "boolean"
+    }
+  },
+  "required": [ "firstName", "lastName", "email", "phone", "username", "sendEmail"]
+}

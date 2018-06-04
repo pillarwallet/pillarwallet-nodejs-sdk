@@ -1,0 +1,13 @@
+{
+  "title": "User Class - Username Search",
+  "description": "Schema definition for User Class - Username Search method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "username": {
+      "description": "The username",
+      "type": "string"
+    }
+  },
+  "required": [ "username" ]
+}
