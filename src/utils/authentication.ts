@@ -9,8 +9,7 @@ export class Authentication {
    */
   static sign(signParams: Object, privateKey: string) {
     try {
-      const signature = authentication.sign(signParams, privateKey) as string;
-      return signature;
+      return authentication.sign(signParams, privateKey).signature;
     } catch (error) {
       return null;
     }
