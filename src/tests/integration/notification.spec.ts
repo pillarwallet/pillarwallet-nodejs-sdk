@@ -1,10 +1,10 @@
 const hdkey = require('../glue/generateKeyPair');
-import {PillarSdk} from '../..';
+import { PillarSdk } from '../..';
 
 describe('notification endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey
+      privateKey: hdkey.privateKey,
     });
   });
 
@@ -12,7 +12,7 @@ describe('notification endpoints', () => {
     it('Expect success',  () => {
       const inputParams = {
         walletId: 1,
-        fromTimestamp: '2016-05-24T15:54:14.876Z'
+        fromTimestamp: '2016-05-24T15:54:14.876Z',
       };
 
       const result = this.pSdk.notification.list(inputParams)

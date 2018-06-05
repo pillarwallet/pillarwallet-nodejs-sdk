@@ -17,38 +17,13 @@ describe('The Notification Class: List method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.notification.list(notificationData);
 
-    expect(spy).toBeCalled();
-  });
-
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const notificationData = {
-      walletId: 1,
-      fromTimestamp: null,
-    };
-
-    try {
-      this.pSdk.notification.list(notificationData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const notificationData = {
-      walletId: -1,
-      fromTimestamp: '2016-05-24T15:54:14.876Z',
-    };
-
-    try {
-      this.pSdk.notification.list(notificationData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          qs: notificationData,
+          url: 'http://localhost:8080/notification/list',
+        }),
+    );
   });
 });

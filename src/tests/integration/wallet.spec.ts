@@ -1,10 +1,10 @@
 const hdkey = require('../glue/generateKeyPair');
-import {PillarSdk} from '../..';
+import { PillarSdk } from '../..';
 
 describe('wallet endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey
+      privateKey: hdkey.privateKey,
     });
   });
 
@@ -12,7 +12,7 @@ describe('wallet endpoints', () => {
     it('Expect Return Success', () => {
 
       const inputParams = {
-        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ'
+        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
       };
 
       const result = this.pSdk.wallet.register(inputParams)
@@ -34,7 +34,7 @@ describe('wallet endpoints', () => {
     it('Expect Success for update Method', () => {
       const inputParams = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        fcmToken: 'increaseThePeace'
+        fcmToken: 'increaseThePeace',
       };
 
       const result = this.pSdk.wallet.update(inputParams)

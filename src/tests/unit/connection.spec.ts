@@ -10,7 +10,6 @@ beforeEach(() => {
 /**
  * Connection: Invite method
  */
-
 describe('The Connection Class: Invite method', () => {
   it ('should successfully call with valid data', () => {
     const connectionInviteData = {
@@ -22,40 +21,14 @@ describe('The Connection Class: Invite method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.connection.invite(connectionInviteData);
 
-    expect(spy).toBeCalled();
-  });
-
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      targetUserId: 2,
-      accessKey: 'abc123',
-    };
-
-    try {
-      this.pSdk.connection.invite(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      targetUserId: 2,
-      accessKey: 'abc123',
-      walletId: -1,
-    };
-
-    try {
-      this.pSdk.connection.invite(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: connectionInviteData,
+          url: 'http://localhost:8080/connection/invite',
+        }),
+    );
   });
 });
 
@@ -63,7 +36,6 @@ describe('The Connection Class: Invite method', () => {
 /**
  * Connection: Accept method
  */
-
 describe('The Connection Class: Accept method', () => {
   it ('should successfully call with valid data', () => {
     const connectionAcceptData = {
@@ -76,50 +48,20 @@ describe('The Connection Class: Accept method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.connection.accept(connectionAcceptData);
 
-    expect(spy).toBeCalled();
-  });
-
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      walletId: 1,
-      sourceUserAccessKey: 'hello',
-      targetUserAccessKey: 'hello',
-    };
-
-    try {
-      this.pSdk.connection.accept(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      targetUserId: 2,
-      walletId: -1,
-      sourceUserAccessKey: 'hello',
-      targetUserAccessKey: 'hello',
-    };
-
-    try {
-      this.pSdk.connection.accept(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: connectionAcceptData,
+          url: 'http://localhost:8080/connection/accept',
+        }),
+    );
   });
 });
-
 
 /**
  * Connection: Reject method
  */
-
 describe('The Connection Class: Reject method', () => {
   it ('should successfully call with valid data', () => {
     const connectionRejectData = {
@@ -131,49 +73,20 @@ describe('The Connection Class: Reject method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.connection.reject(connectionRejectData);
 
-    expect(spy).toBeCalled();
-  });
-
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      targetUserId: 2,
-      accessKey: '123abc',
-      walletId: null,
-    };
-
-    try {
-      this.pSdk.connection.reject(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const connectionData = {
-      targetUserId: 2,
-      accessKey: '123abc',
-      walletId: -1,
-    };
-
-    try {
-      this.pSdk.connection.reject(connectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: connectionRejectData,
+          url: 'http://localhost:8080/connection/reject',
+        }),
+    );
   });
 });
-
 
 /**
  * Connection: Cancel method
  */
-
 describe('The Connection Class: Cancel method', () => {
   it ('should successfully call with valid data', () => {
     const connectionCancelData = {
@@ -185,41 +98,14 @@ describe('The Connection Class: Cancel method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.connection.cancel(connectionCancelData);
 
-    expect(spy).toBeCalled();
-  });
-
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      targetUserId: 2,
-      accessKey: '123abc',
-      walletId: null,
-    };
-
-    try {
-      this.pSdk.connection.cancel(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const connectionData = {
-      targetUserId: 2,
-      accessKey: '123abc',
-      walletId: -1,
-    };
-
-    try {
-      this.pSdk.connection.cancel(connectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: connectionCancelData,
+          url: 'http://localhost:8080/connection/cancel',
+        }),
+    );
   });
 });
 
@@ -227,7 +113,6 @@ describe('The Connection Class: Cancel method', () => {
 /**
  * Connection: Block method
  */
-
 describe('The Connection Class: Block method', () => {
   it ('should successfully call with valid data', () => {
     const connectionBlockData = {
@@ -238,47 +123,22 @@ describe('The Connection Class: Block method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.connection.block(connectionBlockData);
 
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: connectionBlockData,
+          url: 'http://localhost:8080/connection/block',
+        }),
+    );
   });
 
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      accessKey: '123abc',
-      walletId: null,
-    };
-
-    try {
-      this.pSdk.connection.block(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const connectionData = {
-      accessKey: '123abc',
-      walletId: -1,
-    };
-
-    try {
-      this.pSdk.connection.block(connectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
 });
 
 
 /**
  * Connection: Mute method
  */
-
 describe('The Connection Class: Mute method', () => {
   it ('should successfully call with valid data', () => {
     const connectionMuteData = {
@@ -289,38 +149,13 @@ describe('The Connection Class: Mute method', () => {
     const spy = jest.spyOn(Requester, 'execute');
     this.pSdk.connection.mute(connectionMuteData);
 
-    expect(spy).toBeCalled();
-  });
-
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const invalidConnectionData = {
-      accessKey: '123abc',
-      walletId: null,
-    };
-
-    try {
-      this.pSdk.connection.mute(invalidConnectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid walletId', () => {
-    let errorThrown;
-    const connectionData = {
-      accessKey: '123abc',
-      walletId: -1,
-    };
-
-    try {
-      this.pSdk.connection.mute(connectionData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: connectionMuteData,
+          url: 'http://localhost:8080/connection/mute',
+        }),
+    );
   });
 });
