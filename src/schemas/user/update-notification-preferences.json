@@ -27,7 +27,7 @@
     "profileUpdate": {
       "description": "Conditional for profileUpdate",
       "type": "boolean"
-    },
+    }
   },
   "required": [ "userId", "newOffer", "newReceipt", "paymentConfirmation", "paymentStatusUpdate", "profileUpdate"]
 }

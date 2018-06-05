@@ -60,25 +60,23 @@
     },
     "status": {
       "description": "The user's status",
-      "type": "string",
+      "type": "string"
     },
-    "verificationService":
-    {
+    "verificationService": {
       "description": "The verification Service",
-      "type": "string",
+      "type": "string"
     },
-    "verificationStatus":
-    {
+    "verificationStatus": {
       "description": "The verification status",
-      "type": "string",
+      "type": "string"
     },
     "verificationReference": {
       "description": "The verification reference",
-      "type": "string",
+      "type": "string"
     },
     "investorClassification": {
       "description": "The user's classification as investor",
-      "type": "string",
+      "type": "string"
     }
   },
   "required": ["userId"]

@@ -1,4 +1,4 @@
-interface UserValidateOneTimePassword {
+interface UserValidatePhone {
   oneTimePassword: string;
   phone: string;
 }

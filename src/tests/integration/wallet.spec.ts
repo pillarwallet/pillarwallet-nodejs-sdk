@@ -1,4 +1,4 @@
-const hdkey = require('../glue/generateKeyPair');
+const hdkey = require('../utils/generateKeyPair');
 import { PillarSdk } from '../..';
 
 describe('wallet endpoints', () => {
