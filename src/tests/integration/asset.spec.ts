@@ -1,10 +1,10 @@
 const hdkey = require('../glue/generateKeyPair');
-import {PillarSdk} from '../..';
+import { PillarSdk } from '../..';
 
 describe('asset endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey
+      privateKey: hdkey.privateKey,
     });
   });
 
@@ -18,7 +18,7 @@ describe('asset endpoints', () => {
       const result = this.pSdk.asset.defaults(inputParams)
         .then((response: any) => {
           // Successful response!
-          //console.log(response);
+          // console.log(response);
           return response;
         })
         .catch((error: any) => {
@@ -41,7 +41,7 @@ describe('asset endpoints', () => {
       const result = this.pSdk.asset.search(inputParams)
         .then((response: any) => {
           // Successful response!
-          //console.log(response);
+          // console.log(response);
           return response;
         })
         .catch((error: any) => {

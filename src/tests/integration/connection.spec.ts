@@ -1,10 +1,10 @@
 const hdkey = require('../glue/generateKeyPair');
-import {PillarSdk} from '../..';
+import { PillarSdk } from '../..';
 
 describe('connection endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey
+      privateKey: hdkey.privateKey,
     });
   });
 
@@ -58,7 +58,7 @@ describe('connection endpoints', () => {
     const inputParams = {
       targetUserId: 2,
       accessKey: '123abc',
-      walletId: 1
+      walletId: 1,
     };
 
     const result = this.pSdk.connection.reject(inputParams)
@@ -80,7 +80,7 @@ describe('connection endpoints', () => {
     const inputParams = {
       targetUserId: 2,
       accessKey: '123abc',
-      walletId: 1
+      walletId: 1,
     };
 
     const result = this.pSdk.connection.cancel(inputParams)
@@ -101,7 +101,7 @@ describe('connection endpoints', () => {
   it('The Connection Class: Block ', () => {
     const inputParams = {
       accessKey: '123abc',
-      walletId: 1
+      walletId: 1,
     };
 
     const result = this.pSdk.connection.block(inputParams)
@@ -122,7 +122,7 @@ describe('connection endpoints', () => {
   it('The Connection Class: Mute ', () => {
     const inputParams = {
       accessKey: '123abc',
-      walletId: 1
+      walletId: 1,
     };
 
     const result = this.pSdk.connection.mute(inputParams)

@@ -1,10 +1,10 @@
 const hdkey = require('../glue/generateKeyPair');
-import {PillarSdk} from '../..';
+import { PillarSdk } from '../..';
 
 describe('user endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey
+      privateKey: hdkey.privateKey,
     });
   });
 
@@ -25,7 +25,7 @@ describe('user endpoints', () => {
         profileImage: 'http://ads.jpg',
       };
 
-     const result = this.pSdk.user.update(inputParams)
+      const result = this.pSdk.user.update(inputParams)
         .then((response:any) => {
           // Successful response!
           return response;
@@ -42,7 +42,7 @@ describe('user endpoints', () => {
 
     it('User info', () => {
       const inputParams = {
-        walletId: 4
+        walletId: 4,
       };
 
       const result = this.pSdk.user.info(inputParams)
