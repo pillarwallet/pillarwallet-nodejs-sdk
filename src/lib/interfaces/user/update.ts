@@ -1,5 +1,5 @@
 interface UserUpdate {
-  userId: number;
+  walletId: string;
   firstName?: string;
   lastName?: string;
   email?: string;

@@ -10,9 +10,9 @@ describe('connection endpoints', () => {
 
   it('The Connection Class: Invite ', () => {
     const inputParams = {
-      targetUserId: 2,
+      targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       accessKey: 'abc123',
-      walletId: 1,
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
     const result = this.pSdk.connection.invite(inputParams)
@@ -32,10 +32,10 @@ describe('connection endpoints', () => {
 
   it('The Connection Class: Accept ', () => {
     const inputParams = {
-      targetUserId: 2,
-      walletId: 1,
-      sourceUserAccessKey: 'abc123',
-      targetUserAccessKey: 'abc123',
+      targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      sourceUserAccessKey: 'hello',
+      targetUserAccessKey: 'hello',
     };
 
     const result = this.pSdk.connection.accept(inputParams)
@@ -56,9 +56,9 @@ describe('connection endpoints', () => {
 
   it('The Connection Class: Reject ', () => {
     const inputParams = {
-      targetUserId: 2,
-      accessKey: '123abc',
-      walletId: 1,
+      targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      accessKey: 'abc123',
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
     const result = this.pSdk.connection.reject(inputParams)
@@ -78,9 +78,9 @@ describe('connection endpoints', () => {
 
   it('The Connection Class: Cancel ', () => {
     const inputParams = {
-      targetUserId: 2,
-      accessKey: '123abc',
-      walletId: 1,
+      targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      accessKey: 'abc123',
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
     const result = this.pSdk.connection.cancel(inputParams)
@@ -100,8 +100,8 @@ describe('connection endpoints', () => {
 
   it('The Connection Class: Block ', () => {
     const inputParams = {
-      accessKey: '123abc',
-      walletId: 1,
+      accessKey: 'abc123',
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
     const result = this.pSdk.connection.block(inputParams)
@@ -121,8 +121,8 @@ describe('connection endpoints', () => {
 
   it('The Connection Class: Mute ', () => {
     const inputParams = {
-      accessKey: '123abc',
-      walletId: 1,
+      accessKey: 'abc123',
+      walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
     const result = this.pSdk.connection.mute(inputParams)

@@ -4,8 +4,8 @@
   "additionalProperties": false,
   "type": "object",
   "properties": {
-    "userId": {
-      "description": "The user ID",
+    "walletId": {
+      "description": "The wallet ID",
       "type": "string"
     },
     "username": {
@@ -13,5 +13,5 @@
       "type": "string"
     }
   },
-  "required": [ "userId","username" ]
+  "required": [ "walletId","username" ]
 }

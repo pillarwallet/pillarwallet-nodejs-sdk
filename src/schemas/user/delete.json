@@ -4,10 +4,14 @@
   "additionalProperties": false,
   "type": "object",
   "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
     "userId": {
       "description": "The User ID",
       "type": "string"
     }
   },
-  "required": [ "userId" ]
+  "required": [ "userId", "walletId" ]
 }

@@ -11,7 +11,7 @@ describe('The User Class: Update method', () => {
   it('should successfully call with valid data', () => {
     const userUpdateData =
       {
-        userId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
         username: 'bob123',
         firstName: 'Bob',
         lastName: 'Jones',
@@ -49,7 +49,7 @@ describe('The User Class: Update method', () => {
 describe('The User Class: Info method', () => {
   it('should successfully call with valid data', () => {
     const userInfoData = {
-      userId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       username: 'bob',
     };
 
@@ -71,7 +71,7 @@ describe('The User Class: Info method', () => {
 describe('The User Class: Search method', () => {
   it('should successfully call with valid data', () => {
     const userSearchData = {
-      userId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       query: 'searchforme',
     };
 
@@ -93,6 +93,7 @@ describe('The User Class: Search method', () => {
 describe('The User Class: Delete method', () => {
   it('should successfully call with valid data', () => {
     const userInfoData = {
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       userId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
     };
 
@@ -100,15 +101,16 @@ describe('The User Class: Delete method', () => {
     this.pSdk.user.delete(userInfoData);
 
     expect(spy).toHaveBeenCalledWith(
-      expect.objectContaining(
-        {
-          headers: { 'X-API-Signature': expect.anything() },
-          body: userInfoData,
-          url: 'http://localhost:8080/user/delete',
-        }),
-    );
+    expect.objectContaining(
+      {
+        headers: { 'X-API-Signature': expect.anything() },
+        body: userInfoData,
+        url: 'http://localhost:8080/user/delete',
+      }),
+  );
   });
-});
+})
+;
 
 describe('The User Class: Create method', () => {
   it('should successfully call with valid data', () => {
@@ -252,6 +254,7 @@ describe('The User Class: Update Notifications Preferences method', () => {
 describe('The User Class: Username Search method', () => {
   it('should successfully call with valid data', () => {
     const usernameSearch = {
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       username: 'bob',
     };
 

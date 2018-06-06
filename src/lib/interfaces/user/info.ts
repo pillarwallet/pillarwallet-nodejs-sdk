@@ -1,4 +1,4 @@
 interface UserInfo {
-  userId: string;
+  walletId: string;
   username: string;
 }

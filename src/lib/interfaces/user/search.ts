@@ -1,4 +1,4 @@
 interface UserSearch {
-  userId: string;
+  walletId: string;
   query: string;
 }

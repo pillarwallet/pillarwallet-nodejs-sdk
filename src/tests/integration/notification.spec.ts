@@ -11,7 +11,7 @@ describe('notification endpoints', () => {
   describe('Notification list', () => {
     it('Expect success',  () => {
       const inputParams = {
-        walletId: 1,
+        walletId: '24adad233',
         fromTimestamp: '2016-05-24T15:54:14.876Z',
       };
 

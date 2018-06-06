@@ -11,7 +11,7 @@ describe('user endpoints', () => {
   describe('User', () => {
     it('User update', () => {
       const inputParams = {
-        userId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
         username: 'bob123',
         firstName: 'Bob',
         lastName: 'Jones',
@@ -23,12 +23,12 @@ describe('user endpoints', () => {
         tagline: 'Social media consultant',
         taglineStatus: false,
         userSearchable: true,
-        profileImage: 'photo1.jpg',
+        profileImage: 'http://photo1.jpg',
         status: 'pending|OTP-verified|active',
         verificationService: 'Nivaura',
         verificationStatus: 'approved',
         verificationReference: 'x1234y44',
-        investorClassification: 'sophisticated'
+        investorClassification: 'sophisticated',
       };
 
       const result = this.pSdk.user.update(inputParams)
@@ -48,7 +48,8 @@ describe('user endpoints', () => {
 
     it('User info', () => {
       const inputParams = {
-        walletId: 4,
+        walletId: '24233',
+        username: 'bob',
       };
 
       const result = this.pSdk.user.info(inputParams)
@@ -68,7 +69,7 @@ describe('user endpoints', () => {
 
     it('User search', () => {
       const inputParams = {
-        walletId: 4,
+        walletId: '24233',
         query: 'Homer',
       };
 
@@ -89,7 +90,8 @@ describe('user endpoints', () => {
 
     it('User delete', () => {
       const inputParams = {
-        walletId: 45,
+        walletId: '24233',
+        userId: '24233',
       };
 
       const result = this.pSdk.user.delete(inputParams)
