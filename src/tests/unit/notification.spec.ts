@@ -10,7 +10,7 @@ beforeEach(() => {
 describe('The Notification Class: List method', () => {
   it ('should successfully call with valid data', () => {
     const notificationData = {
-      walletId: 1,
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       fromTimestamp: '2016-05-24T15:54:14.876Z',
     };
 

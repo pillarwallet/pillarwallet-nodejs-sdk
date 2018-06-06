@@ -1,4 +1,4 @@
-interface UserInfo {
+interface UserUsernameSearch {
   walletId: string;
   username: string;
 }

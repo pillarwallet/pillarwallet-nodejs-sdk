@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "User Class - update",
   "description": "Schema definition for User Class - Update method",
   "type": "object",
@@ -7,8 +6,11 @@
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number",
-      "exclusiveMinimum": 0
+      "type": "string"
+    },
+    "username": {
+      "description": "The username",
+      "type": "string"
     },
     "firstName": {
       "description": "The first name of one user",
@@ -55,11 +57,29 @@
       "description": "The user's profileImage",
       "type": "string",
       "format": "uri"
+    },
+    "status": {
+      "description": "The user's status",
+      "type": "string"
+    },
+    "verificationService": {
+      "description": "The verification Service",
+      "type": "string"
+    },
+    "verificationStatus": {
+      "description": "The verification status",
+      "type": "string"
+    },
+    "verificationReference": {
+      "description": "The verification reference",
+      "type": "string"
+    },
+    "investorClassification": {
+      "description": "The user's classification as investor",
+      "type": "string"
     }
   },
-  "required": [
-    "walletId"
-    ]
+  "required": ["walletId"]
 }
 
 

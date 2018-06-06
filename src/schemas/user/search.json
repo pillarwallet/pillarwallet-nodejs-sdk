@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "User Class - Search",
   "description": "Schema definition for User Class - Search method",
   "additionalProperties": false,
@@ -7,8 +6,7 @@
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "number",
-      "exclusiveMinimum": 0
+      "type": "string"
     },
     "query": {
       "description": "The query string to search for",

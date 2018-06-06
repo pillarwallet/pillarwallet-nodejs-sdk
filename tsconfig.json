@@ -8,7 +8,7 @@
         "outDir": "./dist",
         "sourceMap": true,
         "lib": ["es6"],
-        "allowJs": true
+        "allowJs": false
     },
     "include": [
         "src/**/*",

@@ -1,3 +1,4 @@
 interface UserDelete {
-  walletId: number;
+  walletId: string;
+  userId: string;
 }

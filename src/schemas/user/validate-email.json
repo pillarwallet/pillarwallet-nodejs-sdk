@@ -1,0 +1,18 @@
+{
+  "title": "User Class - Validate OTP email",
+  "description": "Schema definition for User Class - Validate OTP phone email",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "oneTimePassword": {
+      "description": "The One Time Password",
+      "type": "string"
+    },
+    "email": {
+      "description": "The user's email",
+      "type": "string",
+      "format": "email"
+    }
+  },
+  "required": [ "oneTimePassword", "email" ]
+}

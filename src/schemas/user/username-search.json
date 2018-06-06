@@ -1,6 +1,6 @@
 {
-  "title": "User Class - Info",
-  "description": "Schema definition for User Class - Info method",
+  "title": "User Class - Username Search",
+  "description": "Schema definition for User Class - Username Search method",
   "additionalProperties": false,
   "type": "object",
   "properties": {
@@ -13,5 +13,5 @@
       "type": "string"
     }
   },
-  "required": [ "walletId","username" ]
+  "required": [ "walletId" , "username" ]
 }
