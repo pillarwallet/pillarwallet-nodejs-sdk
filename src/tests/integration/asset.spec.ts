@@ -1,27 +1,24 @@
-const generateKeyPair = require('../glue/generateKeyPair');
-import {PillarSdk} from '../..';
-
-let pSdk: any;
+const hdkey = require('../glue/generateKeyPair');
+import { PillarSdk } from '../..';
 
 describe('asset endpoints', () => {
   beforeEach(() => {
-    const hdkey = generateKeyPair();
-    pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey.toString('hex')
+    this.pSdk = new PillarSdk({
+      privateKey: hdkey.privateKey,
     });
   });
 
   describe('Asset Default', () => {
-    it('Expect success', async () => {
+    it('Expect success',  () => {
 
       const inputParams = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
-      const result = await pSdk.asset.defaults(inputParams)
+      const result = this.pSdk.asset.defaults(inputParams)
         .then((response: any) => {
           // Successful response!
-          //console.log(response);
+          // console.log(response);
           return response;
         })
         .catch((error: any) => {
@@ -34,17 +31,17 @@ describe('asset endpoints', () => {
   });
 
   describe('Asset Search', () => {
-    it('Expect success', async () => {
+    it('Expect success', () => {
 
       const inputParams = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         query: 'p',
       };
 
-      const result = await pSdk.asset.search(inputParams)
+      const result = this.pSdk.asset.search(inputParams)
         .then((response: any) => {
           // Successful response!
-          //console.log(response);
+          // console.log(response);
           return response;
         })
         .catch((error: any) => {

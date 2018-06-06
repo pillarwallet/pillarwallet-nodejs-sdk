@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Wallet Class - register",
   "description": "Schema definition for Wallet Class - Register method",
   "type": "object",
@@ -19,9 +18,12 @@
       "description": "The Firebase Cloud Messaging Token  of one wallet",
       "type": "string",
       "pattern": "[0-9a-zA-z]*"
+    },
+    "phone": {
+      "description": "The phone associated of one wallet",
+      "type": "string",
+      "pattern":"^\\+(?:[0-9] ?){6,14}[0-9]$"
     }
   },
-  "required": [
-    "fcmToken"
-  ]
+  "required": ["fcmToken"]
 }

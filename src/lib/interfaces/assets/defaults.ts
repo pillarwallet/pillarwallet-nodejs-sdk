@@ -1,3 +1,3 @@
 interface AssetDefaults {
-  walletId: number;
+  walletId: string;
 }

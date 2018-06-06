@@ -1,5 +1,5 @@
 interface WalletUpdate {
-  walletId: number;
+  walletId: string;
   fcmToken?: string;
   signalRegistrationId?: string;
   ethAddress?: string;

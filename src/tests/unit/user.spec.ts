@@ -1,9 +1,8 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
-let pSdk: any;
 
 beforeEach(() => {
-  pSdk = new PillarSdk({
+  this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
   });
 });
@@ -26,87 +25,18 @@ describe('The User Class: Update method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.update(userUpdateData);
+    this.pSdk.user.update(userUpdateData);
 
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: userUpdateData,
+          url: 'http://localhost:8080/user/update',
+        }),
+    );
   });
 
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const userUpdateData = {
-      walletId: 123,
-      firstName: 'Homer',
-      lastName: 'Simpson',
-      email: 'chunkylover69@aol.com',
-      phone: '911',
-      country: 'United States',
-      state: 'NA',
-      city: 'Springfield',
-      tagline: 'Tagline',
-      taglineStatus: 'Busy',    //here
-      userSearchable: 'dunno', //here
-    };
-
-    try {
-      pSdk.user.update(userUpdateData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid email', () => {
-    let errorThrown;
-    const userUpdateData = {
-      walletId: 123,
-      firstName: 'Homer',
-      lastName: 'Simpson',
-      email: '@aol.com',
-      phone: '911',
-      country: 'United States',
-      state: 'NA',
-      city: 'Springfield',
-      tagline: 'Tagline',
-      taglineStatus: true,
-      userSearchable: true,
-      profileImage: 'http://homer.jpg',
-    };
-
-    try {
-      pSdk.user.update(userUpdateData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
-
-  it ('should fail when called with invalid profileImageUri', () => {
-    let errorThrown;
-    const userUpdateData = {
-      walletId: 123,
-      firstName: 'Homer',
-      lastName: 'Simpson',
-      email: '@aol.com',
-      phone: '911',
-      country: 'United States',
-      state: 'NA',
-      city: 'Springfield',
-      tagline: 'Tagline',
-      taglineStatus: true,
-      userSearchable: true,
-      profileImage: 'homer.jpg',
-    };
-
-    try {
-      pSdk.user.update(userUpdateData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
 });
 
 describe('The User Class: Info method', () => {
@@ -116,40 +46,18 @@ describe('The User Class: Info method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.info(userInfoData);
+    this.pSdk.user.info(userInfoData);
 
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          qs: userInfoData,
+          url: 'http://localhost:8080/user/info',
+        }),
+    );
   });
 
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const userInfoData = {
-      walletId: null,
-    };
-
-    try {
-      pSdk.user.info(userInfoData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid id', () => {
-    let errorThrown;
-    const userInfoData = {
-      walletId: -123,
-    };
-
-    try {
-      pSdk.user.info(userInfoData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
 });
 
 describe('The User Class: Search method', () => {
@@ -160,42 +68,18 @@ describe('The User Class: Search method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.search(userSearchData);
+    this.pSdk.user.search(userSearchData);
 
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          qs: userSearchData,
+          url: 'http://localhost:8080/user/search',
+        }),
+    );
   });
 
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const userInfoData = {
-      walletId: 123,
-      query: null,
-    };
-
-    try {
-      pSdk.user.search(userInfoData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid id', () => {
-    let errorThrown;
-    const userInfoData = {
-      walletId: -123,
-      query: 'searchforme',
-    };
-
-    try {
-      pSdk.user.search(userInfoData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
 });
 
 describe('The User Class: Delete method', () => {
@@ -205,38 +89,16 @@ describe('The User Class: Delete method', () => {
     };
 
     const spy = jest.spyOn(Requester, 'execute');
-    pSdk.user.delete(userInfoData);
+    this.pSdk.user.delete(userInfoData);
 
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          body: userInfoData,
+          url: 'http://localhost:8080/user/delete',
+        }),
+    );
   });
 
-  it ('should fail when called with invalid data', () => {
-    let errorThrown;
-    const userInfoData = {
-      walletId: null,
-    };
-
-    try {
-      pSdk.user.delete(userInfoData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(TypeError);
-  });
-
-  it ('should fail when called with invalid id', () => {
-    let errorThrown;
-    const userInfoData = {
-      walletId: -123,
-    };
-
-    try {
-      pSdk.user.delete(userInfoData);
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
 });

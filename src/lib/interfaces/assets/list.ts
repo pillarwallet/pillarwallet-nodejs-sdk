@@ -1,3 +1,3 @@
 interface AssetList {
-  walletId: number;
+  walletId: string;
 }
