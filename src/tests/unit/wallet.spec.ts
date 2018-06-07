@@ -7,7 +7,7 @@ beforeEach(() => {
   });
 });
 
-describe('The Wallet Class: Register method', () => {
+describe.only('The Wallet Class: Register method', () => {
   it('should successfully call with valid data', () => {
     const walletRegistrationData = {
       fcmToken: '987qwe',
@@ -20,7 +20,7 @@ describe('The Wallet Class: Register method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: walletRegistrationData,
+          data: walletRegistrationData,
           url: 'http://localhost:8080/wallet/register',
         }),
     );

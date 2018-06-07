@@ -6,6 +6,7 @@ import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
+import {AxiosPromise } from 'axios';
 
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
@@ -22,9 +23,9 @@ export class Wallet extends Configuration {
   /**
    * Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
    * @param {WalletRegister} walletRegister
-   * @returns {requestPromise.RequestPromise}
+   *
    */
-  register(walletRegister: WalletRegister): RequestPromise {
+  register(walletRegister: WalletRegister) : AxiosPromise {
     // validating Input
     if (!walletRegister.publicKey) {
       walletRegister.publicKey = PrivateKeyDerivatives
@@ -40,7 +41,7 @@ export class Wallet extends Configuration {
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
 
-    postConfiguration.body = walletRegister;
+    postConfiguration.data = walletRegister;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
     // http request
     return Requester.execute(postConfiguration);

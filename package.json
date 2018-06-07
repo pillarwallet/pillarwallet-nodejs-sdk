@@ -49,6 +49,7 @@
     "@types/request-promise": "4.1.41",
     "ajv": "6.4.0",
     "ajv-keywords": "3.2.0",
+    "axios": "^0.18.0",
     "elliptic": "6.4.0",
     "js-sha3": "0.7.0",
     "request": "2.85.0",

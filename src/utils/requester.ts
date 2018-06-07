@@ -1,12 +1,18 @@
-import * as request from 'request-promise';
+import axios from 'axios';
+
+//import * as request from 'request-promise';
+
 
 export class Requester {
   /**
-   * Execute a http request
+   * execute http request
    * @param incomingRequestOptions
-   * @returns {requestPromise.RequestPromise}
+   * @returns {AxiosPromise}
    */
   static execute(incomingRequestOptions: any) {
-    return request(incomingRequestOptions);
+    return axios.get('http://localhost:8080/wallet/register', incomingRequestOptions)
+      .then((response) => {
+        return response;
+      });
   }
 }

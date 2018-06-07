@@ -4,11 +4,12 @@ import { PillarSdk } from '../..';
 describe('wallet endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
+      apiUrl: 'http://localhost:8080',
       privateKey: hdkey.privateKey,
     });
   });
 
-  describe('Wallet Registration', () => {
+  describe.only('Wallet Registration', () => {
     it('Expect Return Success', () => {
 
       const inputParams = {
@@ -25,8 +26,9 @@ describe('wallet endpoints', () => {
          return error;
        });
       // waiting for test Apiurl to be provided
-      // expect(result.result).toBe('success');
-      expect(result).toBeTruthy();
+      console.log(result);
+      expect(result).toBe('success');
+      // expect(result).toBeTruthy();
     });
   });
 
