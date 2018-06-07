@@ -16,10 +16,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install
-          command: npm i --verbose
-      - run:
-          name: Install Jest globally
-          command: sudo npm i -g jest
+          command: npm i
       - run:
           name: Install TypeScript packages globally
           command: sudo npm i -g typescript tsc ts-node
@@ -40,6 +37,9 @@ jobs:
       - image: circleci/node:8.9.4
     steps:
       - checkout
+      - run:
+          name: Install Jest globally
+          command: sudo npm i -g jest
       - run:
           name: Test
           command: npm test
