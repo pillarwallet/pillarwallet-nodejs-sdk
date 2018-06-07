@@ -75,8 +75,8 @@ const inputParams = {
 - Expected Output
     - result : 'success'(String),
     - message : 'Wallet created successfully.'(String),
-    - walletId : Integer
-    - userId: Integer
+    - walletId : string,
+    - userId: string
 
 ## Response And Error
 
@@ -117,14 +117,14 @@ Updates FcmToken in the backend.
 
 ```typescript
 const inputParams = {
- walletId: 126,
- fcmToken: "dfj8hjs9dahfdbf7dsbfbds7f",
+ walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+ fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f',
   }
 ```
 
 - Input
     -fcmToken : String
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String),
     - message : 'OK'(String)
@@ -139,12 +139,12 @@ Returns a list of assets that are marked as default assets.
 
 ```typescript
 const inputParams = {
- walletId: 12,
+ walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
  };
 ```
 
 - Input
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     JSON Collection of Objects with respective Values
     - address: Text,
@@ -165,7 +165,7 @@ const inputParams = {
 
 ```typescript
 const inputParams = {
-   walletId: 123,
+   walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
    query: 'search query here',
  };
 ```
@@ -177,7 +177,7 @@ pillarSdk.asset.search(inputParams)
 ```
 
 - Input
-    - walletId : Integer
+    - walletId : String
     - query : String
 - Expected Output
     JSON Collection of Objects with respective Values
@@ -205,16 +205,16 @@ Creates a connection invitation for a user to create a relationship with another
 
 ```typescript
 const inputParams = {
-  targetUserId: 1,
+  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
 };
 ```
 
 - Input
-    - targetUserId : Integer
+    - targetUserId : String
     - accessKey : String
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String)
     - message : 'Connection invitation was successfully sent'(String)
@@ -230,8 +230,8 @@ Accepts a connection invitation from another user.
 ```typescript
 const inputParams =
  {
-   targetUserId: 1,
-   walletId: 1,
+   targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+   walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
    sourceUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
    targetUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
  };
@@ -239,8 +239,8 @@ const inputParams =
 ```
 
 - Input
-    - targetUserId : Integer
-    - walletId : Integer
+    - targetUserId : String
+    - walletId : String
     - sourceUserAccessKey : String
     - targetUserAccessKey : String
 - Expected Output
@@ -258,16 +258,16 @@ Rejects a connection invitation from another user.
 
 ```typescript
 const inputParams = {
-     targetUserId: 1,
+     targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
      accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-     walletId: 1
+     walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
  };
 ```
 
 - Input
-    - targetUserId : Integer
+    - targetUserId : String
     - accessKey : String
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String)
     - message : 'Connection invitation rejected'(String)
@@ -283,16 +283,16 @@ Cancels a connection invitation from another user.
 
 ```typescript
 const inputParams = {
-     targetUserId: 1,
+     targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
      accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-     walletId: 1
+     walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
  };
 ```
 
 - Input
-    - targetUserId : Integer
+    - targetUserId : String
     - accessKey : String
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String)
     - message : 'Connection canceled'(String)
@@ -309,13 +309,13 @@ Blocks a connection request from another user.
 ```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
  };
 ```
 
 - Input
     - accessKey : String
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String)
     - message : 'Connection blocked'(String)
@@ -332,13 +332,13 @@ Mutes future communication from another contact.
 ```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
  };
 ```
 
 - Input
     - accessKey : String
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String)
     - message : 'Connection muted'(String)
@@ -353,18 +353,18 @@ Provides a list of notifications for a specific wallet user.
 
 ```typescript
 const inputParams = {
-  walletId: 1,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   fromTimestamp: '2016-05-24T15:54:14.876Z',
 };
 ```
 
 - Input
-    - walletId : Integer
+    - walletId : String
     - fromTimestamp : String (ISO 8601 timestamp format)
 - Expected Output
     - result : 'success'(String)
     - Notifications
-        - userId : Integer
+        - userId : String
         - message: Text
 
 **User Update**
@@ -377,23 +377,29 @@ Updates data elements on a wallet user.
 
 ```typescript
 const inputParams = {
-  walletId: 123,
-  firstName: 'Homer',
-  lastName: 'Simpson',
-  email: 'chunkylover69@aol.com',
-  phone: '911',
-  country: 'United States',
-  state: 'NA',
-  city: 'Springfield',
-  tagline: 'Tagline',
-  taglineStatus: true ,
-  userSearchable: true ,
-  profileImage: 'http://homer.jpg',
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        username: 'bob123',
+        firstName: 'Bob',
+        lastName: 'Jones',
+        email: 'bob@acme-corp.com',
+        phone: '+44 77 1111 2222',
+        country: 'UK',
+        state: 'CA',
+        city: 'London',
+        tagline: 'Social media consultant',
+        taglineStatus: false,
+        userSearchable: true,
+        profileImage: 'http://photo1.jpg',
+        status: 'pending|OTP-verified|active',
+        verificationService: 'Nivaura',
+        verificationStatus: 'approved',
+        verificationReference: 'x1234y44',
+        investorClassification: 'sophisticated'
 };
 ```
 
 - Input
-    - walletId : Integer
+    - walletId : String
     - firstName : String
     - lastName : String
     - country : String
@@ -405,6 +411,11 @@ const inputParams = {
     - taglineStatus : Boolean
     - userSearchable : Boolean
     - profileImage : String(Url)
+    - status: String ('pending|OTP-verified|active'),
+    - verificationService: String,
+    - verificationStatus: String,
+    - verificationReference: String',
+    - investorClassification: String
 - Expected Output
      - result : 'success'(String),
      - message : 'User was successfully updated'(String),
@@ -412,7 +423,7 @@ const inputParams = {
        - ethAddress : String
        - fcmToken : String
        - signalRegistrationId : String
-       - id : Integer
+       - id : String
        - firstName : String
        - lastName : String
        - country : String
@@ -425,6 +436,8 @@ const inputParams = {
        - userSearchable : Boolean
        - profileImage : Text(Url)
 
+
+
 **User Info**
 
 ```typescript
@@ -435,18 +448,18 @@ Retrieves information on an existing wallet user.
 
 ```typescript
 const inputParams = {
-  walletId: 123,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
 };
 ```
 
 - Input
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - Payload JSON Object
         - ethAddress : String
         - fcmToken : String
         - signalRegistrationId : String
-        - id : Integer
+        - id : String
         - firstName : String
         - lastName : String
         - country : String
@@ -470,17 +483,17 @@ Provides a list of users that contain the search criteria for first or last name
 
 ```typescript
 const inputParams = {
-  walletId: 1,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   query: 'searchforme',
 };
 ```
 
 - Input
-    - walletId : Integer
+    - walletId : String
     - query : String
 - Expected Output
     - user : JSON Object
-      - id : Integer
+      - id : String
       - firstName : String
       - lastName : String
       - country : String
@@ -498,11 +511,11 @@ Removes a wallet user profile from the database.
 
 ```typescript
 const inputParams = {
-  walletId: 123,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
 };
 ```
 - Input
-    - walletId : Integer
+    - walletId : String
 - Expected Output
     - result : 'success'(String),
     - message : 'User was successfully deleted'(String),
