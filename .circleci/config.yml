@@ -10,12 +10,12 @@ jobs:
             name: Authenticate with registry
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
       - run:
-            name: set Registry
+            name: Set Registry
             command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: Install
+          name: Install Packages
           command: npm i
       - run:
           name: Install TypeScript packages globally
@@ -38,14 +38,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Jest globally
-          command: sudo npm i -g jest
+          name: Authenticate with registry
+          command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
       - run:
-          name: Install
+          name: Set Registry
+          command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install Packages
           command: npm i
-      - run:
-          name: Install TypeScript packages globally
-          command: sudo npm i -g typescript tsc ts-node
       - run:
           name: Test
           command: npm test
