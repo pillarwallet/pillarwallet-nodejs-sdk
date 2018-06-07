@@ -38,7 +38,7 @@ describe('The User Class: Update method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: userUpdateData,
+          data: userUpdateData,
           url: 'http://localhost:8080/user/update',
         }),
     );
@@ -60,7 +60,7 @@ describe('The User Class: Info method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: userInfoData,
+          params: userInfoData,
           url: 'http://localhost:8080/user/info',
         }),
     );
@@ -82,7 +82,7 @@ describe('The User Class: Search method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: userSearchData,
+          params: userSearchData,
           url: 'http://localhost:8080/user/search',
         }),
     );
@@ -104,7 +104,7 @@ describe('The User Class: Delete method', () => {
     expect.objectContaining(
       {
         headers: { 'X-API-Signature': expect.anything() },
-        body: userInfoData,
+        data: userInfoData,
         url: 'http://localhost:8080/user/delete',
       }),
   );
@@ -131,7 +131,7 @@ describe('The User Class: Create method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: userCreate,
+          data: userCreate,
           url: 'http://localhost:8080/user/create',
         }),
     );
@@ -152,7 +152,7 @@ describe('The User Class: Create Verification User method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: userCreate,
+          data: userCreate,
           url: 'http://localhost:8080/user/create-verified-user',
         }),
     );
@@ -175,7 +175,7 @@ describe('The User Class: Create One Time Password method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: userCreate,
+          data: userCreate,
           url: 'http://localhost:8080/user/create-one-time-password',
         }),
     );
@@ -197,7 +197,7 @@ describe('The User Class: Validate Phone method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: userValidatePhone,
+          data: userValidatePhone,
           url: 'http://localhost:8080/user/validate-phone',
         }),
     );
@@ -219,7 +219,7 @@ describe('The User Class: Validate Email method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: userValidateEmail,
+          data: userValidateEmail,
           url: 'http://localhost:8080/user/validate-email',
         }),
     );
@@ -244,7 +244,7 @@ describe('The User Class: Update Notifications Preferences method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: updateNotificationPreferences,
+          data: updateNotificationPreferences,
           url: 'http://localhost:8080/user/update-notification-preferences',
         }),
     );
@@ -265,7 +265,7 @@ describe('The User Class: Username Search method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: usernameSearch,
+          params: usernameSearch,
           url: 'http://localhost:8080/user/username-search',
         }),
     );

@@ -1,15 +1,18 @@
-const hdkey = require('../utils/generateKeyPair');
+const keys = require('../utils/generateKeyPair');
+import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+
+const spy = jest.spyOn(Requester, 'execute');
 
 describe('wallet endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
-      privateKey: hdkey.privateKey,
+      privateKey: keys.privateKey,
     });
   });
 
-  describe.only('Wallet Registration', () => {
+  describe('Wallet Registration', () => {
     it('Expect Return Success', () => {
 
       const inputParams = {
@@ -17,18 +20,22 @@ describe('wallet endpoints', () => {
       };
 
       const result = this.pSdk.wallet.register(inputParams)
-       .then((response:any) => {
-       // Successful response!
-         return response;
-     })
-       .catch((error:any) => {
-         // Unsuccessful response.
-         return error;
-       });
-      // waiting for test Apiurl to be provided
-      console.log(result);
-      expect(result).toBe('success');
-      // expect(result).toBeTruthy();
+        .then((response: any) => {
+          // Successful response!
+          return response;
+        })
+        .catch((error: any) => {
+          // Unsuccessful response.
+          return error;
+        });
+
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
     });
   });
 
@@ -40,17 +47,22 @@ describe('wallet endpoints', () => {
       };
 
       const result = this.pSdk.wallet.update(inputParams)
-        .then((response:any) => {
+        .then((response: any) => {
           // Successful response!
           return response;
         })
-        .catch((error:any) => {
+        .catch((error: any) => {
           // Unsuccessful response.
           return error;
         });
-      // waiting for test Apiurl to be provided
-      // expect(result.result).toBe('success');
-      expect(result).toBeTruthy();
+
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
     });
   });
 });

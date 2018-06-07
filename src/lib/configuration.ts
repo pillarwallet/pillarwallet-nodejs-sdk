@@ -1,8 +1,12 @@
+/**
+ * Import required classes / libraries / constants
+ */
 import * as Ajv from 'ajv';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 
 let ajv: any;
+
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
     privateKey: '',

@@ -21,7 +21,7 @@ describe('The Notification Class: List method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: notificationData,
+          params: notificationData,
           url: 'http://localhost:8080/notification/list',
         }),
     );

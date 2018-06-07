@@ -1,5 +1,8 @@
 const hdkey = require('../utils/generateKeyPair');
+import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+
+const spy = jest.spyOn(Requester, 'execute');
 
 describe('asset endpoints', () => {
   beforeEach(() => {
@@ -15,7 +18,7 @@ describe('asset endpoints', () => {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
-      const result = this.pSdk.asset.defaults(inputParams)
+      this.pSdk.asset.defaults(inputParams)
         .then((response: any) => {
           // Successful response!
           // console.log(response);
@@ -26,7 +29,13 @@ describe('asset endpoints', () => {
           return error;
         });
 
-      expect(result).toBeTruthy();
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
     });
   });
 
@@ -38,10 +47,9 @@ describe('asset endpoints', () => {
         query: 'p',
       };
 
-      const result = this.pSdk.asset.search(inputParams)
+      this.pSdk.asset.search(inputParams)
         .then((response: any) => {
           // Successful response!
-          // console.log(response);
           return response;
         })
         .catch((error: any) => {
@@ -49,7 +57,13 @@ describe('asset endpoints', () => {
           return error;
         });
 
-      expect(result).toBeTruthy();
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
 
     });
   });

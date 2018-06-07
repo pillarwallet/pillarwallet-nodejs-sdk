@@ -1,10 +1,13 @@
-const hdkey = require('../utils/generateKeyPair');
+const keys = require('../utils/generateKeyPair');
+import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+
+const spy = jest.spyOn(Requester, 'execute');
 
 describe('notification endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey,
+      privateKey: keys.privateKey,
     });
   });
 
@@ -15,20 +18,23 @@ describe('notification endpoints', () => {
         fromTimestamp: '2016-05-24T15:54:14.876Z',
       };
 
-      const result = this.pSdk.notification.list(inputParams)
-        .then((response:any) => {
+      this.pSdk.notification.list(inputParams)
+        .then((response: any) => {
           // Successful response!
           return response;
         })
-        .catch((error:any) => {
+        .catch((error: any) => {
           // Unsuccessful response.
           return error;
         });
 
-      // waiting for test Apiurl to be provided
-      // expect(result.result).toBe('success');
-      expect(result).toBeTruthy();
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
     });
   });
-
 });

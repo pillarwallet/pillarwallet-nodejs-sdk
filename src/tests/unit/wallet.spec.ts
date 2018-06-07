@@ -7,7 +7,7 @@ beforeEach(() => {
   });
 });
 
-describe.only('The Wallet Class: Register method', () => {
+describe('The Wallet Class: Register method', () => {
   it('should successfully call with valid data', () => {
     const walletRegistrationData = {
       fcmToken: '987qwe',
@@ -41,7 +41,7 @@ describe('The Wallet Class: Update method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: walletUpdateData,
+          data: walletUpdateData,
           url: 'http://localhost:8080/wallet/update',
         }),
     );
@@ -62,7 +62,7 @@ describe('The Wallet Class: Validate method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: walletValidateData,
+          params: walletValidateData,
           url: 'http://localhost:8080/wallet/validate-wallet',
         }),
     );
@@ -85,7 +85,7 @@ describe('The Wallet Class: Register Address method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: registerAddressData,
+          data: registerAddressData,
           url: 'http://localhost:8080/wallet/registerAddress',
         }),
     );
@@ -108,7 +108,7 @@ describe('The Wallet Class: Unregister Address method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: unregisterAddressData,
+          data: unregisterAddressData,
           url: 'http://localhost:8080/wallet/unregisterAddress',
         }),
     );

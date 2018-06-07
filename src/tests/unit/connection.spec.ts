@@ -25,7 +25,7 @@ describe('The Connection Class: Invite method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: connectionInviteData,
+          data: connectionInviteData,
           url: 'http://localhost:8080/connection/invite',
         }),
     );
@@ -52,7 +52,7 @@ describe('The Connection Class: Accept method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: connectionAcceptData,
+          data: connectionAcceptData,
           url: 'http://localhost:8080/connection/accept',
         }),
     );
@@ -77,7 +77,7 @@ describe('The Connection Class: Reject method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: connectionRejectData,
+          data: connectionRejectData,
           url: 'http://localhost:8080/connection/reject',
         }),
     );
@@ -102,7 +102,7 @@ describe('The Connection Class: Cancel method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: connectionCancelData,
+          data: connectionCancelData,
           url: 'http://localhost:8080/connection/cancel',
         }),
     );
@@ -127,7 +127,7 @@ describe('The Connection Class: Block method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: connectionBlockData,
+          data: connectionBlockData,
           url: 'http://localhost:8080/connection/block',
         }),
     );
@@ -152,7 +152,7 @@ describe('The Connection Class: Mute method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          body: connectionMuteData,
+          data: connectionMuteData,
           url: 'http://localhost:8080/connection/mute',
         }),
     );

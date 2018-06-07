@@ -1,10 +1,13 @@
-const hdkey = require('../utils/generateKeyPair');
+const keys = require('../utils/generateKeyPair');
+import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+
+const spy = jest.spyOn(Requester, 'execute');
 
 describe('connection endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey,
+      privateKey: keys.privateKey,
     });
   });
 
@@ -15,19 +18,23 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    const result = this.pSdk.connection.invite(inputParams)
-      .then((response:any) => {
+    this.pSdk.connection.invite(inputParams)
+      .then((response: any) => {
         // Successful response!
         return response;
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         // Unsuccessful response.
         return error;
       });
 
-    // waiting for test Apiurl to be provided
-    // expect(result.result).toBe('success');
-    expect(result).toBeTruthy();
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(spy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Accept ', () => {
@@ -38,20 +45,23 @@ describe('connection endpoints', () => {
       targetUserAccessKey: 'hello',
     };
 
-    const result = this.pSdk.connection.accept(inputParams)
-      .then((response:any) => {
+    this.pSdk.connection.accept(inputParams)
+      .then((response: any) => {
         // Successful response!
         return response;
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         // Unsuccessful response.
         return error;
       });
 
-
-    // expect(result.result).toBe('success');
-    // waiting for test Apiurl to be provided
-    expect(result).toBeTruthy();
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(spy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Reject ', () => {
@@ -61,19 +71,23 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    const result = this.pSdk.connection.reject(inputParams)
-      .then((response:any) => {
+    this.pSdk.connection.reject(inputParams)
+      .then((response: any) => {
         // Successful response!
         return response;
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         // Unsuccessful response.
         return error;
       });
 
-    // console.log(result);
-    // expect(result.result).toBe('success');
-    expect(result).toBeTruthy();
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(spy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Cancel ', () => {
@@ -83,19 +97,23 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    const result = this.pSdk.connection.cancel(inputParams)
-      .then((response:any) => {
+    this.pSdk.connection.cancel(inputParams)
+      .then((response: any) => {
         // Successful response!
         return response;
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         // Unsuccessful response.
         return error;
       });
 
-    // console.log(result);
-    // expect(result.result).toBe('success');
-    expect(result).toBeTruthy();
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(spy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Block ', () => {
@@ -104,19 +122,23 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    const result = this.pSdk.connection.block(inputParams)
-      .then((response:any) => {
+    this.pSdk.connection.block(inputParams)
+      .then((response: any) => {
         // Successful response!
         return response;
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         // Unsuccessful response.
         return error;
       });
 
-    // console.log(result);
-    // expect(result.result).toBe('success');
-    expect(result).toBeTruthy();
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(spy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Mute ', () => {
@@ -125,18 +147,22 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    const result = this.pSdk.connection.mute(inputParams)
-      .then((response:any) => {
+    this.pSdk.connection.mute(inputParams)
+      .then((response: any) => {
         // Successful response!
         return response;
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         // Unsuccessful response.
         return error;
       });
 
-    // console.log(result);
-    // expect(result.result).toBe('success');
-    expect(result).toBeTruthy();
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(spy).toHaveBeenCalled();
   });
 });
