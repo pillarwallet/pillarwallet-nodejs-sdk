@@ -70,13 +70,13 @@ const inputParams = {
 ```
 
 - Input
-    - fcmToken : string
+    - fcmToken : String
 
 - Expected Output
     - result : 'success'(String),
     - message : 'Wallet created successfully.'(String),
-    - walletId : string,
-    - userId: string
+    - walletId : String,
+    - userId : String
 
 ## Response And Error
 
