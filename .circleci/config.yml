@@ -16,7 +16,10 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install
-          command: npm i
+          command: npm i --verbose
+      - run:
+          name: Install Jest globally
+          command: sudo npm i -g jest
       - run:
           name: Install TypeScript packages globally
           command: sudo npm i -g typescript tsc ts-node
