@@ -41,6 +41,12 @@ jobs:
           name: Install Jest globally
           command: sudo npm i -g jest
       - run:
+          name: Install
+          command: npm i
+      - run:
+          name: Install TypeScript packages globally
+          command: sudo npm i -g typescript tsc ts-node
+      - run:
           name: Test
           command: npm test
   publish:
