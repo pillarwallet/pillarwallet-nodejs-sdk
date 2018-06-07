@@ -16,10 +16,13 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install
-          command: yarn install
+          command: npm i
       - run:
           name: Install TypeScript packages globally
-          command: sudo yarn global add typescript tsc ts-node
+          command: sudo npm i -g typescript tsc ts-node
+      - run:
+          name: Compile TypeScript
+          command: npm run compile
       - run:
           name: Webpack bundle SDK for Production
           command: npm run build-production
@@ -36,7 +39,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: echo please write some unit-tests
+          command: npm test
   publish:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
