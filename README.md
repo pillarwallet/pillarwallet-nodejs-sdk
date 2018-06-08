@@ -61,16 +61,19 @@ pillarSdk.wallet.register(inputParams)
 ```
 
 Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX.
+ICO Wallet can not be created without phone.
 
 
 ```typescript
 const inputParams = {
   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
+  phone: '+447342234889'
 };
 ```
 
 - Input
   - fcmToken : String
+  - phone : String (Optional)
 
 - Expected Output
   - result : 'success'(String),
