@@ -1,13 +1,21 @@
-///<reference path="configuration.ts"/>
-import { RequestPromise } from 'request-promise';
-
+/**
+ * Import required classes / libraries / constants
+ */
+import { AxiosPromise } from 'axios';
 import { Requester } from '../utils/requester';
-import { default as getConfiguration } from '../utils/requester-configurations/get';
-import { default as putConfiguration } from '../utils/requester-configurations/put';
-import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
 import { Configuration }  from './configuration';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 
+/**
+ * Import HTTP Request Configurations
+ */
+import { default as getConfiguration } from '../utils/requester-configurations/get';
+import { default as putConfiguration } from '../utils/requester-configurations/put';
+import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
+
+/**
+ * Import Validation Schemas
+ */
 const assetDefaultsSchema = require('../schemas/assets/defaults.json');
 const assetSearchSchema = require('../schemas/assets/search.json');
 const assetListSchema = require('../schemas/assets/list.json');
@@ -23,15 +31,15 @@ export class Asset extends Configuration {
   /**
    * Returns a list of assets that are marked as default assets.
    * @param {AssetDefaults} assetDefaults
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  defaults(assetDefaults: AssetDefaults): RequestPromise {
+  defaults(assetDefaults: AssetDefaults): AxiosPromise {
     // validation
     this.validation(assetDefaultsSchema,assetDefaults);
     // setting the request
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetDefaults.walletId, Configuration.accessKeys.privateKey);
-    getConfiguration.qs = assetDefaults;
+    getConfiguration.params = assetDefaults;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DEFAULT;
 
     return Requester.execute(getConfiguration);
@@ -41,14 +49,14 @@ export class Asset extends Configuration {
    * Returns a list of assets that contain the search criteria which would be the name,
    * token symbol or smartcontract hexadecimal.
    * @param {AssetSearch} assetSearch
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  search(assetSearch: AssetSearch): RequestPromise {
+  search(assetSearch: AssetSearch): AxiosPromise {
     this.validation(assetSearchSchema, assetSearch);
 
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetSearch, Configuration.accessKeys.privateKey);
-    getConfiguration.qs = assetSearch;
+    getConfiguration.params = assetSearch;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_SEARCH;
 
     return Requester.execute(getConfiguration);
@@ -57,14 +65,14 @@ export class Asset extends Configuration {
   /**
    * Returns a list of assets.
    * @param {AssetList} assetList
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  list(assetList:AssetList): RequestPromise {
+  list(assetList:AssetList): AxiosPromise {
     this.validation(assetListSchema, assetList);
 
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetList, Configuration.accessKeys.privateKey);
-    getConfiguration.qs = assetList;
+    getConfiguration.params = assetList;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_LIST;
 
     return Requester.execute(getConfiguration);
@@ -73,14 +81,14 @@ export class Asset extends Configuration {
   /**
    * Update data elements on an existing asset record or create a new asset record
    * @param {AssetUpdate} assetUpdate
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  update(assetUpdate: AssetUpdate): RequestPromise {
+  update(assetUpdate: AssetUpdate): AxiosPromise {
     this.validation(assetUpdateSchema, assetUpdate);
 
     putConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetUpdate, Configuration.accessKeys.privateKey);
-    putConfiguration.body = assetUpdate;
+    putConfiguration.data = assetUpdate;
     putConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_UPDATE;
 
     return Requester.execute(putConfiguration);
@@ -89,14 +97,14 @@ export class Asset extends Configuration {
   /**
    * Remove an existing asset from the database
    * @param {AssetDelete} assetDelete
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  delete(assetDelete: AssetDelete): RequestPromise {
+  delete(assetDelete: AssetDelete): AxiosPromise {
     this.validation(assetDeleteSchema, assetDelete);
 
     deleteConfiguration.headers['X-API-Signature'] =
       this.checkSignature(assetDelete, Configuration.accessKeys.privateKey);
-    deleteConfiguration.body = assetDelete;
+    deleteConfiguration.data = assetDelete;
     deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DELETE;
 
     return Requester.execute(deleteConfiguration);

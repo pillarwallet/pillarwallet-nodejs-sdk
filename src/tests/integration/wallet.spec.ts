@@ -1,11 +1,21 @@
-const hdkey = require('../utils/generateKeyPair');
+const keys = require('../utils/generateKeyPair');
+import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+
+let spy;
 
 describe('wallet endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      privateKey: hdkey.privateKey,
+      apiUrl: 'http://localhost:8080',
+      privateKey: keys.privateKey,
     });
+
+    spy = jest.spyOn(Requester, 'execute');
+  });
+
+  afterEach(() => {
+    spy.mockClear();
   });
 
   describe('Wallet Registration', () => {
@@ -16,17 +26,22 @@ describe('wallet endpoints', () => {
       };
 
       const result = this.pSdk.wallet.register(inputParams)
-       .then((response:any) => {
-       // Successful response!
-         return response;
-     })
-       .catch((error:any) => {
-         // Unsuccessful response.
-         return error;
-       });
-      // waiting for test Apiurl to be provided
-      // expect(result.result).toBe('success');
-      expect(result).toBeTruthy();
+        .then((response: any) => {
+          // Successful response!
+          return response;
+        })
+        .catch((error: any) => {
+          // Unsuccessful response.
+          return error;
+        });
+
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
     });
   });
 
@@ -38,17 +53,22 @@ describe('wallet endpoints', () => {
       };
 
       const result = this.pSdk.wallet.update(inputParams)
-        .then((response:any) => {
+        .then((response: any) => {
           // Successful response!
           return response;
         })
-        .catch((error:any) => {
+        .catch((error: any) => {
           // Unsuccessful response.
           return error;
         });
-      // waiting for test Apiurl to be provided
-      // expect(result.result).toBe('success');
-      expect(result).toBeTruthy();
+
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(spy).toHaveBeenCalled();
     });
   });
 });

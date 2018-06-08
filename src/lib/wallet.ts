@@ -1,12 +1,21 @@
-import { RequestPromise } from 'request-promise';
-
-import { default as postConfiguration } from '../utils/requester-configurations/post';
-import { default as getConfiguration } from '../utils/requester-configurations/get';
+/**
+ * Import required classes / libraries / constants
+ */
+import { AxiosPromise } from 'axios';
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
 
+/**
+ * Import HTTP Request Configurations
+ */
+import { default as postConfiguration } from '../utils/requester-configurations/post';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
+
+/**
+ * Import Validation Schemas
+ */
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 const walletValidateSchema = require('../schemas/wallet/validate.json');
@@ -22,9 +31,9 @@ export class Wallet extends Configuration {
   /**
    * Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
    * @param {WalletRegister} walletRegister
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  register(walletRegister: WalletRegister): RequestPromise {
+  register(walletRegister: WalletRegister): AxiosPromise {
     // validating Input
     if (!walletRegister.publicKey) {
       walletRegister.publicKey = PrivateKeyDerivatives
@@ -40,7 +49,7 @@ export class Wallet extends Configuration {
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletRegister,Configuration.accessKeys.privateKey);
 
-    postConfiguration.body = walletRegister;
+    postConfiguration.data = walletRegister;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
     // http request
     return Requester.execute(postConfiguration);
@@ -49,15 +58,15 @@ export class Wallet extends Configuration {
   /**
    * Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
    * @param {WalletUpdate} walletUpdate
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  update(walletUpdate: WalletUpdate): RequestPromise {
+  update(walletUpdate: WalletUpdate): AxiosPromise {
 
     this.validation(walletUpdateSchema,walletUpdate);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletUpdate,Configuration.accessKeys.privateKey);
-    postConfiguration.body = walletUpdate;
+    postConfiguration.data = walletUpdate;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UPDATE;
 
     return Requester.execute(postConfiguration);
@@ -66,15 +75,15 @@ export class Wallet extends Configuration {
   /**
    * Validates that a user/wallet record exists and returns its status
    * @param {WalletValidate} walletValidate
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  validate(walletValidate: WalletValidate): RequestPromise {
+  validate(walletValidate: WalletValidate): AxiosPromise {
 
     this.validation(walletValidateSchema,walletValidate);
 
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletValidate,Configuration.accessKeys.privateKey);
-    getConfiguration.qs = walletValidate;
+    getConfiguration.params = walletValidate;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_VALIDATE;
 
     return Requester.execute(getConfiguration);
@@ -83,15 +92,15 @@ export class Wallet extends Configuration {
   /**
    * Register the specified blockchain address for notifications and for BCX monitoring
    * @param {WalletRegisterAddress} walletRegisterAddress
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  registerAddress(walletRegisterAddress: WalletRegisterAddress): RequestPromise {
+  registerAddress(walletRegisterAddress: WalletRegisterAddress): AxiosPromise {
 
     this.validation(walletRegisterAddressSchema,walletRegisterAddress);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletRegisterAddress,Configuration.accessKeys.privateKey);
-    postConfiguration.body = walletRegisterAddress;
+    postConfiguration.data = walletRegisterAddress;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER_ADDRESS;
 
     return Requester.execute(postConfiguration);
@@ -100,15 +109,15 @@ export class Wallet extends Configuration {
   /**
    * Unregister the specified blockchain address for notifications and for BCX monitoring
    * @param {WalletUnregisterAddress} walletUnregisterAddress
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  unregisterAddress(walletUnregisterAddress: WalletUnregisterAddress): RequestPromise {
+  unregisterAddress(walletUnregisterAddress: WalletUnregisterAddress): AxiosPromise {
 
     this.validation(walletUnregisterAddressSchema,walletUnregisterAddress);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(walletUnregisterAddress,Configuration.accessKeys.privateKey);
-    postConfiguration.body = walletUnregisterAddress;
+    postConfiguration.data = walletUnregisterAddress;
     postConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UNREGISTER_ADDRESS;
 

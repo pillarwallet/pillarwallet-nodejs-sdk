@@ -1,12 +1,12 @@
-import * as request from 'request-promise';
+import axios from 'axios';
 
 export class Requester {
   /**
-   * Execute a http request
+   * execute http request
    * @param incomingRequestOptions
-   * @returns {requestPromise.RequestPromise}
+   * @returns {AxiosPromise}
    */
   static execute(incomingRequestOptions: any) {
-    return request(incomingRequestOptions);
+    return axios(incomingRequestOptions);
   }
 }

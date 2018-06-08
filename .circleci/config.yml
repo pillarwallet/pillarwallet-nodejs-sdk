@@ -10,16 +10,19 @@ jobs:
             name: Authenticate with registry
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
       - run:
-            name: set Registry
+            name: Set Registry
             command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: Install
-          command: yarn install
+          name: Install Packages
+          command: npm i
       - run:
           name: Install TypeScript packages globally
-          command: sudo yarn global add typescript tsc ts-node
+          command: sudo npm i -g typescript tsc ts-node
+      - run:
+          name: Compile TypeScript
+          command: npm run compile
       - run:
           name: Webpack bundle SDK for Production
           command: npm run build-production
@@ -35,8 +38,19 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Authenticate with registry
+          command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
+      - run:
+          name: Set Registry
+          command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install Packages
+          command: npm i
+      - run:
           name: Test
-          command: echo please write some unit-tests
+          command: npm run test:unit
   publish:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:

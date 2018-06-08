@@ -1,6 +1,6 @@
 interface ConnectionAccept {
   targetUserId: number;
-  walletId: number;
+  walletId: string;
   sourceUserAccessKey: string;
   targetUserAccessKey: string;
 }

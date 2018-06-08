@@ -4,6 +4,6 @@ export default {
   headers: {
     'X-API-Signature': '',
   },
-  body: {},
+  data: {},
   json: true,
 };

@@ -20,7 +20,7 @@ describe('The Asset Class: Defaults method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: assetDefaultsData,
+          params: assetDefaultsData,
           url: 'http://localhost:8080/asset/defaults',
         }));
   });
@@ -40,7 +40,7 @@ describe('The Asset Class: Search method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature': expect.anything() },
-          qs: assetSearchData,
+          params: assetSearchData,
           url: 'http://localhost:8080/asset/search',
         },
       ),
@@ -61,7 +61,7 @@ describe('The Asset Class: List method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature':  expect.anything() },
-          qs: assetListData,
+          params: assetListData,
           url: 'http://localhost:8080/asset/list',
         },
       ),
@@ -83,7 +83,7 @@ describe('The Asset Class: Delete method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature':  expect.anything() },
-          body: assetDeleteData,
+          data: assetDeleteData,
           url: 'http://localhost:8080/asset/delete',
         },
       ),
@@ -116,7 +116,7 @@ describe('The Asset Class: Update method', () => {
       expect.objectContaining(
         {
           headers: { 'X-API-Signature':  expect.anything() },
-          body: assetUpdateData,
+          data: assetUpdateData,
           url: 'http://localhost:8080/asset/update',
         },
       ),

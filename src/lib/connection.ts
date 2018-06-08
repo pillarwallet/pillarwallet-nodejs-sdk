@@ -1,16 +1,25 @@
+/**
+ * Import required classes / libraries / constants
+ */
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
-import { default as postConfiguration } from '../utils/requester-configurations/post';
 import { Configuration } from './configuration';
+import { AxiosPromise } from 'axios';
 
+/**
+ * Import HTTP Request Configurations
+ */
+import { default as postConfiguration } from '../utils/requester-configurations/post';
+
+/**
+ * Import Validation Schemas
+ */
 const connectionInviteSchema = require('../schemas/connection/invite.json');
 const connectionAcceptSchema = require('../schemas/connection/accept.json');
 const connectionRejectSchema = require('../schemas/connection/reject.json');
 const connectionCancelSchema = require('../schemas/connection/cancel.json');
 const connectionBlockSchema = require('../schemas/connection/block.json');
 const connectionMuteSchema = require('../schemas/connection/mute.json');
-
-
 
 export class Connection extends Configuration {
 
@@ -21,15 +30,15 @@ export class Connection extends Configuration {
   /**
    * Creates a connection invitation for a user to create a relationship with another contact
    * @param {ConnectionInvite} inviteConfiguration
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  invite(inviteConfiguration: ConnectionInvite) {
+  invite(inviteConfiguration: ConnectionInvite): AxiosPromise {
     this.validation(connectionInviteSchema,inviteConfiguration);
 
     postConfiguration.headers['X-API-Signature'] =
     this.checkSignature(inviteConfiguration,Configuration.accessKeys.privateKey);
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_INVITE;
-    postConfiguration.body = inviteConfiguration;
+    postConfiguration.data = inviteConfiguration;
 
     return Requester.execute(postConfiguration);
   }
@@ -37,15 +46,15 @@ export class Connection extends Configuration {
   /**
    * Accept a connection invitation from another user
    * @param {ConnectionAccept} acceptConfiguration
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  accept(acceptConfiguration: ConnectionAccept) {
+  accept(acceptConfiguration: ConnectionAccept): AxiosPromise {
     this.validation(connectionAcceptSchema, acceptConfiguration);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(acceptConfiguration,Configuration.accessKeys.privateKey);
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_ACCEPT;
-    postConfiguration.body = acceptConfiguration;
+    postConfiguration.data = acceptConfiguration;
 
     return Requester.execute(postConfiguration);
   }
@@ -53,15 +62,15 @@ export class Connection extends Configuration {
   /**
    * Reject a connection invitation from another user
    * @param {ConnectionReject} rejectConfiguration
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  reject(rejectConfiguration: ConnectionReject) {
+  reject(rejectConfiguration: ConnectionReject): AxiosPromise {
     this.validation(connectionRejectSchema, rejectConfiguration);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(rejectConfiguration,Configuration.accessKeys.privateKey);
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_REJECT;
-    postConfiguration.body = rejectConfiguration;
+    postConfiguration.data = rejectConfiguration;
 
     return Requester.execute(postConfiguration);
   }
@@ -69,15 +78,15 @@ export class Connection extends Configuration {
   /**
    * Cancels a connection invitation that a user previously initiated
    * @param {ConnectionCancel} cancelConfiguration
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  cancel(cancelConfiguration: ConnectionCancel) {
+  cancel(cancelConfiguration: ConnectionCancel): AxiosPromise {
     this.validation(connectionCancelSchema, cancelConfiguration);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(cancelConfiguration,Configuration.accessKeys.privateKey);
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_CANCEL;
-    postConfiguration.body = cancelConfiguration;
+    postConfiguration.data = cancelConfiguration;
 
     return Requester.execute(postConfiguration);
   }
@@ -85,15 +94,15 @@ export class Connection extends Configuration {
   /**
    * Blocks a connection request from another user
    * @param {ConnectionBlock} blockConfiguration
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  block(blockConfiguration: ConnectionBlock) {
+  block(blockConfiguration: ConnectionBlock): AxiosPromise {
     this.validation(connectionBlockSchema, blockConfiguration);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(blockConfiguration,Configuration.accessKeys.privateKey);
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_BLOCK;
-    postConfiguration.body = blockConfiguration;
+    postConfiguration.data = blockConfiguration;
 
     return Requester.execute(postConfiguration);
   }
@@ -101,15 +110,15 @@ export class Connection extends Configuration {
   /**
    * Mutes another user
    * @param {ConnectionMute} muteConfiguration
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  mute(muteConfiguration: ConnectionMute) {
+  mute(muteConfiguration: ConnectionMute): AxiosPromise {
     this.validation(connectionMuteSchema, muteConfiguration);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(muteConfiguration,Configuration.accessKeys.privateKey);
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_MUTE;
-    postConfiguration.body = muteConfiguration;
+    postConfiguration.data = muteConfiguration;
 
     return Requester.execute(postConfiguration);
   }

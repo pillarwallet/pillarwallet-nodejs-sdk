@@ -2,6 +2,6 @@ wwwroot/*.js
 node_modules
 typings
 .idea
-/dist/*
 coverage
 .npmrc
+dist

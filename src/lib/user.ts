@@ -1,13 +1,22 @@
+/**
+ * Import required classes / libraries / constants
+ */
+import { AxiosPromise } from 'axios';
 import { Requester } from '../utils/requester';
-import { RequestPromise } from 'request-promise';
+import { Configuration } from './configuration';
+import { HttpEndpoints } from './constants/httpEndpoints';
+
+/**
+ * Import HTTP Request Configurations
+ */
 import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 import { default as getConfiguration } from '../utils/requester-configurations/get';
 import { default as putConfiguration } from '../utils/requester-configurations/put';
 
-import { Configuration } from './configuration';
-import { HttpEndpoints } from './constants/httpEndpoints';
-
+/**
+ * Import Validation Schemas
+ */
 const userInfoSchema = require('../schemas/user/info.json');
 const userUpdateSchema = require('../schemas/user/update.json');
 const userDeleteSchema = require('../schemas/user/delete.json');
@@ -30,15 +39,15 @@ export class User extends Configuration {
   /**
    * Updates data elements on an existing wallet user.
    * @param {UserUpdate} userUpdate
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  update(userUpdate: UserUpdate): RequestPromise {
+  update(userUpdate: UserUpdate): AxiosPromise {
 
     this.validation(userUpdateSchema, userUpdate);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userUpdate, Configuration.accessKeys.privateKey);
-    postConfiguration.body = userUpdate;
+    postConfiguration.data = userUpdate;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_UPDATE;
 
     return Requester.execute(postConfiguration);
@@ -47,15 +56,15 @@ export class User extends Configuration {
   /**
    * Retrieve information on an existing wallet user
    * @param {UserInfo} userInfo
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  info(userInfo: UserInfo): RequestPromise {
+  info(userInfo: UserInfo): AxiosPromise {
 
     this.validation(userInfoSchema, userInfo);
 
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
-    getConfiguration.qs = userInfo;
+    getConfiguration.params = userInfo;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO;
 
     return Requester.execute(getConfiguration);
@@ -67,15 +76,15 @@ export class User extends Configuration {
    * Also it performs a check if the search string term is at least 2 characters and if the user
    * allows their profile to be searched.
    * @param {UserSearch} userSearch
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  search(userSearch: UserSearch): RequestPromise {
+  search(userSearch: UserSearch): AxiosPromise {
 
     this.validation(userSearchSchema, userSearch);
 
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userSearch, Configuration.accessKeys.privateKey);
-    getConfiguration.qs = userSearch;
+    getConfiguration.params = userSearch;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_SEARCH;
 
     return Requester.execute(getConfiguration);
@@ -84,15 +93,15 @@ export class User extends Configuration {
   /**
    * Remove an existing wallet user profile from the database
    * @param {UserDelete} userDelete
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  delete(userDelete: UserDelete): RequestPromise {
+  delete(userDelete: UserDelete): AxiosPromise {
 
     this.validation(userDeleteSchema, userDelete);
 
     deleteConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userDelete, Configuration.accessKeys.privateKey);
-    deleteConfiguration.body = userDelete;
+    deleteConfiguration.data = userDelete;
     deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
 
     return Requester.execute(deleteConfiguration);
@@ -101,15 +110,15 @@ export class User extends Configuration {
   /**
    * Create a pending wallet user upon registration
    * @param {UserCreate} userCreate
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  create(userCreate: UserCreate): RequestPromise {
+  create(userCreate: UserCreate): AxiosPromise {
 
     this.validation(userCreateSchema, userCreate);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userCreate, Configuration.accessKeys.privateKey);
-    postConfiguration.body = userCreate;
+    postConfiguration.data = userCreate;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_CREATE;
 
     return Requester.execute(postConfiguration);
@@ -118,53 +127,53 @@ export class User extends Configuration {
   /**
    * Create a pending wallet user upon alert from KYC service and email an invite to them
    * @param {UserCreateVerifiedUser} userCreateVerifiedUser
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  createVerifiedUser(userCreateVerifiedUser: UserCreateVerifiedUser): RequestPromise {
+  createVerifiedUser(userCreateVerifiedUser: UserCreateVerifiedUser): AxiosPromise {
 
     this.validation(userCreateVerifiedUserSchema, userCreateVerifiedUser);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userCreateVerifiedUser, Configuration.accessKeys.privateKey);
-    postConfiguration.body = userCreateVerifiedUser;
+    postConfiguration.data = userCreateVerifiedUser;
     postConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.USER_CREATE_VERIFIED_USER;
 
-    return Requester.execute(userCreateVerifiedUser);
+    return Requester.execute(postConfiguration);
   }
 
   /**
    * Create a one-time password, store it on the user record, then send an email to the user
    * @param {UserCreateOneTimePassword} userCreateOneTimePassword
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  createOneTimePassword(userCreateOneTimePassword: UserCreateOneTimePassword): RequestPromise {
+  createOneTimePassword(userCreateOneTimePassword: UserCreateOneTimePassword): AxiosPromise {
 
     this.validation(userCreateOneTimePasswordSchema, userCreateOneTimePassword);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userCreateOneTimePassword, Configuration.accessKeys.privateKey);
-    postConfiguration.body = userCreateOneTimePassword;
+    postConfiguration.data = userCreateOneTimePassword;
     postConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.USER_CREATE_ONE_TIME_PASSWORD;
 
-    return Requester.execute(userCreateOneTimePassword);
+    return Requester.execute(postConfiguration);
   }
 
   /**
    * Update data elements reflecting a user’s notification preferences
    * @param {UserUpdateNotificationPreferences} userUpdateNotificationPreferences
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
   updateNotificationPreferences(
     userUpdateNotificationPreferences: UserUpdateNotificationPreferences,
-  ): RequestPromise {
+  ): AxiosPromise {
 
     this.validation(userUpdateNotificationPreferencesSchema, userUpdateNotificationPreferences);
 
     putConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userUpdateNotificationPreferences, Configuration.accessKeys.privateKey);
-    putConfiguration.body = userUpdateNotificationPreferences;
+    putConfiguration.data = userUpdateNotificationPreferences;
     putConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.USER_UPDATE_NOTIFICATION_PREFERENCES;
 
@@ -174,15 +183,15 @@ export class User extends Configuration {
   /**
    * Retrieve the userId of an existing wallet useror return not-found
    * @param {UserUsernameSearch} userUsernameSearch
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  usernameSearch(userUsernameSearch: UserUsernameSearch): RequestPromise {
+  usernameSearch(userUsernameSearch: UserUsernameSearch): AxiosPromise {
 
     this.validation(userUsernameSearchSchema, userUsernameSearch);
 
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userUsernameSearch, Configuration.accessKeys.privateKey);
-    getConfiguration.qs = userUsernameSearch;
+    getConfiguration.params = userUsernameSearch;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_USERNAME_SEARCH;
 
     return Requester.execute(postConfiguration);
@@ -191,15 +200,15 @@ export class User extends Configuration {
   /**
    * Validate a one-time password that has been sent to a user’s email
    * @param {UserValidateEmail} userValidateEmail
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  userValidateEmail(userValidateEmail: UserValidateEmail): RequestPromise {
+  userValidateEmail(userValidateEmail: UserValidateEmail): AxiosPromise {
 
     this.validation(userValidateEmailSchema, userValidateEmail);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userValidateEmail, Configuration.accessKeys.privateKey);
-    postConfiguration.body = userValidateEmail;
+    postConfiguration.data = userValidateEmail;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE_EMAIL;
 
     return Requester.execute(postConfiguration);
@@ -208,15 +217,15 @@ export class User extends Configuration {
   /**
    * Validate a one-time password that has been sent to a user’s phone
    * @param {UserValidatePhone} userValidatePhone
-   * @returns {requestPromise.RequestPromise}
+   * @returns {axios.AxiosPromise}
    */
-  userValidatePhone(userValidatePhone: UserValidatePhone): RequestPromise {
+  userValidatePhone(userValidatePhone: UserValidatePhone): AxiosPromise {
 
     this.validation(userValidatePhoneSchema, userValidatePhone);
 
     postConfiguration.headers['X-API-Signature'] =
       this.checkSignature(userValidatePhone, Configuration.accessKeys.privateKey);
-    postConfiguration.body = userValidatePhone;
+    postConfiguration.data = userValidatePhone;
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE_PHONE;
 
     return Requester.execute(postConfiguration);
