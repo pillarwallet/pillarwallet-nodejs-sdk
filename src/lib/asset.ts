@@ -38,7 +38,7 @@ export class Asset extends Configuration {
     this.validation(assetDefaultsSchema,assetDefaults);
     // setting the request
     getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(assetDefaults.walletId, Configuration.accessKeys.privateKey);
+      this.checkSignature(assetDefaults, Configuration.accessKeys.privateKey);
     getConfiguration.params = assetDefaults;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DEFAULT;
 
