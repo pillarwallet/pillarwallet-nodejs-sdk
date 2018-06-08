@@ -49,8 +49,8 @@ const pillarSdk = new PillarSdk({
 });
 ```
 - Input
-    - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
-    - privateKey : hexadecimal string and 64 characters length.
+  - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
+  - privateKey : hexadecimal string and 64 characters length.
 
 #### 2 - Register the Wallet
 
@@ -61,22 +61,25 @@ pillarSdk.wallet.register(inputParams)
 ```
 
 Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX.
+ICO Wallet can not be created without phone.
 
 
 ```typescript
 const inputParams = {
-   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
- }
+  fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
+  phone: '+447342234889'
+};
 ```
 
 - Input
-    - fcmToken : string
+  - fcmToken : String
+  - phone : String (Optional)
 
 - Expected Output
-    - result : 'success'(String),
-    - message : 'Wallet created successfully.'(String),
-    - walletId : Integer
-    - userId: Integer
+  - result : 'success'(String),
+  - message : 'Wallet created successfully.'(String),
+  - walletId : String,
+  - userId : String
 
 ## Response And Error
 
@@ -117,17 +120,17 @@ Updates FcmToken in the backend.
 
 ```typescript
 const inputParams = {
- walletId: 126,
- fcmToken: "dfj8hjs9dahfdbf7dsbfbds7f",
-  }
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f',
+};
 ```
 
 - Input
-    -fcmToken : String
-    - walletId : Integer
+  - fcmToken : String
+  - walletId : String
 - Expected Output
-    - result : 'success'(String),
-    - message : 'OK'(String)
+  - result : 'success'(String),
+  - message : 'OK'(String)
 
 **Asset Defaults**
 
@@ -139,35 +142,35 @@ Returns a list of assets that are marked as default assets.
 
 ```typescript
 const inputParams = {
- walletId: 12,
- };
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+};
 ```
 
 - Input
-    - walletId : Integer
+  - walletId : String
 - Expected Output
-    JSON Collection of Objects with respective Values
-    - address: Text,
-    - decimals: Integer,
-    - description: Text,
-    - name: Text,
-    - symbol: Text,
-    - wallpaperUrl: Text,
-    - iconUrl: Text,
-    - email: Text,
-    - telegram: Text,
-    - twitter: Text,
-    - website: Text,
-    - whitepaper: Text,
-    - isDefault: 1 (Boolean).
+  JSON Collection of Objects with respective Values
+  - address: Text,
+  - decimals: Integer,
+  - description: Text,
+  - name: Text,
+  - symbol: Text,
+  - wallpaperUrl: Text,
+  - iconUrl: Text,
+  - email: Text,
+  - telegram: Text,
+  - twitter: Text,
+  - website: Text,
+  - whitepaper: Text,
+  - isDefault: 1 (Boolean).
 
 **Asset Search**
 
 ```typescript
 const inputParams = {
-   walletId: 123,
-   query: 'search query here',
- };
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  query: 'search query here',
+};
 ```
 
 Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
@@ -177,23 +180,23 @@ pillarSdk.asset.search(inputParams)
 ```
 
 - Input
-    - walletId : Integer
-    - query : String
+  - walletId : String
+  - query : String
 - Expected Output
-    JSON Collection of Objects with respective Values
-    - address: Text,
-    - decimals: Integer,
-    - description: Text,
-    - name: Text,
-    - symbol: Text,
-    - wallpaperUrl: Text,
-    - iconUrl: Text,
-    - email: Text,
-    - telegram: Text,
-    - twitter: Text,
-    - website: Text,
-    - whitepaper: Text,
-    - isDefault: Boolean.
+  JSON Collection of Objects with respective Values
+  - address: Text,
+  - decimals: Integer,
+  - description: Text,
+  - name: Text,
+  - symbol: Text,
+  - wallpaperUrl: Text,
+  - iconUrl: Text,
+  - email: Text,
+  - telegram: Text,
+  - twitter: Text,
+  - website: Text,
+  - whitepaper: Text,
+  - isDefault: Boolean.
 
 **Connection Invite**
 
@@ -205,19 +208,19 @@ Creates a connection invitation for a user to create a relationship with another
 
 ```typescript
 const inputParams = {
-  targetUserId: 1,
+  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
 };
 ```
 
 - Input
-    - targetUserId : Integer
-    - accessKey : String
-    - walletId : Integer
+  - targetUserId : String
+  - accessKey : String
+  - walletId : String
 - Expected Output
-    - result : 'success'(String)
-    - message : 'Connection invitation was successfully sent'(String)
+  - result : 'success'(String)
+  - message : 'Connection invitation was successfully sent'(String)
 
 **Connection Accept**
 
@@ -228,80 +231,76 @@ pillarSdk.connection.accept(inputParams)
 Accepts a connection invitation from another user.
 
 ```typescript
-const inputParams =
- {
-   targetUserId: 1,
-   walletId: 1,
-   sourceUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-   targetUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
- };
+const inputParams = {
+  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  sourceUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
+  targetUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
+};
 
 ```
 
 - Input
-    - targetUserId : Integer
-    - walletId : Integer
-    - sourceUserAccessKey : String
-    - targetUserAccessKey : String
+  - targetUserId : String
+  - walletId : String
+  - sourceUserAccessKey : String
+  - targetUserAccessKey : String
 - Expected Output
-    - result : 'success'(String)
-    - message : 'Connection invitation accepted'(String)
+  - result : 'success'(String)
+  - message : 'Connection invitation accepted'(String)
 
 **Connection Reject**
 
 ```typescript
 pillarSdk.connection.reject(inputParams)
-
 ```
 
 Rejects a connection invitation from another user.
 
 ```typescript
 const inputParams = {
-     targetUserId: 1,
-     accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-     walletId: 1
- };
+  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
+};
 ```
 
 - Input
-    - targetUserId : Integer
-    - accessKey : String
-    - walletId : Integer
+  - targetUserId : String
+  - accessKey : String
+  - walletId : String
 - Expected Output
-    - result : 'success'(String)
-    - message : 'Connection invitation rejected'(String)
+  - result : 'success'(String)
+  - message : 'Connection invitation rejected'(String)
 
 **Connection Cancel**
 
 ```typescript
 pillarSdk.connection.cancel(inputParams)
-
 ```
 
 Cancels a connection invitation from another user.
 
 ```typescript
 const inputParams = {
-     targetUserId: 1,
-     accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-     walletId: 1
- };
+  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
+};
 ```
 
 - Input
-    - targetUserId : Integer
-    - accessKey : String
-    - walletId : Integer
+  - targetUserId : String
+  - accessKey : String
+  - walletId : String
 - Expected Output
-    - result : 'success'(String)
-    - message : 'Connection canceled'(String)
+  - result : 'success'(String)
+  - message : 'Connection canceled'(String)
 
 **Connection Block**
 
 ```typescript
 pillarSdk.connection.block(inputParams)
-
 ```
 
 Blocks a connection request from another user.
@@ -309,16 +308,16 @@ Blocks a connection request from another user.
 ```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
- };
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
+};
 ```
 
 - Input
-    - accessKey : String
-    - walletId : Integer
+  - accessKey : String
+  - walletId : String
 - Expected Output
-    - result : 'success'(String)
-    - message : 'Connection blocked'(String)
+  - result : 'success'(String)
+  - message : 'Connection blocked'(String)
 
 **Connection Mute**
 
@@ -332,16 +331,16 @@ Mutes future communication from another contact.
 ```typescript
 const inputParams = {
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: 1
- };
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
+};
 ```
 
 - Input
-    - accessKey : String
-    - walletId : Integer
+  - accessKey : String
+  - walletId : String
 - Expected Output
-    - result : 'success'(String)
-    - message : 'Connection muted'(String)
+  - result : 'success'(String)
+  - message : 'Connection muted'(String)
 
 **Notification List**
 
@@ -353,19 +352,19 @@ Provides a list of notifications for a specific wallet user.
 
 ```typescript
 const inputParams = {
-  walletId: 1,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   fromTimestamp: '2016-05-24T15:54:14.876Z',
 };
 ```
 
 - Input
-    - walletId : Integer
-    - fromTimestamp : String (ISO 8601 timestamp format)
+  - walletId : String
+  - fromTimestamp : String (ISO 8601 timestamp format)
 - Expected Output
-    - result : 'success'(String)
-    - Notifications
-        - userId : Integer
-        - message: Text
+  - result : 'success'(String)
+  - Notifications
+    - userId : String
+    - message: Text
 
 **User Update**
 
@@ -377,23 +376,53 @@ Updates data elements on a wallet user.
 
 ```typescript
 const inputParams = {
-  walletId: 123,
-  firstName: 'Homer',
-  lastName: 'Simpson',
-  email: 'chunkylover69@aol.com',
-  phone: '911',
-  country: 'United States',
-  state: 'NA',
-  city: 'Springfield',
-  tagline: 'Tagline',
-  taglineStatus: true ,
-  userSearchable: true ,
-  profileImage: 'http://homer.jpg',
+  walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+  username: 'bob123',
+  firstName: 'Bob',
+  lastName: 'Jones',
+  email: 'bob@acme-corp.com',
+  phone: '+44 77 1111 2222',
+  country: 'UK',
+  state: 'CA',
+  city: 'London',
+  tagline: 'Social media consultant',
+  taglineStatus: false,
+  userSearchable: true,
+  profileImage: 'http://photo1.jpg',
+  status: 'pending|OTP-verified|active',
+  verificationService: 'Nivaura',
+  verificationStatus: 'approved',
+  verificationReference: 'x1234y44',
+  investorClassification: 'sophisticated'
 };
 ```
 
 - Input
-    - walletId : Integer
+  - walletId : String
+  - firstName : String
+  - lastName : String
+  - country : String
+  - state : String
+  - city : String
+  - email : String
+  - phone : String
+  - tagline : String
+  - taglineStatus : Boolean
+  - userSearchable : Boolean
+  - profileImage : String(Url)
+  - status: String ('pending|OTP-verified|active'),
+  - verificationService: String,
+  - verificationStatus: String,
+  - verificationReference: String',
+  - investorClassification: String
+- Expected Output
+  - result : 'success'(String),
+  - message : 'User was successfully updated'(String),
+  - Payload JSON Object
+    - ethAddress : String
+    - fcmToken : String
+    - signalRegistrationId : String
+    - id : String
     - firstName : String
     - lastName : String
     - country : String
@@ -401,29 +430,10 @@ const inputParams = {
     - city : String
     - email : String
     - phone : String
-    - tagline : String
+    - tagline : Text
     - taglineStatus : Boolean
     - userSearchable : Boolean
-    - profileImage : String(Url)
-- Expected Output
-     - result : 'success'(String),
-     - message : 'User was successfully updated'(String),
-     - Payload JSON Object
-       - ethAddress : String
-       - fcmToken : String
-       - signalRegistrationId : String
-       - id : Integer
-       - firstName : String
-       - lastName : String
-       - country : String
-       - state : String
-       - city : String
-       - email : String
-       - phone : String
-       - tagline : Text
-       - taglineStatus : Boolean
-       - userSearchable : Boolean
-       - profileImage : Text(Url)
+    - profileImage : Text(Url)
 
 **User Info**
 
@@ -435,29 +445,29 @@ Retrieves information on an existing wallet user.
 
 ```typescript
 const inputParams = {
-  walletId: 123,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
 };
 ```
 
 - Input
-    - walletId : Integer
+  - walletId : String
 - Expected Output
-    - Payload JSON Object
-        - ethAddress : String
-        - fcmToken : String
-        - signalRegistrationId : String
-        - id : Integer
-        - firstName : String
-        - lastName : String
-        - country : String
-        - state : String
-        - city : String
-        - email : String
-        - phone : String
-        - tagline : Text
-        - taglineStatus : Boolean
-        - userSearchable : Boolean
-        - profileImage : Text(Url)
+  - Payload JSON Object
+    - ethAddress : String
+    - fcmToken : String
+    - signalRegistrationId : String
+    - id : String
+    - firstName : String
+    - lastName : String
+    - country : String
+    - state : String
+    - city : String
+    - email : String
+    - phone : String
+    - tagline : Text
+    - taglineStatus : Boolean
+    - userSearchable : Boolean
+    - profileImage : Text(Url)
 
 **User Search**
 
@@ -470,23 +480,23 @@ Provides a list of users that contain the search criteria for first or last name
 
 ```typescript
 const inputParams = {
-  walletId: 1,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   query: 'searchforme',
 };
 ```
 
 - Input
-    - walletId : Integer
-    - query : String
+  - walletId : String
+  - query : String
 - Expected Output
-    - user : JSON Object
-      - id : Integer
-      - firstName : String
-      - lastName : String
-      - country : String
-      - state : String
-      - city : String
-      - profileImage : Text(Url)       
+  - user : JSON Object
+  - id : String
+  - firstName : String
+  - lastName : String
+  - country : String
+  - state : String
+  - city : String
+  - profileImage : Text(Url)       
 
 **User Delete**
 
@@ -498,18 +508,18 @@ Removes a wallet user profile from the database.
 
 ```typescript
 const inputParams = {
-  walletId: 123,
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
 };
 ```
 - Input
-    - walletId : Integer
+  - walletId : String
 - Expected Output
     - result : 'success'(String),
     - message : 'User was successfully deleted'(String),
     - user : JSON Object
-        - ethAddress : Text
-        - fcmToken : Text
-        - signalRegistrationId : Text
+      - ethAddress : Text
+      - fcmToken : Text
+      - signalRegistrationId : Text
 
 ## Tests
 
