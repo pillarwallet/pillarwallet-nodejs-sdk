@@ -2,7 +2,7 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-const spy = jest.spyOn(Requester, 'execute');
+let spy;
 
 describe('wallet endpoints', () => {
   beforeEach(() => {
@@ -10,6 +10,12 @@ describe('wallet endpoints', () => {
       apiUrl: 'http://localhost:8080',
       privateKey: keys.privateKey,
     });
+
+    spy = jest.spyOn(Requester, 'execute');
+  });
+
+  afterEach(() => {
+    spy.mockClear();
   });
 
   describe('Wallet Registration', () => {

@@ -50,7 +50,7 @@ jobs:
           command: npm i
       - run:
           name: Test
-          command: npm run test:unit
+          command: npm test
   publish:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:

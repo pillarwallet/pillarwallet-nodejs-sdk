@@ -2,13 +2,19 @@ const hdkey = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-const spy = jest.spyOn(Requester, 'execute');
+let spy;
 
 describe('asset endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
       privateKey: hdkey.privateKey,
     });
+
+    spy = jest.spyOn(Requester, 'execute');
+  });
+
+  afterEach(() => {
+    spy.mockClear();
   });
 
   describe('Asset Default', () => {

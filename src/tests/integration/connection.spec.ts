@@ -2,13 +2,19 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-const spy = jest.spyOn(Requester, 'execute');
+let spy;
 
 describe('connection endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
       privateKey: keys.privateKey,
     });
+
+    spy = jest.spyOn(Requester, 'execute');
+  });
+
+  afterEach(() => {
+    spy.mockClear();
   });
 
   it('The Connection Class: Invite ', () => {
