@@ -49,8 +49,8 @@ const pillarSdk = new PillarSdk({
 });
 ```
 - Input
-    - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
-    - privateKey : hexadecimal string and 64 characters length.
+  - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
+  - privateKey : hexadecimal string and 64 characters length.
 
 #### 2 - Register the Wallet
 
@@ -117,13 +117,13 @@ Updates FcmToken in the backend.
 
 ```typescript
 const inputParams = {
- walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
- fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f',
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f',
 };
 ```
 
 - Input
-  -fcmToken : String
+  - fcmToken : String
   - walletId : String
 - Expected Output
   - result : 'success'(String),
@@ -139,7 +139,7 @@ Returns a list of assets that are marked as default assets.
 
 ```typescript
 const inputParams = {
- walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
 };
 ```
 
@@ -228,13 +228,12 @@ pillarSdk.connection.accept(inputParams)
 Accepts a connection invitation from another user.
 
 ```typescript
-const inputParams =
- {
+const inputParams = {
   targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   sourceUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
   targetUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
- };
+};
 
 ```
 
@@ -260,7 +259,7 @@ const inputParams = {
   targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
   walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
- };
+};
 ```
 
 - Input
@@ -284,7 +283,7 @@ const inputParams = {
   targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
   accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
   walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
- };
+};
 ```
 
 - Input
@@ -299,7 +298,6 @@ const inputParams = {
 
 ```typescript
 pillarSdk.connection.block(inputParams)
-
 ```
 
 Blocks a connection request from another user.
