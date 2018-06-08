@@ -68,6 +68,18 @@ jobs:
             name: Authenticate with registry
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
       - run:
+          name: Install Packages
+          command: npm i
+      - run:
+          name: Install TypeScript packages globally
+          command: sudo npm i -g typescript tsc ts-node
+      - run:
+          name: Compile TypeScript
+          command: npm run compile
+      - run:
+          name: Webpack bundle SDK for Production
+          command: npm run build-production
+      - run:
           name: Publish Package to Artifactory
           command: npm publish   --registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
 
