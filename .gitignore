@@ -4,3 +4,4 @@ typings
 .idea
 coverage
 .npmrc
+dist
