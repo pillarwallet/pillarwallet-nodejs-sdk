@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
+    "test:unit": "jest unit",
+    "test:integration": "jest integration",
     "compile": "tsc",
     "build": "webpack",
     "build-production": "webpack --mode=production",
@@ -13,6 +15,7 @@
   },
   "jest": {
     "verbose": true,
+    "testEnvironment": "node",
     "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.{ts}",

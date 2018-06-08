@@ -4,6 +4,7 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "node",
       "request": "launch",
@@ -17,12 +18,27 @@
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
     },
     {
-      "name": "Debug Jest Tests",
+      "name": "Debug Jest Unit Tests",
       "type": "node",
       "request": "launch",
       "runtimeArgs": [
         "--inspect-brk",
         "${workspaceRoot}/node_modules/.bin/jest",
+        "unit",
+        "--runInBand",
+        "--verbose"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Debug Jest Integration Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "integration",
         "--runInBand",
         "--verbose"
       ],
