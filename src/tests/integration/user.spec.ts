@@ -112,7 +112,6 @@ describe('user endpoints', () => {
     it('User delete', () => {
       const inputParams = {
         walletId: '24233',
-        userId: '24233',
       };
 
       this.pSdk.user.delete(inputParams)
