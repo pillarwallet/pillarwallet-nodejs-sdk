@@ -94,7 +94,6 @@ describe('The User Class: Delete method', () => {
   it('should successfully call with valid data', () => {
     const userInfoData = {
       walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-      userId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
     };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -254,7 +253,6 @@ describe('The User Class: Update Notifications Preferences method', () => {
 describe('The User Class: Username Search method', () => {
   it('should successfully call with valid data', () => {
     const usernameSearch = {
-      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       username: 'bob',
     };
 
