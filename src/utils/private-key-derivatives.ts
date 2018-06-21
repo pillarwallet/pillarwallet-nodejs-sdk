@@ -41,7 +41,7 @@ export class PrivateKeyDerivatives {
 
     // Typeguarding.
     if (addressBuffer instanceof Buffer) {
-      return addressBuffer.toString('hex');
+      return `0x${addressBuffer.toString('hex')}`;
     }
 
     // If the 'addressBuffer' was not a Buffer, throw a
