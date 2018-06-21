@@ -1,6 +1,6 @@
 {
-  "title": "User Class - Update Notification Preferences",
-  "description": "Schema definition for User Class - Update Notification Preferences method",
+  "title": "User Model - Update Notification Preferences",
+  "description": "Schema definition for User Model - Update Notification Preferences method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

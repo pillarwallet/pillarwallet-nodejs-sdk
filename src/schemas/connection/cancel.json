@@ -1,6 +1,6 @@
 {
-  "title": "Connection Class - Cancel",
-  "description": "Schema definition for Notification Class - Cancel method",
+  "title": "Connection Model - Cancel",
+  "description": "Schema definition for Notification Model - Cancel method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

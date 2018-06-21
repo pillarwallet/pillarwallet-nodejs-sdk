@@ -1,6 +1,6 @@
 {
-  "title": "Wallet Class - unregister address",
-  "description": "Schema definition for Wallet Class - Unregister Address method",
+  "title": "Wallet Model - unregister address",
+  "description": "Schema definition for Wallet Model - Unregister Address method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

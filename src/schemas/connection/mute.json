@@ -1,6 +1,6 @@
 {
-  "title": "Connection Class - Mute",
-  "description": "Schema definition for Notification Class - Mute method",
+  "title": "Connection Model - Mute",
+  "description": "Schema definition for Notification Model - Mute method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

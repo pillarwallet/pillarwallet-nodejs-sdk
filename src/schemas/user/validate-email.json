@@ -1,6 +1,6 @@
 {
-  "title": "User Class - Validate OTP email",
-  "description": "Schema definition for User Class - Validate OTP phone email",
+  "title": "User Model - Validate OTP email",
+  "description": "Schema definition for User Model - Validate OTP phone email",
   "additionalProperties": false,
   "type": "object",
   "properties": {
