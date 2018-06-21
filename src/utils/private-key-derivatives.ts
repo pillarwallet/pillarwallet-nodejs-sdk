@@ -1,19 +1,28 @@
-const EC = require('elliptic').ec;
-const keccak256 = require('js-sha3').keccak256;
-const ellipticCurve =  new EC('secp256k1');
+import * as ethUtils from 'ethereumjs-util';
 
 export class PrivateKeyDerivatives {
-
   /**
    * Get the Public Key from PrivateKey
    * @param privateKey
    * @returns {any}
    */
   static getPublicKey(privateKey: any) {
-    const key = ellipticCurve.keyFromPrivate(privateKey, 'hex');
-    const publicKeyPoint = key.getPublic();
-    const publicKey = publicKeyPoint.encode('hex');
-    return publicKey;
+    // First, convert the incoming private key to a buffer
+    // as required by the ethereumjs-utils library.
+    const privateKeyBuffer = Buffer.from(privateKey, 'hex');
+
+    // Next, run the privateToPublic method to derive
+    // the public key from the private key.
+    const publicKeyBuffer = ethUtils.privateToPublic(privateKeyBuffer);
+
+    // Typeguarding.
+    if (publicKeyBuffer instanceof Buffer) {
+      return publicKeyBuffer.toString('hex');
+    }
+
+    // If the 'publicKeyBuffer' was not a Buffer, throw a
+    // new TypeError
+    throw new TypeError('"publicKeyBuffer" was expected to be a Buffer.');
   }
 
   /**
@@ -22,10 +31,21 @@ export class PrivateKeyDerivatives {
    * @returns {string}
    */
   static getEthAddress(privateKey: any) {
-    const publicKey = this.getPublicKey(privateKey);
-    const address = keccak256(publicKey); // keccak256 hash of  publicKey
-    const bufferFromAddress = Buffer.from(address, 'hex');
-    const ethAddress = '0x' + bufferFromAddress.slice(-20).toString('hex');
-    return ethAddress;
+    // First, convert the incoming private key to a buffer
+    // as required by the ethereumjs-utils library.
+    const privateKeyBuffer = Buffer.from(privateKey, 'hex');
+
+    // Next, run the privateToPublic method to derive
+    // the public key from the private key.
+    const addressBuffer = ethUtils.privateToAddress(privateKeyBuffer);
+
+    // Typeguarding.
+    if (addressBuffer instanceof Buffer) {
+      return `0x${addressBuffer.toString('hex')}`;
+    }
+
+    // If the 'addressBuffer' was not a Buffer, throw a
+    // new TypeError
+    throw new TypeError('"publicKeyBuffer" was expected to be a Buffer.');
   }
 }
