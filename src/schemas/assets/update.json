@@ -1,6 +1,6 @@
 {
-  "title": "Assets Class - Update",
-  "description": "Schema definition for Asset Class - Update method",
+  "title": "Assets Model - Update",
+  "description": "Schema definition for Asset Model - Update method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

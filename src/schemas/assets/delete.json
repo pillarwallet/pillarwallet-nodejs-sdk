@@ -1,6 +1,6 @@
 {
-  "title": "Assets Class - Delete",
-  "description": "Schema definition for Asset Class - Delete method",
+  "title": "Assets Model - Delete",
+  "description": "Schema definition for Asset Model - Delete method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

@@ -1,6 +1,6 @@
 {
-  "title": "User Class - Delete",
-  "description": "Schema definition for User Class - Delete method",
+  "title": "User Model - Delete",
+  "description": "Schema definition for User Model - Delete method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

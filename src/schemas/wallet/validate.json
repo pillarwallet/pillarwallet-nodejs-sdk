@@ -1,6 +1,6 @@
 {
-  "title": "Wallet Class - validate",
-  "description": "Schema definition for Wallet Class - Validate method",
+  "title": "Wallet Model - validate",
+  "description": "Schema definition for Wallet Model - Validate method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

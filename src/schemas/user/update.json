@@ -1,6 +1,6 @@
 {
-  "title": "User Class - update",
-  "description": "Schema definition for User Class - Update method",
+  "title": "User Model - update",
+  "description": "Schema definition for User Model - Update method",
   "type": "object",
   "additionalProperties": false,
   "properties": {
