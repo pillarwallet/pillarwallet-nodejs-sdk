@@ -1,5 +1,5 @@
 interface UserCreateOneTimePassword {
+  email: string;
   phone: string;
-  function: string;
-  isVerifiedUser: boolean;
+  walletId: string;
 }

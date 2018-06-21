@@ -132,5 +132,59 @@ describe('user endpoints', () => {
        */
       expect(spy).toHaveBeenCalled();
     });
+
+
+    /**
+     * TODO
+     *
+     * A user with an email address registered with the Mailgun
+     * sandbox is needed for this to work
+      */
+    it.skip('User create one-time password with email address', () => {
+      spy.mockRestore();
+
+      expect.assertions(2);
+
+      const params = {
+        walletId: '3079',
+        email: 'test email address required',
+      };
+
+      return this.pSdk.user.createOneTimePassword(params)
+        .then((res: any) => {
+          expect(res.status).toBe(200);
+          expect(res.data).toEqual({
+            result: 'success',
+            message: 'One-time password sent.',
+            userId: expect.any(String),
+          });
+        });
+    });
+
+    /**
+     * TODO
+     *
+     * A user with a real phone number is required to test this
+      */
+    it.skip('User create one-time password with phone number', () => {
+      spy.mockRestore();
+
+      expect.assertions(2);
+
+      const params = {
+        walletId: '3079',
+        phone: '+44 test phone number required',
+      };
+
+      return this.pSdk.user.createOneTimePassword(params)
+        .then((res: any) => {
+          expect(res.status).toBe(200);
+          expect(res.data).toEqual({
+            result: 'success',
+            message: 'One-time password sent.',
+            userId: expect.any(String),
+          });
+        });
+    });
   });
 });
