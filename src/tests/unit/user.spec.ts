@@ -159,12 +159,31 @@ describe('The User Class: Create Verification User method', () => {
 });
 
 describe('The User Class: Create One Time Password method', () => {
-  it('should successfully call with valid data', () => {
+  it('should successfully call with email address', () => {
+    const userCreate =
+      {
+        email: 'foo@email.com',
+        walletId: '12345',
+      };
+
+    const spy = jest.spyOn(Requester, 'execute');
+    this.pSdk.user.createOneTimePassword(userCreate);
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining(
+        {
+          headers: { 'X-API-Signature': expect.anything() },
+          data: userCreate,
+          url: 'http://localhost:8080/user/create-one-time-password',
+        }),
+    );
+  });
+
+  it('should successfully call with phone number', () => {
     const userCreate =
       {
         phone: '+447321450233',
-        function: 'new',
-        isVerifiedUser: false,
+        walletId: '12345',
       };
 
     const spy = jest.spyOn(Requester, 'execute');
