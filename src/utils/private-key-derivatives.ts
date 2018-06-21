@@ -13,7 +13,12 @@ export class PrivateKeyDerivatives {
 
     // Next, run the privateToPublic method to derive
     // the public key from the private key.
-    return ethUtils.privateToPublic(privateKeyBuffer);
+    const publicKeyBuffer = ethUtils.privateToPublic(privateKeyBuffer);
+
+    // Typeguarding.
+    if (publicKeyBuffer instanceof Buffer) {
+      return publicKeyBuffer.toString('hex');
+    }
   }
 
   /**
@@ -28,6 +33,11 @@ export class PrivateKeyDerivatives {
 
     // Next, run the privateToPublic method to derive
     // the public key from the private key.
-    return ethUtils.privateToAddress(privateKeyBuffer);
+    const addressBuffer = ethUtils.privateToAddress(privateKeyBuffer);
+
+    // Typeguarding.
+    if (addressBuffer instanceof Buffer) {
+      return addressBuffer.toString('hex');
+    }
   }
 }

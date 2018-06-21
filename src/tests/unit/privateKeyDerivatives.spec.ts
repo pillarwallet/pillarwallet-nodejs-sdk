@@ -19,14 +19,16 @@ const expectedEthereumAddress = '0x0DE189164d58dd58BE7d18C389B5623EBb1db9d3';
 describe('The Private Key Derivatives Class: getPublicKey method', () => {
   it('should successfully derive the public key from a private key', () => {
     const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
+    const publicKeyBuffer = Buffer.from(publicKey, 'hex');
 
-    expect(ethUtils.isValidPublic(publicKey)).toBe(true);
+    expect(ethUtils.isValidPublic(publicKeyBuffer)).toBe(true);
   });
 
   it('should successfully derive the ethereum address from a public key', () => {
     let ethereumAddressString = '';
     const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
-    const ethereumAddressBuffer = ethUtils.pubToAddress(publicKey, true);
+    const publicKeyBuffer = Buffer.from(publicKey, 'hex');
+    const ethereumAddressBuffer = ethUtils.pubToAddress(publicKeyBuffer, true);
 
     // Typeguard
     if (ethereumAddressBuffer instanceof Buffer) {
@@ -35,13 +37,14 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
     }
 
     expect(ethUtils.isValidAddress(`0x${ethereumAddressString}`)).toBe(true);
-    expect(ethUtils.isValidPublic(publicKey)).toBe(true);
+    expect(ethUtils.isValidPublic(publicKeyBuffer)).toBe(true);
   });
 
   it('should successfully derive the GIVEN ethereum address from the GIVEN public key', () => {
     let ethereumAddressString = '';
     const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
-    const ethereumAddressBuffer = ethUtils.pubToAddress(publicKey, true);
+    const publicKeyBuffer = Buffer.from(publicKey, 'hex');
+    const ethereumAddressBuffer = ethUtils.pubToAddress(publicKeyBuffer, true);
 
     // Typeguarding...
     if (ethereumAddressBuffer instanceof Buffer) {
@@ -52,7 +55,7 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
     expect(ethUtils.isValidAddress(`0x${ethereumAddressString}`)).toBe(true);
     // Lowercased the expected ethereum address. See notes at the top of the file.
     expect(`0x${ethereumAddressString}`).toBe(expectedEthereumAddress.toLowerCase());
-    expect(ethUtils.isValidPublic(publicKey)).toBe(true);
+    expect(ethUtils.isValidPublic(publicKeyBuffer)).toBe(true);
   });
 
   it('should NOT successfully derive the public key from an invalid private key', () => {
