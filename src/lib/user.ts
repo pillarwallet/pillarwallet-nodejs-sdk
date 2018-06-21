@@ -21,7 +21,6 @@ const userInfoSchema = require('../schemas/user/info.json');
 const userUpdateSchema = require('../schemas/user/update.json');
 const userDeleteSchema = require('../schemas/user/delete.json');
 const userSearchSchema = require('../schemas/user/search.json');
-const userCreateSchema = require('../schemas/user/create.json');
 const userCreateOneTimePasswordSchema = require('../schemas/user/create-one-time-password.json');
 const userCreateVerifiedUserSchema = require('../schemas/user/create-verified-user.json');
 const userUsernameSearchSchema = require('../schemas/user/username-search.json');
@@ -105,23 +104,6 @@ export class User extends Configuration {
     deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
 
     return Requester.execute(deleteConfiguration);
-  }
-
-  /**
-   * Create a pending wallet user upon registration
-   * @param {UserCreate} userCreate
-   * @returns {axios.AxiosPromise}
-   */
-  create(userCreate: UserCreate): AxiosPromise {
-
-    this.validation(userCreateSchema, userCreate);
-
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(userCreate, Configuration.accessKeys.privateKey);
-    postConfiguration.data = userCreate;
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_CREATE;
-
-    return Requester.execute(postConfiguration);
   }
 
   /**
