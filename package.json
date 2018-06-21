@@ -1,6 +1,6 @@
 {
   "name": "@pillarwallet/pillarwallet-nodejs-sdk",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
@@ -47,11 +47,13 @@
   "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
   "dependencies": {
     "@pillarwallet/plr-auth-sdk": "1.1.2-84",
+    "@types/ethereumjs-util": "5.1.1",
     "@types/node": "9.6.6",
     "ajv": "6.4.0",
     "ajv-keywords": "3.2.0",
     "axios": "0.18.0",
     "elliptic": "6.4.0",
+    "ethereumjs-util": "5.2.0",
     "js-sha3": "0.7.0",
     "secp256k1": "3.5.0",
     "tslint-config-airbnb": "5.8.0"
