@@ -108,33 +108,6 @@ describe('The User Class: Delete method', () => {
       }),
   );
   });
-})
-;
-
-describe('The User Class: Create method', () => {
-  it('should successfully call with valid data', () => {
-    const userCreate =
-      {
-        firstName: 'Bob',
-        lastName: 'Jones',
-        email: 'bob@example.com',
-        phone: '+44 77 1111 2222',
-        username: 'bob123',
-        sendEmail: true,
-      };
-
-    const spy = jest.spyOn(Requester, 'execute');
-    this.pSdk.user.create(userCreate);
-
-    expect(spy).toHaveBeenCalledWith(
-      expect.objectContaining(
-        {
-          headers: { 'X-API-Signature': expect.anything() },
-          data: userCreate,
-          url: 'http://localhost:8080/user/create',
-        }),
-    );
-  });
 });
 
 describe('The User Class: Create Verification User method', () => {

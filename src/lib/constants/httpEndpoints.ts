@@ -20,7 +20,6 @@ export enum HttpEndpoints {
   USER_INFO = '/user/info',
   USER_SEARCH = '/user/search',
   USER_DELETE = '/user/delete',
-  USER_CREATE = '/user/create',
   USER_USERNAME_SEARCH = '/user/username-search',
   USER_CREATE_VERIFIED_USER = '/user/create-verified-user',
   USER_CREATE_ONE_TIME_PASSWORD = '/user/create-one-time-password',
