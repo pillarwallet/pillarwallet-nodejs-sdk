@@ -19,6 +19,10 @@ export class PrivateKeyDerivatives {
     if (publicKeyBuffer instanceof Buffer) {
       return publicKeyBuffer.toString('hex');
     }
+
+    // If the 'publicKeyBuffer' was not a Buffer, throw a
+    // new TypeError
+    throw new TypeError('"publicKeyBuffer" was expected to be a Buffer.');
   }
 
   /**
@@ -39,5 +43,9 @@ export class PrivateKeyDerivatives {
     if (addressBuffer instanceof Buffer) {
       return addressBuffer.toString('hex');
     }
+
+    // If the 'addressBuffer' was not a Buffer, throw a
+    // new TypeError
+    throw new TypeError('"publicKeyBuffer" was expected to be a Buffer.');
   }
 }
