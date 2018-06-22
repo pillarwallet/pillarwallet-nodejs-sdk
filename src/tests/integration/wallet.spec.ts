@@ -23,17 +23,21 @@ describe('wallet endpoints', () => {
 
       const inputParams = {
         fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        username: 'bob123',
       };
 
-      const result = this.pSdk.wallet.register(inputParams)
+      this.pSdk.wallet.register(inputParams)
         .then((response: any) => {
           // Successful response!
+          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
           // Unsuccessful response.
+          // console.log(error);
           return error;
         });
+
 
       /**
        * TODO: Currently waiting on a development
@@ -48,17 +52,20 @@ describe('wallet endpoints', () => {
   describe('Wallet Update', () => {
     it('Expect Success for update Method', () => {
       const inputParams = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: '746b2bf4-12d3-425b-8cb7-0e9593bbbb17',
         fcmToken: 'increaseThePeace',
       };
 
       const result = this.pSdk.wallet.update(inputParams)
         .then((response: any) => {
           // Successful response!
+          // console.log(response.data);
           return response;
+
         })
         .catch((error: any) => {
           // Unsuccessful response.
+          // console.log(error);
           return error;
         });
 

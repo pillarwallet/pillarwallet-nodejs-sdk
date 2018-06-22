@@ -3,8 +3,6 @@ export enum HttpEndpoints {
   WALLET_UPDATE = '/wallet/update',
   ASSET_DEFAULT = '/asset/defaults',
   ASSET_SEARCH = '/asset/search',
-  ASSET_DELETE = '/asset/delete',
-  ASSET_UPDATE = '/asset/update',
   ASSET_LIST = '/asset/list',
   CONNECTION_INVITE = '/connection/invite',
   CONNECTION_ACCEPT = '/connection/accept',
