@@ -7,6 +7,7 @@ let spy;
 describe('asset endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
+      apiUrl: 'http://localhost:8080',
       privateKey: hdkey.privateKey,
     });
 
@@ -75,7 +76,7 @@ describe('asset endpoints', () => {
     });
   });
 
-  describe.only('Asset list', () => {
+  describe('Asset list', () => {
     it('Expect success',  () => {
 
       const inputParams = {
