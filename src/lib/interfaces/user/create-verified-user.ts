@@ -1,3 +1,0 @@
-interface UserCreateVerifiedUser {
-  verificationReference: string;
-}

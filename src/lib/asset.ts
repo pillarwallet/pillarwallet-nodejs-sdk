@@ -19,8 +19,6 @@ import { default as deleteConfiguration } from '../utils/requester-configuration
 const assetDefaultsSchema = require('../schemas/assets/defaults.json');
 const assetSearchSchema = require('../schemas/assets/search.json');
 const assetListSchema = require('../schemas/assets/list.json');
-const assetUpdateSchema = require('../schemas/assets/update.json');
-const assetDeleteSchema = require('../schemas/assets/delete.json');
 
 export class Asset extends Configuration {
 
@@ -76,37 +74,5 @@ export class Asset extends Configuration {
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_LIST;
 
     return Requester.execute(getConfiguration);
-  }
-
-  /**
-   * Update data elements on an existing asset record or create a new asset record
-   * @param {AssetUpdate} assetUpdate
-   * @returns {axios.AxiosPromise}
-   */
-  update(assetUpdate: AssetUpdate): AxiosPromise {
-    this.validation(assetUpdateSchema, assetUpdate);
-
-    putConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(assetUpdate, Configuration.accessKeys.privateKey);
-    putConfiguration.data = assetUpdate;
-    putConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_UPDATE;
-
-    return Requester.execute(putConfiguration);
-  }
-
-  /**
-   * Remove an existing asset from the database
-   * @param {AssetDelete} assetDelete
-   * @returns {axios.AxiosPromise}
-   */
-  delete(assetDelete: AssetDelete): AxiosPromise {
-    this.validation(assetDeleteSchema, assetDelete);
-
-    deleteConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(assetDelete, Configuration.accessKeys.privateKey);
-    deleteConfiguration.data = assetDelete;
-    deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DELETE;
-
-    return Requester.execute(deleteConfiguration);
   }
 }

@@ -1,6 +1,6 @@
 {
   "title": "User Model - Username Search",
-  "description": "Schema definition for User Model - Username Search method",
+  "description": "Schema definition for User Model - Username Search",
   "additionalProperties": false,
   "type": "object",
   "properties": {
