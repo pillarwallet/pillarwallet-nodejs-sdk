@@ -7,6 +7,7 @@ let spy;
 describe('user endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
+      apiUrl: 'http://localhost:8082',
       privateKey: keys.privateKey,
     });
 
@@ -20,7 +21,7 @@ describe('user endpoints', () => {
   describe('User', () => {
     it('User update', () => {
       const inputParams = {
-        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
         username: 'bob123',
         firstName: 'Bob',
         lastName: 'Jones',
@@ -33,11 +34,6 @@ describe('user endpoints', () => {
         taglineStatus: false,
         userSearchable: true,
         profileImage: 'http://photo1.jpg',
-        status: 'pending|OTP-verified|active',
-        verificationService: 'Nivaura',
-        verificationStatus: 'approved',
-        verificationReference: 'x1234y44',
-        investorClassification: 'sophisticated',
       };
 
       this.pSdk.user.update(inputParams)
@@ -61,17 +57,18 @@ describe('user endpoints', () => {
 
     it('User info', () => {
       const inputParams = {
-        walletId: '24233',
-        username: 'bob',
+        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
       };
 
       this.pSdk.user.info(inputParams)
         .then((response: any) => {
           // Successful response!
+          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
           // Unsuccessful response.
+          // console.log(error);
           return error;
         });
 
@@ -86,17 +83,19 @@ describe('user endpoints', () => {
 
     it('User search', () => {
       const inputParams = {
-        walletId: '24233',
-        query: 'Homer',
+        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
+        query: 'Bob',
       };
 
       this.pSdk.user.search(inputParams)
         .then((response: any) => {
           // Successful response!
+          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
           // Unsuccessful response.
+          // console.log(error);
           return error;
         });
 
@@ -111,7 +110,7 @@ describe('user endpoints', () => {
 
     it('User delete', () => {
       const inputParams = {
-        walletId: '24233',
+        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
       };
 
       this.pSdk.user.delete(inputParams)
