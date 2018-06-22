@@ -24,11 +24,6 @@ describe('The User Class: Update method', () => {
         taglineStatus: false,
         userSearchable: true,
         profileImage: 'http://photo1.jpg',
-        status: 'pending|OTP-verified|active',
-        verificationService: 'Nivaura',
-        verificationStatus: 'approved',
-        verificationReference: 'x1234y44',
-        investorClassification: 'sophisticated',
       };
 
     const spy = jest.spyOn(Requester, 'execute');
@@ -50,7 +45,6 @@ describe('The User Class: Info method', () => {
   it('should successfully call with valid data', () => {
     const userInfoData = {
       walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-      username: 'bob',
     };
 
     const spy = jest.spyOn(Requester, 'execute');
