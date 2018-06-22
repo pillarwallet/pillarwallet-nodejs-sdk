@@ -57,26 +57,6 @@
       "description": "The user's profileImage",
       "type": "string",
       "format": "uri"
-    },
-    "status": {
-      "description": "The user's status",
-      "type": "string"
-    },
-    "verificationService": {
-      "description": "The verification Service",
-      "type": "string"
-    },
-    "verificationStatus": {
-      "description": "The verification status",
-      "type": "string"
-    },
-    "verificationReference": {
-      "description": "The verification reference",
-      "type": "string"
-    },
-    "investorClassification": {
-      "description": "The user's classification as investor",
-      "type": "string"
     }
   },
   "required": ["walletId"]

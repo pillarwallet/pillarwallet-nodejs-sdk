@@ -7,10 +7,6 @@
     "walletId": {
       "description": "The wallet ID",
       "type": "string"
-    },
-    "username": {
-      "description": "The username",
-      "type": "string"
     }
   },
   "required": [ "walletId" ]

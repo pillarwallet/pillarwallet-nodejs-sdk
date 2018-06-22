@@ -18,7 +18,7 @@ const expectedEthereumAddress = '0x0DE189164d58dd58BE7d18C389B5623EBb1db9d3';
 
 describe('The Private Key Derivatives Class: getPublicKey method', () => {
   it('should successfully derive the public key from a private key', () => {
-    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(2);
     const publicKeyBuffer = Buffer.from(publicKey, 'hex');
 
     expect(ethUtils.isValidPublic(publicKeyBuffer)).toBe(true);
@@ -26,7 +26,7 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
 
   it('should successfully derive the ethereum address from a public key', () => {
     let ethereumAddressString = '';
-    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(2);
     const publicKeyBuffer = Buffer.from(publicKey, 'hex');
     const ethereumAddressBuffer = ethUtils.pubToAddress(publicKeyBuffer, true);
 
@@ -42,7 +42,7 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
 
   it('should successfully derive the GIVEN ethereum address from the GIVEN public key', () => {
     let ethereumAddressString = '';
-    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(2);
     const publicKeyBuffer = Buffer.from(publicKey, 'hex');
     const ethereumAddressBuffer = ethUtils.pubToAddress(publicKeyBuffer, true);
 
