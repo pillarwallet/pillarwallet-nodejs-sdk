@@ -9,6 +9,22 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 - [Config](#config)
 - [Response and Error](#response-and-error)
 - [Methods](#methods)
+    - [Wallet Update](#wallet-update)
+    - [Asset Defaults](#asset-defaults)
+    - [Asset Search](#asset-search)
+    - [Asset List](#asset-list)
+    - [Connection Invite](#connection-invite)
+    - [Connection Accept](#connection-accept)
+    - [Connection Reject](#connection-reject)
+    - [Connection Cancel](#connection-cancel)
+    - [Connection Block](#connection-block)
+    - [Connection Mute](#connection-mute)
+    - [Notification List](#notification-list)
+    - [User Update](#user-update)
+    - [User Info](#user-info)
+    - [User Search](#user-search)
+    - [User Delete](#user-delete)
+    - [User Username Search](#user-username-search)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
 - [Versioning](#versioning)
@@ -29,10 +45,9 @@ const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');
 
 ## A quick note on versioning
 
-During the pipeline process, we need to automatically ensure our version number is unique. To to this we replace the last semver digit of the package.json's Version setting with the current circle CI build number. It's a bit of a hack but it means we don't need to think about the version number before commiting+pushing.
+During the pipeline process, we need to automatically ensure that our version number is unique. To do this, we replace the last patch digit of the package.json's version setting with the current circle CI build number. It's a bit of a hack but it means we don't need to think about the version number before committing + pushing.
 
-eg. if you give us version=2.3.1, and this is picked up by circle's 492nd build job, your package will be published as version=2.3.492
-
+For example, if you give us version=2.3.1, and this is picked up by circle's 492nd build job, your package is published as version=2.3.492
 
 ## Config
 
@@ -48,9 +63,13 @@ const pillarSdk = new PillarSdk({
   privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
-- Input
-  - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
-  - privateKey : hexadecimal string and 64 characters length.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| privateKey  | hexadecimal string and 64 characters length. | String  | Required  |
+| apiUrl  | Uri where api is hosted. String with uri format. e.g. "http://<uri>".| String  | Optional  |
 
 #### 2 - Register the Wallet
 
@@ -75,11 +94,11 @@ const inputParams = {
   - fcmToken : String
   - phone : String (Optional)
 
-- Expected Output
+**Expected Output**
   - result : 'success'(String),
   - message : 'Wallet created successfully.'(String),
-  - walletId : String,
-  - userId : String
+  - walletId : UUID,
+  - userId : UUID
 
 ## Response And Error
 
@@ -110,29 +129,26 @@ To get the response and error for these methods, use:
 
 **IMPORTANT! All methods return promises.**
 
-**Wallet Update**
+### Wallet Update
 
 ```typescript
 pillarSdk.wallet.update(inputParams)
 ```
 
-Updates FcmToken in the backend.
+Updates Fcm Token in the backend.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f',
-};
-```
+**Input Parameters**
 
-- Input
-  - fcmToken : String
-  - walletId : String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| fcmToken  | copy tbd | String  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+
+**Expected Output**
   - result : 'success'(String),
   - message : 'OK'(String)
 
-**Asset Defaults**
+### Asset Defaults
 
 ```typescript
 pillarSdk.asset.defaults(inputParams)
@@ -140,16 +156,20 @@ pillarSdk.asset.defaults(inputParams)
 
 Returns a list of assets that are marked as default assets.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-- Expected Output
-  JSON Collection of Objects with respective Values
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+
+**Expected Output**
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| address  | copy tbd | Text  |
+| decimals  | copy tbd | Integer  |
+| description  | copy tbd | Text  |
+
+  JSON collection of objects with respective values:
   - address: Text,
   - decimals: Integer,
   - description: Text,
@@ -164,26 +184,22 @@ const inputParams = {
   - whitepaper: Text,
   - isDefault: 1 (Boolean).
 
-**Asset Search**
-
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  query: 'search query here',
-};
-```
-
-Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
+### Asset Search
 
 ```typescript
 pillarSdk.asset.search(inputParams)
 ```
+Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
 
-- Input
-  - walletId : String
-  - query : String
-- Expected Output
-  JSON Collection of Objects with respective Values
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+| query  | copy tbd | String  | Required  |
+
+**Expected Output**
+  JSON collection of objects with respective values:
   - address: Text,
   - decimals: Integer,
   - description: Text,
@@ -198,7 +214,37 @@ pillarSdk.asset.search(inputParams)
   - whitepaper: Text,
   - isDefault: Boolean.
 
-**Connection Invite**
+### Asset List
+
+```typescript
+pillarSdk.asset.list(inputParams)
+```
+Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+| query  | copy tbd | String  | Required  |
+
+**Expected Output**
+  JSON collection of objects with respective values:
+  - address: Text,
+  - decimals: Integer,
+  - description: Text,
+  - name: Text,
+  - symbol: Text,
+  - wallpaperUrl: Text,
+  - iconUrl: Text,
+  - email: Text,
+  - telegram: Text,
+  - twitter: Text,
+  - website: Text,
+  - whitepaper: Text,
+  - isDefault: Boolean.
+
+### Connection Invite
 
 ```typescript
 pillarSdk.connection.invite(inputParams)
@@ -206,50 +252,39 @@ pillarSdk.connection.invite(inputParams)
 
 Creates a connection invitation for a user to create a relationship with another contact.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - targetUserId : String
-  - accessKey : String
-  - walletId : String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | copy tbd | UUID  | Required  |
+| accessKey  | copy tbd | String  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+
+**Expected Output**
   - result : 'success'(String)
   - message : 'Connection invitation was successfully sent'(String)
 
-**Connection Accept**
+### Connection Accept
 
 ```typescript
 pillarSdk.connection.accept(inputParams)
 ```
 
 Accepts a connection invitation from another user.
+**Input Parameters**
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  sourceUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  targetUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-};
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | copy tbd | UUID  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+| sourceUserAccessKey  | copy tbd | String  | Required  |
+| targetUserAccessKey  | copy tbd | String  | Required  |
 
-```
-
-- Input
-  - targetUserId : String
-  - walletId : String
-  - sourceUserAccessKey : String
-  - targetUserAccessKey : String
-- Expected Output
+**Expected Output**
   - result : 'success'(String)
   - message : 'Connection invitation accepted'(String)
 
-**Connection Reject**
+### Connection Reject
 
 ```typescript
 pillarSdk.connection.reject(inputParams)
@@ -257,23 +292,20 @@ pillarSdk.connection.reject(inputParams)
 
 Rejects a connection invitation from another user.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - targetUserId : String
-  - accessKey : String
-  - walletId : String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | copy tbd | UUID  | Required  |
+| accessKey  | copy tbd | String  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+
+
+**Expected Output**
   - result : 'success'(String)
   - message : 'Connection invitation rejected'(String)
 
-**Connection Cancel**
+### Connection Cancel
 
 ```typescript
 pillarSdk.connection.cancel(inputParams)
@@ -281,23 +313,20 @@ pillarSdk.connection.cancel(inputParams)
 
 Cancels a connection invitation from another user.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - targetUserId : String
-  - accessKey : String
-  - walletId : String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | copy tbd | UUID  | Required  |
+| accessKey  | copy tbd | String  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+
+
+**Expected Output**
   - result : 'success'(String)
   - message : 'Connection canceled'(String)
 
-**Connection Block**
+### Connection Block
 
 ```typescript
 pillarSdk.connection.block(inputParams)
@@ -305,44 +334,37 @@ pillarSdk.connection.block(inputParams)
 
 Blocks a connection request from another user.
 
-```typescript
-const inputParams = {
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - accessKey : String
-  - walletId : String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| accessKey  | copy tbd | String  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+
+**Expected Output**
   - result : 'success'(String)
   - message : 'Connection blocked'(String)
 
-**Connection Mute**
+### Connection Mute
 
 ```typescript
 pillarSdk.connection.mute(inputParams)
-
 ```
 
 Mutes future communication from another contact.
 
-```typescript
-const inputParams = {
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - accessKey : String
-  - walletId : String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| accessKey  | copy tbd | String  | Required  |
+| walletId  | copy tbd | UUID  | Required  |
+
+**Expected Output**
   - result : 'success'(String)
   - message : 'Connection muted'(String)
 
-**Notification List**
+### Notification List
 
 ```typescript
 pillarSdk.notification.list(inputParams);
@@ -350,23 +372,20 @@ pillarSdk.notification.list(inputParams);
 
 Provides a list of notifications for a specific wallet user.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  fromTimestamp: '2016-05-24T15:54:14.876Z',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-  - fromTimestamp : String (ISO 8601 timestamp format)
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+| fromTimestamp  | copy tbd | String (ISO 8601 timestamp format)  | Required  |
+
+**Expected Output**
   - result : 'success'(String)
   - Notifications
-    - userId : String
+    - userId : UUID
     - message: Text
 
-**User Update**
+### User Update
 
 ```typescript
 pillarSdk.user.update(inputParams);
@@ -374,51 +393,32 @@ pillarSdk.user.update(inputParams);
 
 Updates data elements on a wallet user.
 
-```typescript
-const inputParams = {
-  walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-  username: 'bob123',
-  firstName: 'Bob',
-  lastName: 'Jones',
-  email: 'bob@acme-corp.com',
-  phone: '+44 77 1111 2222',
-  country: 'UK',
-  state: 'CA',
-  city: 'London',
-  tagline: 'Social media consultant',
-  taglineStatus: false,
-  userSearchable: true,
-  profileImage: 'http://photo1.jpg',
-  status: 'pending|OTP-verified|active',
-  verificationService: 'Nivaura',
-  verificationStatus: 'approved',
-  verificationReference: 'x1234y44',
-  investorClassification: 'sophisticated'
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-  - firstName : String
-  - lastName : String
-  - country : String
-  - state : String
-  - city : String
-  - email : String
-  - phone : String
-  - tagline : String
-  - taglineStatus : Boolean
-  - userSearchable : Boolean
-  - profileImage : String(Url)
-  - status: String ('pending|OTP-verified|active'),
-  - verificationService: String,
-  - verificationStatus: String,
-  - verificationReference: String',
-  - investorClassification: String
-- Expected Output
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The user's wallet ID | UUID  | Required  |
+| firstName  | The user's first name | String  | Required  |
+| lastName  | The user's last name | String  | Required  |
+| country  | The user's country or residence | String  | Required  |
+| state  | The user's state of residence | String  | Required  |
+| city  | The user's city of residence | String  | Required  |
+| email  | The user's email address | String  | Required  |
+| phone  | The user's phone number | String  | Required  |
+| tagline  | The user's profile tagline | String  | Required  |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean  | Required  |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean  | Required  |
+| profileImage  | The profile image of the user | String(Url)  | Required  |
+| status  | The online status of the user | ('pending|OTP-verified|active')  | Required  |
+| verificationService | The service used to verify the wallet user (as an investor? exhange user?)| String  | Required  |
+| verificationStatus  | copy tbd | String  | Required  |
+| verificationReference  | copy tbd | String  | Required  |
+| investorClassification  | The user's designated investor classification| String  | Required  |
+
+**Expected Output**
   - result : 'success'(String),
   - message : 'User was successfully updated'(String),
-  - Payload JSON Object
+  - Payload JSON object
     - ethAddress : String
     - fcmToken : String
     - signalRegistrationId : String
@@ -435,7 +435,7 @@ const inputParams = {
     - userSearchable : Boolean
     - profileImage : Text(Url)
 
-**User Info**
+### User Info
 
 ```typescript
 pillarSdk.user.info(inputParams);
@@ -443,16 +443,15 @@ pillarSdk.user.info(inputParams);
 
 Retrieves information on an existing wallet user.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-- Expected Output
-  - Payload JSON Object
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+
+
+**Expected Output**
+  - Payload JSON object
     - ethAddress : String
     - fcmToken : String
     - signalRegistrationId : String
@@ -469,7 +468,7 @@ const inputParams = {
     - userSearchable : Boolean
     - profileImage : Text(Url)
 
-**User Search**
+### User Search
 
 ```typescript
 pillarSdk.user.search(inputParams);
@@ -478,18 +477,16 @@ pillarSdk.user.search(inputParams);
 Provides a list of users that contain the search criteria for first or last name, and is not the current wallet user.
  Also checks if the search string term is at least two characters and if the user allows their profile to be searched.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  query: 'searchforme',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-  - query : String
-- Expected Output
-  - user : JSON Object
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+| query  | copy tbd | String  | Required  |
+
+
+**Expected Output**
+  - user : JSON object
   - id : String
   - firstName : String
   - lastName : String
@@ -498,7 +495,7 @@ const inputParams = {
   - city : String
   - profileImage : Text(Url)       
 
-**User Delete**
+### User Delete
 
 ```
  pillarSdk.user.delete(inputParams);
@@ -506,20 +503,45 @@ const inputParams = {
 
 Removes a wallet user profile from the database.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-};
-```
-- Input
-  - walletId : String
-- Expected Output
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+
+**Expected Output**
     - result : 'success'(String),
     - message : 'User was successfully deleted'(String),
-    - user : JSON Object
+    - user : JSON object
       - ethAddress : Text
       - fcmToken : Text
       - signalRegistrationId : Text
+
+### User Username Search
+
+```typescript
+pillarSdk.user.usernameSearch(inputParams);
+```
+
+Provides a list of users that contain the search criteria for first or last name, and is not the current wallet user.
+Also checks if the search string term is at least two characters and if the user allows their profile to be searched.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | copy tbd | UUID  | Required  |
+| query  | copy tbd | String  | Required  |
+
+**Expected Output**
+  - user : JSON object
+  - id : String
+  - firstName : String
+  - lastName : String
+  - country : String
+  - state : String
+  - city : String
+  - profileImage : Text(Url)  
 
 ## Tests
 
@@ -541,11 +563,12 @@ We use the [TSLint Config Airbnb Style Guide](https://github.com/airbnb/javascri
 
 ## Versioning
 
-We use [Swagger](https://app.swaggerhub.com/apis/Pillar-Project7/core-wallet-backend/1.0.0) for versioning.
+We use [Swagger](https://app.swaggerhub.com/apis/Pillar-Project7/core-wallet-backend) for versioning.
 
 ## License
 
 This project is licensed under the MIT license.
+
 
 ## Acknowledgments
 
