@@ -68,8 +68,8 @@ const pillarSdk = new PillarSdk({
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| privateKey  | hexadecimal string and 64 characters length. | String  | Required  |
-| apiUrl  | Uri where api is hosted. String with uri format. e.g. "http://<uri>".| String  | Optional  |
+| privateKey  | Hexadecimal String And 64 Characters Length. | String  | Required  |
+| apiUrl  | Uri Where Api Is Hosted. String With Uri Format. e.g. "http://<uri>".| String  | Optional  |
 
 #### 2 - Register the Wallet
 
@@ -79,26 +79,33 @@ To use backend services, register the wallet:
 pillarSdk.wallet.register(inputParams)
 ```
 
-Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX.
-ICO Wallet can not be created without phone.
+Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX(Blockchain Explorer).
+Wallet can not be created without username.
 
 
 ```typescript
 const inputParams = {
   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
-  phone: '+447342234889'
+  username: 'bob123'
 };
 ```
 
-- Input
-  - fcmToken : String
-  - phone : String (Optional)
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| username  | The Username of One Wallet.  | String  | Required  |
 
 **Expected Output**
-  - result : 'success'(String),
-  - message : 'Wallet created successfully.'(String),
-  - walletId : UUID,
-  - userId : UUID
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Wallet created successfully' | String  |
+| walletId  | e.g. '6e081b82-dbed-4485-bdbc-a808ad911758' | UUID |
+| userId  | e.g. '7e081b82-cabd-3321-aadd-b443212378bd' | UUID |
 
 ## Response And Error
 
@@ -108,6 +115,7 @@ To get the response and error for these methods, use:
  pillarSdk.wallet.register(
  {
    fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
+   username: 'bob123'
   })
  .then((response) => {
    // Successful response!
@@ -141,12 +149,15 @@ Updates Fcm Token in the backend.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| fcmToken  | copy tbd | String  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
-  - result : 'success'(String),
-  - message : 'OK'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'OK' | String  |
 
 ### Asset Defaults
 
@@ -160,89 +171,99 @@ Returns a list of assets that are marked as default assets.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
+
+JSON collection of objects with respective values:
+
 | Element  | Description | Type |
 | ------------- | ------------- | ------------- |
-| address  | copy tbd | Text  |
-| decimals  | copy tbd | Integer  |
-| description  | copy tbd | Text  |
-
-  JSON collection of objects with respective values:
-  - address: Text,
-  - decimals: Integer,
-  - description: Text,
-  - name: Text,
-  - symbol: Text,
-  - wallpaperUrl: Text,
-  - iconUrl: Text,
-  - email: Text,
-  - telegram: Text,
-  - twitter: Text,
-  - website: Text,
-  - whitepaper: Text,
-  - isDefault: 1 (Boolean).
+| address  | The Token Address | String  |
+| decimals  | The Number of Decimals | Integer  |
+| description  | The Token Description | String  |
+| name  | The Token Name | String  |
+| symbol  | The Token Ticker Symbol | String  |
+| wallpaperUrl  | One Predefined Wallpaper For Token | String  |
+| iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
+| telegram  | The Token Telegram | String  |
+| twitter  | The Token Twitter | String  |
+| website  | The Token Website | String  |
+| whitepaper  | The Token Whitepaper | String  |
+| isDefault  | isDefault Flag for Token | Boolean  |
+| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
 
 ### Asset Search
 
 ```typescript
 pillarSdk.asset.search(inputParams)
 ```
+
 Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
 
 **Input Parameters**
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
-| query  | copy tbd | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| query  | Search Criteria | String  | Required  |
 
 **Expected Output**
-  JSON collection of objects with respective values:
-  - address: Text,
-  - decimals: Integer,
-  - description: Text,
-  - name: Text,
-  - symbol: Text,
-  - wallpaperUrl: Text,
-  - iconUrl: Text,
-  - email: Text,
-  - telegram: Text,
-  - twitter: Text,
-  - website: Text,
-  - whitepaper: Text,
-  - isDefault: Boolean.
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| address  | The Token Address | String  |
+| decimals  | The Number of Decimals | Integer  |
+| description  | The Token Description | String  |
+| name  | The Token Name | String  |
+| symbol  | The Token Ticker Symbol | String  |
+| wallpaperUrl  | One Predefined Wallpaper For Token | String  |
+| iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
+| telegram  | The Token Telegram | String  |
+| twitter  | The Token Twitter | String  |
+| website  | The Token Website | String  |
+| whitepaper  | The Token Whitepaper | String  |
+| isDefault  | isDefault Flag for Token | Boolean  |
+| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
 
 ### Asset List
 
 ```typescript
 pillarSdk.asset.list(inputParams)
 ```
-Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
+
+Returns the full list of assets.
 
 **Input Parameters**
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
-| query  | copy tbd | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
-  JSON collection of objects with respective values:
-  - address: Text,
-  - decimals: Integer,
-  - description: Text,
-  - name: Text,
-  - symbol: Text,
-  - wallpaperUrl: Text,
-  - iconUrl: Text,
-  - email: Text,
-  - telegram: Text,
-  - twitter: Text,
-  - website: Text,
-  - whitepaper: Text,
-  - isDefault: Boolean.
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| address  | The Token Address | String  |
+| decimals  | The Number of Decimals | Integer  |
+| description  | The Token Description | String  |
+| name  | The Token Name | String  |
+| symbol  | The Token Ticker Symbol | String  |
+| wallpaperUrl  | One Predefined Wallpaper For Token | String  |
+| iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
+| telegram  | The Token Telegram | String  |
+| twitter  | The Token Twitter | String  |
+| website  | The Token Website | String  |
+| whitepaper  | The Token Whitepaper | String  |
+| isDefault  | isDefault Flag for Token | Boolean  |
+| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
 
 ### Connection Invite
 
@@ -256,13 +277,16 @@ Creates a connection invitation for a user to create a relationship with another
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | copy tbd | UUID  | Required  |
-| accessKey  | copy tbd | String  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
-  - result : 'success'(String)
-  - message : 'Connection invitation was successfully sent'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation was successfully sent' | String  |
 
 ### Connection Accept
 
@@ -271,18 +295,22 @@ pillarSdk.connection.accept(inputParams)
 ```
 
 Accepts a connection invitation from another user.
+
 **Input Parameters**
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | copy tbd | UUID  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
-| sourceUserAccessKey  | copy tbd | String  | Required  |
-| targetUserAccessKey  | copy tbd | String  | Required  |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| sourceUserAccessKey  | Source User Access Key. | String  | Required  |
+| targetUserAccessKey  | Target User Access Key. | String  | Required  |
 
 **Expected Output**
-  - result : 'success'(String)
-  - message : 'Connection invitation accepted'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation accepted' | String  |
 
 ### Connection Reject
 
@@ -296,14 +324,17 @@ Rejects a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | copy tbd | UUID  | Required  |
-| accessKey  | copy tbd | String  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 
 **Expected Output**
-  - result : 'success'(String)
-  - message : 'Connection invitation rejected'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation rejected' | String  |
 
 ### Connection Cancel
 
@@ -317,14 +348,17 @@ Cancels a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | copy tbd | UUID  | Required  |
-| accessKey  | copy tbd | String  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 
 **Expected Output**
-  - result : 'success'(String)
-  - message : 'Connection canceled'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection canceled' | String  |
 
 ### Connection Block
 
@@ -338,12 +372,15 @@ Blocks a connection request from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| accessKey  | copy tbd | String  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
-  - result : 'success'(String)
-  - message : 'Connection blocked'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection blocked' | String  |
 
 ### Connection Mute
 
@@ -357,12 +394,15 @@ Mutes future communication from another contact.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| accessKey  | copy tbd | String  | Required  |
-| walletId  | copy tbd | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
-  - result : 'success'(String)
-  - message : 'Connection muted'(String)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection muted' | String  |
 
 ### Notification List
 
@@ -376,14 +416,21 @@ Provides a list of notifications for a specific wallet user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
-| fromTimestamp  | copy tbd | String (ISO 8601 timestamp format)  | Required  |
+| walletId  | The Wallet Identifier.  | UUID  | Required  |
+| fromTimestamp  | Stamp of Date/Time | String (ISO 8601 timestamp format)  | Required  |
 
 **Expected Output**
-  - result : 'success'(String)
-  - Notifications
-    - userId : UUID
-    - message: Text
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+
+JSON Notifications with respective values::
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| userId  | The User Identifier. | UUID  |
+| message  | Message Notification | String  |
 
 ### User Update
 
@@ -397,43 +444,51 @@ Updates data elements on a wallet user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | The user's wallet ID | UUID  | Required  |
-| firstName  | The user's first name | String  | Required  |
-| lastName  | The user's last name | String  | Required  |
-| country  | The user's country or residence | String  | Required  |
-| state  | The user's state of residence | String  | Required  |
-| city  | The user's city of residence | String  | Required  |
-| email  | The user's email address | String  | Required  |
-| phone  | The user's phone number | String  | Required  |
-| tagline  | The user's profile tagline | String  | Required  |
-| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean  | Required  |
-| userSearchable  | Whether the user's profile is searchable in the address book | Boolean  | Required  |
-| profileImage  | The profile image of the user | String(Url)  | Required  |
-| status  | The online status of the user | ('pending|OTP-verified|active')  | Required  |
-| verificationService | The service used to verify the wallet user (as an investor? exhange user?)| String  | Required  |
-| verificationStatus  | copy tbd | String  | Required  |
-| verificationReference  | copy tbd | String  | Required  |
-| investorClassification  | The user's designated investor classification| String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| username  | The User's Username | String  | Optional  |
+| firstName  | The User's First Name | String  | Optional  |
+| lastName  | The User's Last Name | String  | Optional  |
+| country  | The User's Country Or Residence | String  | Optional  |
+| state  | The User's State Of Residence | String  | Optional  |
+| city  | The User's City of Residence | String  | Optional  |
+| email  | The User's Email Address | String  | Optional  |
+| phone  | The User's Phone Number | String  | Optional  |
+| tagline  | The User's profile tagline | String  | Optional  |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean  | Optional  |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean  | Optional  |
+| profileImage  | The Profile Image of the user | String(Url)  | Optional  |
 
 **Expected Output**
-  - result : 'success'(String),
-  - message : 'User was successfully updated'(String),
-  - Payload JSON object
-    - ethAddress : String
-    - fcmToken : String
-    - signalRegistrationId : String
-    - id : String
-    - firstName : String
-    - lastName : String
-    - country : String
-    - state : String
-    - city : String
-    - email : String
-    - phone : String
-    - tagline : Text
-    - taglineStatus : Boolean
-    - userSearchable : Boolean
-    - profileImage : Text(Url)
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'User was successfully updated' | String  |
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The User Identifier | UUID  |
+| username  | The Username | String  |
+| firstName  | The User's First Name | String  |
+| lastName  | The User's Last Name  | String  |
+| email  | The User's Email Address | String  |
+| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
+| emailOneTimePassword  | Five Digit One Time Password | String |
+| phone  |  The User's Phone | String |
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
+| country  | The user's country or residence | String |
+| state  | The user's state of residence | String |
+| city  | The user's city of residence | String |
+| email  | The user's email address | String |
+| phone  | The user's phone number | String |
+| tagline  | The user's profile tagline | String |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
+| profileImage  | The profile image of the user | String(Url) |
+| pending  | Check if still waiting for verification | Boolean |
 
 ### User Info
 
@@ -447,26 +502,35 @@ Retrieves information on an existing wallet user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 
 **Expected Output**
-  - Payload JSON object
-    - ethAddress : String
-    - fcmToken : String
-    - signalRegistrationId : String
-    - id : String
-    - firstName : String
-    - lastName : String
-    - country : String
-    - state : String
-    - city : String
-    - email : String
-    - phone : String
-    - tagline : Text
-    - taglineStatus : Boolean
-    - userSearchable : Boolean
-    - profileImage : Text(Url)
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The User Identifier | UUID  |
+| username  | The Username | String  |
+| firstName  | The User's First Name | String  |
+| lastName  | The User's Last Name  | String  |
+| email  | The User's Email Address | String  |
+| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
+| emailOneTimePassword  | Five Digit One Time Password | String |
+| phone  |  The User's Phone | String |
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
+| country  | The user's country or residence | String |
+| state  | The user's state of residence | String |
+| city  | The user's city of residence | String |
+| email  | The user's email address | String |
+| phone  | The user's phone number | String |
+| tagline  | The user's profile tagline | String |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
+| profileImage  | The profile image of the user | String(Url) |
+| pending  | Check if still waiting for verification | Boolean |
 
 ### User Search
 
@@ -481,19 +545,34 @@ Provides a list of users that contain the search criteria for first or last name
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
-| query  | copy tbd | String  | Required  |
+| walletId  | The Wallet Identifier.| UUID  | Required  |
+| query  | The Search String | String  | Required  |
 
 
 **Expected Output**
-  - user : JSON object
-  - id : String
-  - firstName : String
-  - lastName : String
-  - country : String
-  - state : String
-  - city : String
-  - profileImage : Text(Url)       
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The User Identifier | UUID  |
+| username  | The Username | String  |
+| firstName  | The User's First Name | String  |
+| lastName  | The User's Last Name  | String  |
+| email  | The User's Email Address | String  |
+| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
+| emailOneTimePassword  | Five Digit One Time Password | String |
+| phone  |  The User's Phone | String |
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
+| country  | The user's country or residence | String |
+| state  | The user's state of residence | String |
+| city  | The user's city of residence | String |
+| email  | The user's email address | String |
+| phone  | The user's phone number | String |
+| tagline  | The user's profile tagline | String |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
+| profileImage  | The profile image of the user | String(Url) |
+| pending  | Check if still waiting for verification | Boolean |
 
 ### User Delete
 
@@ -507,15 +586,14 @@ Removes a wallet user profile from the database.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
-    - result : 'success'(String),
-    - message : 'User was successfully deleted'(String),
-    - user : JSON object
-      - ethAddress : Text
-      - fcmToken : Text
-      - signalRegistrationId : Text
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'User was successfully deleted' | String  |
 
 ### User Username Search
 
@@ -523,25 +601,19 @@ Removes a wallet user profile from the database.
 pillarSdk.user.usernameSearch(inputParams);
 ```
 
-Provides a list of users that contain the search criteria for first or last name, and is not the current wallet user.
-Also checks if the search string term is at least two characters and if the user allows their profile to be searched.
+Retrieve the userId of an existing wallet user or return not-found.
 
 **Input Parameters**
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| walletId  | copy tbd | UUID  | Required  |
-| query  | copy tbd | String  | Required  |
+| username  | Wallet Username | String  | Required  |
 
 **Expected Output**
-  - user : JSON object
-  - id : String
-  - firstName : String
-  - lastName : String
-  - country : String
-  - state : String
-  - city : String
-  - profileImage : Text(Url)  
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| userId  | The User Identifier | UUID  | Required  |
 
 ## Tests
 
