@@ -9,6 +9,22 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 - [Config](#config)
 - [Response and Error](#response-and-error)
 - [Methods](#methods)
+    - [Wallet Update](#wallet-update)
+    - [Asset Defaults](#asset-defaults)
+    - [Asset Search](#asset-search)
+    - [Asset List](#asset-list)
+    - [Connection Invite](#connection-invite)
+    - [Connection Accept](#connection-accept)
+    - [Connection Reject](#connection-reject)
+    - [Connection Cancel](#connection-cancel)
+    - [Connection Block](#connection-block)
+    - [Connection Mute](#connection-mute)
+    - [Notification List](#notification-list)
+    - [User Update](#user-update)
+    - [User Info](#user-info)
+    - [User Search](#user-search)
+    - [User Delete](#user-delete)
+    - [User Username Search](#user-username-search)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
 - [Versioning](#versioning)
@@ -29,10 +45,9 @@ const { PillarSdk } = require('@pillarwallet/pillarwallet-nodejs-sdk');
 
 ## A quick note on versioning
 
-During the pipeline process, we need to automatically ensure our version number is unique. To to this we replace the last semver digit of the package.json's Version setting with the current circle CI build number. It's a bit of a hack but it means we don't need to think about the version number before commiting+pushing.
+During the pipeline process, we need to automatically ensure that our version number is unique. To do this, we replace the last patch digit of the package.json's version setting with the current circle CI build number. It's a bit of a hack but it means we don't need to think about the version number before committing + pushing.
 
-eg. if you give us version=2.3.1, and this is picked up by circle's 492nd build job, your package will be published as version=2.3.492
-
+For example, if you give us version=2.3.1, and this is picked up by circle's 492nd build job, your package is published as version=2.3.492
 
 ## Config
 
@@ -48,9 +63,13 @@ const pillarSdk = new PillarSdk({
   privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
-- Input
-  - apiUrl(Optional) : string with uri format. e.g. "http://<uri>".
-  - privateKey : hexadecimal string and 64 characters length.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| privateKey  | Hexadecimal String And 64 Characters Length. | String  | Required  |
+| apiUrl  | Uri Where Api Is Hosted. String With Uri Format. e.g. "http://<uri>".| String  | Optional  |
 
 #### 2 - Register the Wallet
 
@@ -60,26 +79,33 @@ To use backend services, register the wallet:
 pillarSdk.wallet.register(inputParams)
 ```
 
-Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX.
-ICO Wallet can not be created without phone.
+Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX(Blockchain Explorer).
+Wallet can not be created without username.
 
 
 ```typescript
 const inputParams = {
   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
-  phone: '+447342234889'
+  username: 'bob123'
 };
 ```
 
-- Input
-  - fcmToken : String
-  - phone : String (Optional)
 
-- Expected Output
-  - result : 'success'(String),
-  - message : 'Wallet created successfully.'(String),
-  - walletId : String,
-  - userId : String
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| username  | The Username of One Wallet.  | String  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Wallet created successfully' | String  |
+| walletId  | e.g. '6e081b82-dbed-4485-bdbc-a808ad911758' | UUID |
+| userId  | e.g. '7e081b82-cabd-3321-aadd-b443212378bd' | UUID |
 
 ## Response And Error
 
@@ -89,6 +115,7 @@ To get the response and error for these methods, use:
  pillarSdk.wallet.register(
  {
    fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
+   username: 'bob123'
   })
  .then((response) => {
    // Successful response!
@@ -110,29 +137,29 @@ To get the response and error for these methods, use:
 
 **IMPORTANT! All methods return promises.**
 
-**Wallet Update**
+### Wallet Update
 
 ```typescript
 pillarSdk.wallet.update(inputParams)
 ```
 
-Updates FcmToken in the backend.
+Updates Fcm Token in the backend.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  fcmToken: 'dfj8hjs9dahfdbf7dsbfbds7f',
-};
-```
+**Input Parameters**
 
-- Input
-  - fcmToken : String
-  - walletId : String
-- Expected Output
-  - result : 'success'(String),
-  - message : 'OK'(String)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Asset Defaults**
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'OK' | String  |
+
+### Asset Defaults
 
 ```typescript
 pillarSdk.asset.defaults(inputParams)
@@ -140,65 +167,105 @@ pillarSdk.asset.defaults(inputParams)
 
 Returns a list of assets that are marked as default assets.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-- Expected Output
-  JSON Collection of Objects with respective Values
-  - address: Text,
-  - decimals: Integer,
-  - description: Text,
-  - name: Text,
-  - symbol: Text,
-  - wallpaperUrl: Text,
-  - iconUrl: Text,
-  - email: Text,
-  - telegram: Text,
-  - twitter: Text,
-  - website: Text,
-  - whitepaper: Text,
-  - isDefault: 1 (Boolean).
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Asset Search**
+**Expected Output**
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  query: 'search query here',
-};
-```
+JSON collection of objects with respective values:
 
-Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| address  | The Token Address | String  |
+| decimals  | The Number of Decimals | Integer  |
+| description  | The Token Description | String  |
+| name  | The Token Name | String  |
+| symbol  | The Token Ticker Symbol | String  |
+| wallpaperUrl  | One Predefined Wallpaper For Token | String  |
+| iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
+| telegram  | The Token Telegram | String  |
+| twitter  | The Token Twitter | String  |
+| website  | The Token Website | String  |
+| whitepaper  | The Token Whitepaper | String  |
+| isDefault  | isDefault Flag for Token | Boolean  |
+| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+
+### Asset Search
 
 ```typescript
 pillarSdk.asset.search(inputParams)
 ```
 
-- Input
-  - walletId : String
-  - query : String
-- Expected Output
-  JSON Collection of Objects with respective Values
-  - address: Text,
-  - decimals: Integer,
-  - description: Text,
-  - name: Text,
-  - symbol: Text,
-  - wallpaperUrl: Text,
-  - iconUrl: Text,
-  - email: Text,
-  - telegram: Text,
-  - twitter: Text,
-  - website: Text,
-  - whitepaper: Text,
-  - isDefault: Boolean.
+Returns a list of assets that contain the search criteria for name, token symbol, or smart contract hexadecimal address.
 
-**Connection Invite**
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| query  | Search Criteria | String  | Required  |
+
+**Expected Output**
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| address  | The Token Address | String  |
+| decimals  | The Number of Decimals | Integer  |
+| description  | The Token Description | String  |
+| name  | The Token Name | String  |
+| symbol  | The Token Ticker Symbol | String  |
+| wallpaperUrl  | One Predefined Wallpaper For Token | String  |
+| iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
+| telegram  | The Token Telegram | String  |
+| twitter  | The Token Twitter | String  |
+| website  | The Token Website | String  |
+| whitepaper  | The Token Whitepaper | String  |
+| isDefault  | isDefault Flag for Token | Boolean  |
+| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+
+### Asset List
+
+```typescript
+pillarSdk.asset.list(inputParams)
+```
+
+Returns the full list of assets.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| address  | The Token Address | String  |
+| decimals  | The Number of Decimals | Integer  |
+| description  | The Token Description | String  |
+| name  | The Token Name | String  |
+| symbol  | The Token Ticker Symbol | String  |
+| wallpaperUrl  | One Predefined Wallpaper For Token | String  |
+| iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
+| telegram  | The Token Telegram | String  |
+| twitter  | The Token Twitter | String  |
+| website  | The Token Website | String  |
+| whitepaper  | The Token Whitepaper | String  |
+| isDefault  | isDefault Flag for Token | Boolean  |
+| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+
+### Connection Invite
 
 ```typescript
 pillarSdk.connection.invite(inputParams)
@@ -206,23 +273,22 @@ pillarSdk.connection.invite(inputParams)
 
 Creates a connection invitation for a user to create a relationship with another contact.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - targetUserId : String
-  - accessKey : String
-  - walletId : String
-- Expected Output
-  - result : 'success'(String)
-  - message : 'Connection invitation was successfully sent'(String)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Connection Accept**
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation was successfully sent' | String  |
+
+### Connection Accept
 
 ```typescript
 pillarSdk.connection.accept(inputParams)
@@ -230,26 +296,23 @@ pillarSdk.connection.accept(inputParams)
 
 Accepts a connection invitation from another user.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  sourceUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  targetUserAccessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-};
+**Input Parameters**
 
-```
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| sourceUserAccessKey  | Source User Access Key. | String  | Required  |
+| targetUserAccessKey  | Target User Access Key. | String  | Required  |
 
-- Input
-  - targetUserId : String
-  - walletId : String
-  - sourceUserAccessKey : String
-  - targetUserAccessKey : String
-- Expected Output
-  - result : 'success'(String)
-  - message : 'Connection invitation accepted'(String)
+**Expected Output**
 
-**Connection Reject**
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation accepted' | String  |
+
+### Connection Reject
 
 ```typescript
 pillarSdk.connection.reject(inputParams)
@@ -257,23 +320,23 @@ pillarSdk.connection.reject(inputParams)
 
 Rejects a connection invitation from another user.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - targetUserId : String
-  - accessKey : String
-  - walletId : String
-- Expected Output
-  - result : 'success'(String)
-  - message : 'Connection invitation rejected'(String)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Connection Cancel**
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation rejected' | String  |
+
+### Connection Cancel
 
 ```typescript
 pillarSdk.connection.cancel(inputParams)
@@ -281,23 +344,23 @@ pillarSdk.connection.cancel(inputParams)
 
 Cancels a connection invitation from another user.
 
-```typescript
-const inputParams = {
-  targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - targetUserId : String
-  - accessKey : String
-  - walletId : String
-- Expected Output
-  - result : 'success'(String)
-  - message : 'Connection canceled'(String)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Connection Block**
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection canceled' | String  |
+
+### Connection Block
 
 ```typescript
 pillarSdk.connection.block(inputParams)
@@ -305,44 +368,43 @@ pillarSdk.connection.block(inputParams)
 
 Blocks a connection request from another user.
 
-```typescript
-const inputParams = {
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - accessKey : String
-  - walletId : String
-- Expected Output
-  - result : 'success'(String)
-  - message : 'Connection blocked'(String)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Connection Mute**
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection blocked' | String  |
+
+### Connection Mute
 
 ```typescript
 pillarSdk.connection.mute(inputParams)
-
 ```
 
 Mutes future communication from another contact.
 
-```typescript
-const inputParams = {
-  accessKey: 'djhfjkasckbnscjuhdh89suhdnjsd',
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758'
-};
-```
+**Input Parameters**
 
-- Input
-  - accessKey : String
-  - walletId : String
-- Expected Output
-  - result : 'success'(String)
-  - message : 'Connection muted'(String)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**Notification List**
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection muted' | String  |
+
+### Notification List
 
 ```typescript
 pillarSdk.notification.list(inputParams);
@@ -350,23 +412,27 @@ pillarSdk.notification.list(inputParams);
 
 Provides a list of notifications for a specific wallet user.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  fromTimestamp: '2016-05-24T15:54:14.876Z',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-  - fromTimestamp : String (ISO 8601 timestamp format)
-- Expected Output
-  - result : 'success'(String)
-  - Notifications
-    - userId : String
-    - message: Text
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier.  | UUID  | Required  |
+| fromTimestamp  | Stamp of Date/Time | String (ISO 8601 timestamp format)  | Required  |
 
-**User Update**
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+
+JSON Notifications with respective values::
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| userId  | The User Identifier. | UUID  |
+| message  | Message Notification | String  |
+
+### User Update
 
 ```typescript
 pillarSdk.user.update(inputParams);
@@ -374,68 +440,57 @@ pillarSdk.user.update(inputParams);
 
 Updates data elements on a wallet user.
 
-```typescript
-const inputParams = {
-  walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-  username: 'bob123',
-  firstName: 'Bob',
-  lastName: 'Jones',
-  email: 'bob@acme-corp.com',
-  phone: '+44 77 1111 2222',
-  country: 'UK',
-  state: 'CA',
-  city: 'London',
-  tagline: 'Social media consultant',
-  taglineStatus: false,
-  userSearchable: true,
-  profileImage: 'http://photo1.jpg',
-  status: 'pending|OTP-verified|active',
-  verificationService: 'Nivaura',
-  verificationStatus: 'approved',
-  verificationReference: 'x1234y44',
-  investorClassification: 'sophisticated'
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-  - firstName : String
-  - lastName : String
-  - country : String
-  - state : String
-  - city : String
-  - email : String
-  - phone : String
-  - tagline : String
-  - taglineStatus : Boolean
-  - userSearchable : Boolean
-  - profileImage : String(Url)
-  - status: String ('pending|OTP-verified|active'),
-  - verificationService: String,
-  - verificationStatus: String,
-  - verificationReference: String',
-  - investorClassification: String
-- Expected Output
-  - result : 'success'(String),
-  - message : 'User was successfully updated'(String),
-  - Payload JSON Object
-    - ethAddress : String
-    - fcmToken : String
-    - signalRegistrationId : String
-    - id : String
-    - firstName : String
-    - lastName : String
-    - country : String
-    - state : String
-    - city : String
-    - email : String
-    - phone : String
-    - tagline : Text
-    - taglineStatus : Boolean
-    - userSearchable : Boolean
-    - profileImage : Text(Url)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| username  | The User's Username | String  | Optional  |
+| firstName  | The User's First Name | String  | Optional  |
+| lastName  | The User's Last Name | String  | Optional  |
+| country  | The User's Country Or Residence | String  | Optional  |
+| state  | The User's State Of Residence | String  | Optional  |
+| city  | The User's City of Residence | String  | Optional  |
+| email  | The User's Email Address | String  | Optional  |
+| phone  | The User's Phone Number | String  | Optional  |
+| tagline  | The User's profile tagline | String  | Optional  |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean  | Optional  |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean  | Optional  |
+| profileImage  | The Profile Image of the user | String(Url)  | Optional  |
 
-**User Info**
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'User was successfully updated' | String  |
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The User Identifier | UUID  |
+| username  | The Username | String  |
+| firstName  | The User's First Name | String  |
+| lastName  | The User's Last Name  | String  |
+| email  | The User's Email Address | String  |
+| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
+| emailOneTimePassword  | Five Digit One Time Password | String |
+| phone  |  The User's Phone | String |
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
+| country  | The user's country or residence | String |
+| state  | The user's state of residence | String |
+| city  | The user's city of residence | String |
+| email  | The user's email address | String |
+| phone  | The user's phone number | String |
+| tagline  | The user's profile tagline | String |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
+| profileImage  | The profile image of the user | String(Url) |
+| pending  | Check if still waiting for verification | Boolean |
+
+### User Info
 
 ```typescript
 pillarSdk.user.info(inputParams);
@@ -443,33 +498,41 @@ pillarSdk.user.info(inputParams);
 
 Retrieves information on an existing wallet user.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-- Expected Output
-  - Payload JSON Object
-    - ethAddress : String
-    - fcmToken : String
-    - signalRegistrationId : String
-    - id : String
-    - firstName : String
-    - lastName : String
-    - country : String
-    - state : String
-    - city : String
-    - email : String
-    - phone : String
-    - tagline : Text
-    - taglineStatus : Boolean
-    - userSearchable : Boolean
-    - profileImage : Text(Url)
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
 
-**User Search**
+
+**Expected Output**
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The User Identifier | UUID  |
+| username  | The Username | String  |
+| firstName  | The User's First Name | String  |
+| lastName  | The User's Last Name  | String  |
+| email  | The User's Email Address | String  |
+| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
+| emailOneTimePassword  | Five Digit One Time Password | String |
+| phone  |  The User's Phone | String |
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
+| country  | The user's country or residence | String |
+| state  | The user's state of residence | String |
+| city  | The user's city of residence | String |
+| email  | The user's email address | String |
+| phone  | The user's phone number | String |
+| tagline  | The user's profile tagline | String |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
+| profileImage  | The profile image of the user | String(Url) |
+| pending  | Check if still waiting for verification | Boolean |
+
+### User Search
 
 ```typescript
 pillarSdk.user.search(inputParams);
@@ -478,27 +541,40 @@ pillarSdk.user.search(inputParams);
 Provides a list of users that contain the search criteria for first or last name, and is not the current wallet user.
  Also checks if the search string term is at least two characters and if the user allows their profile to be searched.
 
-```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-  query: 'searchforme',
-};
-```
+**Input Parameters**
 
-- Input
-  - walletId : String
-  - query : String
-- Expected Output
-  - user : JSON Object
-  - id : String
-  - firstName : String
-  - lastName : String
-  - country : String
-  - state : String
-  - city : String
-  - profileImage : Text(Url)       
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier.| UUID  | Required  |
+| query  | The Search String | String  | Required  |
 
-**User Delete**
+
+**Expected Output**
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The User Identifier | UUID  |
+| username  | The Username | String  |
+| firstName  | The User's First Name | String  |
+| lastName  | The User's Last Name  | String  |
+| email  | The User's Email Address | String  |
+| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
+| emailOneTimePassword  | Five Digit One Time Password | String |
+| phone  |  The User's Phone | String |
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
+| country  | The user's country or residence | String |
+| state  | The user's state of residence | String |
+| city  | The user's city of residence | String |
+| email  | The user's email address | String |
+| phone  | The user's phone number | String |
+| tagline  | The user's profile tagline | String |
+| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
+| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
+| profileImage  | The profile image of the user | String(Url) |
+| pending  | Check if still waiting for verification | Boolean |
+
+### User Delete
 
 ```
  pillarSdk.user.delete(inputParams);
@@ -506,20 +582,38 @@ const inputParams = {
 
 Removes a wallet user profile from the database.
 
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'User was successfully deleted' | String  |
+
+### User Username Search
+
 ```typescript
-const inputParams = {
-  walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-};
+pillarSdk.user.usernameSearch(inputParams);
 ```
-- Input
-  - walletId : String
-- Expected Output
-    - result : 'success'(String),
-    - message : 'User was successfully deleted'(String),
-    - user : JSON Object
-      - ethAddress : Text
-      - fcmToken : Text
-      - signalRegistrationId : Text
+
+Retrieve the userId of an existing wallet user or return not-found.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| username  | Wallet Username | String  | Required  |
+
+**Expected Output**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| userId  | The User Identifier | UUID  | Required  |
 
 ## Tests
 
@@ -541,11 +635,12 @@ We use the [TSLint Config Airbnb Style Guide](https://github.com/airbnb/javascri
 
 ## Versioning
 
-We use [Swagger](https://app.swaggerhub.com/apis/Pillar-Project7/core-wallet-backend/1.0.0) for versioning.
+We use [Swagger](https://app.swaggerhub.com/apis/Pillar-Project7/core-wallet-backend) for versioning.
 
 ## License
 
 This project is licensed under the MIT license.
+
 
 ## Acknowledgments
 
