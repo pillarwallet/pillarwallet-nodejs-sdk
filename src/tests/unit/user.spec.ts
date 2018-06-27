@@ -1,5 +1,9 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
+import { default as postConfiguration } from '../../utils/requester-configurations/post';
+
+const userValidateSchema = require('../../schemas/user/validate.json');
 
 beforeEach(() => {
   this.pSdk = new PillarSdk({
@@ -53,7 +57,7 @@ describe('The User Class: Info method', () => {
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining(
         {
-          headers: { 'X-API-Signature': expect.anything() },
+          headers: {'X-API-Signature': expect.anything()},
           params: userInfoData,
           url: 'http://localhost:8080/user/info',
         }),
@@ -75,7 +79,7 @@ describe('The User Class: Search method', () => {
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining(
         {
-          headers: { 'X-API-Signature': expect.anything() },
+          headers: {'X-API-Signature': expect.anything()},
           params: userSearchData,
           url: 'http://localhost:8080/user/search',
         }),
@@ -120,6 +124,29 @@ describe('The User Class: Username Search method', () => {
           params: usernameSearch,
           url: 'http://localhost:8080/user/search-username',
         }),
+    );
+  });
+});
+
+describe('The User Class: Validate method', () => {
+  beforeEach(() => {
+    jest.spyOn(this.pSdk.user, 'executeRequest').mockImplementation(() => Promise.resolve());
+  });
+
+  afterEach(() => {
+    this.pSdk.user.executeRequest.mockClear();
+  });
+
+  it('should successfully call with valid data', async () => {
+    const data = { username: 'Bob' };
+
+    await this.pSdk.user.validate(data);
+    expect(this.pSdk.user.executeRequest).toHaveBeenCalledWith(
+      data,
+      userValidateSchema,
+      postConfiguration,
+      HttpEndpoints.USER_VALIDATE,
+      false,
     );
   });
 });

@@ -131,5 +131,15 @@ describe('user endpoints', () => {
        */
       expect(spy).toHaveBeenCalled();
     });
+
+    // we still can not automatically run the integration tests.
+    it.skip('User Validation', async () => {
+      const inputParams = {
+        username: 'amber',
+      };
+
+      const res = await this.pSdk.user.validate(inputParams);
+      expect(res.data).toEqual({ id: expect.any(String), username: 'amber' });
+    });
   });
 });

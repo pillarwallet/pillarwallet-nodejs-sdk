@@ -22,6 +22,7 @@ const userUpdateSchema = require('../schemas/user/update.json');
 const userDeleteSchema = require('../schemas/user/delete.json');
 const userSearchSchema = require('../schemas/user/search.json');
 const userUsernameSearchSchema = require('../schemas/user/username-search.json');
+const userValidateSchema = require('../schemas/user/validate.json');
 
 export class User extends Configuration {
 
@@ -117,4 +118,13 @@ export class User extends Configuration {
     return Requester.execute(postConfiguration);
   }
 
+  validate(data: UserValidate): AxiosPromise {
+    return this.executeRequest(
+      data,
+      userValidateSchema,
+      postConfiguration,
+      HttpEndpoints.USER_VALIDATE,
+      false,
+    );
+  }
 }

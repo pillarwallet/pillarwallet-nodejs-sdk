@@ -2,8 +2,12 @@
  * Import required classes / libraries / constants
  */
 import * as Ajv from 'ajv';
+import { AxiosPromise } from 'axios';
+
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
+import { HttpEndpoints } from './constants/httpEndpoints';
+import { Requester } from '../utils/requester';
 
 let ajv: any;
 
@@ -48,7 +52,7 @@ export class Configuration {
    * @param {string} privateKey
    * @returns {string}
    */
-  checkSignature(signParams: Object,privateKey: string) {
+  checkSignature(signParams: Object, privateKey: string) {
     const xAPISignature = Authentication.sign(
       signParams,
       privateKey,
@@ -58,5 +62,25 @@ export class Configuration {
       throw new Error(ErrorMessages.SigningError);
     }
     return xAPISignature;
+  }
+
+  // TODO: We need to check it with the other endpoints and improve dependently from situation.
+  executeRequest(
+    data: any,
+    schema: Object,
+    requestMethodConfiguration: any,
+    httpEndpoint: HttpEndpoints,
+    checkSignature: boolean = true,
+  ): AxiosPromise {
+    this.validation(schema, data);
+
+    if (checkSignature) {
+      requestMethodConfiguration.headers['X-API-Signature'] =
+        this.checkSignature(data, Configuration.accessKeys.privateKey);
+    }
+    requestMethodConfiguration.data = data;
+    requestMethodConfiguration.url = Configuration.accessKeys.apiUrl + httpEndpoint;
+
+    return Requester.execute(requestMethodConfiguration);
   }
 }
