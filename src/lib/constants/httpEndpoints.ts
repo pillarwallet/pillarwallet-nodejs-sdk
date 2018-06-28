@@ -16,4 +16,5 @@ export enum HttpEndpoints {
   USER_SEARCH = '/user/search',
   USER_DELETE = '/user/delete',
   USER_USERNAME_SEARCH = '/user/search-username',
+  USER_VALIDATE = '/user/validate',
 }

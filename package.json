@@ -1,12 +1,15 @@
 {
   "name": "@pillarwallet/pillarwallet-nodejs-sdk",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "test:unit": "jest unit",
     "test:integration": "jest integration",
+    "test:coverage": "jest --coverage",
+    "test:unit:coverage": "jest unit --verbose  --coverage",
+    "test:integration:coverage": "jest integration --verbose  --coverage",
     "compile": "tsc",
     "build": "webpack",
     "build-production": "webpack --mode=production",

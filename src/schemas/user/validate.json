@@ -1,0 +1,20 @@
+{
+  "title": "User Model - Validate",
+  "description": "Schema definition for User Model - validate method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "username": {
+      "type": "string" ,
+      "isNotEmptyString": true
+    },
+    "blockchainAddress": {
+      "type": "string",
+      "isNotEmptyString": true
+    }
+  },
+  "oneOf": [
+    { "required": [ "username" ] },
+    { "required": [ "blockchainAddress" ] }
+  ]
+}
