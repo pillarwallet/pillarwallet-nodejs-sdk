@@ -7,7 +7,7 @@ let spy;
 describe('user endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8082',
+      apiUrl: 'http://localhost:8080',
       privateKey: keys.privateKey,
     });
 
@@ -140,6 +140,16 @@ describe('user endpoints', () => {
 
       const res = await this.pSdk.user.validate(inputParams);
       expect(res.data).toEqual({ id: expect.any(String), username: 'amber' });
+    });
+
+    // we still can not automatically run the integration tests.
+    it.skip('Username Search', async () => {
+      const inputParams = {
+        username: 'amber',
+      };
+
+      const res = await this.pSdk.user.usernameSearch(inputParams);
+      expect(res.data).toEqual({ id: expect.any(String) });
     });
   });
 });
