@@ -107,15 +107,12 @@ export class User extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   usernameSearch(userUsernameSearch: UserUsernameSearch): AxiosPromise {
-
     this.validation(userUsernameSearchSchema, userUsernameSearch);
 
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(userUsernameSearch, Configuration.accessKeys.privateKey);
     getConfiguration.params = userUsernameSearch;
     getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_USERNAME_SEARCH;
 
-    return Requester.execute(postConfiguration);
+    return Requester.execute(getConfiguration);
   }
 
   validate(data: UserValidate): AxiosPromise {
