@@ -34,7 +34,8 @@ export class Notification extends Configuration {
     getConfiguration.headers['X-API-Signature'] =
       this.checkSignature(notificationList,Configuration.accessKeys.privateKey);
     getConfiguration.params = notificationList;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.NOTIFICATION_LIST;
+    getConfiguration.url =
+      Configuration.accessKeys.notificationsUrl + HttpEndpoints.NOTIFICATION_LIST;
 
     return Requester.execute(getConfiguration);
   }

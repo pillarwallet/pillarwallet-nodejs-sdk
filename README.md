@@ -1,7 +1,7 @@
 # Pillar Wallet SDK
 
 The Pillar Wallet SDK aims to make it easy for developers to get started using
-[Pillar Wallet backend services](https://github.com/pillarwallet/core-wallet-backend).
+[Pillar Wallet backend services](https://github.com/pillarwallet/platform-core).
 
 ## Contents
 
@@ -55,11 +55,12 @@ For example, if you give us version=2.3.1, and this is picked up by circle's 492
 
 #### 1 - Create An Instance
 
-Instantiate the Pillar SDK, then set the apiUrl(Optional) and wallet privateKey variables.
+Instantiate the Pillar SDK, then set the apiUrl (optional), notificationsUrl (optional) and wallet privateKey variables.
 
 ```
 const pillarSdk = new PillarSdk({
   apiUrl: 'http://localhost:8080',
+  notificationsUrl: 'https://localhost:8081',
   privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
@@ -68,8 +69,9 @@ const pillarSdk = new PillarSdk({
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| privateKey  | Hexadecimal String And 64 Characters Length. | String  | Required  |
-| apiUrl  | Uri Where Api Is Hosted. String With Uri Format. e.g. "http://<uri>".| String  | Optional  |
+| privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
+| apiUrl  | URL where API is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
+| notificationsUrl  | URL where the Notifications Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
 
 #### 2 - Register the Wallet
 
@@ -477,7 +479,7 @@ JSON collection of objects with respective values:
 | isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
 | emailOneTimePassword  | Five Digit One Time Password | String |
 | phone  |  The User's Phone | String |
-| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String
 | phoneOneTimePassword  | Five Digit One Time Password | Boolean |
 | country  | The user's country or residence | String |
 | state  | The user's state of residence | String |
@@ -519,7 +521,7 @@ JSON collection of objects with respective values:
 | isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
 | emailOneTimePassword  | Five Digit One Time Password | String |
 | phone  |  The User's Phone | String |
-| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String
 | phoneOneTimePassword  | Five Digit One Time Password | Boolean |
 | country  | The user's country or residence | String |
 | state  | The user's state of residence | String |
@@ -561,7 +563,7 @@ Provides a list of users that contain the search criteria for first or last name
 | isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
 | emailOneTimePassword  | Five Digit One Time Password | String |
 | phone  |  The User's Phone | String |
-| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String  
+| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String
 | phoneOneTimePassword  | Five Digit One Time Password | Boolean |
 | country  | The user's country or residence | String |
 | state  | The user's state of residence | String |
