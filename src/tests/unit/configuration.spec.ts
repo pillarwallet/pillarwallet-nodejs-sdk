@@ -4,76 +4,132 @@ import { Requester } from '../../utils/requester';
 
 let configuration: Configuration;
 
-beforeEach(() => {
-  configuration = new Configuration();
-  configuration.initialise({});
-});
-
-describe('The Configuration Class: executeRequest method', () => {
-  let data: any;
-  let schema: object;
-  let requestMethodConfiguration: any;
-  let httpEndpoint: HttpEndpoints;
-  let checkSignature: boolean;
-  let promise: PromiseConstructor;
-
+describe('The Configuration Class', () => {
   beforeEach(() => {
-    promise = Promise;
-    data = { id: 'data' };
-    schema = { id: 'schema' };
-    requestMethodConfiguration = { id: 'request', headers: {} };
-    httpEndpoint = HttpEndpoints.USER_VALIDATE;
-
-    configuration.validation = jest.fn();
-    jest.spyOn(Requester, 'execute').mockImplementation(() =>  promise);
+    configuration = new Configuration();
+    configuration.initialise({});
   });
 
-  afterEach(() => {
-    Requester.execute.mockClear();
-  });
-
-  describe('when checkSignature is false', () => {
-    let res: any;
+  describe('executeRequest method', () => {
+    let data: any;
+    let schema: object;
+    let requestMethodConfiguration: any;
+    let httpEndpoint: HttpEndpoints;
+    let promise: PromiseConstructor;
 
     beforeEach(() => {
-      checkSignature = false;
-      res = configuration
-        .executeRequest(data, schema, requestMethodConfiguration, httpEndpoint, checkSignature);
+      promise = Promise;
+      data = { id: 'data' };
+      schema = { id: 'schema' };
+      requestMethodConfiguration = { url: '', method: 'POST', headers: {} };
+      httpEndpoint = HttpEndpoints.USER_VALIDATE;
+
+      jest.spyOn(configuration, 'validation').mockImplementationOnce(() => undefined);
+      jest.spyOn(Requester, 'execute').mockImplementation(() =>  promise);
     });
 
-    it('should valitate the schema', () => {
+    afterEach(() => {
+      Requester.execute.mockRestore();
+    });
+
+    it('validates the schema', () => {
+      configuration.executeRequest(
+        data,
+        schema,
+        requestMethodConfiguration,
+        httpEndpoint,
+        false,
+      );
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
     });
 
-    it('should enrich the request method configuration', () => {
-      expect(requestMethodConfiguration).toEqual({
+    it('returns a promise when validation fails', async () => {
+      expect.assertions(1);
+
+      configuration.validation.mockReset();
+      configuration.validation.mockImplementationOnce(() => {
+        throw new Error('Validation failed');
+      });
+
+      return configuration.executeRequest(
         data,
-        id: 'request',
-        url: 'http://localhost:8080/user/validate',
+        schema,
+        requestMethodConfiguration,
+        httpEndpoint,
+        true,
+      ).catch((e) => {
+        expect(e.message).toBe('Validation failed');
+      });
+    });
+
+    it('does not mutate the `requestMethodConfiguration` parameter', () => {
+      configuration.executeRequest(
+        data,
+        schema,
+        requestMethodConfiguration,
+        httpEndpoint,
+        false,
+      );
+
+      expect(requestMethodConfiguration).toEqual({
+        url: '',
+        method: 'POST',
         headers: {},
       });
     });
 
-    it('should execute the request', () => {
-      expect(Requester.execute).toHaveBeenCalledWith(requestMethodConfiguration);
-    });
+    it('returns a promise when the request is made', () => {
+      const res: any = configuration.executeRequest(
+        data,
+        schema,
+        requestMethodConfiguration,
+        httpEndpoint,
+        false,
+      );
 
-    it('should return promise', () => {
       expect(res).toEqual(promise);
     });
-  });
 
-  describe('when checkSignature is true', () => {
-    it('should enrich the request method configuration', () => {
-      configuration.checkSignature = jest.fn().mockImplementation(() => 'signature');
+    describe('when checkSignature is false', () => {
+      it('executes the request without the `X-API-Signature` header', () => {
+        const checkSignature: boolean = false;
 
-      configuration.executeRequest(data, schema, requestMethodConfiguration, httpEndpoint);
+        configuration.executeRequest(
+          data,
+          schema,
+          requestMethodConfiguration,
+          httpEndpoint,
+          checkSignature,
+        );
 
-      expect(requestMethodConfiguration).toEqual({
-        data,
-        id: 'request',
-        url: 'http://localhost:8080/user/validate',
-        headers: { 'X-API-Signature': 'signature' },
+        expect(Requester.execute).toHaveBeenCalledWith({
+          data,
+          method: 'POST',
+          url: 'http://localhost:8080/user/validate',
+          headers: {},
+        });
+      });
+    });
+
+    describe('when checkSignature is true', () => {
+      it('exectutes the request with the `X-API-Signature` header', () => {
+        jest.spyOn(configuration, 'checkSignature').mockImplementation(
+          () => 'signature'
+        );
+
+        configuration.executeRequest(
+          data,
+          schema,
+          requestMethodConfiguration,
+          httpEndpoint,
+        );
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          data,
+          method: 'POST',
+          url: 'http://localhost:8080/user/validate',
+          headers: { 'X-API-Signature': 'signature' },
+        });
       });
     });
   });
