@@ -134,22 +134,22 @@ describe('User Class', () => {
   });
 
   describe('Validate method', () => {
-    beforeEach(() => {
-      jest.spyOn(user, 'executeRequest').mockImplementation(() => Promise.resolve());
-    });
-
     it('should successfully call with valid data', () => {
       const data = { username: 'Bob' };
 
+      jest.spyOn(user, 'executeRequest').mockImplementation(
+        () => Promise.resolve()
+      );
+
       user.validate(data);
 
-      expect(user.executeRequest).toHaveBeenCalledWith(
+      expect(user.executeRequest).toHaveBeenCalledWith({
         data,
-        userValidateSchema,
-        postConfiguration,
-        'http://localhost:8080'+ HttpEndpoints.USER_VALIDATE,
-        false,
-      );
+        schema: userValidateSchema,
+        defaultRequest: postConfiguration,
+        url: 'http://localhost:8080' + HttpEndpoints.USER_VALIDATE,
+        checkSignature: false,
+      });
     });
   });
 });

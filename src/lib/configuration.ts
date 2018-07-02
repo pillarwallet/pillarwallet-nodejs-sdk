@@ -69,34 +69,47 @@ export class Configuration {
   // TODO: We need to check it with the other endpoints and improve dependently from situation.
   /**
    * Make an Axios request based on default configuration
-   * @param {object} data
-   * @param {object} schema
-   * @param {any} requestMethodConfiguration
-   * @param {string} url
-   * @param {boolean} checkSignature
+   * @param {object} options
+   * @param {object=} options.data
+   * @param {object=} options.params
+   * @param {object} options.schema
+   * @param {any} options.defaultRequest
+   * @param {url} options.url
+   * @param {boolean=} options.checkSignature
    */
-  executeRequest(
-    data: object,
+  executeRequest({
+    data,
+    params,
+    schema,
+    defaultRequest,
+    url,
+    checkSignature = true,
+  }: {
+    data?: object,
+    params?: object,
     schema: object,
-    requestMethodConfiguration: any,
+    defaultRequest: any,
     url: string,
-    checkSignature: boolean = true,
-  ): AxiosPromise {
+    checkSignature?: boolean,
+  }): AxiosPromise {
+    const payload: any = defaultRequest.method.toLowerCase() === 'get' ? params : data;
+
     try {
-      this.validation(schema, data);
+      this.validation(schema, payload);
     } catch (e) {
       return Promise.reject(e);
     }
 
     const request = {
-      ...requestMethodConfiguration,
+      ...defaultRequest,
       data,
+      params,
       url,
     };
 
     if (checkSignature) {
       request.headers['X-API-Signature'] =
-        this.checkSignature(data, Configuration.accessKeys.privateKey);
+        this.checkSignature(payload, Configuration.accessKeys.privateKey);
     }
 
     return Requester.execute(request);
