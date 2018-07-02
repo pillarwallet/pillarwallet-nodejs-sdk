@@ -70,8 +70,8 @@ const pillarSdk = new PillarSdk({
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
-| apiUrl  | URL where API Is hosted. String with UUL format. e.g. "http://<url>".| String  | Optional  |
-| notificationsUrl  | URL where the Notifications Service is hosted. String With URL format. e.g. "http://<url>".| String  | Optional  |
+| apiUrl  | URL where API is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
+| notificationsUrl  | URL where the Notifications Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
 
 #### 2 - Register the Wallet
 
