@@ -31,6 +31,9 @@ export class Configuration {
     if (!Configuration.accessKeys.apiUrl) {
       Configuration.accessKeys.apiUrl = 'http://localhost:8080';
     }
+    if (!Configuration.accessKeys.notificationsUrl) {
+      Configuration.accessKeys.notificationsUrl = 'http://localhost:8081';
+    }
   }
 
   /**

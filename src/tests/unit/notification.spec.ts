@@ -4,6 +4,7 @@ import { PillarSdk } from '../..';
 beforeEach(() => {
   this.pSdk = new PillarSdk({
     privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+    notificationsUrl: 'http://localhost:8081',
   });
 });
 
@@ -22,7 +23,7 @@ describe('The Notification Class: List method', () => {
         {
           headers: { 'X-API-Signature': expect.anything() },
           params: notificationData,
-          url: 'http://localhost:8080/notification/list',
+          url: 'http://localhost:8081/notification/list',
         }),
     );
   });

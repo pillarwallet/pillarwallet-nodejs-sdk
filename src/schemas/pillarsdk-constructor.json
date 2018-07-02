@@ -1,6 +1,6 @@
 {
   "title": "SDK Instantiation",
-  "description": "User profile with connections",
+  "description": "Input validation for the SDK instantiation object",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -11,6 +11,11 @@
     },
     "apiUrl": {
       "description": "API Url definition",
+      "type": [ "string" ],
+      "format": "uri"
+    },
+    "notificationsUrl": {
+      "description": "Notifications Url definition",
       "type": [ "string" ],
       "format": "uri"
     }
