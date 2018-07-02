@@ -6,7 +6,6 @@ import { AxiosPromise } from 'axios';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
-import { HttpEndpoints } from './constants/httpEndpoints';
 import { Requester } from '../utils/requester';
 
 let ajv: any;
@@ -70,14 +69,14 @@ export class Configuration {
    * @param {object} data
    * @param {object} schema
    * @param {any} requestMethodConfiguration
-   * @param {HttpEndpoints} httpEndpoint
+   * @param {string} url
    * @param {boolean} checkSignature
    */
   executeRequest(
     data: object,
     schema: object,
     requestMethodConfiguration: any,
-    httpEndpoint: HttpEndpoints,
+    url: string,
     checkSignature: boolean = true,
   ): AxiosPromise {
     try {
@@ -89,7 +88,7 @@ export class Configuration {
     const request = {
       ...requestMethodConfiguration,
       data,
-      url: Configuration.accessKeys.apiUrl + httpEndpoint,
+      url,
     };
 
     if (checkSignature) {

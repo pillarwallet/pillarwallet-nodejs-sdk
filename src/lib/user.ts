@@ -120,7 +120,7 @@ export class User extends Configuration {
       data,
       userValidateSchema,
       postConfiguration,
-      HttpEndpoints.USER_VALIDATE,
+      Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE,
       false,
     );
   }

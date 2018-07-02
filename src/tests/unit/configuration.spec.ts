@@ -2,19 +2,21 @@ import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
 import { Requester } from '../../utils/requester';
 
-let configuration: Configuration;
-
 describe('The Configuration Class', () => {
+  let configuration: Configuration;
+  let apiUrl: string;
+
   beforeEach(() => {
     configuration = new Configuration();
     configuration.initialise({});
+    apiUrl = Configuration.accessKeys.apiUrl;
   });
 
   describe('executeRequest method', () => {
     let data: any;
     let schema: object;
     let requestMethodConfiguration: any;
-    let httpEndpoint: HttpEndpoints;
+    let url: string;
     let promise: PromiseConstructor;
 
     beforeEach(() => {
@@ -22,7 +24,7 @@ describe('The Configuration Class', () => {
       data = { id: 'data' };
       schema = { id: 'schema' };
       requestMethodConfiguration = { url: '', method: 'POST', headers: {} };
-      httpEndpoint = HttpEndpoints.USER_VALIDATE;
+      url = apiUrl + HttpEndpoints.USER_VALIDATE;
 
       jest.spyOn(configuration, 'validation').mockImplementationOnce(() => undefined);
       jest.spyOn(Requester, 'execute').mockImplementation(() =>  promise);
@@ -37,7 +39,7 @@ describe('The Configuration Class', () => {
         data,
         schema,
         requestMethodConfiguration,
-        httpEndpoint,
+        url,
         false,
       );
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
@@ -55,7 +57,7 @@ describe('The Configuration Class', () => {
         data,
         schema,
         requestMethodConfiguration,
-        httpEndpoint,
+        url,
         true,
       ).catch((e) => {
         expect(e.message).toBe('Validation failed');
@@ -67,7 +69,7 @@ describe('The Configuration Class', () => {
         data,
         schema,
         requestMethodConfiguration,
-        httpEndpoint,
+        url,
         false,
       );
 
@@ -83,7 +85,7 @@ describe('The Configuration Class', () => {
         data,
         schema,
         requestMethodConfiguration,
-        httpEndpoint,
+        url,
         false,
       );
 
@@ -98,7 +100,7 @@ describe('The Configuration Class', () => {
           data,
           schema,
           requestMethodConfiguration,
-          httpEndpoint,
+          url,
           checkSignature,
         );
 
@@ -121,7 +123,7 @@ describe('The Configuration Class', () => {
           data,
           schema,
           requestMethodConfiguration,
-          httpEndpoint,
+          url,
         );
 
         expect(Requester.execute).toHaveBeenCalledWith({
