@@ -1,7 +1,7 @@
 /**
  * Import required classes / libraries / constants
  */
-import { AxiosPromise } from 'axios';
+import axios, { AxiosPromise } from 'axios';
 import { Requester } from '../utils/requester';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
@@ -116,12 +116,12 @@ export class User extends Configuration {
   }
 
   validate(data: UserValidate): AxiosPromise {
-    return this.executeRequest(
+    return this.executeRequest({
       data,
-      userValidateSchema,
-      postConfiguration,
-      Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE,
-      false,
-    );
+      schema: userValidateSchema,
+      defaultRequest: postConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE,
+      checkSignature: false,
+    });
   }
 }

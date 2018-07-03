@@ -1,6 +1,7 @@
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
 import { Requester } from '../../utils/requester';
+import { AxiosPromise } from 'axios';
 
 describe('The Configuration Class', () => {
   let configuration: Configuration;
@@ -13,19 +14,20 @@ describe('The Configuration Class', () => {
   });
 
   describe('executeRequest method', () => {
-    let data: any;
-    let schema: object;
-    let requestMethodConfiguration: any;
+    const checkSignature: boolean = false;
+    const data: any = { id: 'data' };
+    const params: object = { id: 'params' };
+    const schema: object = { id: 'schema' };
+    const defaultRequest: any = {
+      url: '',
+      method: 'POST',
+      headers: {}
+    };
     let url: string;
-    let promise: PromiseConstructor;
+    const promise: PromiseConstructor = Promise;
 
     beforeEach(() => {
-      promise = Promise;
-      data = { id: 'data' };
-      schema = { id: 'schema' };
-      requestMethodConfiguration = { url: '', method: 'POST', headers: {} };
       url = apiUrl + HttpEndpoints.USER_VALIDATE;
-
       jest.spyOn(configuration, 'validation').mockImplementationOnce(() => undefined);
       jest.spyOn(Requester, 'execute').mockImplementation(() =>  promise);
     });
@@ -35,13 +37,52 @@ describe('The Configuration Class', () => {
     });
 
     it('validates the schema', () => {
-      configuration.executeRequest(
+      configuration.executeRequest({
         data,
         schema,
-        requestMethodConfiguration,
+        defaultRequest,
         url,
-        false,
-      );
+        checkSignature,
+      });
+
+      expect(configuration.validation).toHaveBeenCalledWith(schema, data);
+    });
+
+    it('validates `params` for GET requests', () => {
+      configuration.executeRequest({
+        params,
+        schema,
+        defaultRequest: { method: 'GET' },
+        url,
+        checkSignature,
+      });
+
+      expect(configuration.validation).toHaveBeenCalledWith(schema, params);
+    });
+
+    it('validates `data` for POST requests', () => {
+      configuration.executeRequest({
+        data,
+        schema,
+        defaultRequest: { method: 'POST' },
+        url,
+        checkSignature,
+      });
+
+      expect(configuration.validation).toHaveBeenCalledWith(schema, data);
+    });
+
+    it('validates `data` for PUT requests', () => {
+      const data: object = { foo: 'bar' };
+
+      configuration.executeRequest({
+        data,
+        schema,
+        defaultRequest: { method: 'PUT' },
+        url,
+        checkSignature,
+      });
+
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
     });
 
@@ -53,56 +94,86 @@ describe('The Configuration Class', () => {
         throw new Error('Validation failed');
       });
 
-      return configuration.executeRequest(
+      return configuration.executeRequest({
         data,
         schema,
-        requestMethodConfiguration,
+        defaultRequest,
         url,
-        true,
-      ).catch((e) => {
+      }).catch((e) => {
         expect(e.message).toBe('Validation failed');
       });
     });
 
-    it('does not mutate the `requestMethodConfiguration` parameter', () => {
-      configuration.executeRequest(
+    it('does not mutate the default request configuration', () => {
+      configuration.executeRequest({
         data,
         schema,
-        requestMethodConfiguration,
+        defaultRequest,
         url,
-        false,
-      );
+        checkSignature,
+      });
 
-      expect(requestMethodConfiguration).toEqual({
+      expect(defaultRequest).toEqual({
         url: '',
         method: 'POST',
         headers: {},
       });
     });
 
-    it('returns a promise when the request is made', () => {
-      const res: any = configuration.executeRequest(
+    it('adds `data` object to request', () => {
+      configuration.executeRequest({
         data,
         schema,
-        requestMethodConfiguration,
+        defaultRequest: {
+          url: '',
+          method: 'POST',
+          headers: {},
+          data: {}
+        },
         url,
-        false,
-      );
+        checkSignature,
+      });
+
+      const req = Requester.execute.mock.calls[0][0];
+      expect(req.data).toBe(data);
+    });
+
+    it('adds `params` object to request', () => {
+      const params: object = { foo: 'bar' };
+
+      configuration.executeRequest({
+        params,
+        schema,
+        defaultRequest: { method: 'GET' },
+        url,
+        checkSignature,
+      });
+
+      const req = Requester.execute.mock.calls[0][0];
+      expect(req.params).toBe(params);
+    });
+
+    it('returns a promise when the request is made', () => {
+      const res: AxiosPromise = configuration.executeRequest({
+        data,
+        schema,
+        defaultRequest,
+        url,
+        checkSignature,
+      });
 
       expect(res).toEqual(promise);
     });
 
     describe('when checkSignature is false', () => {
       it('executes the request without the `X-API-Signature` header', () => {
-        const checkSignature: boolean = false;
-
-        configuration.executeRequest(
+        configuration.executeRequest({
           data,
           schema,
-          requestMethodConfiguration,
+          defaultRequest,
           url,
           checkSignature,
-        );
+        });
 
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
@@ -113,18 +184,18 @@ describe('The Configuration Class', () => {
       });
     });
 
-    describe('when checkSignature is true', () => {
+    describe('when checkSignature is true (default)', () => {
       it('exectutes the request with the `X-API-Signature` header', () => {
         jest.spyOn(configuration, 'checkSignature').mockImplementation(
           () => 'signature'
         );
 
-        configuration.executeRequest(
+        configuration.executeRequest({
           data,
           schema,
-          requestMethodConfiguration,
+          defaultRequest,
           url,
-        );
+        });
 
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
