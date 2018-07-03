@@ -6,7 +6,6 @@ import { AxiosPromise } from 'axios';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
-import { HttpEndpoints } from './constants/httpEndpoints';
 import { Requester } from '../utils/requester';
 
 let ajv: any;
@@ -68,22 +67,38 @@ export class Configuration {
   }
 
   // TODO: We need to check it with the other endpoints and improve dependently from situation.
+  /**
+   * Make an Axios request based on default configuration
+   * @param {object} data
+   * @param {object} schema
+   * @param {any} requestMethodConfiguration
+   * @param {string} url
+   * @param {boolean} checkSignature
+   */
   executeRequest(
-    data: any,
-    schema: Object,
+    data: object,
+    schema: object,
     requestMethodConfiguration: any,
-    httpEndpoint: HttpEndpoints,
+    url: string,
     checkSignature: boolean = true,
   ): AxiosPromise {
-    this.validation(schema, data);
+    try {
+      this.validation(schema, data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+
+    const request = {
+      ...requestMethodConfiguration,
+      data,
+      url,
+    };
 
     if (checkSignature) {
-      requestMethodConfiguration.headers['X-API-Signature'] =
+      request.headers['X-API-Signature'] =
         this.checkSignature(data, Configuration.accessKeys.privateKey);
     }
-    requestMethodConfiguration.data = data;
-    requestMethodConfiguration.url = Configuration.accessKeys.apiUrl + httpEndpoint;
 
-    return Requester.execute(requestMethodConfiguration);
+    return Requester.execute(request);
   }
 }
