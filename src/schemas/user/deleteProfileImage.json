@@ -1,0 +1,12 @@
+{
+  "title": "User Model - Delete Profile Image",
+  "description": "Schema definition for User Model - deleteProfileImage method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "type": "string"
+    }
+  },
+  "required": [ "walletId" ]
+}

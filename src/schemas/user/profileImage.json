@@ -1,0 +1,12 @@
+{
+  "title": "User Model - Profile Image",
+  "description": "Schema definition for User Model - profileImage method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "imageName": {
+      "type": "string"
+    }
+  },
+  "required": [ "imageName" ]
+}

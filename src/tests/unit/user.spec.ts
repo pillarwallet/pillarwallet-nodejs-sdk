@@ -1,9 +1,16 @@
 import { Requester } from '../../utils/requester';
 import { User } from '../../lib/user';
+import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
+import { default as deleteConfiguration } from '../../utils/requester-configurations/delete';
+import { default as getConfiguration } from '../../utils/requester-configurations/get';
+import { Readable } from 'stream';
 
 const userValidateSchema = require('../../schemas/user/validate.json');
+const profileImageSchema = require('../../schemas/user/profileImage.json');
+const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.json');
+const deleteProfileImageSchema = require('../../schemas/user/deleteProfileImage.json');
 
 describe('User Class', () => {
   let user: User;
@@ -14,11 +21,13 @@ describe('User Class', () => {
 
     jest.spyOn(user, 'validation').mockImplementationOnce(() => undefined);
     jest.spyOn(user, 'checkSignature').mockImplementationOnce(() => 'signature');
+    jest.spyOn(user, 'executeRequest').mockImplementation(() => Promise.resolve());
     jest.spyOn(Requester, 'execute').mockImplementationOnce(() => Promise.resolve());
   });
 
   afterEach(() => {
     Requester.execute.mockRestore();
+    user.executeRequest.mockRestore();
   });
 
   describe('Update method', () => {
@@ -65,7 +74,7 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith(
         expect.objectContaining(
           {
-            headers: {'X-API-Signature': expect.stringMatching(/.+/)},
+            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
             params: userInfoData,
             url: 'http://localhost:8080/user/info',
           }),
@@ -86,7 +95,7 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith(
         expect.objectContaining(
           {
-            headers: {'X-API-Signature': expect.stringMatching(/.+/)},
+            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
             params: userSearchData,
             url: 'http://localhost:8080/user/search',
           }),
@@ -104,13 +113,13 @@ describe('User Class', () => {
       user.delete(userInfoData);
 
       expect(Requester.execute).toHaveBeenCalledWith(
-      expect.objectContaining(
-        {
-          headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-          data: userInfoData,
-          url: 'http://localhost:8080/user/delete',
-        }),
-    );
+        expect.objectContaining(
+          {
+            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+            data: userInfoData,
+            url: 'http://localhost:8080/user/delete',
+          }),
+      );
     });
   });
 
@@ -137,10 +146,6 @@ describe('User Class', () => {
     it('should successfully call with valid data', () => {
       const data = { username: 'Bob' };
 
-      jest.spyOn(user, 'executeRequest').mockImplementation(
-        () => Promise.resolve()
-      );
-
       user.validate(data);
 
       expect(user.executeRequest).toHaveBeenCalledWith({
@@ -149,6 +154,53 @@ describe('User Class', () => {
         defaultRequest: postConfiguration,
         url: 'http://localhost:8080' + HttpEndpoints.USER_VALIDATE,
         checkSignature: false,
+      });
+    });
+  });
+
+  describe('Profile Image method', () => {
+    it('should successfully call with valid data', () => {
+      const data = { imageName: 'image.png' };
+
+      user.profileImage(data);
+
+      expect(user.validation).toHaveBeenCalledWith(profileImageSchema, data);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}/${data.imageName}`,
+        responseType: 'stream',
+      });
+    });
+  });
+
+  describe('Upload Profile Image method', () => {
+    it('should successfully call with valid data', () => {
+      const image = new Readable();
+      const query = { walletId: '0000' };
+
+      user.uploadProfileImage(image, query);
+
+      expect(user.validation).toHaveBeenCalledWith(uploadProfileImageSchema, query);
+      expect(user.checkSignature).toHaveBeenCalledWith(query, Configuration.accessKeys.privateKey);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}?walletId=0000`,
+        data: image,
+      });
+    });
+  });
+
+  describe('Delete Profile Image method', () => {
+    it('should successfully call with valid data', () => {
+      const data = { walletId: 'wallet-id' };
+
+      user.deleteProfileImage(data);
+
+      expect(user.executeRequest).toHaveBeenCalledWith({
+        data,
+        schema: deleteProfileImageSchema,
+        defaultRequest: deleteConfiguration,
+        url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
       });
     });
   });

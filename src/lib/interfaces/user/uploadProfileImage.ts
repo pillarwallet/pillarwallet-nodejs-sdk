@@ -1,0 +1,3 @@
+interface UploadProfileImage {
+  walletId: string;
+}

@@ -1,0 +1,12 @@
+{
+  "title": "User Model - Upload Profile Image",
+  "description": "Schema definition for User Model - uploadProfileImage method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "type": "string"
+    }
+  },
+  "required": [ "walletId" ]
+}
