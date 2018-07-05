@@ -1,0 +1,3 @@
+interface ProfileImage {
+  imageName: string;
+}

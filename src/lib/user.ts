@@ -2,6 +2,7 @@
  * Import required classes / libraries / constants
  */
 import axios, { AxiosPromise } from 'axios';
+import { Readable } from 'stream';
 import { Requester } from '../utils/requester';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
@@ -12,7 +13,6 @@ import { HttpEndpoints } from './constants/httpEndpoints';
 import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 import { default as getConfiguration } from '../utils/requester-configurations/get';
-import { default as putConfiguration } from '../utils/requester-configurations/put';
 
 /**
  * Import Validation Schemas
@@ -23,6 +23,9 @@ const userDeleteSchema = require('../schemas/user/delete.json');
 const userSearchSchema = require('../schemas/user/search.json');
 const userUsernameSearchSchema = require('../schemas/user/username-search.json');
 const userValidateSchema = require('../schemas/user/validate.json');
+const profileImageSchema = require('../schemas/user/profileImage.json');
+const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
+const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
 
 export class User extends Configuration {
 
@@ -122,6 +125,41 @@ export class User extends Configuration {
       defaultRequest: postConfiguration,
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE,
       checkSignature: false,
+    });
+  }
+
+  profileImage(data: ProfileImage): AxiosPromise {
+    this.validation(profileImageSchema, data);
+
+    const config = {
+      ...getConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE + '/' + data.imageName,
+      responseType: 'stream',
+    };
+    return Requester.execute(config);
+  }
+
+  uploadProfileImage(image: Readable, query: UploadProfileImage): AxiosPromise {
+    this.validation(uploadProfileImageSchema, query);
+
+    const config = {
+      ...postConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE + '?walletId='
+      + query.walletId,
+      data: image,
+    };
+    config.headers['X-API-Signature'] =
+      this.checkSignature(query, Configuration.accessKeys.privateKey);
+
+    return Requester.execute(config);
+  }
+
+  deleteProfileImage(data: DeleteProfileImage): AxiosPromise {
+    return this.executeRequest({
+      data,
+      schema: deleteProfileImageSchema,
+      defaultRequest: deleteConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE,
     });
   }
 }
