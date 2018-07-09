@@ -1,15 +1,11 @@
 {
-  "title": "User Model - update",
-  "description": "Schema definition for User Model - Update method",
+  "title": "User Model - Update",
+  "description": "Schema definition for User Model - update method",
   "type": "object",
   "additionalProperties": false,
   "properties": {
     "walletId": {
       "description": "The wallet ID",
-      "type": "string"
-    },
-    "username": {
-      "description": "The username",
       "type": "string"
     },
     "firstName": {
@@ -52,14 +48,7 @@
     "userSearchable": {
       "description": "Conditional for this user be searchable by others",
       "type": "boolean"
-    },
-    "profileImage": {
-      "description": "The user's profileImage",
-      "type": "string",
-      "format": "uri"
     }
   },
   "required": ["walletId"]
 }
-
-

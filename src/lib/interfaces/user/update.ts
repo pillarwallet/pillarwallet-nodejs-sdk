@@ -10,7 +10,6 @@ interface UserUpdate {
   tagline?: string;
   taglineStatus?: boolean;
   userSearchable?: boolean;
-  profileImage?: string;
   status?: string;
   verificationService?: string;
   verificationStatus?: string;

@@ -22,7 +22,6 @@ describe('user endpoints', () => {
     it('User update', () => {
       const inputParams = {
         walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
-        username: 'bob123',
         firstName: 'Bob',
         lastName: 'Jones',
         email: 'bob@acme-corp.com',
@@ -33,7 +32,6 @@ describe('user endpoints', () => {
         tagline: 'Social media consultant',
         taglineStatus: false,
         userSearchable: true,
-        profileImage: 'http://photo1.jpg',
       };
 
       this.pSdk.user.update(inputParams)
