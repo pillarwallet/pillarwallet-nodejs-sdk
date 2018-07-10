@@ -86,52 +86,10 @@ jobs:
           name: Publish Package to Artifactory
           command: npm publish   --registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
       - run:
-          name: Announce Deployment
+          name: Announce Publish
           command: |
             chmod +x .circleci/announcePublish.sh
             .circleci/announcePublish.sh "Platform Core SDK" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
-
-
-  testMatterMost:
-    working_directory: ~/pillarwallet-nodejs-sdk
-    docker:
-      - image: circleci/node:8.9.4
-    steps:
-      - checkout
-      - run:
-          name: Append circleCI build number to version
-          command: |
-            git config user.email "devops@pillar.io"
-            git config user.name "Issabot"
-            npm version $(node -e "const currentVersion=require('./package.json').version; const firstTwoDots=currentVersion.substring(0, currentVersion.lastIndexOf('.')+1); console.log(firstTwoDots);")$CIRCLE_BUILD_NUM
-
-#      - run:
-#            name: Authenticate with registry
-#            command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
-#      - run:
-#          name: Set Registry
-#          command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
-#      - run:
-#          name: Install Packages
-#          command: npm i
-#      - run:
-#          name: Install TypeScript packages globally
-#          command: sudo npm i -g typescript tsc ts-node
-#      - run:
-#          name: Compile TypeScript
-#          command: npm run compile
-#      - run:
-#          name: Webpack bundle SDK for Production
-#          command: npm run build-production
-#      - run:
-#          name: Publish Package to Artifactory
-#          command: npm publish   --registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
-      - run:
-          name: Announce Deployment
-          command: |
-            chmod +x .circleci/announcePublish.sh
-            .circleci/announcePublish.sh "Platform Core SDK" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
-
 
 workflows:
   version: 2
@@ -147,9 +105,3 @@ workflows:
           filters:
             branches:
               only: master
-      - testMatterMost:
-          requires:
-            - build
-          filters:
-            branches:
-              only: announce_publish_on_mattermost
