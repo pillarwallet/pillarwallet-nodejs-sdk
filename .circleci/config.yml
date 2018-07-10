@@ -89,7 +89,7 @@ jobs:
           name: Announce Deployment
           command: |
             chmod +x .circleci/announcePublish.sh
-            .circleci/announcePublish.sh "Platform Core SDK" "$(cat workspace/platform-notifications.txt)" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
+            .circleci/announcePublish.sh "Platform Core SDK" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
 
 
   testMatterMost:
@@ -130,7 +130,7 @@ jobs:
           name: Announce Deployment
           command: |
             chmod +x .circleci/announcePublish.sh
-            .circleci/announcePublish.sh "Platform Core SDK" "$(cat workspace/platform-notifications.txt)" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
+            .circleci/announcePublish.sh "Platform Core SDK" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
 
 
 workflows:
