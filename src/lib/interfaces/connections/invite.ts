@@ -1,5 +1,5 @@
 interface ConnectionInvite {
-  targetUserId: number;
+  targetUserId: string;
   accessKey: string;
   walletId: string;
 }

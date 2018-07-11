@@ -1,6 +1,6 @@
 {
   "title": "Connection Model - Block",
-  "description": "Schema definition for Notification Model - Block method",
+  "description": "Schema definition for Connection Model - block method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

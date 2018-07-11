@@ -1,6 +1,6 @@
 {
-  "title": "Wallet Model - register",
-  "description": "Schema definition for Wallet Model - Register method",
+  "title": "Wallet Model - Register",
+  "description": "Schema definition for Wallet Model - register method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

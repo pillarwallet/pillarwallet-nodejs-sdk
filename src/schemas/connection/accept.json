@@ -1,6 +1,6 @@
 {
   "title": "Connection Model - Accept",
-  "description": "Schema definition for Notification Model - Accept method",
+  "description": "Schema definition for Connection Model - accept method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

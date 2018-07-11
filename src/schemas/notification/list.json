@@ -1,6 +1,6 @@
 {
-  "title": "Notification Model - Search",
-  "description": "Schema definition for Notification Model - List method",
+  "title": "Notification Model - List",
+  "description": "Schema definition for Notification Model - list method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

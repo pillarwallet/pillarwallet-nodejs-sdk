@@ -1,6 +1,6 @@
 {
   "title": "Connection Model - Invite",
-  "description": "Schema definition for Notification Model - Invite method",
+  "description": "Schema definition for Connection Model - invite method",
   "additionalProperties": false,
   "type": "object",
   "properties": {
