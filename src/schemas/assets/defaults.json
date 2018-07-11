@@ -1,6 +1,6 @@
 {
   "title": "Assets Model - Defaults",
-  "description": "Schema definition for Asset Model - Defaults method",
+  "description": "Schema definition for Asset Model - defaults method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

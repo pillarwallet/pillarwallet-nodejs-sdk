@@ -10,9 +10,4 @@ interface UserUpdate {
   tagline?: string;
   taglineStatus?: boolean;
   userSearchable?: boolean;
-  status?: string;
-  verificationService?: string;
-  verificationStatus?: string;
-  verificationReference?: string;
-  investorClassification?: string;
 }

@@ -1,6 +1,6 @@
 {
   "title": "User Model - Info",
-  "description": "Schema definition for User Model - Info method",
+  "description": "Schema definition for User Model - info method",
   "additionalProperties": false,
   "type": "object",
   "properties": {

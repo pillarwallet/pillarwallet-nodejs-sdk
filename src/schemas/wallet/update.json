@@ -1,6 +1,6 @@
 {
-  "title": "Wallet Model - update",
-  "description": "Schema definition for Wallet Model - Update method",
+  "title": "Wallet Model - Update",
+  "description": "Schema definition for Wallet Model - update method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

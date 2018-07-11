@@ -1,6 +1,6 @@
 {
   "title": "Assets Model - Search",
-  "description": "Schema definition for Asset Model - Search method",
+  "description": "Schema definition for Asset Model - search method",
   "type": "object",
   "additionalProperties": false,
   "properties": {
