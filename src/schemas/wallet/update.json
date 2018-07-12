@@ -15,8 +15,7 @@
     },
     "fcmToken": {
       "description": "The Firebase Cloud Messaging Token  of one wallet",
-      "type": "string",
-      "pattern": "[0-9a-zA-z]*"
+      "type": "string"
     },
     "signalRegistrationId": {
       "description": "The Signal registration ID",
