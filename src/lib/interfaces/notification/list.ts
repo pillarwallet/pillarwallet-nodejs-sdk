@@ -1,4 +1,5 @@
 interface NotificationList {
   walletId: string;
-  fromTimestamp: string;
+  fromTimestamp?: string;
+  type?: string;
 }
