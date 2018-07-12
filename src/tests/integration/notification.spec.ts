@@ -2,12 +2,13 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-let spy;
+let spy: any;
 
 describe('notification endpoints', () => {
   beforeEach(() => {
     this.pSdk = new PillarSdk({
       privateKey: keys.privateKey,
+      notificationsUrl: 'http://localhost:8081',
     });
 
     spy = jest.spyOn(Requester, 'execute');
@@ -22,6 +23,7 @@ describe('notification endpoints', () => {
       const inputParams = {
         walletId: '24adad233',
         fromTimestamp: '2016-05-24T15:54:14.876Z',
+        type: 'message',
       };
 
       this.pSdk.notification.list(inputParams)
