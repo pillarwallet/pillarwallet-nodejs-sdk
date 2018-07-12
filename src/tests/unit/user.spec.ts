@@ -274,4 +274,97 @@ describe('User Class', () => {
       });
     });
   });
+
+  describe('Create One Time Password method', () => {
+    beforeEach(() => {
+      user.executeRequest.mockRestore();
+    });
+
+    afterEach(() => {
+      jest.spyOn(user, 'executeRequest');
+    });
+
+    it('successfully calls with email address', () => {
+      const u = {
+        email: 'foo@email.com',
+        walletId: '12345',
+      };
+
+      user.createOneTimePassword(u);
+
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+          data: u,
+          url: 'http://localhost:8080/user/create-one-time-password',
+        }),
+      );
+    });
+
+    it('successfully calls with phone number', () => {
+      const u = {
+        phone: '+447321450233',
+        walletId: '12345',
+      };
+
+      user.createOneTimePassword(u);
+
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+          data: u,
+          url: 'http://localhost:8080/user/create-one-time-password',
+        }),
+      );
+    });
+
+    it('formats phone number', () => {
+      const u = {
+        phone: ' +44 (7777) 123-456.',
+        walletId: '12345',
+      };
+
+      user.createOneTimePassword(u);
+
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: {
+            phone: '+447777123456',
+            walletId: '12345',
+          }
+        })
+      );
+    });
+
+    it('throws an error when user data is missing', async () => {
+      expect.assertions(2);
+
+      user.validation.mockRestore();
+
+      try {
+        await user.createOneTimePassword({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toMatch(/data should have required property 'walletId'/);
+      }
+    });
+
+    it('validates phone number', async () => {
+      expect.assertions(2);
+
+      const u = {
+        phone: '+12345',
+        walletId: 'abc-123',
+      };
+
+      user.validation.mockRestore();
+
+      try {
+        await user.createOneTimePassword(u);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toMatch('data.phone should match pattern \"^\\+[0-9]{6,}$\"');
+      }
+    });
+  });
 });

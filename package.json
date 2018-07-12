@@ -49,6 +49,7 @@
   },
   "homepage": "https://github.com/pillarwallet/pillarwallet-nodejs-sdk#readme",
   "dependencies": {
+    "@pillarwallet/common-formatters": "0.2.29",
     "@pillarwallet/plr-auth-sdk": "1.1.2-84",
     "@types/ethereumjs-util": "5.1.1",
     "@types/node": "9.6.6",
