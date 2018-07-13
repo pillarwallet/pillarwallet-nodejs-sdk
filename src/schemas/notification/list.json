@@ -16,6 +16,10 @@
     "type": {
       "description": "The notification type",
       "type": "string"
+    },
+    "fetchLatest": {
+      "description": "A flag for fetching latest notification",
+      "type": "boolean"
     }
   },
   "required": [

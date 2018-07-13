@@ -19,14 +19,14 @@ describe('notification endpoints', () => {
   });
 
   describe('Notification list', () => {
-    it('Expect success',  () => {
+    it('Expect success',  async () => {
       const inputParams = {
         walletId: '24adad233',
         fromTimestamp: '2016-05-24T15:54:14.876Z',
         type: 'message',
+        fetchLatest: true,
       };
-
-      this.pSdk.notification.list(inputParams)
+      await this.pSdk.notification.list(inputParams)
         .then((response: any) => {
           // Successful response!
           return response;
