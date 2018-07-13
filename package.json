@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@types/jest": "22.2.3",
+    "form-data": "2.3.2",
     "jest": "22.4.3",
     "supertest": "3.0.0",
     "ts-jest": "22.4.4",

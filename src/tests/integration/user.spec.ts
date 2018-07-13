@@ -1,3 +1,7 @@
+const fs = require('fs');
+const path = require('path');
+const FormData = require('form-data');
+
 const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
@@ -148,6 +152,33 @@ describe('user endpoints', () => {
 
       const res = await this.pSdk.user.usernameSearch(inputParams);
       expect(res.data).toEqual({ id: expect.any(String) });
+    });
+  });
+
+  describe('User Upload Profile Image Form Data', () => {
+    let wallet;
+
+    beforeEach(async () => {
+      const inputParams = {
+        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        username: 'userprofilesdk',
+      };
+      wallet = await this.pSdk.wallet.register(inputParams);
+    });
+
+    it('uploads an image with form data', async () => {
+      const walletId = wallet.data.walletId;
+      const formData = new FormData();
+      formData.append('walletId', walletId);
+      formData.append('image', fs.createReadStream(path.resolve(__dirname, '../assets/fff.jpg')));
+
+      const res = await this.pSdk.user.uploadProfileImageFormData(walletId, formData);
+
+      expect(res.data).toEqual({
+        result: 'success',
+        message: 'Profile image was successfully uploaded.',
+        profileImage: expect.stringMatching(/^.+\.jpg$/),
+      });
     });
   });
 });

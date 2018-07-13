@@ -154,6 +154,53 @@ export class User extends Configuration {
     return Requester.execute(config);
   }
 
+  /**
+   * @name uploadProfileImageFormData
+   * @description Upload a profile image using form data
+   * @param {string} walletId
+   * @param {FormData} formData
+   * @returns {AxiosPromise}
+   */
+  uploadProfileImageFormData(walletId: string, formData: any): AxiosPromise {
+    // TODO validation
+    // TODO unit tests
+
+    /**
+     * formData should contain `walletId` and `image` fields
+     */
+
+    const config = {
+      method: 'POST',
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE,
+      headers: {
+        'X-API-Signature': this.checkSignature({ walletId }, Configuration.accessKeys.privateKey),
+        'Content-Type': '',
+      },
+      data: formData,
+    };
+
+    /**
+     * A FormData object from the browser should mean that the Content-Type
+     * header is set correctly for the request
+     *
+     * This isn't the case for Node, it has to be set explicity
+     * to run the integration tests
+     *
+     * https://github.com/axios/axios/issues/318 has some useful information
+     *
+     * TODO Figure out a better way to do this,
+     * i.e. integration tests should run from a browser/browser-like environment
+     */
+    if (formData._boundary) {
+      config.headers['Content-Type'] =
+        `multipart/form-data; boundary=${formData._boundary}`;
+    } else {
+      delete config.headers['Content-Type'];
+    }
+
+    return Requester.execute(config);
+  }
+
   deleteProfileImage(data: DeleteProfileImage): AxiosPromise {
     return this.executeRequest({
       data,
