@@ -419,7 +419,9 @@ Provides a list of notifications for a specific wallet user.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The Wallet Identifier.  | UUID  | Required  |
-| fromTimestamp  | Stamp of Date/Time | String (ISO 8601 timestamp format)  | Required  |
+| fromTimestamp  | Stamp of Date/Time | String (ISO 8601 timestamp format)  |  |
+| type | The notification type | String | |
+| fetchLatest | A flag for fetching latest notification | Boolean | |
 
 **Expected Output**
 
@@ -431,8 +433,10 @@ JSON Notifications with respective values::
 
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
-| userId  | The User Identifier. | UUID  |
-| message  | Message Notification | String  |
+| type  | The User Identifier. | UUID  |
+| meta | The Sources keys support the payload  | |
+| payload | The payload of one notification |
+| createdAt | The unix timestamp of one notification  | |
 
 ### User Update
 
@@ -447,7 +451,6 @@ Updates data elements on a wallet user.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
-| username  | The User's Username | String  | Optional  |
 | firstName  | The User's First Name | String  | Optional  |
 | lastName  | The User's Last Name | String  | Optional  |
 | country  | The User's Country Or Residence | String  | Optional  |
@@ -519,20 +522,16 @@ JSON collection of objects with respective values:
 | lastName  | The User's Last Name  | String  |
 | email  | The User's Email Address | String  |
 | isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
-| emailOneTimePassword  | Five Digit One Time Password | String |
 | phone  |  The User's Phone | String |
 | isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String
-| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
 | country  | The user's country or residence | String |
 | state  | The user's state of residence | String |
 | city  | The user's city of residence | String |
 | email  | The user's email address | String |
-| phone  | The user's phone number | String |
 | tagline  | The user's profile tagline | String |
 | taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
-| pending  | Check if still waiting for verification | Boolean |
 
 ### User Search
 
@@ -559,22 +558,10 @@ Provides a list of users that contain the search criteria for first or last name
 | username  | The Username | String  |
 | firstName  | The User's First Name | String  |
 | lastName  | The User's Last Name  | String  |
-| email  | The User's Email Address | String  |
-| isEmailVerified  | Flag to Determine If Email Address Is Verified | Boolean |
-| emailOneTimePassword  | Five Digit One Time Password | String |
-| phone  |  The User's Phone | String |
-| isPhoneVerified  | Flag to Determine If Phone Number Is Verified | String
-| phoneOneTimePassword  | Five Digit One Time Password | Boolean |
 | country  | The user's country or residence | String |
 | state  | The user's state of residence | String |
 | city  | The user's city of residence | String |
-| email  | The user's email address | String |
-| phone  | The user's phone number | String |
-| tagline  | The user's profile tagline | String |
-| taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
-| userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
-| pending  | Check if still waiting for verification | Boolean |
 
 ### User Delete
 
