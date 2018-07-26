@@ -11,13 +11,14 @@ import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
  * Import HTTP Request Configurations
  */
 import { default as postConfiguration } from '../utils/requester-configurations/post';
-import { default as getConfiguration } from '../utils/requester-configurations/get';
 
 /**
  * Import Validation Schemas
  */
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
+const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.json');
+const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddress.json');
 
 export class Wallet extends Configuration {
 
@@ -67,5 +68,39 @@ export class Wallet extends Configuration {
     postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UPDATE;
 
     return Requester.execute(postConfiguration);
+  }
+
+  /**
+   * @name registerAddress
+   * @description Register the specified blockchain address
+   * for notifications and for BCX monitoring
+   *
+   * @param {WalletRegisterAddress} data
+   * @returns {AxiosPromise}
+   */
+  registerAddress(data: WalletRegisterAddress): AxiosPromise {
+    return this.executeRequest({
+      data,
+      schema: walletRegisterAddressSchema,
+      defaultRequest: postConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER_ADDRESS,
+    });
+  }
+
+  /**
+   * @name unregisterAddress
+   * @description Unregister the specified blockchain address
+   * for notifications and for BCX monitoring
+   *
+   * @param {UpdateNotificationPreferences} data
+   * @returns {AxiosPromise}
+   */
+  unregisterAddress(data: UpdateNotificationPreferences): AxiosPromise {
+    return this.executeRequest({
+      data,
+      schema: walletUnregisterAddressSchema,
+      defaultRequest: postConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UNREGISTER_ADDRESS,
+    });
   }
 }

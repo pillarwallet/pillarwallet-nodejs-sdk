@@ -5,6 +5,7 @@ import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
 import { default as deleteConfiguration } from '../../utils/requester-configurations/delete';
 import { default as getConfiguration } from '../../utils/requester-configurations/get';
+import { default as putConfiguration } from '../../utils/requester-configurations/put';
 import { Readable } from 'stream';
 
 const userValidateSchema = require('../../schemas/user/validate.json');
@@ -13,6 +14,8 @@ const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.
 const userInfoByIdSchema = require('../../schemas/user/infoById.json');
 const deleteProfileImageSchema = require('../../schemas/user/deleteProfileImage.json');
 const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
+const updateNotificationPreferencesSchema =
+  require('../../schemas/user/userNotificationPreferences.json');
 
 describe('User Class', () => {
   let user: User;
@@ -422,6 +425,21 @@ describe('User Class', () => {
         expect(e.message).toMatch(/data should have required property 'oneTimePassword'/);
         expect(e.message).toMatch(/data should have required property 'walletId'/);
       }
+    });
+  });
+
+  describe('updateNotificationPreferences method', () => {
+    it('should successfully call with valid data', () => {
+      const data = { walletId: 'wallet-id' };
+
+      user.updateNotificationPreferences(data);
+
+      expect(user.executeRequest).toHaveBeenCalledWith({
+        data,
+        schema: updateNotificationPreferencesSchema,
+        defaultRequest: putConfiguration,
+        url: 'http://localhost:8080' + HttpEndpoints.USER_NOTIFICATION_PREFERENCES,
+      });
     });
   });
 });

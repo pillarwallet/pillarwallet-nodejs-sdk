@@ -21,7 +21,7 @@ describe('The Configuration Class', () => {
     const defaultRequest: any = {
       url: '',
       method: 'POST',
-      headers: {}
+      headers: {},
     };
     let url: string;
     const promise: PromiseConstructor = Promise;
@@ -128,7 +128,7 @@ describe('The Configuration Class', () => {
           url: '',
           method: 'POST',
           headers: {},
-          data: {}
+          data: {},
         },
         url,
         checkSignature,
@@ -187,7 +187,7 @@ describe('The Configuration Class', () => {
     describe('when checkSignature is true (default)', () => {
       it('exectutes the request with the `X-API-Signature` header', () => {
         jest.spyOn(configuration, 'checkSignature').mockImplementation(
-          () => 'signature'
+          () => 'signature',
         );
 
         configuration.executeRequest({

@@ -14,6 +14,7 @@ import { HttpEndpoints } from './constants/httpEndpoints';
 import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 import { default as getConfiguration } from '../utils/requester-configurations/get';
+import { default as putConfiguration } from '../utils/requester-configurations/put';
 
 /**
  * Import Validation Schemas
@@ -28,6 +29,8 @@ const userValidateSchema = require('../schemas/user/validate.json');
 const profileImageSchema = require('../schemas/user/profileImage.json');
 const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
 const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
+const updateNotificationPreferencesSchema =
+  require('../schemas/user/userNotificationPreferences.json');
 const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePassword.json');
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
@@ -334,6 +337,22 @@ export class User extends Configuration {
       url:
         Configuration.accessKeys.apiUrl +
         HttpEndpoints.USER_VALIDATE_PHONE,
+    });
+  }
+
+  /**
+   * @name updateNotificationPreferences
+   * @description Update notification preferences for given user
+   *
+   * @param {UpdateNotificationPreferences} data
+   * @returns {AxiosPromise}
+   */
+  updateNotificationPreferences(data: UpdateNotificationPreferences): AxiosPromise {
+    return this.executeRequest({
+      data,
+      schema: updateNotificationPreferencesSchema,
+      defaultRequest: putConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_NOTIFICATION_PREFERENCES,
     });
   }
 }

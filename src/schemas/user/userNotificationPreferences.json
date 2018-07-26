@@ -1,0 +1,43 @@
+{
+  "title": "User Model - Update Notification Preferences",
+  "description": "Schema definition for User Model - updateNotificationPreferences method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "The Wallet ID",
+      "type": "string"
+    },
+    "newOffer": {
+      "description": "Activate/Deactivate notification when user receives offers",
+      "type": "boolean"
+    },
+    "newReceipt": {
+      "description": "Activate/Deactivate notification when user receives receipt",
+      "type": "boolean"
+    },
+    "paymentConfirmation": {
+      "description": "Activate/Deactivate notification when payment is confirmed",
+      "type": "boolean"
+    },
+    "paymentStatusUpdate": {
+      "description": "Activate/Deactivate notification whenever the status of payment changes",
+      "type": "boolean"
+    },
+    "profileUpdate": {
+      "description": "Activate/Deactivate notification when user profile where updated",
+      "type": "boolean"
+    },
+    "fundsDeposit": {
+      "description": "Activate/Deactivate notification when funds were deposited in user account",
+      "type": "boolean"
+    },
+    "transactionEvent": {
+      "description": "Activate/Deactivate notification for user transactions",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "walletId"
+  ]
+}
