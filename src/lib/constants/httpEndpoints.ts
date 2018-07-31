@@ -13,6 +13,7 @@ export enum HttpEndpoints {
   NOTIFICATION_LIST = '/notification/list',
   USER_UPDATE = '/user/update',
   USER_INFO = '/user/info',
+  USER_INFO_BY_ID = '/user/info/',
   USER_SEARCH = '/user/search',
   USER_DELETE = '/user/delete',
   USER_USERNAME_SEARCH = '/user/search-username',

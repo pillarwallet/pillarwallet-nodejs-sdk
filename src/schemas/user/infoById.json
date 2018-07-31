@@ -1,0 +1,21 @@
+{
+  "title": "User Model - Info by Id",
+  "description": "Schema definition for User Model - infoById method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
+    "userAccessKey": {
+      "description": "The current user access key",
+      "type": "string"
+    },
+    "targetUserAccessKey": {
+      "description": "The current user access key",
+      "type": "string"
+    }
+  },
+  "required": [ "walletId", "userAccessKey", "targetUserAccessKey" ]
+}

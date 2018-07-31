@@ -18,6 +18,7 @@ import { default as getConfiguration } from '../utils/requester-configurations/g
  * Import Validation Schemas
  */
 const userInfoSchema = require('../schemas/user/info.json');
+const userInfoByIdSchema = require('../schemas/user/infoById.json');
 const userUpdateSchema = require('../schemas/user/update.json');
 const userDeleteSchema = require('../schemas/user/delete.json');
 const userSearchSchema = require('../schemas/user/search.json');
@@ -68,6 +69,28 @@ export class User extends Configuration {
 
     config.headers['X-API-Signature'] =
       this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
+
+    return Requester.execute(config);
+  }
+
+  /**
+   * @name infoById
+   * @description Provides the user data by the target user id and users access keys
+   * @param {string} targetUserId
+   * @param {UserInfoById} query
+   * @returns {AxiosPromise}
+   */
+  infoById(targetUserId: string, query: UserInfoById): AxiosPromise {
+    this.validation(userInfoByIdSchema, query);
+
+    const config = {
+      ...getConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO_BY_ID + targetUserId,
+      params: query,
+    };
+
+    config.headers['X-API-Signature'] =
+      this.checkSignature(query, Configuration.accessKeys.privateKey);
 
     return Requester.execute(config);
   }
