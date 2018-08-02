@@ -11,6 +11,7 @@ const userValidateSchema = require('../../schemas/user/validate.json');
 const profileImageSchema = require('../../schemas/user/profileImage.json');
 const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.json');
 const deleteProfileImageSchema = require('../../schemas/user/deleteProfileImage.json');
+const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
 
 describe('User Class', () => {
   let user: User;
@@ -71,14 +72,12 @@ describe('User Class', () => {
 
       user.info(userInfoData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            params: userInfoData,
-            url: 'http://localhost:8080/user/info',
-          }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        method: 'GET',
+        params: userInfoData,
+        url: 'http://localhost:8080/user/info',
+      });
     });
 
   });
@@ -87,19 +86,19 @@ describe('User Class', () => {
     it('should successfully call with valid data', () => {
       const userSearchData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-        query: 'searchforme',
+        query: 'searchform',
       };
 
       user.search(userSearchData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            params: userSearchData,
-            url: 'http://localhost:8080/user/search',
-          }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/)
+        },
+        method: 'GET',
+        params: userSearchData,
+        url: 'http://localhost:8080/user/search',
+      });
     });
 
   });
@@ -131,14 +130,12 @@ describe('User Class', () => {
 
       user.usernameSearch(usernameSearch);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            params: usernameSearch,
-            url: 'http://localhost:8080/user/search-username',
-          }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        method: 'GET',
+        params: usernameSearch,
+        url: 'http://localhost:8080/user/search-username',
+      });
     });
   });
 
@@ -201,6 +198,50 @@ describe('User Class', () => {
         schema: deleteProfileImageSchema,
         defaultRequest: deleteConfiguration,
         url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
+      });
+    });
+  });
+
+  describe('Image by User ID method', () => {
+    it('validate input data', () => {
+      const data = {
+        walletId: 'walletId',
+        userId: 'userId',
+      };
+
+      user.imageByUserId(data);
+
+      expect(user.validation).toHaveBeenCalledWith(imageByUserIdSchema, data);
+    });
+
+    it('returns a rejected promise when validation fails', async () => {
+      expect.assertions(2);
+
+      user.validation.mockRestore();
+
+      try {
+        await user.imageByUserId({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toBe("data should have required property 'walletId', data should have required property 'userId'");
+      }
+    });
+
+    it('executes a GET request based on input data', () => {
+      const data = {
+        walletId: 'walletId',
+        userId: 'userId',
+      }
+
+      user.imageByUserId(data);
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        method: 'GET',
+        url: 'http://localhost:8080/user/image-by-userid/userId',
+        params: { walletId: 'walletId' },
       });
     });
   });

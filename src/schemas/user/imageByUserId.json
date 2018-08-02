@@ -1,0 +1,20 @@
+{
+  "title": "User Model - Image by User ID",
+  "description": "Schema definition for User Model - imageByUserId method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
+    "userId": {
+      "description": "The user ID",
+      "type": "string"
+    }
+  },
+  "required": [
+    "walletId",
+    "userId"
+  ]
+}

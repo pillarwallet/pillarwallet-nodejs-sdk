@@ -26,6 +26,7 @@ const userValidateSchema = require('../schemas/user/validate.json');
 const profileImageSchema = require('../schemas/user/profileImage.json');
 const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
 const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
+const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 
 export class User extends Configuration {
 
@@ -59,12 +60,16 @@ export class User extends Configuration {
 
     this.validation(userInfoSchema, userInfo);
 
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
-    getConfiguration.params = userInfo;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO;
+    const config = {
+      ...getConfiguration,
+      params: userInfo,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_INFO}`,
+    };
 
-    return Requester.execute(getConfiguration);
+    config.headers['X-API-Signature'] =
+      this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
+
+    return Requester.execute(config);
   }
 
   /**
@@ -79,12 +84,15 @@ export class User extends Configuration {
 
     this.validation(userSearchSchema, userSearch);
 
-    getConfiguration.headers['X-API-Signature'] =
+    const config = {
+      ...getConfiguration,
+      params: userSearch,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_SEARCH}`,
+    };
+    config.headers['X-API-Signature'] =
       this.checkSignature(userSearch, Configuration.accessKeys.privateKey);
-    getConfiguration.params = userSearch;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_SEARCH;
 
-    return Requester.execute(getConfiguration);
+    return Requester.execute(config);
   }
 
   /**
@@ -112,10 +120,14 @@ export class User extends Configuration {
   usernameSearch(userUsernameSearch: UserUsernameSearch): AxiosPromise {
     this.validation(userUsernameSearchSchema, userUsernameSearch);
 
-    getConfiguration.params = userUsernameSearch;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_USERNAME_SEARCH;
+    const config = {
+      ...getConfiguration,
+      params: userUsernameSearch,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_USERNAME_SEARCH}`,
+    };
 
-    return Requester.execute(getConfiguration);
+
+    return Requester.execute(config);
   }
 
   validate(data: UserValidate): AxiosPromise {
@@ -208,5 +220,32 @@ export class User extends Configuration {
       defaultRequest: deleteConfiguration,
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE,
     });
+  }
+
+  /**
+   * @name imageByUserId
+   * @description Get user's profile image using user's ID
+   * @param {ImageByUserId} data
+   * @returns {AxiosPromise}
+   */
+  imageByUserId(data: ImageByUserId): AxiosPromise {
+    try {
+      this.validation(imageByUserIdSchema, data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+
+    const query = {
+      walletId: data.walletId,
+    };
+
+    const config = {
+      ...getConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
+      params: query,
+    };
+    config.headers['X-API-Signature'] = this.checkSignature(query, Configuration.accessKeys.privateKey)
+
+    return Requester.execute(config);
   }
 }
