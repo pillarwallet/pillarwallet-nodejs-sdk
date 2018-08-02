@@ -59,12 +59,16 @@ export class User extends Configuration {
 
     this.validation(userInfoSchema, userInfo);
 
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
-    getConfiguration.params = userInfo;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO;
+    const config = {
+      ...getConfiguration,
+      params: userInfo,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_INFO}`,
+    };
 
-    return Requester.execute(getConfiguration);
+    config.headers['X-API-Signature'] =
+      this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
+
+    return Requester.execute(config);
   }
 
   /**
@@ -79,12 +83,15 @@ export class User extends Configuration {
 
     this.validation(userSearchSchema, userSearch);
 
-    getConfiguration.headers['X-API-Signature'] =
+    const config = {
+      ...getConfiguration,
+      params: userSearch,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_SEARCH}`,
+    };
+    config.headers['X-API-Signature'] =
       this.checkSignature(userSearch, Configuration.accessKeys.privateKey);
-    getConfiguration.params = userSearch;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_SEARCH;
 
-    return Requester.execute(getConfiguration);
+    return Requester.execute(config);
   }
 
   /**
@@ -112,10 +119,14 @@ export class User extends Configuration {
   usernameSearch(userUsernameSearch: UserUsernameSearch): AxiosPromise {
     this.validation(userUsernameSearchSchema, userUsernameSearch);
 
-    getConfiguration.params = userUsernameSearch;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_USERNAME_SEARCH;
+    const config = {
+      ...getConfiguration,
+      params: userUsernameSearch,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_USERNAME_SEARCH}`,
+    };
 
-    return Requester.execute(getConfiguration);
+
+    return Requester.execute(config);
   }
 
   validate(data: UserValidate): AxiosPromise {

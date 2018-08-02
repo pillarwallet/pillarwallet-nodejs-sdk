@@ -71,14 +71,12 @@ describe('User Class', () => {
 
       user.info(userInfoData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            params: userInfoData,
-            url: 'http://localhost:8080/user/info',
-          }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        method: 'GET',
+        params: userInfoData,
+        url: 'http://localhost:8080/user/info',
+      });
     });
 
   });
@@ -87,19 +85,19 @@ describe('User Class', () => {
     it('should successfully call with valid data', () => {
       const userSearchData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-        query: 'searchforme',
+        query: 'searchform',
       };
 
       user.search(userSearchData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            params: userSearchData,
-            url: 'http://localhost:8080/user/search',
-          }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/)
+        },
+        method: 'GET',
+        params: userSearchData,
+        url: 'http://localhost:8080/user/search',
+      });
     });
 
   });
@@ -131,14 +129,12 @@ describe('User Class', () => {
 
       user.usernameSearch(usernameSearch);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            params: usernameSearch,
-            url: 'http://localhost:8080/user/search-username',
-          }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        method: 'GET',
+        params: usernameSearch,
+        url: 'http://localhost:8080/user/search-username',
+      });
     });
   });
 
