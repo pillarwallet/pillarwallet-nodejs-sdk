@@ -18,4 +18,5 @@ export enum HttpEndpoints {
   USER_USERNAME_SEARCH = '/user/search-username',
   USER_VALIDATE = '/user/validate',
   USER_IMAGE = '/user/image',
+  USER_IMAGE_BY_USER_ID = '/user/image-by-userid',
 }

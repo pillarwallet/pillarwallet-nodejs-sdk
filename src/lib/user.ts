@@ -26,6 +26,7 @@ const userValidateSchema = require('../schemas/user/validate.json');
 const profileImageSchema = require('../schemas/user/profileImage.json');
 const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
 const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
+const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 
 export class User extends Configuration {
 
@@ -219,5 +220,32 @@ export class User extends Configuration {
       defaultRequest: deleteConfiguration,
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE,
     });
+  }
+
+  /**
+   * @name imageByUserId
+   * @description Get user's profile image using user's ID
+   * @param {ImageByUserId} data
+   * @returns {AxiosPromise}
+   */
+  imageByUserId(data: ImageByUserId): AxiosPromise {
+    try {
+      this.validation(imageByUserIdSchema, data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+
+    const query = {
+      walletId: data.walletId,
+    };
+
+    const config = {
+      ...getConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
+      params: query,
+    };
+    config.headers['X-API-Signature'] = this.checkSignature(query, Configuration.accessKeys.privateKey)
+
+    return Requester.execute(config);
   }
 }

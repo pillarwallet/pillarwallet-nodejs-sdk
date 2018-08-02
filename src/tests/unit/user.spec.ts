@@ -11,6 +11,7 @@ const userValidateSchema = require('../../schemas/user/validate.json');
 const profileImageSchema = require('../../schemas/user/profileImage.json');
 const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.json');
 const deleteProfileImageSchema = require('../../schemas/user/deleteProfileImage.json');
+const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
 
 describe('User Class', () => {
   let user: User;
@@ -197,6 +198,50 @@ describe('User Class', () => {
         schema: deleteProfileImageSchema,
         defaultRequest: deleteConfiguration,
         url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
+      });
+    });
+  });
+
+  describe('Image by User ID method', () => {
+    it('validate input data', () => {
+      const data = {
+        walletId: 'walletId',
+        userId: 'userId',
+      };
+
+      user.imageByUserId(data);
+
+      expect(user.validation).toHaveBeenCalledWith(imageByUserIdSchema, data);
+    });
+
+    it('returns a rejected promise when validation fails', async () => {
+      expect.assertions(2);
+
+      user.validation.mockRestore();
+
+      try {
+        await user.imageByUserId({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toBe("data should have required property 'walletId', data should have required property 'userId'");
+      }
+    });
+
+    it('executes a GET request based on input data', () => {
+      const data = {
+        walletId: 'walletId',
+        userId: 'userId',
+      }
+
+      user.imageByUserId(data);
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        method: 'GET',
+        url: 'http://localhost:8080/user/image-by-userid/userId',
+        params: { walletId: 'walletId' },
       });
     });
   });

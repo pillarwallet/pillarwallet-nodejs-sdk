@@ -181,4 +181,32 @@ describe('user endpoints', () => {
       });
     });
   });
+
+  describe('User Image by User ID method', () => {
+    let wallet;
+
+    beforeEach(async () => {
+      const inputParams = {
+        fcmToken: 'abc-123',
+        username: 'image-by-userid',
+      };
+      wallet = await this.pSdk.wallet.register(inputParams);
+
+      const walletId = wallet.data.walletId;
+      const formData = new FormData();
+      formData.append('walletId', walletId);
+      formData.append('image', fs.createReadStream(path.resolve(__dirname, '../assets/fff.jpg')));
+
+      await this.pSdk.user.uploadProfileImageFormData(walletId, formData);
+    });
+
+    it('retrieves the user\'s current profile image using user ID', async () => {
+      const res = await this.pSdk.user.imageByUserId({
+        walletId: wallet.data.walletId,
+        userId: wallet.data.userId,
+      });
+
+      expect(res.status).toBe(200);
+    });
+  });
 });
