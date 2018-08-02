@@ -10,6 +10,7 @@ import { Readable } from 'stream';
 const userValidateSchema = require('../../schemas/user/validate.json');
 const profileImageSchema = require('../../schemas/user/profileImage.json');
 const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.json');
+const userInfoByIdSchema = require('../../schemas/user/infoById.json');
 const deleteProfileImageSchema = require('../../schemas/user/deleteProfileImage.json');
 const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
 
@@ -80,6 +81,34 @@ describe('User Class', () => {
       });
     });
 
+  });
+
+  describe('Info By Id method', () => {
+    let targetUserId: string;
+    let query: UserInfoById;
+
+    beforeEach(async () => {
+      targetUserId = 'target-user-id';
+      query = {
+        walletId: 'wallet-id',
+        userAccessKey: 'user-access-key',
+        targetUserAccessKey: 'target-user-access-key',
+      };
+
+      await user.infoById(targetUserId, query);
+    });
+
+    it('should validate query', () => {
+      expect(user.validation).toHaveBeenCalledWith(userInfoByIdSchema, query);
+    });
+
+    it('should successfully call requester execute with valid data', async () => {
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO_BY_ID + targetUserId,
+        params: query,
+      });
+    });
   });
 
   describe('Search method', () => {
