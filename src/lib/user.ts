@@ -3,6 +3,7 @@
  */
 import axios, { AxiosPromise } from 'axios';
 import { Readable } from 'stream';
+import * as formatters from '@pillarwallet/common-formatters';
 import { Requester } from '../utils/requester';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
@@ -28,6 +29,7 @@ const profileImageSchema = require('../schemas/user/profileImage.json');
 const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
 const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
 const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
+const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePassword.json');
 
 export class User extends Configuration {
 
@@ -267,8 +269,32 @@ export class User extends Configuration {
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
       params: query,
     };
-    config.headers['X-API-Signature'] = this.checkSignature(query, Configuration.accessKeys.privateKey)
+    config.headers['X-API-Signature'] = this.checkSignature(query, Configuration.accessKeys.privateKey);
 
     return Requester.execute(config);
+  }
+
+  /**
+   * @name createOneTimePassword
+   * @description Create a one-time password for email or phone,
+   * store it on the user record,
+   * then send an email or SMS to the user
+   * @param {UserCreateOneTimePassword} userCreateOneTimePassword
+   * @returns {AxiosPromise}
+   */
+  createOneTimePassword(data: UserCreateOneTimePassword): AxiosPromise {
+    const formattedPhone: string | undefined = formatters.phone(data.phone);
+    const formattedData: UserCreateOneTimePassword = formattedPhone
+      ? { ...data, phone: formattedPhone }
+      : { ...data };
+
+    return this.executeRequest({
+      data: formattedData,
+      schema: userCreateOneTimePasswordSchema,
+      defaultRequest: postConfiguration,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.USER_CREATE_ONE_TIME_PASSWORD,
+    });
   }
 }
