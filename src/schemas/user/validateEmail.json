@@ -1,0 +1,26 @@
+{
+  "title": "User Model - Validate Email",
+  "description": "Schema definition for User Model - validateEmail method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "email": {
+      "description": "The user's email address",
+      "type": "string",
+      "format": "email"
+    },
+    "oneTimePassword": {
+      "description": "One-time password",
+      "type": "string"
+    },
+    "walletId": {
+      "description": "Wallet ID",
+      "type": "string"
+    }
+  },
+  "required": [
+    "email",
+    "oneTimePassword",
+    "walletId"
+  ]
+}

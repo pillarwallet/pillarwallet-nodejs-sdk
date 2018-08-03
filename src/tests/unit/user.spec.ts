@@ -367,4 +367,51 @@ describe('User Class', () => {
       }
     });
   });
+
+  describe('User Validate Email method', () => {
+    beforeEach(() => {
+      user.executeRequest.mockRestore();
+    });
+
+    afterEach(() => {
+      jest.spyOn(user, 'executeRequest');
+    });
+
+    it('makes a POST request', () => {
+      const data = {
+        walletId: 'walletId',
+        email: 'foo@bar.com',
+        oneTimePassword: '12345',
+      };
+
+      user.validateEmail(data);
+
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data,
+          method: 'POST',
+          headers: {
+            'X-API-Signature': expect.stringMatching(/.+/),
+          },
+          url: 'http://localhost:8080/user/validate-email',
+          json: true,
+        }),
+      );
+    });
+
+    it('validates input data based on schema', async () => {
+      expect.assertions(4);
+
+      user.validation.mockRestore();
+
+      try {
+        await user.validateEmail({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toMatch(/data should have required property 'email'/);
+        expect(e.message).toMatch(/data should have required property 'oneTimePassword'/);
+        expect(e.message).toMatch(/data should have required property 'walletId'/);
+      }
+    });
+  });
 });
