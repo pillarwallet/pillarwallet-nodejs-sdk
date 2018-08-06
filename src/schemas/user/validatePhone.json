@@ -1,0 +1,26 @@
+{
+  "title": "User Model - Validate Phone",
+  "description": "Schema definition for User Model - validatePhone method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "phone": {
+      "description": "The user's phone number",
+      "type": "string",
+      "pattern": "^\\+[0-9]{6,}$"
+    },
+    "oneTimePassword": {
+      "description": "One-time password",
+      "type": "string"
+    },
+    "walletId": {
+      "description": "Wallet ID",
+      "type": "string"
+    }
+  },
+  "required": [
+    "phone",
+    "oneTimePassword",
+    "walletId"
+  ]
+}

@@ -31,6 +31,7 @@ const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.jso
 const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePassword.json');
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
+const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
 
 export class User extends Configuration {
 
@@ -313,6 +314,26 @@ export class User extends Configuration {
       url:
         Configuration.accessKeys.apiUrl +
         HttpEndpoints.USER_VALIDATE_EMAIL,
+    });
+  }
+
+  /**
+   * @name validatePhone
+   * @description Validate a one-time password sent via SMS
+   * @param {UserValidatePhone} userValidatePhone
+   * @returns {AxiosPromise}
+   */
+  validatePhone(userValidatePhone: UserValidatePhone): AxiosPromise {
+    const formattedPhone: string = formatters.phone(userValidatePhone.phone);
+    const data = { ...userValidatePhone, phone: formattedPhone };
+
+    return this.executeRequest({
+      data,
+      schema: userValidatePhoneSchema,
+      defaultRequest: postConfiguration,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.USER_VALIDATE_PHONE,
     });
   }
 }

@@ -22,4 +22,5 @@ export enum HttpEndpoints {
   USER_IMAGE_BY_USER_ID = '/user/image-by-userid',
   USER_CREATE_ONE_TIME_PASSWORD = '/user/create-one-time-password',
   USER_VALIDATE_EMAIL = '/user/validate-email',
+  USER_VALIDATE_PHONE = '/user/validate-phone',
 }

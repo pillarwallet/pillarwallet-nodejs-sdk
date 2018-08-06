@@ -414,4 +414,51 @@ describe('User Class', () => {
       }
     });
   });
+
+  describe('User Validate Phone method', () => {
+    beforeEach(() => {
+      user.executeRequest.mockRestore();
+    });
+
+    afterEach(() => {
+      jest.spyOn(user, 'executeRequest');
+    });
+
+    it('makes a POST request with formatted phone number', () => {
+      const data = {
+        walletId: 'walletId',
+        phone: '+1 (2) 34-56',
+        oneTimePassword: '54321',
+      };
+
+      user.validatePhone(data);
+
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: { ...data, phone: '+123456' },
+          method: 'POST',
+          headers: {
+            'X-API-Signature': expect.stringMatching(/.+/),
+          },
+          url: 'http://localhost:8080/user/validate-phone',
+          json: true,
+        }),
+      );
+    });
+
+    it('validates input data based on schema', async () => {
+      expect.assertions(4);
+
+      user.validation.mockRestore();
+
+      try {
+        await user.validatePhone({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toMatch(/data should have required property 'phone'/);
+        expect(e.message).toMatch(/data should have required property 'oneTimePassword'/);
+        expect(e.message).toMatch(/data should have required property 'walletId'/);
+      }
+    });
+  });
 });
