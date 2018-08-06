@@ -13,8 +13,8 @@
     "compile": "tsc",
     "build": "webpack",
     "build-production": "webpack --mode=production",
-    "lint": "tslint -p '.'",
-    "lint:fix": "tslint --fix -p  '.'"
+    "lint": "tslint -p .",
+    "lint:fix": "tslint --fix -p ."
   },
   "jest": {
     "verbose": true,
@@ -68,6 +68,7 @@
     "ts-loader": "4.3.0",
     "ts-node": "6.0.0",
     "tslint": "5.9.1",
+    "tslint-config-prettier": "1.14.0",
     "typescript": "2.8.3",
     "webpack": "4.8.1",
     "webpack-cli": "2.1.3"
