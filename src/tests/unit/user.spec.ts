@@ -21,15 +21,14 @@ describe('User Class', () => {
     user = new User();
     user.initialise({});
 
-    jest.spyOn(user, 'validation').mockImplementationOnce(() => undefined);
+    jest.spyOn(user, 'validation');
     jest.spyOn(user, 'checkSignature').mockImplementationOnce(() => 'signature');
-    jest.spyOn(user, 'executeRequest').mockImplementation(() => Promise.resolve());
+    jest.spyOn(user, 'executeRequest');
     jest.spyOn(Requester, 'execute').mockImplementationOnce(() => Promise.resolve());
   });
 
   afterEach(() => {
     Requester.execute.mockRestore();
-    user.executeRequest.mockRestore();
   });
 
   describe('Update method', () => {
@@ -37,7 +36,6 @@ describe('User Class', () => {
       const userUpdateData =
         {
           walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-          username: 'bob123',
           firstName: 'Bob',
           lastName: 'Jones',
           email: 'bob@acme-corp.com',
@@ -48,7 +46,6 @@ describe('User Class', () => {
           tagline: 'Social media consultant',
           taglineStatus: false,
           userSearchable: true,
-          profileImage: 'http://photo1.jpg',
         };
 
       user.update(userUpdateData);
@@ -246,8 +243,6 @@ describe('User Class', () => {
     it('returns a rejected promise when validation fails', async () => {
       expect.assertions(2);
 
-      user.validation.mockRestore();
-
       try {
         await user.imageByUserId({});
       } catch (e) {
@@ -260,7 +255,7 @@ describe('User Class', () => {
       const data = {
         walletId: 'walletId',
         userId: 'userId',
-      }
+      };
 
       user.imageByUserId(data);
 
@@ -276,14 +271,6 @@ describe('User Class', () => {
   });
 
   describe('Create One Time Password method', () => {
-    beforeEach(() => {
-      user.executeRequest.mockRestore();
-    });
-
-    afterEach(() => {
-      jest.spyOn(user, 'executeRequest');
-    });
-
     it('successfully calls with email address', () => {
       const u = {
         email: 'foo@email.com',
@@ -331,15 +318,13 @@ describe('User Class', () => {
           data: {
             phone: '+447777123456',
             walletId: '12345',
-          }
-        })
+          },
+        }),
       );
     });
 
     it('throws an error when user data is missing', async () => {
       expect.assertions(2);
-
-      user.validation.mockRestore();
 
       try {
         await user.createOneTimePassword({});
@@ -357,8 +342,6 @@ describe('User Class', () => {
         walletId: 'abc-123',
       };
 
-      user.validation.mockRestore();
-
       try {
         await user.createOneTimePassword(u);
       } catch (e) {
@@ -369,14 +352,6 @@ describe('User Class', () => {
   });
 
   describe('User Validate Email method', () => {
-    beforeEach(() => {
-      user.executeRequest.mockRestore();
-    });
-
-    afterEach(() => {
-      jest.spyOn(user, 'executeRequest');
-    });
-
     it('makes a POST request', () => {
       const data = {
         walletId: 'walletId',
@@ -402,8 +377,6 @@ describe('User Class', () => {
     it('validates input data based on schema', async () => {
       expect.assertions(4);
 
-      user.validation.mockRestore();
-
       try {
         await user.validateEmail({});
       } catch (e) {
@@ -416,14 +389,6 @@ describe('User Class', () => {
   });
 
   describe('User Validate Phone method', () => {
-    beforeEach(() => {
-      user.executeRequest.mockRestore();
-    });
-
-    afterEach(() => {
-      jest.spyOn(user, 'executeRequest');
-    });
-
     it('makes a POST request with formatted phone number', () => {
       const data = {
         walletId: 'walletId',
@@ -448,8 +413,6 @@ describe('User Class', () => {
 
     it('validates input data based on schema', async () => {
       expect.assertions(4);
-
-      user.validation.mockRestore();
 
       try {
         await user.validatePhone({});
