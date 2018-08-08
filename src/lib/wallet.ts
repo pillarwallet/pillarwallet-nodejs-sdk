@@ -21,7 +21,6 @@ const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.j
 const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddress.json');
 
 export class Wallet extends Configuration {
-
   constructor() {
     super();
   }
@@ -34,21 +33,26 @@ export class Wallet extends Configuration {
   register(walletRegister: WalletRegister): AxiosPromise {
     // validating Input
     if (!walletRegister.publicKey) {
-      walletRegister.publicKey = PrivateKeyDerivatives
-        .getPublicKey(Configuration.accessKeys.privateKey);
+      walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(
+        Configuration.accessKeys.privateKey,
+      );
     }
     if (!walletRegister.ethAddress) {
-      walletRegister.ethAddress = PrivateKeyDerivatives
-        .getEthAddress(Configuration.accessKeys.privateKey);
+      walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(
+        Configuration.accessKeys.privateKey,
+      );
     }
     this.validation(walletRegisterSchema, walletRegister);
 
     // Signing Header
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(walletRegister, Configuration.accessKeys.privateKey);
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      walletRegister,
+      Configuration.accessKeys.privateKey,
+    );
 
     postConfiguration.data = walletRegister;
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
     // http request
     return Requester.execute(postConfiguration);
   }
@@ -59,13 +63,15 @@ export class Wallet extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   update(walletUpdate: WalletUpdate): AxiosPromise {
-
     this.validation(walletUpdateSchema, walletUpdate);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(walletUpdate, Configuration.accessKeys.privateKey);
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      walletUpdate,
+      Configuration.accessKeys.privateKey,
+    );
     postConfiguration.data = walletUpdate;
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UPDATE;
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UPDATE;
 
     return Requester.execute(postConfiguration);
   }
@@ -83,7 +89,8 @@ export class Wallet extends Configuration {
       data,
       schema: walletRegisterAddressSchema,
       defaultRequest: postConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER_ADDRESS,
+      url:
+        Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER_ADDRESS,
     });
   }
 
@@ -100,7 +107,9 @@ export class Wallet extends Configuration {
       data,
       schema: walletUnregisterAddressSchema,
       defaultRequest: postConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_UNREGISTER_ADDRESS,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.WALLET_UNREGISTER_ADDRESS,
     });
   }
 }

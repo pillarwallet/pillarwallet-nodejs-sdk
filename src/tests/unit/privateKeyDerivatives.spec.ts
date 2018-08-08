@@ -13,12 +13,15 @@ import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
  *
  * Read: https://ethereum.stackexchange.com/a/19048
  */
-const privateKey = 'bcfeaffa34e87c0ebc201d63896665f21588ad01cc1822874d12d96c5b8c9d35';
+const privateKey =
+  'bcfeaffa34e87c0ebc201d63896665f21588ad01cc1822874d12d96c5b8c9d35';
 const expectedEthereumAddress = '0x0DE189164d58dd58BE7d18C389B5623EBb1db9d3';
 
 describe('The Private Key Derivatives Class: getPublicKey method', () => {
   it('should successfully derive the public key from a private key', () => {
-    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(2);
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(
+      2,
+    );
     const publicKeyBuffer = Buffer.from(publicKey, 'hex');
 
     expect(ethUtils.isValidPublic(publicKeyBuffer)).toBe(true);
@@ -26,7 +29,9 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
 
   it('should successfully derive the ethereum address from a public key', () => {
     let ethereumAddressString = '';
-    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(2);
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(
+      2,
+    );
     const publicKeyBuffer = Buffer.from(publicKey, 'hex');
     const ethereumAddressBuffer = ethUtils.pubToAddress(publicKeyBuffer, true);
 
@@ -42,7 +47,9 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
 
   it('should successfully derive the GIVEN ethereum address from the GIVEN public key', () => {
     let ethereumAddressString = '';
-    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(2);
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey).substring(
+      2,
+    );
     const publicKeyBuffer = Buffer.from(publicKey, 'hex');
     const ethereumAddressBuffer = ethUtils.pubToAddress(publicKeyBuffer, true);
 
@@ -54,12 +61,15 @@ describe('The Private Key Derivatives Class: getPublicKey method', () => {
 
     expect(ethUtils.isValidAddress(`0x${ethereumAddressString}`)).toBe(true);
     // Lowercased the expected ethereum address. See notes at the top of the file.
-    expect(`0x${ethereumAddressString}`).toBe(expectedEthereumAddress.toLowerCase());
+    expect(`0x${ethereumAddressString}`).toBe(
+      expectedEthereumAddress.toLowerCase(),
+    );
     expect(ethUtils.isValidPublic(publicKeyBuffer)).toBe(true);
   });
 
   it('should NOT successfully derive the public key from an invalid private key', () => {
-    const privateKey = 'abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaaa';
+    const privateKey =
+      'abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcaaa';
     const privateKeyBuffer = Buffer.from(privateKey, 'hex');
 
     expect(ethUtils.isValidPrivate(privateKeyBuffer)).toBe(false);

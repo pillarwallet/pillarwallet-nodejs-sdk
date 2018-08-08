@@ -17,7 +17,6 @@ import { default as getConfiguration } from '../utils/requester-configurations/g
 const notificationListSchema = require('../schemas/notification/list.json');
 
 export class Notification extends Configuration {
-
   constructor() {
     super();
   }
@@ -28,14 +27,16 @@ export class Notification extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   list(notificationList: NotificationList): AxiosPromise {
+    this.validation(notificationListSchema, notificationList);
 
-    this.validation(notificationListSchema,notificationList);
-
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(notificationList,Configuration.accessKeys.privateKey);
+    getConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      notificationList,
+      Configuration.accessKeys.privateKey,
+    );
     getConfiguration.params = notificationList;
     getConfiguration.url =
-      Configuration.accessKeys.notificationsUrl + HttpEndpoints.NOTIFICATION_LIST;
+      Configuration.accessKeys.notificationsUrl +
+      HttpEndpoints.NOTIFICATION_LIST;
 
     return Requester.execute(getConfiguration);
   }

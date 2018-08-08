@@ -22,7 +22,6 @@ const connectionBlockSchema = require('../schemas/connection/block.json');
 const connectionMuteSchema = require('../schemas/connection/mute.json');
 
 export class Connection extends Configuration {
-
   constructor() {
     super();
   }
@@ -33,11 +32,14 @@ export class Connection extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   invite(inviteConfiguration: ConnectionInvite): AxiosPromise {
-    this.validation(connectionInviteSchema,inviteConfiguration);
+    this.validation(connectionInviteSchema, inviteConfiguration);
 
-    postConfiguration.headers['X-API-Signature'] =
-    this.checkSignature(inviteConfiguration,Configuration.accessKeys.privateKey);
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_INVITE;
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      inviteConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_INVITE;
     postConfiguration.data = inviteConfiguration;
 
     return Requester.execute(postConfiguration);
@@ -51,9 +53,12 @@ export class Connection extends Configuration {
   accept(acceptConfiguration: ConnectionAccept): AxiosPromise {
     this.validation(connectionAcceptSchema, acceptConfiguration);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(acceptConfiguration,Configuration.accessKeys.privateKey);
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_ACCEPT;
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      acceptConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_ACCEPT;
     postConfiguration.data = acceptConfiguration;
 
     return Requester.execute(postConfiguration);
@@ -67,9 +72,12 @@ export class Connection extends Configuration {
   reject(rejectConfiguration: ConnectionReject): AxiosPromise {
     this.validation(connectionRejectSchema, rejectConfiguration);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(rejectConfiguration,Configuration.accessKeys.privateKey);
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_REJECT;
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      rejectConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_REJECT;
     postConfiguration.data = rejectConfiguration;
 
     return Requester.execute(postConfiguration);
@@ -83,9 +91,12 @@ export class Connection extends Configuration {
   cancel(cancelConfiguration: ConnectionCancel): AxiosPromise {
     this.validation(connectionCancelSchema, cancelConfiguration);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(cancelConfiguration,Configuration.accessKeys.privateKey);
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_CANCEL;
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      cancelConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_CANCEL;
     postConfiguration.data = cancelConfiguration;
 
     return Requester.execute(postConfiguration);
@@ -99,9 +110,12 @@ export class Connection extends Configuration {
   block(blockConfiguration: ConnectionBlock): AxiosPromise {
     this.validation(connectionBlockSchema, blockConfiguration);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(blockConfiguration,Configuration.accessKeys.privateKey);
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_BLOCK;
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      blockConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_BLOCK;
     postConfiguration.data = blockConfiguration;
 
     return Requester.execute(postConfiguration);
@@ -115,9 +129,12 @@ export class Connection extends Configuration {
   mute(muteConfiguration: ConnectionMute): AxiosPromise {
     this.validation(connectionMuteSchema, muteConfiguration);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(muteConfiguration,Configuration.accessKeys.privateKey);
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_MUTE;
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      muteConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_MUTE;
     postConfiguration.data = muteConfiguration;
 
     return Requester.execute(postConfiguration);
