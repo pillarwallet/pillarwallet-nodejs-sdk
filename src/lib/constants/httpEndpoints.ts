@@ -1,5 +1,7 @@
 export enum HttpEndpoints {
   WALLET_REGISTER = '/wallet/register',
+  WALLET_REGISTER_ADDRESS = '/wallet/register-address',
+  WALLET_UNREGISTER_ADDRESS = '/wallet/unregister-address',
   WALLET_UPDATE = '/wallet/update',
   ASSET_DEFAULT = '/asset/defaults',
   ASSET_SEARCH = '/asset/search',
@@ -23,4 +25,5 @@ export enum HttpEndpoints {
   USER_CREATE_ONE_TIME_PASSWORD = '/user/create-one-time-password',
   USER_VALIDATE_EMAIL = '/user/validate-email',
   USER_VALIDATE_PHONE = '/user/validate-phone',
+  USER_NOTIFICATION_PREFERENCES = '/user/update-notification-preferences',
 }

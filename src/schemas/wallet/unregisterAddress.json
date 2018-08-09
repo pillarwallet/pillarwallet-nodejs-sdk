@@ -1,0 +1,22 @@
+{
+  "title": "Wallet Model - Unregister Address",
+  "description": "Schema definition for Wallet Model - unregisterAddress method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
+    "blockchain": {
+      "description": "The blockchain environment",
+      "type": "string"
+    },
+    "blockchainAddress": {
+      "description": "The blockchain address of one wallet",
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    }
+  },
+  "required": [ "walletId" , "blockchainAddress" ]
+}

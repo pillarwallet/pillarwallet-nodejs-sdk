@@ -6,7 +6,7 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-let spy;
+let spy: any;
 
 describe('user endpoints', () => {
   beforeEach(() => {
@@ -155,6 +155,41 @@ describe('user endpoints', () => {
     });
   });
 
+  // we still can not automatically run the integration tests.
+  describe('User updateNotificationPreferences method', () => {
+    it('should return successful message and object', async () => {
+
+      const inputParams = {
+        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        username: 'bob123',
+      };
+
+      const res = await this.pSdk.wallet.register(inputParams);
+
+      const inputParams2 = {
+        walletId: res.data.walletId,
+        newOffer: true,
+        newReceipt: false,
+        paymentConfirmation: true,
+        paymentStatusUpdate: false,
+        profileUpdate: true,
+        fundsDeposit: false,
+        transactionEvent: true,
+
+      };
+
+      const response = await this.pSdk.user.updateNotificationPreferences(inputParams2);
+      delete inputParams2.walletId;
+
+      expect(response.data).toEqual({
+        result: 'success',
+        message: 'Notification preferences were successfully created',
+        preferences: expect.objectContaining(inputParams2),
+      });
+    });
+  });
+
+  // we still can not automatically run the integration tests.
   describe('User Upload Profile Image Form Data', () => {
     let wallet;
 
@@ -182,6 +217,7 @@ describe('user endpoints', () => {
     });
   });
 
+  // we still can not automatically run the integration tests.
   describe('User Image by User ID method', () => {
     let wallet;
 

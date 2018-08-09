@@ -1,0 +1,26 @@
+{
+  "title": "Wallet Model - Register Address",
+  "description": "Schema definition for Wallet Model - registerAddress method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
+    "blockchain": {
+      "description": "The blockchain environment",
+      "type": "string"
+    },
+    "blockchainAddress": {
+      "description": "The blockchain address of one wallet",
+      "type": "string",
+      "pattern":"^0x[a-fA-F0-9]{40}$"
+    },
+    "fcmToken": {
+      "description": "The Firebase Cloud Messaging Token of one wallet",
+      "type": "string"
+    }
+  },
+  "required": [ "walletId", "blockchainAddress", "fcmToken" ]
+}

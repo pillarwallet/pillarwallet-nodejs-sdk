@@ -21,7 +21,7 @@ describe('The Configuration Class', () => {
     const defaultRequest: any = {
       url: '',
       method: 'POST',
-      headers: {}
+      headers: {},
     };
     let url: string;
     const promise: PromiseConstructor = Promise;
@@ -52,9 +52,9 @@ describe('The Configuration Class', () => {
       configuration.executeRequest({
         params,
         schema,
-        defaultRequest: { method: 'GET' },
         url,
         checkSignature,
+        defaultRequest: { method: 'GET' },
       });
 
       expect(configuration.validation).toHaveBeenCalledWith(schema, params);
@@ -64,9 +64,9 @@ describe('The Configuration Class', () => {
       configuration.executeRequest({
         data,
         schema,
-        defaultRequest: { method: 'POST' },
         url,
         checkSignature,
+        defaultRequest: { method: 'POST' },
       });
 
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
@@ -78,9 +78,9 @@ describe('The Configuration Class', () => {
       configuration.executeRequest({
         data,
         schema,
-        defaultRequest: { method: 'PUT' },
         url,
         checkSignature,
+        defaultRequest: { method: 'PUT' },
       });
 
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
@@ -124,14 +124,14 @@ describe('The Configuration Class', () => {
       configuration.executeRequest({
         data,
         schema,
+        url,
+        checkSignature,
         defaultRequest: {
           url: '',
           method: 'POST',
           headers: {},
-          data: {}
+          data: {},
         },
-        url,
-        checkSignature,
       });
 
       const req = Requester.execute.mock.calls[0][0];
@@ -144,9 +144,9 @@ describe('The Configuration Class', () => {
       configuration.executeRequest({
         params,
         schema,
-        defaultRequest: { method: 'GET' },
         url,
         checkSignature,
+        defaultRequest: { method: 'GET' },
       });
 
       const req = Requester.execute.mock.calls[0][0];
@@ -187,7 +187,7 @@ describe('The Configuration Class', () => {
     describe('when checkSignature is true (default)', () => {
       it('exectutes the request with the `X-API-Signature` header', () => {
         jest.spyOn(configuration, 'checkSignature').mockImplementation(
-          () => 'signature'
+          () => 'signature',
         );
 
         configuration.executeRequest({

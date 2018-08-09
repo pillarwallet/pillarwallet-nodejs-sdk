@@ -2,7 +2,7 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-let spy;
+let spy: any;
 
 describe('wallet endpoints', () => {
   beforeEach(() => {
@@ -76,6 +76,68 @@ describe('wallet endpoints', () => {
        * using a spy to ensure that the request was made.
        */
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  // we still can not automatically run the integration tests.
+  describe('The Wallet registerAddress method', () => {
+    it('calls the API with valid data', async () => {
+      const inputParams = {
+        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        username: 'bob123',
+      };
+
+      const res = await this.pSdk.wallet.register(inputParams);
+
+      const inputParams2 = {
+        walletId: res.data.walletId,
+        blockchain: 'ethereum',
+        blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+        fcmToken: 'sdcxxczdsds',
+      };
+
+      const response = await this.pSdk.wallet.registerAddress(inputParams2);
+      expect(response.data).toEqual(
+        {
+          result: 'success',
+          message: 'Successfully registered address on BCX',
+        },
+      );
+    });
+  });
+
+  // we still can not automatically run the integration tests.
+  describe('The Wallet unregisterAddress method', () => {
+    it('calls the API with valid data', async () => {
+      const inputParams = {
+        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        username: 'bob123',
+      };
+
+      const res = await this.pSdk.wallet.register(inputParams);
+
+      const inputParams2 = {
+        walletId: res.data.walletId,
+        blockchain: 'ethereum',
+        blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+        fcmToken: 'sdcxxczdsds',
+      };
+
+      await this.pSdk.wallet.registerAddress(inputParams2);
+
+      const inputParams3 = {
+        walletId: res.data.walletId,
+        blockchain: 'ethereum',
+        blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+      };
+
+      const response = await this.pSdk.wallet.unregisterAddress(inputParams3);
+      expect(response.data).toEqual(
+        {
+          result: 'success',
+          message: 'Successfully unregistered address on BCX',
+        },
+      );
     });
   });
 });
