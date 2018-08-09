@@ -1,8 +1,7 @@
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
-import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
 
-let pSdk:any;
+let pSdk: PillarSdk;
 
 beforeEach(() => {
   pSdk = new PillarSdk({
@@ -71,10 +70,26 @@ describe('The Wallet Class: registerAddress method', () => {
         {
           headers: { 'X-API-Signature': expect.anything() },
           data: walletRegisterAddressData,
-          url: 'http://localhost:8080'
-          + HttpEndpoints.WALLET_REGISTER_ADDRESS,
+          url: 'http://localhost:8080/wallet/register-address',
         }),
     );
+  });
+
+  it('should thrown error due to invalid data (schema validation)', async () => {
+    expect.assertions(2);
+    const message = 'data should have required property \'walletId\'';
+    const inputParams = {
+      blockchain: 'ethereum',
+      blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+      fcmToken: 'sdcxxczdsds',
+    };
+
+    try {
+      await pSdk.wallet.registerAddress(inputParams);
+    } catch (error) {
+      expect(error).toBeInstanceOf(TypeError);
+      expect(error.message).toEqual(message);
+    }
   });
 });
 
@@ -93,9 +108,25 @@ describe('The Wallet Class: unregisterAddress method', () => {
         {
           headers: { 'X-API-Signature': expect.anything() },
           data: walletUnregisterAddressData,
-          url: 'http://localhost:8080'
-          + HttpEndpoints.WALLET_UNREGISTER_ADDRESS,
+          url: 'http://localhost:8080/wallet/unregister-address',
         }),
     );
   });
+
+  it('should thrown error due to invalid data (schema validation) ', async () => {
+    expect.assertions(2);
+    const message = 'data should have required property \'walletId\'';
+    const inputParams = {
+      blockchain: 'ethereum',
+      blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+    };
+
+    try {
+      await pSdk.wallet.unregisterAddress(inputParams);
+    } catch (error) {
+      expect(error).toBeInstanceOf(TypeError);
+      expect(error.message).toEqual(message);
+    }
+  });
 });
+

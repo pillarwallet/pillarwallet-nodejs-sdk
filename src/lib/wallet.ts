@@ -92,10 +92,10 @@ export class Wallet extends Configuration {
    * @description Unregister the specified blockchain address
    * for notifications and for BCX monitoring
    *
-   * @param {UpdateNotificationPreferences} data
+   * @param {WalletUnregisterAddress} data
    * @returns {AxiosPromise}
    */
-  unregisterAddress(data: UpdateNotificationPreferences): AxiosPromise {
+  unregisterAddress(data: WalletUnregisterAddress): AxiosPromise {
     return this.executeRequest({
       data,
       schema: walletUnregisterAddressSchema,

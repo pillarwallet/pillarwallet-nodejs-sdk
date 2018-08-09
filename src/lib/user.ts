@@ -271,10 +271,12 @@ export class User extends Configuration {
 
     const config = {
       ...getConfiguration,
-      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
+      url: `${Configuration.accessKeys.apiUrl}` +
+      `${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
       params: query,
     };
-    config.headers['X-API-Signature'] = this.checkSignature(query, Configuration.accessKeys.privateKey);
+    config.headers['X-API-Signature'] =
+      this.checkSignature(query, Configuration.accessKeys.privateKey);
 
     return Requester.execute(config);
   }

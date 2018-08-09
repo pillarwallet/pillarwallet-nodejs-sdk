@@ -7,6 +7,7 @@ import { default as deleteConfiguration } from '../../utils/requester-configurat
 import { default as getConfiguration } from '../../utils/requester-configurations/get';
 import { default as putConfiguration } from '../../utils/requester-configurations/put';
 import { Readable } from 'stream';
+import { PillarSdk } from '../..';
 
 const userValidateSchema = require('../../schemas/user/validate.json');
 const profileImageSchema = require('../../schemas/user/profileImage.json');
@@ -18,12 +19,15 @@ const updateNotificationPreferencesSchema =
   require('../../schemas/user/userNotificationPreferences.json');
 
 describe('User Class', () => {
+  let pSdk: PillarSdk;
   let user: User;
 
   beforeEach(() => {
     user = new User();
     user.initialise({});
-
+    pSdk = new PillarSdk({
+      privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+    });
     jest.spyOn(user, 'validation');
     jest.spyOn(user, 'checkSignature').mockImplementationOnce(() => 'signature');
     jest.spyOn(user, 'executeRequest');
@@ -122,7 +126,7 @@ describe('User Class', () => {
 
       expect(Requester.execute).toHaveBeenCalledWith({
         headers: {
-          'X-API-Signature': expect.stringMatching(/.+/)
+          'X-API-Signature': expect.stringMatching(/.+/),
         },
         method: 'GET',
         params: userSearchData,
@@ -250,7 +254,8 @@ describe('User Class', () => {
         await user.imageByUserId({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toBe("data should have required property 'walletId', data should have required property 'userId'");
+        expect(e.message).toBe('data should have required property ' +
+          '\'walletId\', data should have required property \'userId\'');
       }
     });
 
@@ -428,7 +433,7 @@ describe('User Class', () => {
     });
   });
 
-  describe('updateNotificationPreferences method', () => {
+  describe('User updateNotificationPreferences method', () => {
     it('should successfully call with valid data', () => {
       const data = { walletId: 'wallet-id' };
 
@@ -438,8 +443,25 @@ describe('User Class', () => {
         data,
         schema: updateNotificationPreferencesSchema,
         defaultRequest: putConfiguration,
-        url: 'http://localhost:8080' + HttpEndpoints.USER_NOTIFICATION_PREFERENCES,
+        url: 'http://localhost:8080/user/update-notification-preferences',
       });
+    });
+
+    it('should fail due to schema validation', async () => {
+      expect.assertions(2);
+      const message = 'data should have required property \'walletId\'';
+
+      const inputParams = {
+        newOffer: true,
+        newReceipt: false,
+      };
+
+      try {
+        await pSdk.user.updateNotificationPreferences(inputParams);
+      } catch (error) {
+        expect(error).toBeInstanceOf(TypeError);
+        expect(error.message).toEqual(message);
+      }
     });
   });
 });
