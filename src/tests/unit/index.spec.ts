@@ -5,6 +5,7 @@ import { Notification } from '../../lib/notification';
 import { User } from '../../lib/user';
 import { Wallet } from '../../lib/wallet';
 import { Configuration } from '../../lib/configuration';
+import { Investments } from '../../lib/investments';
 
 
 describe('The Pillar SDK Class', () => {
@@ -21,6 +22,7 @@ describe('The Pillar SDK Class', () => {
     expect(pSdk.user).toBeInstanceOf(User);
     expect(pSdk.wallet).toBeInstanceOf(Wallet);
     expect(pSdk.configuration).toBeInstanceOf(Configuration);
+    expect(pSdk.investments).toBeInstanceOf(Investments);
   });
 
   it('should fail to call due invalid apiUrl', () => {

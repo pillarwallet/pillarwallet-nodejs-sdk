@@ -4,6 +4,7 @@ import { Connection } from './lib/connection';
 import { User } from './lib/user';
 import { Notification } from './lib/notification';
 import { Configuration } from './lib/configuration';
+import { Investments } from './lib/investments';
 import * as Ajv from 'ajv';
 
 const pillarSdkConstructorSchema = require('../src/schemas/pillarsdk-constructor.json');
@@ -11,6 +12,7 @@ const pillarSdkConstructorSchema = require('../src/schemas/pillarsdk-constructor
 let ajv;
 
 export class PillarSdk extends Configuration {
+  investments: Investments = new Investments();
   wallet: Wallet = new Wallet();
   asset: Asset = new Asset();
   connection: Connection = new Connection();
