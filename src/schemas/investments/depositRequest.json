@@ -17,5 +17,5 @@
     "type": "string"
   }
 },
-  "required": [ "walletId", "currency", "serviceProvider" ]
+  "required": [ "walletId", "currency" ]
 }
