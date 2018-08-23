@@ -15,8 +15,7 @@ const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.
 const userInfoByIdSchema = require('../../schemas/user/infoById.json');
 const deleteProfileImageSchema = require('../../schemas/user/deleteProfileImage.json');
 const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
-const updateNotificationPreferencesSchema =
-  require('../../schemas/user/userNotificationPreferences.json');
+const updateNotificationPreferencesSchema = require('../../schemas/user/userNotificationPreferences.json');
 
 describe('User Class', () => {
   let pSdk: PillarSdk;
@@ -26,12 +25,17 @@ describe('User Class', () => {
     user = new User();
     user.initialise({});
     pSdk = new PillarSdk({
-      privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      privateKey:
+        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
     });
     jest.spyOn(user, 'validation');
-    jest.spyOn(user, 'checkSignature').mockImplementationOnce(() => 'signature');
+    jest
+      .spyOn(user, 'checkSignature')
+      .mockImplementationOnce(() => 'signature');
     jest.spyOn(user, 'executeRequest');
-    jest.spyOn(Requester, 'execute').mockImplementationOnce(() => Promise.resolve());
+    jest
+      .spyOn(Requester, 'execute')
+      .mockImplementationOnce(() => Promise.resolve());
   });
 
   afterEach(() => {
@@ -40,33 +44,30 @@ describe('User Class', () => {
 
   describe('Update method', () => {
     it('should successfully call with valid data', () => {
-      const userUpdateData =
-        {
-          walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-          firstName: 'Bob',
-          lastName: 'Jones',
-          email: 'bob@acme-corp.com',
-          phone: '+44 77 1111 2222',
-          country: 'UK',
-          state: 'CA',
-          city: 'London',
-          tagline: 'Social media consultant',
-          taglineStatus: false,
-          userSearchable: true,
-        };
+      const userUpdateData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        firstName: 'Bob',
+        lastName: 'Jones',
+        email: 'bob@acme-corp.com',
+        phone: '+44 77 1111 2222',
+        country: 'UK',
+        state: 'CA',
+        city: 'London',
+        tagline: 'Social media consultant',
+        taglineStatus: false,
+        userSearchable: true,
+      };
 
       user.update(userUpdateData);
 
       expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            data: userUpdateData,
-            url: 'http://localhost:8080/user/update',
-          }),
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+          data: userUpdateData,
+          url: 'http://localhost:8080/user/update',
+        }),
       );
     });
-
   });
 
   describe('Info method', () => {
@@ -84,7 +85,6 @@ describe('User Class', () => {
         url: 'http://localhost:8080/user/info',
       });
     });
-
   });
 
   describe('Info By Id method', () => {
@@ -109,7 +109,10 @@ describe('User Class', () => {
     it('should successfully call requester execute with valid data', async () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
-        url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO_BY_ID + targetUserId,
+        url:
+          Configuration.accessKeys.apiUrl +
+          HttpEndpoints.USER_INFO_BY_ID +
+          targetUserId,
         params: query,
       });
     });
@@ -133,7 +136,6 @@ describe('User Class', () => {
         url: 'http://localhost:8080/user/search',
       });
     });
-
   });
 
   describe('Delete method', () => {
@@ -145,12 +147,11 @@ describe('User Class', () => {
       user.delete(userInfoData);
 
       expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-            data: userInfoData,
-            url: 'http://localhost:8080/user/delete',
-          }),
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+          data: userInfoData,
+          url: 'http://localhost:8080/user/delete',
+        }),
       );
     });
   });
@@ -197,7 +198,9 @@ describe('User Class', () => {
       expect(user.validation).toHaveBeenCalledWith(profileImageSchema, data);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
-        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}/${data.imageName}`,
+        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}/${
+          data.imageName
+        }`,
         responseType: 'stream',
       });
     });
@@ -210,8 +213,14 @@ describe('User Class', () => {
 
       user.uploadProfileImage(image, query);
 
-      expect(user.validation).toHaveBeenCalledWith(uploadProfileImageSchema, query);
-      expect(user.checkSignature).toHaveBeenCalledWith(query, Configuration.accessKeys.privateKey);
+      expect(user.validation).toHaveBeenCalledWith(
+        uploadProfileImageSchema,
+        query,
+      );
+      expect(user.checkSignature).toHaveBeenCalledWith(
+        query,
+        Configuration.accessKeys.privateKey,
+      );
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
         url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}?walletId=0000`,
@@ -254,8 +263,9 @@ describe('User Class', () => {
         await user.imageByUserId({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toBe('data should have required property ' +
-          '\'walletId\', data should have required property \'userId\'');
+        expect(e.message).toBe(
+          "data should have required property 'walletId', data should have required property 'userId'",
+        );
       }
     });
 
@@ -338,7 +348,9 @@ describe('User Class', () => {
         await user.createOneTimePassword({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch(/data should have required property 'walletId'/);
+        expect(e.message).toMatch(
+          /data should have required property 'walletId'/,
+        );
       }
     });
 
@@ -354,7 +366,9 @@ describe('User Class', () => {
         await user.createOneTimePassword(u);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch('data.phone should match pattern \"^\\+[0-9]{6,}$\"');
+        expect(e.message).toMatch(
+          'data.phone should match pattern "^\\+[0-9]{6,}$"',
+        );
       }
     });
   });
@@ -390,8 +404,12 @@ describe('User Class', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
         expect(e.message).toMatch(/data should have required property 'email'/);
-        expect(e.message).toMatch(/data should have required property 'oneTimePassword'/);
-        expect(e.message).toMatch(/data should have required property 'walletId'/);
+        expect(e.message).toMatch(
+          /data should have required property 'oneTimePassword'/,
+        );
+        expect(e.message).toMatch(
+          /data should have required property 'walletId'/,
+        );
       }
     });
   });
@@ -427,8 +445,12 @@ describe('User Class', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
         expect(e.message).toMatch(/data should have required property 'phone'/);
-        expect(e.message).toMatch(/data should have required property 'oneTimePassword'/);
-        expect(e.message).toMatch(/data should have required property 'walletId'/);
+        expect(e.message).toMatch(
+          /data should have required property 'oneTimePassword'/,
+        );
+        expect(e.message).toMatch(
+          /data should have required property 'walletId'/,
+        );
       }
     });
   });
@@ -449,7 +471,7 @@ describe('User Class', () => {
 
     it('should fail due to schema validation', async () => {
       expect.assertions(2);
-      const message = 'data should have required property \'walletId\'';
+      const message = "data should have required property 'walletId'";
 
       const inputParams = {
         newOffer: true,

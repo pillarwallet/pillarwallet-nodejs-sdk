@@ -2,19 +2,18 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-let spy;
-
 describe('connection endpoints', () => {
+  const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
+  let pSdk: PillarSdk;
+
   beforeEach(() => {
-    this.pSdk = new PillarSdk({
+    pSdk = new PillarSdk({
       privateKey: keys.privateKey,
     });
-
-    spy = jest.spyOn(Requester, 'execute');
   });
 
   afterEach(() => {
-    spy.mockClear();
+    requesterExecuteSpy.mockClear();
   });
 
   it('The Connection Class: Invite ', () => {
@@ -24,7 +23,8 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    this.pSdk.connection.invite(inputParams)
+    pSdk.connection
+      .invite(inputParams)
       .then((response: any) => {
         // Successful response!
         return response;
@@ -40,7 +40,7 @@ describe('connection endpoints', () => {
      * a correct / expected response. For now, just
      * using a spy to ensure that the request was made.
      */
-    expect(spy).toHaveBeenCalled();
+    expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Accept ', () => {
@@ -51,7 +51,8 @@ describe('connection endpoints', () => {
       targetUserAccessKey: 'hello',
     };
 
-    this.pSdk.connection.accept(inputParams)
+    pSdk.connection
+      .accept(inputParams)
       .then((response: any) => {
         // Successful response!
         return response;
@@ -67,7 +68,7 @@ describe('connection endpoints', () => {
      * a correct / expected response. For now, just
      * using a spy to ensure that the request was made.
      */
-    expect(spy).toHaveBeenCalled();
+    expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Reject ', () => {
@@ -77,7 +78,8 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    this.pSdk.connection.reject(inputParams)
+    pSdk.connection
+      .reject(inputParams)
       .then((response: any) => {
         // Successful response!
         return response;
@@ -93,7 +95,7 @@ describe('connection endpoints', () => {
      * a correct / expected response. For now, just
      * using a spy to ensure that the request was made.
      */
-    expect(spy).toHaveBeenCalled();
+    expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Cancel ', () => {
@@ -103,7 +105,8 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    this.pSdk.connection.cancel(inputParams)
+    pSdk.connection
+      .cancel(inputParams)
       .then((response: any) => {
         // Successful response!
         return response;
@@ -119,7 +122,7 @@ describe('connection endpoints', () => {
      * a correct / expected response. For now, just
      * using a spy to ensure that the request was made.
      */
-    expect(spy).toHaveBeenCalled();
+    expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Block ', () => {
@@ -128,7 +131,8 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    this.pSdk.connection.block(inputParams)
+    pSdk.connection
+      .block(inputParams)
       .then((response: any) => {
         // Successful response!
         return response;
@@ -144,7 +148,7 @@ describe('connection endpoints', () => {
      * a correct / expected response. For now, just
      * using a spy to ensure that the request was made.
      */
-    expect(spy).toHaveBeenCalled();
+    expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
   it('The Connection Class: Mute ', () => {
@@ -153,7 +157,8 @@ describe('connection endpoints', () => {
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    this.pSdk.connection.mute(inputParams)
+    pSdk.connection
+      .mute(inputParams)
       .then((response: any) => {
         // Successful response!
         return response;
@@ -169,6 +174,6 @@ describe('connection endpoints', () => {
      * a correct / expected response. For now, just
      * using a spy to ensure that the request was made.
      */
-    expect(spy).toHaveBeenCalled();
+    expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 });

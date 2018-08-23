@@ -2,31 +2,31 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-let spy: any;
-
 describe('notification endpoints', () => {
+  const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
+  let pSdk: PillarSdk;
+
   beforeEach(() => {
-    this.pSdk = new PillarSdk({
+    pSdk = new PillarSdk({
       privateKey: keys.privateKey,
       notificationsUrl: 'http://localhost:8081',
     });
-
-    spy = jest.spyOn(Requester, 'execute');
   });
 
   afterEach(() => {
-    spy.mockClear();
+    requesterExecuteSpy.mockClear();
   });
 
   describe('Notification list', () => {
-    it('Expect success',  async () => {
+    it('Expect success', async () => {
       const inputParams = {
         walletId: '24adad233',
         fromTimestamp: '2016-05-24T15:54:14.876Z',
         type: 'message',
         fetchLatest: true,
       };
-      await this.pSdk.notification.list(inputParams)
+      await pSdk.notification
+        .list(inputParams)
         .then((response: any) => {
           // Successful response!
           return response;
@@ -42,7 +42,7 @@ describe('notification endpoints', () => {
        * a correct / expected response. For now, just
        * using a spy to ensure that the request was made.
        */
-      expect(spy).toHaveBeenCalled();
+      expect(requesterExecuteSpy).toHaveBeenCalled();
     });
   });
 });

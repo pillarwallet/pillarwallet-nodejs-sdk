@@ -28,8 +28,10 @@ describe('The Configuration Class', () => {
 
     beforeEach(() => {
       url = apiUrl + HttpEndpoints.USER_VALIDATE;
-      jest.spyOn(configuration, 'validation').mockImplementationOnce(() => undefined);
-      jest.spyOn(Requester, 'execute').mockImplementation(() =>  promise);
+      jest
+        .spyOn(configuration, 'validation')
+        .mockImplementationOnce(() => undefined);
+      jest.spyOn(Requester, 'execute').mockImplementation(() => promise);
     });
 
     afterEach(() => {
@@ -50,10 +52,10 @@ describe('The Configuration Class', () => {
 
     it('validates `params` for GET requests', () => {
       configuration.executeRequest({
-        params,
-        schema,
         url,
         checkSignature,
+        params,
+        schema,
         defaultRequest: { method: 'GET' },
       });
 
@@ -62,10 +64,10 @@ describe('The Configuration Class', () => {
 
     it('validates `data` for POST requests', () => {
       configuration.executeRequest({
-        data,
-        schema,
         url,
         checkSignature,
+        data,
+        schema,
         defaultRequest: { method: 'POST' },
       });
 
@@ -76,10 +78,10 @@ describe('The Configuration Class', () => {
       const data: object = { foo: 'bar' };
 
       configuration.executeRequest({
-        data,
-        schema,
         url,
         checkSignature,
+        data,
+        schema,
         defaultRequest: { method: 'PUT' },
       });
 
@@ -94,14 +96,16 @@ describe('The Configuration Class', () => {
         throw new Error('Validation failed');
       });
 
-      return configuration.executeRequest({
-        data,
-        schema,
-        defaultRequest,
-        url,
-      }).catch((e) => {
-        expect(e.message).toBe('Validation failed');
-      });
+      return configuration
+        .executeRequest({
+          data,
+          schema,
+          defaultRequest,
+          url,
+        })
+        .catch(e => {
+          expect(e.message).toBe('Validation failed');
+        });
     });
 
     it('does not mutate the default request configuration', () => {
@@ -186,9 +190,9 @@ describe('The Configuration Class', () => {
 
     describe('when checkSignature is true (default)', () => {
       it('exectutes the request with the `X-API-Signature` header', () => {
-        jest.spyOn(configuration, 'checkSignature').mockImplementation(
-          () => 'signature',
-        );
+        jest
+          .spyOn(configuration, 'checkSignature')
+          .mockImplementation(() => 'signature');
 
         configuration.executeRequest({
           data,

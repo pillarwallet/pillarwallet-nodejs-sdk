@@ -1,32 +1,33 @@
+import { runInNewContext } from 'vm';
 const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-let spy: any;
-
 describe('wallet endpoints', () => {
+  const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
+  let pSdk: PillarSdk;
+
   beforeEach(() => {
-    this.pSdk = new PillarSdk({
+    pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
       privateKey: keys.privateKey,
     });
-
-    spy = jest.spyOn(Requester, 'execute');
   });
 
   afterEach(() => {
-    spy.mockClear();
+    requesterExecuteSpy.mockClear();
   });
 
   describe('Wallet Registration', () => {
     it('Expect Return Success', () => {
-
       const inputParams = {
-        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        fcmToken:
+          'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
         username: 'bob123',
       };
 
-      this.pSdk.wallet.register(inputParams)
+      pSdk.wallet
+        .register(inputParams)
         .then((response: any) => {
           // Successful response!
           // console.log(response.data);
@@ -38,14 +39,13 @@ describe('wallet endpoints', () => {
           return error;
         });
 
-
       /**
        * TODO: Currently waiting on a development
        * or testing environment before we can asset
        * a correct / expected response. For now, just
        * using a spy to ensure that the request was made.
        */
-      expect(spy).toHaveBeenCalled();
+      expect(requesterExecuteSpy).toHaveBeenCalled();
     });
   });
 
@@ -56,12 +56,12 @@ describe('wallet endpoints', () => {
         fcmToken: 'increaseThePeace',
       };
 
-      const result = this.pSdk.wallet.update(inputParams)
+      const result = pSdk.wallet
+        .update(inputParams)
         .then((response: any) => {
           // Successful response!
           // console.log(response.data);
           return response;
-
         })
         .catch((error: any) => {
           // Unsuccessful response.
@@ -75,7 +75,7 @@ describe('wallet endpoints', () => {
        * a correct / expected response. For now, just
        * using a spy to ensure that the request was made.
        */
-      expect(spy).toHaveBeenCalled();
+      expect(requesterExecuteSpy).toHaveBeenCalled();
     });
   });
 
@@ -83,11 +83,12 @@ describe('wallet endpoints', () => {
   describe('The Wallet registerAddress method', () => {
     it('calls the API with valid data', async () => {
       const inputParams = {
-        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        fcmToken:
+          'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
         username: 'bob123',
       };
 
-      const res = await this.pSdk.wallet.register(inputParams);
+      const res = await pSdk.wallet.register(inputParams);
 
       const inputParams2 = {
         walletId: res.data.walletId,
@@ -96,13 +97,11 @@ describe('wallet endpoints', () => {
         fcmToken: 'sdcxxczdsds',
       };
 
-      const response = await this.pSdk.wallet.registerAddress(inputParams2);
-      expect(response.data).toEqual(
-        {
-          result: 'success',
-          message: 'Successfully registered address on BCX',
-        },
-      );
+      const response = await pSdk.wallet.registerAddress(inputParams2);
+      expect(response.data).toEqual({
+        result: 'success',
+        message: 'Successfully registered address on BCX',
+      });
     });
   });
 
@@ -110,11 +109,12 @@ describe('wallet endpoints', () => {
   describe('The Wallet unregisterAddress method', () => {
     it('calls the API with valid data', async () => {
       const inputParams = {
-        fcmToken: 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
+        fcmToken:
+          'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
         username: 'bob123',
       };
 
-      const res = await this.pSdk.wallet.register(inputParams);
+      const res = await pSdk.wallet.register(inputParams);
 
       const inputParams2 = {
         walletId: res.data.walletId,
@@ -123,7 +123,7 @@ describe('wallet endpoints', () => {
         fcmToken: 'sdcxxczdsds',
       };
 
-      await this.pSdk.wallet.registerAddress(inputParams2);
+      await pSdk.wallet.registerAddress(inputParams2);
 
       const inputParams3 = {
         walletId: res.data.walletId,
@@ -131,13 +131,11 @@ describe('wallet endpoints', () => {
         blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
       };
 
-      const response = await this.pSdk.wallet.unregisterAddress(inputParams3);
-      expect(response.data).toEqual(
-        {
-          result: 'success',
-          message: 'Successfully unregistered address on BCX',
-        },
-      );
+      const response = await pSdk.wallet.unregisterAddress(inputParams3);
+      expect(response.data).toEqual({
+        result: 'success',
+        message: 'Successfully unregistered address on BCX',
+      });
     });
   });
 });

@@ -15,7 +15,7 @@ export class PillarSdk extends Configuration {
   asset: Asset = new Asset();
   connection: Connection = new Connection();
   user: User = new User();
-  notification : Notification = new Notification();
+  notification: Notification = new Notification();
   configuration: Configuration = new Configuration();
 
   /**
@@ -31,7 +31,10 @@ export class PillarSdk extends Configuration {
 
     require('ajv-keywords')(ajv, 'instanceof');
 
-    const valid = ajv.validate(pillarSdkConstructorSchema, incomingConfiguration);
+    const valid = ajv.validate(
+      pillarSdkConstructorSchema,
+      incomingConfiguration,
+    );
     if (!valid && ajv.errors) {
       throw new TypeError(ajv.errorsText(ajv.errors));
     }

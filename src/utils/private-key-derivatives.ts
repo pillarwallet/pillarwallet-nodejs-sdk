@@ -1,5 +1,5 @@
 const EC = require('elliptic').ec;
-const ellipticCurve =  new EC('secp256k1');
+const ellipticCurve = new EC('secp256k1');
 import * as ethUtils from 'ethereumjs-util';
 
 export class PrivateKeyDerivatives {

@@ -29,15 +29,13 @@ const userValidateSchema = require('../schemas/user/validate.json');
 const profileImageSchema = require('../schemas/user/profileImage.json');
 const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
 const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
-const updateNotificationPreferencesSchema =
-  require('../schemas/user/userNotificationPreferences.json');
+const updateNotificationPreferencesSchema = require('../schemas/user/userNotificationPreferences.json');
 const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePassword.json');
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
 const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
 
 export class User extends Configuration {
-
   constructor() {
     super();
   }
@@ -48,13 +46,15 @@ export class User extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   update(userUpdate: UserUpdate): AxiosPromise {
-
     this.validation(userUpdateSchema, userUpdate);
 
-    postConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(userUpdate, Configuration.accessKeys.privateKey);
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      userUpdate,
+      Configuration.accessKeys.privateKey,
+    );
     postConfiguration.data = userUpdate;
-    postConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_UPDATE;
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.USER_UPDATE;
 
     return Requester.execute(postConfiguration);
   }
@@ -65,7 +65,6 @@ export class User extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   info(userInfo: UserInfo): AxiosPromise {
-
     this.validation(userInfoSchema, userInfo);
 
     const config = {
@@ -74,8 +73,10 @@ export class User extends Configuration {
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_INFO}`,
     };
 
-    config.headers['X-API-Signature'] =
-      this.checkSignature(userInfo, Configuration.accessKeys.privateKey);
+    config.headers['X-API-Signature'] = this.checkSignature(
+      userInfo,
+      Configuration.accessKeys.privateKey,
+    );
 
     return Requester.execute(config);
   }
@@ -92,12 +93,17 @@ export class User extends Configuration {
 
     const config = {
       ...getConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_INFO_BY_ID + targetUserId,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.USER_INFO_BY_ID +
+        targetUserId,
       params: query,
     };
 
-    config.headers['X-API-Signature'] =
-      this.checkSignature(query, Configuration.accessKeys.privateKey);
+    config.headers['X-API-Signature'] = this.checkSignature(
+      query,
+      Configuration.accessKeys.privateKey,
+    );
 
     return Requester.execute(config);
   }
@@ -111,7 +117,6 @@ export class User extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   search(userSearch: UserSearch): AxiosPromise {
-
     this.validation(userSearchSchema, userSearch);
 
     const config = {
@@ -119,8 +124,10 @@ export class User extends Configuration {
       params: userSearch,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_SEARCH}`,
     };
-    config.headers['X-API-Signature'] =
-      this.checkSignature(userSearch, Configuration.accessKeys.privateKey);
+    config.headers['X-API-Signature'] = this.checkSignature(
+      userSearch,
+      Configuration.accessKeys.privateKey,
+    );
 
     return Requester.execute(config);
   }
@@ -131,13 +138,15 @@ export class User extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   delete(userDelete: UserDelete): AxiosPromise {
-
     this.validation(userDeleteSchema, userDelete);
 
-    deleteConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(userDelete, Configuration.accessKeys.privateKey);
+    deleteConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      userDelete,
+      Configuration.accessKeys.privateKey,
+    );
     deleteConfiguration.data = userDelete;
-    deleteConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
+    deleteConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
 
     return Requester.execute(deleteConfiguration);
   }
@@ -153,9 +162,10 @@ export class User extends Configuration {
     const config = {
       ...getConfiguration,
       params: userUsernameSearch,
-      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_USERNAME_SEARCH}`,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_USERNAME_SEARCH
+      }`,
     };
-
 
     return Requester.execute(config);
   }
@@ -175,7 +185,11 @@ export class User extends Configuration {
 
     const config = {
       ...getConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE + '/' + data.imageName,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.USER_IMAGE +
+        '/' +
+        data.imageName,
       responseType: 'stream',
     };
     return Requester.execute(config);
@@ -186,12 +200,17 @@ export class User extends Configuration {
 
     const config = {
       ...postConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE + '?walletId='
-      + query.walletId,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.USER_IMAGE +
+        '?walletId=' +
+        query.walletId,
       data: image,
     };
-    config.headers['X-API-Signature'] =
-      this.checkSignature(query, Configuration.accessKeys.privateKey);
+    config.headers['X-API-Signature'] = this.checkSignature(
+      query,
+      Configuration.accessKeys.privateKey,
+    );
 
     return Requester.execute(config);
   }
@@ -215,7 +234,10 @@ export class User extends Configuration {
       method: 'POST',
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE,
       headers: {
-        'X-API-Signature': this.checkSignature({ walletId }, Configuration.accessKeys.privateKey),
+        'X-API-Signature': this.checkSignature(
+          { walletId },
+          Configuration.accessKeys.privateKey,
+        ),
         'Content-Type': '',
       },
       data: formData,
@@ -234,8 +256,9 @@ export class User extends Configuration {
      * i.e. integration tests should run from a browser/browser-like environment
      */
     if (formData._boundary) {
-      config.headers['Content-Type'] =
-        `multipart/form-data; boundary=${formData._boundary}`;
+      config.headers['Content-Type'] = `multipart/form-data; boundary=${
+        formData._boundary
+      }`;
     } else {
       delete config.headers['Content-Type'];
     }
@@ -271,12 +294,15 @@ export class User extends Configuration {
 
     const config = {
       ...getConfiguration,
-      url: `${Configuration.accessKeys.apiUrl}` +
-      `${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
+      url:
+        `${Configuration.accessKeys.apiUrl}` +
+        `${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
       params: query,
     };
-    config.headers['X-API-Signature'] =
-      this.checkSignature(query, Configuration.accessKeys.privateKey);
+    config.headers['X-API-Signature'] = this.checkSignature(
+      query,
+      Configuration.accessKeys.privateKey,
+    );
 
     return Requester.execute(config);
   }
@@ -316,9 +342,7 @@ export class User extends Configuration {
       data,
       schema: userValidateEmailSchema,
       defaultRequest: postConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_VALIDATE_EMAIL,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE_EMAIL,
     });
   }
 
@@ -336,9 +360,7 @@ export class User extends Configuration {
       data,
       schema: userValidatePhoneSchema,
       defaultRequest: postConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_VALIDATE_PHONE,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE_PHONE,
     });
   }
 
@@ -349,12 +371,16 @@ export class User extends Configuration {
    * @param {UpdateNotificationPreferences} data
    * @returns {AxiosPromise}
    */
-  updateNotificationPreferences(data: UpdateNotificationPreferences): AxiosPromise {
+  updateNotificationPreferences(
+    data: UpdateNotificationPreferences,
+  ): AxiosPromise {
     return this.executeRequest({
       data,
       schema: updateNotificationPreferencesSchema,
       defaultRequest: putConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_NOTIFICATION_PREFERENCES,
+      url:
+        Configuration.accessKeys.apiUrl +
+        HttpEndpoints.USER_NOTIFICATION_PREFERENCES,
     });
   }
 }
