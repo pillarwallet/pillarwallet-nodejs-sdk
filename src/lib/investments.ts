@@ -8,7 +8,6 @@ import { default as postConfiguration } from '../utils/requester-configurations/
 const investmentsDepositRequestSchema = require('../schemas/investments/depositRequest.json');
 
 export class Investments extends Configuration {
-
   constructor() {
     super();
   }
@@ -20,12 +19,14 @@ export class Investments extends Configuration {
    * @param {InvestmentsDepositRequest} data
    * @returns {AxiosPromise}
    */
-  depositRequest(data :InvestmentsDepositRequest) : AxiosPromise  {
+  depositRequest(data: InvestmentsDepositRequest): AxiosPromise {
     return this.executeRequest({
       data,
       schema: investmentsDepositRequestSchema,
       defaultRequest: postConfiguration,
-      url: Configuration.accessKeys.investmentsUrl + HttpEndpoints.INVESTMENTS_DEPOSIT_REQUEST,
+      url:
+        Configuration.accessKeys.investmentsUrl +
+        HttpEndpoints.INVESTMENTS_DEPOSIT_REQUEST,
     });
   }
 }

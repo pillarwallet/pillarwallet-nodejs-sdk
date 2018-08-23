@@ -3,7 +3,7 @@
  */
 import { AxiosPromise } from 'axios';
 import { Requester } from '../utils/requester';
-import { Configuration }  from './configuration';
+import { Configuration } from './configuration';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 
 /**
@@ -21,7 +21,6 @@ const assetSearchSchema = require('../schemas/assets/search.json');
 const assetListSchema = require('../schemas/assets/list.json');
 
 export class Asset extends Configuration {
-
   constructor() {
     super();
   }
@@ -33,12 +32,15 @@ export class Asset extends Configuration {
    */
   defaults(assetDefaults: AssetDefaults): AxiosPromise {
     // validation
-    this.validation(assetDefaultsSchema,assetDefaults);
+    this.validation(assetDefaultsSchema, assetDefaults);
     // setting the request
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(assetDefaults, Configuration.accessKeys.privateKey);
+    getConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      assetDefaults,
+      Configuration.accessKeys.privateKey,
+    );
     getConfiguration.params = assetDefaults;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DEFAULT;
+    getConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_DEFAULT;
 
     return Requester.execute(getConfiguration);
   }
@@ -52,10 +54,13 @@ export class Asset extends Configuration {
   search(assetSearch: AssetSearch): AxiosPromise {
     this.validation(assetSearchSchema, assetSearch);
 
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(assetSearch, Configuration.accessKeys.privateKey);
+    getConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      assetSearch,
+      Configuration.accessKeys.privateKey,
+    );
     getConfiguration.params = assetSearch;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_SEARCH;
+    getConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_SEARCH;
 
     return Requester.execute(getConfiguration);
   }
@@ -65,13 +70,16 @@ export class Asset extends Configuration {
    * @param {AssetList} assetList
    * @returns {axios.AxiosPromise}
    */
-  list(assetList:AssetList): AxiosPromise {
+  list(assetList: AssetList): AxiosPromise {
     this.validation(assetListSchema, assetList);
 
-    getConfiguration.headers['X-API-Signature'] =
-      this.checkSignature(assetList, Configuration.accessKeys.privateKey);
+    getConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      assetList,
+      Configuration.accessKeys.privateKey,
+    );
     getConfiguration.params = assetList;
-    getConfiguration.url = Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_LIST;
+    getConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_LIST;
 
     return Requester.execute(getConfiguration);
   }

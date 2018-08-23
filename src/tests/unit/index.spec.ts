@@ -7,12 +7,12 @@ import { Wallet } from '../../lib/wallet';
 import { Configuration } from '../../lib/configuration';
 import { Investments } from '../../lib/investments';
 
-
 describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
     const pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
-      privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      privateKey:
+        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
     });
 
     expect(pSdk).toBeInstanceOf(PillarSdk);
@@ -30,7 +30,8 @@ describe('The Pillar SDK Class', () => {
     try {
       new PillarSdk({
         apiUrl: 'localhos8080',
-        privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+        privateKey:
+          'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
       });
     } catch (e) {
       errorThrown = e;

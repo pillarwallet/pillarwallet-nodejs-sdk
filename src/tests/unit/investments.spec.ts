@@ -6,10 +6,13 @@ let pSdk: PillarSdk;
 describe('The Investment Class', () => {
   beforeEach(() => {
     pSdk = new PillarSdk({
-      privateKey: 'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      privateKey:
+        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
       investmentsUrl: 'http://localhost:8082',
     });
-    jest.spyOn(Requester, 'execute').mockImplementationOnce(() => Promise.resolve());
+    jest
+      .spyOn(Requester, 'execute')
+      .mockImplementationOnce(() => Promise.resolve());
   });
 
   afterEach(() => {
@@ -18,25 +21,23 @@ describe('The Investment Class', () => {
 
   describe('depositRequest method', () => {
     it('should successfully call with valid data', async () => {
-      const inputParams =
-        {
-          walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-          currency: 'GBP',
-          serviceProvider: 'Nivaura',
-        };
+      const inputParams = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        currency: 'GBP',
+        serviceProvider: 'Nivaura',
+      };
 
       await pSdk.investments.depositRequest(inputParams);
 
       expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining(
-          {
-            data: inputParams,
-            url: 'http://localhost:8082/investment/wallet/deposit-request',
-          }),
+        expect.objectContaining({
+          data: inputParams,
+          url: 'http://localhost:8082/investment/wallet/deposit-request',
+        }),
       );
     });
 
-    it('should fail validation if one of the parameters is missing',  async () => {
+    it('should fail validation if one of the parameters is missing', async () => {
       const inputParams = {
         currency: 'GBP',
         serviceProvider: 'Nivaura',
@@ -46,8 +47,7 @@ describe('The Investment Class', () => {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message)
-          .toBe('data should have required property \'walletId\'');
+        expect(e.message).toBe("data should have required property 'walletId'");
       }
     });
 
@@ -61,8 +61,7 @@ describe('The Investment Class', () => {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message)
-          .toBe('data should have required property \'currency\'');
+        expect(e.message).toBe("data should have required property 'currency'");
       }
     });
 
@@ -76,8 +75,7 @@ describe('The Investment Class', () => {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message)
-          .toBe('data.walletId should be string');
+        expect(e.message).toBe('data.walletId should be string');
       }
     });
 
@@ -91,8 +89,7 @@ describe('The Investment Class', () => {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message)
-          .toBe('data.currency should be string');
+        expect(e.message).toBe('data.currency should be string');
       }
     });
   });

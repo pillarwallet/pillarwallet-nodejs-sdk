@@ -1,5 +1,5 @@
 export default {
-  url:'',
+  url: '',
   method: 'DELETE',
   headers: {
     'X-API-Signature': '',

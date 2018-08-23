@@ -1,8 +1,26 @@
 {
-  "extends": "tslint-config-airbnb",
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
   "linterOptions": {
     "exclude": [
         "dist"
+    ]
+  },
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "prettier": [
+      true,
+      {
+        "singleQuote": true,
+        "trailingComma": "all"
+      }
+    ],
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-pascal-case"
     ]
   }
 }

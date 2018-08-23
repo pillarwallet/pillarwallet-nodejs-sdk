@@ -58,10 +58,7 @@ export class Configuration {
    * @returns {string}
    */
   checkSignature(signParams: Object, privateKey: string) {
-    const xAPISignature = Authentication.sign(
-      signParams,
-      privateKey,
-    );
+    const xAPISignature = Authentication.sign(signParams, privateKey);
 
     if (!xAPISignature) {
       throw new Error(ErrorMessages.SigningError);
@@ -88,14 +85,15 @@ export class Configuration {
     url,
     checkSignature = true,
   }: {
-    data?: object,
-    params?: object,
-    schema: object,
-    defaultRequest: any,
-    url: string,
-    checkSignature?: boolean,
+    data?: object;
+    params?: object;
+    schema: object;
+    defaultRequest: any;
+    url: string;
+    checkSignature?: boolean;
   }): AxiosPromise {
-    const payload: any = defaultRequest.method.toLowerCase() === 'get' ? params : data;
+    const payload: any =
+      defaultRequest.method.toLowerCase() === 'get' ? params : data;
 
     try {
       this.validation(schema, payload);
@@ -111,8 +109,10 @@ export class Configuration {
     };
 
     if (checkSignature) {
-      request.headers['X-API-Signature'] =
-        this.checkSignature(payload, Configuration.accessKeys.privateKey);
+      request.headers['X-API-Signature'] = this.checkSignature(
+        payload,
+        Configuration.accessKeys.privateKey,
+      );
     }
 
     return Requester.execute(request);
