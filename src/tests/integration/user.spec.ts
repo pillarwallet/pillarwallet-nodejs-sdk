@@ -229,10 +229,13 @@ describe('user endpoints', () => {
         formData,
       );
 
+      const imageByUserId = new RegExp(
+        `^http(s)?://.+\/user\/image-by-userid\/${wallet.data.userId}`,
+      );
       expect(res.data).toEqual({
         result: 'success',
         message: 'Profile image was successfully uploaded.',
-        profileImage: expect.stringMatching(/^.+\.jpg$/),
+        profileImage: expect.stringMatching(imageByUserId),
       });
     });
   });
