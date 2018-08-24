@@ -8,10 +8,6 @@ import { default as postConfiguration } from '../utils/requester-configurations/
 const investmentsDepositRequestSchema = require('../schemas/investments/depositRequest.json');
 
 export class Investments extends Configuration {
-  constructor() {
-    super();
-  }
-
   /**
    * @name depositRequest
    * @description method to call deposit request api endpoint on platform-investments

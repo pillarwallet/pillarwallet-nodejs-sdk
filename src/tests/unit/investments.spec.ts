@@ -1,9 +1,9 @@
 import { PillarSdk } from '../..';
 import { Requester } from '../../utils/requester';
 
-let pSdk: PillarSdk;
-
 describe('The Investment Class', () => {
+  let pSdk: PillarSdk;
+
   beforeEach(() => {
     pSdk = new PillarSdk({
       privateKey:
@@ -31,6 +31,7 @@ describe('The Investment Class', () => {
 
       expect(Requester.execute).toHaveBeenCalledWith(
         expect.objectContaining({
+          method: 'POST',
           data: inputParams,
           url: 'http://localhost:8082/investment/wallet/deposit-request',
         }),
@@ -43,6 +44,7 @@ describe('The Investment Class', () => {
         serviceProvider: 'Nivaura',
       };
 
+      expect.assertions(2);
       try {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
@@ -57,6 +59,7 @@ describe('The Investment Class', () => {
         serviceProvider: 'Nivaura',
       };
 
+      expect.assertions(2);
       try {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
@@ -71,6 +74,7 @@ describe('The Investment Class', () => {
         currency: 'GBP',
       };
 
+      expect.assertions(2);
       try {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
@@ -85,6 +89,7 @@ describe('The Investment Class', () => {
         walletId: '1323',
       };
 
+      expect.assertions(2);
       try {
         await pSdk.investments.depositRequest(inputParams);
       } catch (e) {
