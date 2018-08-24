@@ -452,26 +452,22 @@ Request deposit account information/credentials from service provider.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The Wallet Identifier.  | UUID  | Required  |
-| currency | The Currency ticker symbols | String | |
+| currency | The Currency ticker symbols | String | Required |
 | serviceProvider | The ICO providers | String | |
 
 **Expected Output**
-
-| Name  | Output | Type |
-| ------------- | ------------- | ------------- |
-| result  | 'success' | String  |
 
 JSON Investments with respective values::
 
 | Name  | Description | Type |
 | ------------- | ------------- | ------------- |
-| account  | account number | number  |
-| iban | international bank account number  | String |
+| account  | Account number | Number  |
+| iban | International bank account number  | String |
 | bic | A bank identifier code | String |
-| reference| reference of bank transfer | String |
-| beneficiary| the person or entity who will receive a payment | String |
-| bankName|  the name of the bank | String |
-| currency| The Currency ticker symbols  | String |
+| reference | Reference of bank transfer | String |
+| beneficiary | The person or entity who will receive a payment | String |
+| bankName |  The name of the bank | String |
+| currency | The Currency ticker symbols  | String |
 
 ### User Update
 
