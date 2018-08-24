@@ -18,6 +18,11 @@
       "description": "Notifications Url definition",
       "type": [ "string" ],
       "format": "uri"
+    },
+    "investmentsUrl": {
+      "description": "Investments Url definition",
+      "type": [ "string" ],
+      "format": "uri"
     }
   },
   "required": [ "privateKey" ]

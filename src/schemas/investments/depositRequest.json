@@ -1,0 +1,21 @@
+{
+  "title": "Investments Model - Deposit Request",
+  "description": "Schema definition for Investments Model - depositRequest method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
+  "currency": {
+    "description": "The shared access key",
+      "type": "string"
+  },
+  "serviceProvider": {
+    "description": "specify the service provider for investment platform",
+    "type": "string"
+  }
+},
+  "required": [ "walletId", "currency" ]
+}
