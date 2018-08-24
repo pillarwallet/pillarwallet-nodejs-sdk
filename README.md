@@ -20,6 +20,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
     - [Notification List](#notification-list)
+    - [Investments Deposit Request](#investments-deposit-request)
     - [User Update](#user-update)
     - [User Info](#user-info)
     - [User Search](#user-search)
@@ -437,6 +438,36 @@ JSON Notifications with respective values::
 | meta | The Sources keys support the payload  | |
 | payload | The payload of one notification |
 | createdAt | The unix timestamp of one notification  | |
+
+### Investments Deposit Request
+
+```typescript
+pillarSdk.investments.depositRequest(inputParams);
+```
+
+Request deposit account information/credentials from service provider.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier.  | UUID  | Required  |
+| currency | The Currency ticker symbols | String | Required |
+| serviceProvider | The ICO providers | String | |
+
+**Expected Output**
+
+JSON Investments with respective values::
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| account  | Account number | Number  |
+| iban | International bank account number  | String |
+| bic | A bank identifier code | String |
+| reference | Reference of bank transfer | String |
+| beneficiary | The person or entity who will receive a payment | String |
+| bankName |  The name of the bank | String |
+| currency | The Currency ticker symbols  | String |
 
 ### User Update
 
