@@ -1,0 +1,13 @@
+{
+  "title": "Investments Model - ICO List",
+  "description": "Schema definition for Investments Model - icoList method",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "userId": {
+      "description": "The user ID",
+      "type": "string"
+    }
+  },
+  "required": [ "userId" ]
+}

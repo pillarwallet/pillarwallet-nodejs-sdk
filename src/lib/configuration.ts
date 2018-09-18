@@ -72,6 +72,7 @@ export class Configuration {
    * @param {object} options
    * @param {object=} options.data
    * @param {object=} options.params
+   * @param {object=} options.noParams
    * @param {object} options.schema
    * @param {any} options.defaultRequest
    * @param {url} options.url
@@ -80,6 +81,7 @@ export class Configuration {
   executeRequest({
     data,
     params,
+    noParams = false,
     schema,
     defaultRequest,
     url,
@@ -87,6 +89,7 @@ export class Configuration {
   }: {
     data?: object;
     params?: object;
+    noParams?: boolean;
     schema: object;
     defaultRequest: any;
     url: string;
@@ -101,12 +104,22 @@ export class Configuration {
       return Promise.reject(e);
     }
 
-    const request = {
+    let request;
+
+    request = {
       ...defaultRequest,
       data,
       params,
       url,
     };
+
+    // check if method needs data to be sent or if it uses data within the url
+    if (noParams) {
+      request = {
+        ...defaultRequest,
+        url,
+      };
+    }
 
     if (checkSignature) {
       request.headers['X-API-Signature'] = this.checkSignature(
