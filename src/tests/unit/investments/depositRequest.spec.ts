@@ -1,5 +1,5 @@
-import { PillarSdk } from '../..';
-import { Requester } from '../../utils/requester';
+import { PillarSdk } from '../../../index';
+import { Requester } from '../../../utils/requester';
 
 describe('The Investment Class', () => {
   let pSdk: PillarSdk;

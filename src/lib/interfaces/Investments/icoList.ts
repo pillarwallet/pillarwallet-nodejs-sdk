@@ -1,0 +1,3 @@
+interface IcoList {
+  userId: string;
+}

@@ -4,8 +4,11 @@ import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
 // Request Configuration
 import { default as postConfiguration } from '../utils/requester-configurations/post';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
+
 // Import Validation Schemas
 const investmentsDepositRequestSchema = require('../schemas/investments/depositRequest.json');
+const icoListSchema = require('../schemas/investments/icoList.json');
 
 export class Investments extends Configuration {
   /**
@@ -23,6 +26,25 @@ export class Investments extends Configuration {
       url:
         Configuration.accessKeys.investmentsUrl +
         HttpEndpoints.INVESTMENTS_DEPOSIT_REQUEST,
+    });
+  }
+
+  /**
+   * @name icoList
+   * @description Retrieve a list of ICO offerings available for a specific user
+   *
+   * @param {IcoList} params
+   * @returns {AxiosPromise}
+   */
+  icoList(params: IcoList): AxiosPromise {
+    return this.executeRequest({
+      params,
+      sendParams: false,
+      schema: icoListSchema,
+      defaultRequest: getConfiguration,
+      url: `${Configuration.accessKeys.investmentsUrl}${
+        HttpEndpoints.INVESTMENTS_USER_ICO
+      }/${params.userId}/icos`,
     });
   }
 }
