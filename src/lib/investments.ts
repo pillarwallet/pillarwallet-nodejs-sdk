@@ -31,23 +31,20 @@ export class Investments extends Configuration {
 
   /**
    * @name icoList
-   * @description Retrieve a list of ICO offerings available for a specific ICO wallet user
+   * @description Retrieve a list of ICO offerings available for a specific user
    *
-   * @param {} data
+   * @param {IcoList} params
    * @returns {AxiosPromise}
    */
   icoList(params: IcoList): AxiosPromise {
     return this.executeRequest({
       params,
-      noParams: true,
+      sendParams: false,
       schema: icoListSchema,
       defaultRequest: getConfiguration,
-      url:
-        Configuration.accessKeys.investmentsUrl +
-        HttpEndpoints.INVESTMENTS_USER_ICO +
-        '/' +
-        params.userId +
-        '/icos',
+      url: `${Configuration.accessKeys.investmentsUrl}${
+        HttpEndpoints.INVESTMENTS_USER_ICO
+      }/${params.userId}/icos`,
     });
   }
 }

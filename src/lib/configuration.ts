@@ -72,7 +72,7 @@ export class Configuration {
    * @param {object} options
    * @param {object=} options.data
    * @param {object=} options.params
-   * @param {object=} options.noParams
+   * @param {object=} options.sendParams
    * @param {object} options.schema
    * @param {any} options.defaultRequest
    * @param {url} options.url
@@ -81,7 +81,7 @@ export class Configuration {
   executeRequest({
     data,
     params,
-    noParams = false,
+    sendParams = true,
     schema,
     defaultRequest,
     url,
@@ -89,7 +89,7 @@ export class Configuration {
   }: {
     data?: object;
     params?: object;
-    noParams?: boolean;
+    sendParams?: boolean;
     schema: object;
     defaultRequest: any;
     url: string;
@@ -108,15 +108,15 @@ export class Configuration {
 
     request = {
       ...defaultRequest,
-      data,
-      params,
       url,
     };
 
     // check if method needs data to be sent or if it uses data within the url
-    if (noParams) {
+    if (sendParams) {
       request = {
         ...defaultRequest,
+        data,
+        params,
         url,
       };
     }
