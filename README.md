@@ -238,13 +238,13 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
-| email  | The Token Email | String  |
+| socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
 | website  | The Token Website | String  |
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
-| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+| icos  | Ico details of one Token. | Array  |
 
 ### Asset Search
 
@@ -274,13 +274,13 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
-| email  | The Token Email | String  |
+| socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
 | website  | The Token Website | String  |
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
-| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+| icos  | Ico details of one Token. | Array  |
 
 ### Asset List
 
@@ -309,13 +309,13 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
-| email  | The Token Email | String  |
+| socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
 | website  | The Token Website | String  |
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
-| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+| icos  | Ico details of one Token. | Array  |
 
 ### Connection Invite
 
