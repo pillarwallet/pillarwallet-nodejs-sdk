@@ -10,6 +10,8 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 - [Response and Error](#response-and-error)
 - [Methods](#methods)
     - [Wallet Update](#wallet-update)
+    - [Wallet Register Address](#wallet-register-address)
+    - [Wallet Unregister Address](#wallet-unregister-address)
     - [Asset Defaults](#asset-defaults)
     - [Asset Search](#asset-search)
     - [Asset List](#asset-list)
@@ -161,6 +163,53 @@ Updates Fcm Token in the backend.
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'OK' | String  |
+
+### Wallet Register Address
+
+```typescript
+pillarSdk.wallet.registerAddress(inputParams)
+```
+
+Register the specified blockchain address for notifications and for BCX monitoring
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| blockchainAddress  | The blockchain address of one wallet | String  | Required  |
+| blockchain  | The blockchain environment | String  |  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Successfully registered address on BCX' | String  |
+
+### Wallet Unregister Address
+
+```typescript
+pillarSdk.wallet.unregisterAddress(inputParams)
+```
+
+Unregister the specified blockchain address for notifications and for BCX monitoring
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| blockchainAddress  | The blockchain address of one wallet | String  | Required  |
+| blockchain  | The blockchain environment | String  |  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Successfully unregistered address on BCX' | String  |
 
 ### Asset Defaults
 
