@@ -329,7 +329,7 @@ Creates a connection invitation for a user to create a relationship with another
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
@@ -352,7 +352,7 @@ Accepts a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | sourceUserAccessKey  | Source User Access Key. | String  | Required  |
 | targetUserAccessKey  | Target User Access Key. | String  | Required  |
@@ -376,7 +376,7 @@ Rejects a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
@@ -400,7 +400,7 @@ Cancels a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
