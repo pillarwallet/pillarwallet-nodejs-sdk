@@ -22,6 +22,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
     - [Notification List](#notification-list)
+    - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
     - [User Create One Time Password](#user-create-one-time-password)
     - [User Delete](#user-delete)
@@ -74,6 +75,7 @@ Instantiate the Pillar SDK, then set the apiUrl (optional), notificationsUrl (op
 const pillarSdk = new PillarSdk({
   apiUrl: 'http://localhost:8080',
   notificationsUrl: 'https://localhost:8081',
+  investmentsUrl: 'https://localhost:8082',
   privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
@@ -85,6 +87,7 @@ const pillarSdk = new PillarSdk({
 | privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
 | apiUrl  | URL where API is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
 | notificationsUrl  | URL where the Notifications Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
+| investmentsUrl  | URL where the Investments Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
 
 #### 2 - Register the Wallet
 
@@ -248,6 +251,7 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
 | socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
@@ -284,6 +288,7 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
 | socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
@@ -319,6 +324,7 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
+| email  | The Token Email | String  |
 | socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
@@ -497,6 +503,27 @@ JSON Notifications with respective values::
 | meta | The Sources keys support the payload  | |
 | payload | The payload of one notification |
 | createdAt | The unix timestamp of one notification  | |
+
+### Investments ICO List
+
+```typescript
+pillarSdk.investments.icoList(inputParams);
+```
+
+Fetch a list of ICOs for a given user.
+
+**Input Parameters**
+
+| Name | Description | Type | Required |
+| ---- | ----------- | ---- | -------- |
+| userId | The User's ID | String | Required |
+
+**Expected Output**
+
+| Name | Description | Type |
+| ---- | ----------- | ---- |
+| result | 'success' | String |
+| data | List of ICOs | [[Asset](#asset)] |
 
 ### Investments Deposit Request
 
@@ -938,6 +965,63 @@ Validate a one-time password sent via SMS.
 | result  | 'success' | String  |
 | message  | 'Phone validated.' | String  |
 | userId  | The user Identifier | UUID |
+
+## Types
+
+### Asset
+
+| Name | Description | Type |
+| ---- | ----------- | ---- |
+| id | Asset ID | UUID |
+| name | Asset name | String |
+| symbol | Asset symbol | String |
+| address | Ethereum address of the Asset | String |
+| decimals | The number of decimals of the Asset | Number |
+| description | Asset description | String |
+| wallpaperUrl | Asset wallpaper URL | String (URL) |
+| iconUrl | Icon URL | String (URL) |
+| email | Contact email address for Asset | String (Email) |
+| socialMedia | A list of social media services | [[SocialMedia](#socialmedia)] |
+| website | Website address of Asset | String (URL) |
+| whitepaper | Asset whitepaper | String (URL) |
+| isDefault | Default token ??? | Boolean |
+| icos | List of ICO phases | [[ICO](#ico)] |
+
+### SocialMedia
+
+| Name | Description | Type |
+| ---- | ----------- | ---- |
+| service | The social network service | String |
+| username | The social network account | String |
+
+### ICO
+
+| Name | Description | Type |
+| ---- | ----------- | ---- |
+| icoStatus | 'PENING', 'ACTIVE', 'CLOSED' | String |
+| icoPhase | The phase of the ICO | String |
+| icoAddress | The smart contract address of the ICO | String |
+| minimumContribution | The minimum contribution in the base currency needed to invest in the ICO | Number |
+| maximumContribution | The maximum contribution in the base currency allowed to invest in the ICO | Number |
+| baseCurrency | The currency of the ICO | String |
+| unitPrice | The price per unit in the base currency | Number |
+| totalSupply | The total number of units available | Number |
+| totalLocked | The total number of units reserved and purchased | Number |
+| supportedCurrencies | A comma separated list of accepted currencies | String |
+| icoStartingBlockNumber | The ICO's starting block number | Number |
+| plannedOpeningDate | The planned opening date of the ICO | Date |
+| icoEndingBlockNumber | The ICO's ending block number | Number |
+| plannedClosingDate | The planned closing date of the ICO | Date |
+| nationalityRestriction | Indicates if there's a nationality restriction | Boolean |
+| nivauraProjectId | The ICO ID in the ICO Service | Number |
+| links | ICO related links | [[ICOLink](#icolink)] |
+
+### ICOLink
+
+| Name | Description | Type |
+| ---- | ----------- | ---- |
+| name | The name of the resource, i.e. Whitepaper | String |
+| url | The link to the resource | String (URL) |
 
 ## Tests
 
