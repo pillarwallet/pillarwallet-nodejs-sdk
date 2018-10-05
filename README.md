@@ -10,6 +10,8 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 - [Response and Error](#response-and-error)
 - [Methods](#methods)
     - [Wallet Update](#wallet-update)
+    - [Wallet Register Address](#wallet-register-address)
+    - [Wallet Unregister Address](#wallet-unregister-address)
     - [Asset Defaults](#asset-defaults)
     - [Asset Search](#asset-search)
     - [Asset List](#asset-list)
@@ -22,11 +24,21 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Notification List](#notification-list)
     - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
-    - [User Update](#user-update)
-    - [User Info](#user-info)
-    - [User Search](#user-search)
+    - [User Create One Time Password](#user-create-one-time-password)
     - [User Delete](#user-delete)
+    - [User Delete Profile Image](#user-delete-profile-image)
+    - [User Info](#user-info)
+    - [User Image by User Id](#user-image-by-user-id)
+    - [User Info By Id](#user-info-by-id)
+    - [User Profile Image](#user-profile-image)
+    - [User Search](#user-search)
+    - [User Update](#user-update)
+    - [User Upload Profile Image](#user-upload-profile-image)
+    - [User Update Notification Preferences](#user-update-notification-preferences)
     - [User Username Search](#user-username-search)
+    - [User Validate](#user-validate)
+    - [User Validate Email](#user-validate-email)
+    - [User Validate Phone](#user-validate-phone)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
 - [Versioning](#versioning)
@@ -165,6 +177,53 @@ Updates Fcm Token in the backend.
 | result  | 'success' | String  |
 | message  | 'OK' | String  |
 
+### Wallet Register Address
+
+```typescript
+pillarSdk.wallet.registerAddress(inputParams)
+```
+
+Register the specified blockchain address for notifications and for BCX monitoring
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| blockchainAddress  | The blockchain address of one wallet | String  | Required  |
+| blockchain  | The blockchain environment | String  |  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Successfully registered address on BCX' | String  |
+
+### Wallet Unregister Address
+
+```typescript
+pillarSdk.wallet.unregisterAddress(inputParams)
+```
+
+Unregister the specified blockchain address for notifications and for BCX monitoring
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| blockchainAddress  | The blockchain address of one wallet | String  | Required  |
+| blockchain  | The blockchain environment | String  |  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Successfully unregistered address on BCX' | String  |
+
 ### Asset Defaults
 
 ```typescript
@@ -193,12 +252,13 @@ JSON collection of objects with respective values:
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
 | email  | The Token Email | String  |
+| socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
 | website  | The Token Website | String  |
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
-| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+| icos  | Ico details of one Token. | Array  |
 
 ### Asset Search
 
@@ -229,12 +289,13 @@ JSON collection of objects with respective values:
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
 | email  | The Token Email | String  |
+| socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
 | website  | The Token Website | String  |
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
-| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+| icos  | Ico details of one Token. | Array  |
 
 ### Asset List
 
@@ -264,12 +325,13 @@ JSON collection of objects with respective values:
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
 | email  | The Token Email | String  |
+| socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
 | twitter  | The Token Twitter | String  |
 | website  | The Token Website | String  |
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
-| isDefaultToken  | isDefaultToken Flag for Token | Boolean  |
+| icos  | Ico details of one Token. | Array  |
 
 ### Connection Invite
 
@@ -283,7 +345,7 @@ Creates a connection invitation for a user to create a relationship with another
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
@@ -306,7 +368,7 @@ Accepts a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | sourceUserAccessKey  | Source User Access Key. | String  | Required  |
 | targetUserAccessKey  | Target User Access Key. | String  | Required  |
@@ -330,7 +392,7 @@ Rejects a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
@@ -354,7 +416,7 @@ Cancels a connection invitation from another user.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| targetuserId  | The Contact User Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
@@ -493,6 +555,32 @@ JSON Investments with respective values::
 | bankName |  The name of the bank | String |
 | currency | The Currency ticker symbols  | String |
 
+### User Create One Time Password
+
+```typescript
+pillarSdk.user.createOneTimePassword(inputParams);
+```
+
+Create a one-time password for email or phone,
+store it on the user record,
+then send an email or SMS to the wallet user.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| email  | The user's email address. | String  | one of email/phone field is required |
+| phone  | The phone associated of one user | String  | one of email/phone field is required|
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'One-time password sent.' | String  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
 ### User Update
 
 ```typescript
@@ -542,13 +630,113 @@ JSON collection of objects with respective values:
 | country  | The user's country or residence | String |
 | state  | The user's state of residence | String |
 | city  | The user's city of residence | String |
-| email  | The user's email address | String |
 | phone  | The user's phone number | String |
 | tagline  | The user's profile tagline | String |
 | taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
-| pending  | Check if still waiting for verification | Boolean |
+| icoService  | Information related to the user's account with a service provider for ICOs. | Object |
+| status  | The user status in the system. | String |
+
+### User Update Notification Preferences
+
+```typescript
+pillarSdk.user.updateNotificationPreferences(inputParams);
+```
+
+Update notification preferences for given user.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| newOffer  | Activate/Deactivate notification when user receives offers | Boolean  | Optional  |
+| newReceipt  | Activate/Deactivate notification when user receives receipt | Boolean  | Optional  |
+| paymentConfirmation  | Activate/Deactivate notification when payment is confirmed | Boolean  | Optional  |
+| paymentStatusUpdate  | Activate/Deactivate notification whenever the status of payment changes | Boolean  | Optional  |
+| profileUpdate  | Activate/Deactivate notification when user profile where updated | Boolean  | Optional  |
+| fundsDeposit  | Activate/Deactivate notification when funds were deposited in user account | Boolean  | Optional  |
+| transactionEvent  | Activate/Deactivate notification for user transactions | Boolean  | Optional  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Notification preferences were successfully created' | String  |
+
+JSON object with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| userId  | The User Identifier | UUID  |
+| newOffer  | Activate/Deactivate notification when user receives offers | Boolean  | Optional  |
+| newReceipt  | Activate/Deactivate notification when user receives receipt | Boolean  | Optional  |
+| paymentConfirmation  | Activate/Deactivate notification when payment is confirmed | Boolean  | Optional  |
+| paymentStatusUpdate  | Activate/Deactivate notification whenever the status of payment changes | Boolean  | Optional  |
+| profileUpdate  | Activate/Deactivate notification when user profile where updated | Boolean  | Optional  |
+| fundsDeposit  | Activate/Deactivate notification when funds were deposited in user account | Boolean  | Optional  |
+| transactionEvent  | Activate/Deactivate notification for user transactions | Boolean  | Optional  |
+
+### User Image by User Id
+
+```typescript
+ pillarSdk.user.imageByUserId(inputParams);
+```
+
+Get user's profile image using user's ID
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| userId  | The User Identifier | UUID  | Required  |
+
+**Expected Output**
+
+Redirects to an hosted image.
+
+### User Upload Profile Image
+
+```typescript
+ pillarSdk.user.uploadProfileImage(inputParams);
+```
+
+Saves or updates user's profile image.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Profile image was successfully uploaded' | String  |
+| profileImage  | Image Url | String  |
+
+### User Profile Image
+
+```typescript
+ pillarSdk.user.profileImage(inputParams);
+```
+
+Get user's profile image.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| imageName  | The User Image Identifier. | String  | Required  |
+
+**Expected Output**
+
+Redirects to an hosted image.
 
 ### User Info
 
@@ -588,6 +776,36 @@ JSON collection of objects with respective values:
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
 
+### User Info by Id
+
+```typescript
+ pillarSdk.user.infoById(inputParams);
+```
+
+Provides the user data by the target user id and users access keys
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| userAccessKey  | The current user access key | string  | Required  |
+| targetUserAccessKey  | The current user access key | string  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| ethAddress  | The ethereum Address of target user | String  |
+| id  | The target user Identifier | UUID  |
+| username  | The target user Username | String  |
+| firstName  | The target user's First Name | String  |
+| lastName  | The target user's Last Name  | String  |
+| country  | The target user's country or residence | String |
+| state  | The target user's state of residence | String |
+| city  | The target user's city of residence | String |
+| profileImage  | The profile image of the user | String(Url) |
+
 ### User Search
 
 ```typescript
@@ -620,7 +838,7 @@ Provides a list of users that contain the search criteria for first or last name
 
 ### User Delete
 
-```
+```typescript
  pillarSdk.user.delete(inputParams);
 ```
 
@@ -638,6 +856,24 @@ Removes a wallet user profile from the database.
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'User was successfully deleted' | String  |
+
+### User Delete Profile Image
+
+```typescript
+ pillarSdk.user.deleteProfileImage(inputParams);
+```
+
+Removes user profile Image from the database.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+HTTP status 204: No Content
 
 ### User Username Search
 
@@ -658,6 +894,77 @@ Retrieve the userId of an existing wallet user or return not-found.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | userId  | The User Identifier | UUID  | Required  |
+
+### User Validate
+
+```typescript
+pillarSdk.user.validate(inputParams);
+```
+
+Retrieve the id of an validated wallet user.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| username  | Wallet Username | String  | One of username/blockchainAddress required |
+| blockchainAddress  | User's blockchainAddress | String  | One of username/blockchainAddress required |
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| id  | The wallet Identifier | UUID  |
+| username  | The Username | String  |
+| walletId  | The wallet Identifier | UUID  |
+
+### User Validate Email
+
+```typescript
+pillarSdk.user.validateEmail(inputParams);
+```
+
+Validate a one-time password sent via email.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The wallet Identifier | UUID | Required |
+| email  | User's email | String  | Required |
+| oneTimePassword  | User's one time password | String  | Required |
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Email validated.' | String  |
+| userId  | The user Identifier | UUID |
+
+### User Validate Phone
+
+```typescript
+pillarSdk.user.validatePhone(inputParams);
+```
+
+Validate a one-time password sent via SMS.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The wallet Identifier | UUID | Required |
+| phone  | User's phone | String  | Required |
+| oneTimePassword  | User's one time password | String  | Required |
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Phone validated.' | String  |
+| userId  | The user Identifier | UUID |
 
 ## Types
 
