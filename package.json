@@ -1,6 +1,6 @@
 {
   "name": "@pillarwallet/pillarwallet-nodejs-sdk",
-  "version": "1.11.0",
+  "version": "2.0.0",
   "description": "The Node.js SDK, making it easy to interact with the Pillar API.",
   "main": "dist/index.js",
   "scripts": {
@@ -53,10 +53,12 @@
     "@pillarwallet/plr-auth-sdk": "1.1.2-84",
     "@types/ethereumjs-util": "5.1.1",
     "@types/node": "9.6.6",
+    "@types/uuid": "^3.4.4",
     "ajv": "6.4.0",
     "ajv-keywords": "3.2.0",
     "axios": "0.18.0",
-    "ethereumjs-util": "5.2.0"
+    "ethereumjs-util": "5.2.0",
+    "uuid": "3.3.2"
   },
   "devDependencies": {
     "@types/jest": "22.2.3",

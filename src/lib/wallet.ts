@@ -31,23 +31,26 @@ export class Wallet extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   register(walletRegister: WalletRegister): AxiosPromise {
+    this.validation(walletRegisterSchema, walletRegister);
+
+    const privateKey = walletRegister.privateKey;
+    // delete privateKey after usage
+    delete walletRegister.privateKey;
+
     // validating Input
     if (!walletRegister.publicKey) {
-      walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(
-        Configuration.accessKeys.privateKey,
-      );
+      walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
     }
     if (!walletRegister.ethAddress) {
       walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(
-        Configuration.accessKeys.privateKey,
+        privateKey,
       );
     }
-    this.validation(walletRegisterSchema, walletRegister);
 
     // Signing Header
     postConfiguration.headers['X-API-Signature'] = this.checkSignature(
       walletRegister,
-      Configuration.accessKeys.privateKey,
+      privateKey,
     );
 
     postConfiguration.data = walletRegister;

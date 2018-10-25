@@ -12,7 +12,9 @@ let ajv: any;
 
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
-    privateKey: '',
+    apiUrl: '',
+    notificationsUrl: '',
+    investmentsUrl: '',
   };
 
   constructor() {
@@ -120,13 +122,13 @@ export class Configuration {
         url,
       };
     }
-
-    if (checkSignature) {
-      request.headers['X-API-Signature'] = this.checkSignature(
-        payload,
-        Configuration.accessKeys.privateKey,
-      );
-    }
+    // TODO: use access token
+    // if (checkSignature) {
+    //   request.headers['X-API-Signature'] = this.checkSignature(
+    //     payload,
+    //     Configuration.accessKeys.privateKey,
+    //   );
+    // }
 
     return Requester.execute(request);
   }

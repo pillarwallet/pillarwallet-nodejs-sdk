@@ -1,4 +1,5 @@
 export enum HttpEndpoints {
+  REGISTER_PUBLIC = '/register/public',
   WALLET_REGISTER = '/wallet/register',
   WALLET_REGISTER_ADDRESS = '/wallet/register-address',
   WALLET_UNREGISTER_ADDRESS = '/wallet/unregister-address',

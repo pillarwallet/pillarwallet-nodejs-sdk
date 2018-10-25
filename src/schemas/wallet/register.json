@@ -4,6 +4,10 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "privateKey": {
+      "description": "The privateKey of one wallet",
+      "type": "string"
+    },
     "publicKey": {
       "description": "The publicKey of one wallet",
       "type": "string",
@@ -25,6 +29,7 @@
     }
   },
   "required": [
+    "privateKey",
     "fcmToken",
     "username"
   ]
