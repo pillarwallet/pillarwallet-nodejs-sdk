@@ -6,6 +6,8 @@ import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
+import { Register } from './register';
+import { v4 as uuid } from 'uuid';
 
 /**
  * Import HTTP Request Configurations
@@ -31,8 +33,8 @@ export class Wallet extends Configuration {
    * @returns {axios.AxiosPromise}
    */
   register(walletRegister: WalletRegister): AxiosPromise {
+    const uuidv4 = uuid();
     this.validation(walletRegisterSchema, walletRegister);
-
     const privateKey = walletRegister.privateKey;
     // delete privateKey after usage
     delete walletRegister.privateKey;
@@ -47,17 +49,23 @@ export class Wallet extends Configuration {
       );
     }
 
-    // Signing Header
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      walletRegister,
-      privateKey,
-    );
 
-    postConfiguration.data = walletRegister;
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.WALLET_REGISTER;
-    // http request
-    return Requester.execute(postConfiguration);
+
+    return Register.registerPublic(uuidv4, walletRegister.publicKey).then(
+      response => {
+        if (response.status !== 200) {
+          const data = {
+            uuid: uuidv4,
+            code: ,
+            ethAddress: walletRegister.ethAddress,
+            fcmToken: walletRegister.fcmToken,
+            username: walletRegister.username,
+          };
+          return Register.registerWallet(uuidv4,privateKey);
+        }
+        return response;
+      },
+    );
   }
 
   /**
@@ -70,7 +78,7 @@ export class Wallet extends Configuration {
 
     postConfiguration.headers['X-API-Signature'] = this.checkSignature(
       walletUpdate,
-      Configuration.accessKeys.privateKey,
+      walletUpdate.privateKey,
     );
     postConfiguration.data = walletUpdate;
     postConfiguration.url =

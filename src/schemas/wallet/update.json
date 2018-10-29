@@ -8,6 +8,10 @@
       "description": "The wallet ID",
       "type": "string"
     },
+    "privateKey": {
+      "description": "The privateKey of one wallet",
+      "type": "string"
+    },
     "ethAddress": {
       "description": "The Ethereum address of one wallet",
       "type": "string",
@@ -22,5 +26,5 @@
       "type": "string"
     }
   },
-  "required": [ "walletId", "fcmToken"]
+  "required": [ "privateKey", "walletId", "fcmToken"]
 }

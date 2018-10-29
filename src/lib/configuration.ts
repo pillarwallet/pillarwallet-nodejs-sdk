@@ -7,6 +7,7 @@ import { AxiosPromise } from 'axios';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
+import { randomBytes, createHash } from 'crypto';
 
 let ajv: any;
 
@@ -15,6 +16,7 @@ export class Configuration {
     apiUrl: '',
     notificationsUrl: '',
     investmentsUrl: '',
+    verifier: '',
   };
 
   constructor() {
@@ -37,6 +39,9 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
+    }
+    if (!Configuration.accessKeys.verifier) {
+      Configuration.accessKeys.verifier = this.codeVerifierGenerator();
     }
   }
 
@@ -68,6 +73,38 @@ export class Configuration {
     return xAPISignature;
   }
 
+  base64URLEncode(buffer: Buffer) {
+    return buffer
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+  }
+
+  sha256(string: string) {
+    return createHash('sha256')
+      .update(string)
+      .digest();
+  }
+
+  /**
+   * @description Method to generate a code_verifier.
+   * @returns {string}
+   */
+  codeVerifierGenerator() {
+    // return verifier
+    return this.base64URLEncode(randomBytes(32));
+  }
+
+  /**
+   * @description generate a code_challenge that will be sent in the authorization request.
+   * @param {string} verifier
+   * @returns {string}
+   */
+  codeChallengeGenerator(verifier: string) {
+    return this.base64URLEncode(this.sha256(verifier));
+  }
+
   // TODO: We need to check it with the other endpoints and improve dependently from situation.
   /**
    * Make an Axios request based on default configuration
@@ -87,15 +124,15 @@ export class Configuration {
     schema,
     defaultRequest,
     url,
-    checkSignature = true,
-  }: {
+  }: // checkSignature = true,
+  {
     data?: object;
     params?: object;
     sendParams?: boolean;
     schema: object;
     defaultRequest: any;
     url: string;
-    checkSignature?: boolean;
+    // checkSignature?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
