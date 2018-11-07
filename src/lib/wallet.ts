@@ -1,7 +1,7 @@
 /**
  * Import required classes / libraries / constants
  */
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
@@ -61,17 +61,21 @@ export class Wallet extends Configuration {
   }
 
   /**
+   * @name registerAuthServer
    * @desc Method to Register the wallet in the Backend,
    * create the UserProfile Table and register in BCX.
    * @param {WalletRegister} walletRegister
    * @returns {AxiosPromise}
    */
-  registerAuthServer(walletRegister: WalletRegisterAuth): AxiosPromise {
+  async registerAuthServer(
+    walletRegister: WalletRegisterAuth,
+  ): Promise<AxiosResponse> {
     this.validation(walletRegisterAuthSchema, walletRegister);
-    const privateKey = walletRegister.privateKey;
+    const { privateKey } = walletRegister;
     // delete privateKey after usage
     delete walletRegister.privateKey;
-
+    // generate code verifier
+    const codeVerifier = await ProofKey.codeVerifierGenerator();
     // validating Input
     if (!walletRegister.publicKey) {
       walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
@@ -86,13 +90,14 @@ export class Wallet extends Configuration {
       walletRegister.publicKey,
     ).then(response => {
       const data = {
+        nonce: response.data.nonce,
         uuid: Configuration.uuid,
-        codeChallenge: ProofKey.codeChallengeGenerator(Configuration.verifier),
+        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
         ethAddress: walletRegister.ethAddress,
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
       };
-      return Register.registerAuth(data, privateKey).then(response => response);
+      return Register.registerAuth(data, privateKey);
     });
   }
 

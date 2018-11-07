@@ -8,7 +8,6 @@ import { v4 as uuid } from 'uuid';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
-import { ProofKey } from '../utils/pkce';
 
 let ajv: any;
 
@@ -20,7 +19,6 @@ export class Configuration {
     investmentsUrl: '',
   };
 
-  public static verifier: string;
   public static uuid: string;
 
   constructor() {
@@ -43,9 +41,6 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
-    }
-    if (!Configuration.verifier) {
-      Configuration.verifier = ProofKey.codeVerifierGenerator();
     }
     if (!Configuration.uuid) {
       Configuration.uuid = uuid();

@@ -15,10 +15,11 @@ export class Register {
   /**
    * @name registerKeys
    * @description Method to register the public key and create the Nonce on the server side
-   * @param {String} publicKey
+   * @param {string} publicKey
+   * @param {string} uuid
    * @returns {AxiosPromise}
    */
-  static registerKeys(publicKey?: String, uuid?: String): AxiosPromise {
+  static registerKeys(publicKey: string, uuid: string): AxiosPromise {
     postConfiguration.data = {
       publicKey,
       uuid,
@@ -33,16 +34,33 @@ export class Register {
   /**
    * @name registerAuth
    * @description Method to register new wallet
-   * @param data
-   * @privateKey string
+   * @param {object} data
+   * @param {string} privateKey
    * @returns {AxiosPromise}
-   *
    */
-  static registerAuth(data: {}, privateKey: string): AxiosPromise {
+  static registerAuth(
+    data: {
+      nonce: string;
+      codeChallenge: string;
+      ethAddress: string;
+      fcmToken: string;
+      username: string;
+      uuid: string;
+    },
+    privateKey: string,
+  ): AxiosPromise {
     // Signing Header
+    const uuid = data.uuid;
+    // removing Access id from signature
+    delete data.uuid;
+    // Signing
     postConfiguration.headers[
       'X-API-Signature'
     ] = new Configuration().checkSignature(data, privateKey);
+    // delete nonce
+    delete data.nonce;
+    // adding Access id to payload.
+    data.uuid = uuid;
     postConfiguration.data = data;
     postConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_AUTH;

@@ -12,20 +12,27 @@ describe('Register Class', () => {
   const privateKey = 'myPrivateKey';
   const uuIdv4 = uuid();
 
-  jest
-    .spyOn(Requester, 'execute')
-    .mockResolvedValue({ status: 200, data: 'success' });
-
-  beforeEach(() => {
+  afterEach(() => {
     Requester.execute.mockClear();
   });
 
   afterAll(() => {
-    Requester.execute.mockRestore();
     jest.restoreAllMocks();
   });
 
-  describe('registerKeys', () => {
+  describe.only('registerKeys', () => {
+    const regKeysResponse = {
+      status: 200,
+      data: {
+        expiresAt: '2011-06-14T04:12:36Z',
+        nonce: '4321',
+      },
+    };
+
+    beforeEach(() => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue(regKeysResponse);
+    });
+
     it('should send http request containing publicKey and identifier', () => {
       Register.registerKeys(publicKey, uuIdv4);
       expect(Requester.execute).toHaveBeenCalledWith(
@@ -42,14 +49,27 @@ describe('Register Class', () => {
     it('expects response to resolve with data', async () => {
       const response = await Register.registerKeys(publicKey, uuIdv4);
       expect(response.status).toEqual(200);
-      expect(response.data).toEqual('success');
+      expect(response.data).toEqual(regKeysResponse.data);
     });
   });
 
-  describe('registerAuth', () => {
+  describe.only('registerAuth', () => {
+    const regAuthResponse = {
+      status: 200,
+      data: {
+        authorizationCode: 'Authorisation code',
+        expiresAt: '2011-06-14T04:12:36Z',
+      },
+    };
+
+    beforeEach(() => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue(regAuthResponse);
+    });
+
     const data = {
+      nonce: '4344132',
       uuid: uuIdv4,
-      code: Configuration.accessKeys.verifier,
+      codeChallenge: Configuration.accessKeys.verifier,
       ethAddress: 'OneEthAddress',
       fcmToken: 'OneFcmToken',
       username: 'OneUserName',
@@ -68,7 +88,7 @@ describe('Register Class', () => {
     it('expects response to resolve with data', async () => {
       const response = await Register.registerAuth(data, privateKey);
       expect(response.status).toEqual(200);
-      expect(response.data).toEqual('success');
+      expect(response.data).toEqual(regAuthResponse.data);
     });
   });
 });

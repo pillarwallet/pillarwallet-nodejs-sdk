@@ -32,12 +32,18 @@ export class ProofKey {
    * @returns {string}
    */
   static codeVerifierGenerator() {
-    // return verifier
-    return this.base64URLEncode(randomBytes(32));
+    return new Promise((resolve, reject) => {
+      randomBytes(32, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(this.base64URLEncode(buf).toString());
+      });
+    });
   }
 
   /**
-   * @description generate a code_challenge that will be sent in the authorization request.
+   * @description Generate a code challenge from a code verifier.
    * @param {string} verifier
    * @returns {string}
    */

@@ -43,12 +43,18 @@ describe('Wallet Class', () => {
     it('should return the expected response', async () => {
       const registerAuthResponse = {
         status: 200,
-        data: 'Stage 2 - registerAuth success',
+        data: {
+          authorizationCode: 'Authorisation code',
+          expiresAt: '2011-06-14T04:12:36Z',
+        },
       };
       jest.spyOn(Register, 'registerKeys').mockImplementationOnce(() =>
         Promise.resolve({
           status: 200,
-          data: 'Stage 1 - registerKeys success',
+          data: {
+            expiresAt: '2011-06-14T04:12:36Z',
+            nonce: 'string',
+          },
         }),
       );
       jest
@@ -57,6 +63,7 @@ describe('Wallet Class', () => {
       const walletRegistrationData = {
         privateKey: keys.privateKey,
         publicKey: keys.publicKey,
+        ethAddress: '0x0000000000000000000000000000000000000000',
         fcmToken: '987qwe',
         username: 'sdfsdfs',
       };
@@ -64,7 +71,6 @@ describe('Wallet Class', () => {
       const response = await pSdk.wallet.registerAuthServer(
         walletRegistrationData,
       );
-
       expect(response).toEqual(registerAuthResponse);
     });
 
@@ -72,12 +78,14 @@ describe('Wallet Class', () => {
       expect.assertions(1);
       const registerKeysResponse = {
         status: 500,
-        data: 'Stage 1 - registerKeys failed',
+        data: {
+          message: 'Internal server error',
+        },
       };
       jest
         .spyOn(Register, 'registerKeys')
         .mockImplementationOnce(() =>
-          Promise.reject(new Error(registerKeysResponse.data)),
+          Promise.reject(new Error(registerKeysResponse.data.message)),
         );
       jest
         .spyOn(Register, 'registerAuth')
@@ -85,6 +93,7 @@ describe('Wallet Class', () => {
       const walletRegistrationData = {
         privateKey: keys.privateKey,
         publicKey: keys.publicKey,
+        ethAddress: '0x0000000000000000000000000000000000000000',
         fcmToken: '987qwe',
         username: 'sdfsdfs',
       };
@@ -92,7 +101,7 @@ describe('Wallet Class', () => {
       try {
         await pSdk.wallet.registerAuthServer(walletRegistrationData);
       } catch (error) {
-        expect(error.message).toEqual(registerKeysResponse.data);
+        expect(error.message).toEqual(registerKeysResponse.data.message);
       }
     });
   });
