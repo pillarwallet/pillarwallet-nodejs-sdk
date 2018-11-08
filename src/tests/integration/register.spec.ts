@@ -13,16 +13,6 @@ const responseRegisterAuth = {
   expiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
 };
 
-const responseRegisterAccess = {
-    accessToken: "string",
-    accessTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
-    fcmToken: "string",
-    refreshToken: "string",
-    refreshTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
-    userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
-    walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"
-};
-
 nock('http://localhost:8080')
   .post('/register/keys')
   .reply(200, responseRegisterKey);
@@ -34,7 +24,6 @@ nock('http://localhost:8080')
 describe('POST /register/keys', () => {
   let pSdk: PillarSdk;
   let walletRegister = {};
-  let walletAccess = {};
 
   beforeEach(() => {
     walletRegister = {
