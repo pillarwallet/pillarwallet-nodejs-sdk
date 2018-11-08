@@ -50,4 +50,25 @@ export class Register {
 
     return Requester.execute(postConfiguration);
   }
+
+  /**
+   * @name registerAuth
+   * @description Method to Send code verfifer and UUID.
+   * @param data
+   * @privateKey string
+   * @returns {AxiosPromise}
+   *
+   */
+  static registerAccess(data: {}, privateKey: string): AxiosPromise {
+    // Signing Header
+    postConfiguration.headers[
+      'X-API-Signature'
+    ] = new Configuration().checkSignature(data, privateKey);
+    postConfiguration.data = data;
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_ACCESS;
+    // http request
+
+    return Requester.execute(postConfiguration);
+  }
 }

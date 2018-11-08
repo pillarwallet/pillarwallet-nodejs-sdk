@@ -71,4 +71,27 @@ describe('Register Class', () => {
       expect(response.data).toEqual('success');
     });
   });
+
+  describe('registerAccess', () => {
+    const data = {
+      uuid: uuIdv4,
+      code: Configuration.accessKeys.verifier,
+    };
+
+    it('should send http request containing data and privateKey', () => {
+      Register.registerAccess(data, privateKey);
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data,
+          url: 'http://localhost:8080/register/access',
+        }),
+      );
+    });
+
+    it('expects response to resolve with data', async () => {
+      const response = await Register.registerAccess(data, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual('success');
+    });
+  });
 });

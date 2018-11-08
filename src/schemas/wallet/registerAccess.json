@@ -1,0 +1,16 @@
+{
+  "title": "Wallet Model - Access",
+  "description": "Schema definition for Wallet Model - access method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "privateKey": {
+      "description": "Private Key buffer",
+      "type": [ "string" ],
+      "pattern":"[a-fA-F0-9]{64}$"
+    }
+  },
+  "required": [
+    "privateKey"
+  ]
+}

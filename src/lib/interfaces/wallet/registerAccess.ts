@@ -1,0 +1,3 @@
+interface WalletRegisterAccess {
+  privateKey: string;
+}
