@@ -19,7 +19,6 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  */
 const walletRegisterSchema = require('../schemas/wallet/register.json');
 const walletRegisterAuthSchema = require('../schemas/wallet/registerAuth.json');
-const walletRegisterAccessSchema = require('../schemas/wallet/registerAccess.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.json');
 const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddress.json');
@@ -96,24 +95,6 @@ export class Wallet extends Configuration {
       return Register.registerAuth(data, privateKey).then(response => response);
     });
   }
-  /**
-  * @desc Method to
-  * get access and refresh tokens.
-  * @param {WalletRegister} walletRegister
-  * @returns {AxiosPromise}
-  */
- registerAccessServer(walletRegister: WalletRegisterAccess): AxiosPromise {
-   this.validation(walletRegisterAccessSchema, walletRegister);
-   const privateKey = walletRegister.privateKey;
-   // delete privateKey after usage
-   delete walletRegister.privateKey;
-
-   const data = {
-     codeVerifier: Configuration.verifier,
-     uuid: Configuration.uuid
-   }
-     return Register.registerAccess(data, privateKey);
- }
 
   /**
    * Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.

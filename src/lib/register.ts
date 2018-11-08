@@ -52,7 +52,7 @@ export class Register {
   }
 
   /**
-   * @name registerAuth
+   * @name registerAccess
    * @description Method to Send code verfifer and UUID.
    * @param data
    * @privateKey string
