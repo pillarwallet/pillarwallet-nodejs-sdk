@@ -6,7 +6,7 @@
   "properties": {
     "privateKey": {
       "description": "Private Key buffer",
-      "type": [ "string" ],
+      "type": "string",
       "pattern":"[a-fA-F0-9]{64}$"
     },
     "publicKey": {
@@ -31,6 +31,8 @@
   },
   "required": [
     "privateKey",
+    "publicKey",
+    "ethAddress",
     "fcmToken",
     "username"
   ]

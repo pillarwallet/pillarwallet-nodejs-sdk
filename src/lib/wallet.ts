@@ -1,7 +1,7 @@
 /**
  * Import required classes / libraries / constants
  */
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
@@ -61,18 +61,25 @@ export class Wallet extends Configuration {
   }
 
   /**
+   * @name registerAuthServer
    * @desc Method to Register the wallet in the Backend,
    * create the UserProfile Table and register in BCX.
    * @param {WalletRegister} walletRegister
    * @returns {AxiosPromise}
    */
-  registerAuthServer(walletRegister: WalletRegisterAuth): AxiosPromise {
+  async registerAuthServer(
+    walletRegister: WalletRegisterAuth,
+  ): Promise<AxiosResponse> {
+    // validating Input
     this.validation(walletRegisterAuthSchema, walletRegister);
-    const privateKey = walletRegister.privateKey;
+    const { privateKey } = walletRegister;
+
     // delete privateKey after usage
     delete walletRegister.privateKey;
 
-    // validating Input
+    // generate code verifier
+    const codeVerifier = await ProofKey.codeVerifierGenerator();
+
     if (!walletRegister.publicKey) {
       walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
     }
@@ -81,19 +88,24 @@ export class Wallet extends Configuration {
         privateKey,
       );
     }
-    return Register.registerKeys(
+
+    // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
+    const responseRegisterKeys = await Register.registerKeys(
       Configuration.uuid,
       walletRegister.publicKey,
-    ).then(response => {
-      const data = {
-        uuid: Configuration.uuid,
-        codeChallenge: ProofKey.codeChallengeGenerator(Configuration.verifier),
-        ethAddress: walletRegister.ethAddress,
-        fcmToken: walletRegister.fcmToken,
-        username: walletRegister.username,
-      };
-      return Register.registerAuth(data, privateKey).then(response => response);
-    });
+    );
+
+    // Use response data to create registerAuth payload.
+    const data = {
+      nonce: responseRegisterKeys.data.nonce,
+      uuid: Configuration.uuid,
+      codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+      ethAddress: walletRegister.ethAddress,
+      fcmToken: walletRegister.fcmToken,
+      username: walletRegister.username,
+    };
+    // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
+    return await Register.registerAuth(data, privateKey);
   }
 
   /**

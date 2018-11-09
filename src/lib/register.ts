@@ -3,7 +3,6 @@
  */
 import { AxiosPromise } from 'axios';
 import { Configuration } from './configuration';
-import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 
 /**
@@ -14,61 +13,67 @@ import { default as postConfiguration } from '../utils/requester-configurations/
 export class Register {
   /**
    * @name registerKeys
-   * @description Method to register the public key and create the Nonce on the server side
-   * @param {String} publicKey
+   * @description Method to register the public key and access id on the server side
+   * @param {string} publicKey
+   * @param {string} uuid
    * @returns {AxiosPromise}
    */
-  static registerKeys(publicKey?: String, uuid?: String): AxiosPromise {
-    postConfiguration.data = {
+  static registerKeys(publicKey: string, uuid: string): AxiosPromise {
+    // data of payload
+    const data = {
       publicKey,
       uuid,
     };
 
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_KEYS;
-
-    return Requester.execute(postConfiguration);
+    // request
+    return new Configuration().executeRequest({
+      data,
+      defaultRequest: postConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_KEYS}`,
+      checkSignature: false,
+    });
   }
 
   /**
    * @name registerAuth
    * @description Method to register new wallet
-   * @param data
-   * @privateKey string
+   * @param {object} data
+   * @param {string} privateKey
    * @returns {AxiosPromise}
-   *
    */
-  static registerAuth(data: {}, privateKey: string): AxiosPromise {
+  static registerAuth(
+    data: {
+      nonce: string;
+      codeChallenge: string;
+      ethAddress: string;
+      fcmToken: string;
+      username: string;
+      uuid: string;
+    },
+    privateKey: string,
+  ): AxiosPromise {
     // Signing Header
-    postConfiguration.headers[
-      'X-API-Signature'
-    ] = new Configuration().checkSignature(data, privateKey);
-    postConfiguration.data = data;
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_AUTH;
-    // http request
+    const config = { ...postConfiguration };
+    const header = { ...data };
+    const payload = { ...data };
 
-    return Requester.execute(postConfiguration);
-  }
+    // removing Access id from header signature
+    delete header.uuid;
 
-  /**
-   * @name registerAccess
-   * @description Method to Send code verfifer and UUID.
-   * @param data
-   * @privateKey string
-   * @returns {AxiosPromise}
-   *
-   */
-  static registerAccess(data: {}, privateKey: string): AxiosPromise {
-    // Signing Header
-    postConfiguration.headers[
-      'X-API-Signature'
-    ] = new Configuration().checkSignature(data, privateKey);
-    postConfiguration.data = data;
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_ACCESS;
-    // http request
+    // delete nonce from payload
+    delete payload.nonce;
 
-    return Requester.execute(postConfiguration);
+    // Signing
+    config.headers['X-API-Signature'] = new Configuration().checkSignature(
+      header,
+      privateKey,
+    );
+
+    return new Configuration().executeRequest({
+      data: payload,
+      defaultRequest: config,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_AUTH}`,
+      checkSignature: false,
+    });
   }
 }

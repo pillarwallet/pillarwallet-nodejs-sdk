@@ -20,7 +20,6 @@ export class Configuration {
     investmentsUrl: '',
   };
 
-  public static verifier: string;
   public static uuid: string;
 
   constructor() {
@@ -43,9 +42,6 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
-    }
-    if (!Configuration.verifier) {
-      Configuration.verifier = ProofKey.codeVerifierGenerator();
     }
     if (!Configuration.uuid) {
       Configuration.uuid = uuid();
@@ -104,20 +100,20 @@ export class Configuration {
     data?: object;
     params?: object;
     sendParams?: boolean;
-    schema: object;
+    schema?: object;
     defaultRequest: any;
     url: string;
     checkSignature?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
-
-    try {
-      this.validation(schema, payload);
-    } catch (e) {
-      return Promise.reject(e);
+    if (schema) {
+      try {
+        this.validation(schema, payload);
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
-
     let request;
 
     request = {
