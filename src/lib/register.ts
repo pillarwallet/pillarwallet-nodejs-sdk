@@ -76,4 +76,29 @@ export class Register {
       checkSignature: false,
     });
   }
+
+    /**
+   * @name registerAccess
+   * @description Method to Send code verfifer and UUID.
+   * @param data
+   * @privateKey string
+   * @returns {AxiosPromise}
+   *
+   */
+  static registerAccess(data: {}, privateKey: string): AxiosPromise {
+    // Signing Header
+    postConfiguration.headers[
+      'X-API-Signature'
+    ] = new Configuration().checkSignature(data, privateKey);
+    // Signing Header
+    const config = { ...postConfiguration };
+    const payload = { ...data };
+    // http request
+    return new Configuration().executeRequest({
+      data: payload,
+      defaultRequest: config,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
+      checkSignature: false,
+    });
+  }
 }
