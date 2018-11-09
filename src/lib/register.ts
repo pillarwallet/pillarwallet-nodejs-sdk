@@ -52,7 +52,6 @@ export class Register {
     },
     privateKey: string,
   ): AxiosPromise {
-    // Signing Header
     const config = { ...postConfiguration };
     const header = { ...data };
     const payload = { ...data };
@@ -77,22 +76,36 @@ export class Register {
     });
   }
 
-    /**
+  /**
    * @name registerAccess
    * @description Method to Send code verfifer and UUID.
-   * @param data
-   * @privateKey string
+   * @param {object} data
+   * @param {string} privateKey
    * @returns {AxiosPromise}
-   *
    */
-  static registerAccess(data: {}, privateKey: string): AxiosPromise {
+  static registerAccess(
+    data: {
+      codeVerifier: string;
+      authorizationCode: string;
+      uuid: string;
+    },
+    privateKey: string,
+  ): AxiosPromise {
+    const header = { ...data };
+    const payload = { ...data };
+
+    // removing Access id from header signature
+    delete header.uuid;
+
+    // delete authorizationCode from payload
+    delete payload.authorizationCode;
+
     // Signing Header
     postConfiguration.headers[
       'X-API-Signature'
-    ] = new Configuration().checkSignature(data, privateKey);
+    ] = new Configuration().checkSignature(header, privateKey);
     // Signing Header
     const config = { ...postConfiguration };
-    const payload = { ...data };
     // http request
     return new Configuration().executeRequest({
       data: payload,

@@ -87,19 +87,20 @@ describe('Register Class', () => {
     const regAccessResponse = {
       status: 200,
       data: {
-        accessToken: "string",
-        accessTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
-        fcmToken: "string",
-        refreshToken: "string",
-        refreshTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
-        userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
-        walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"   
-      }
+        accessToken: 'myAccessToken',
+        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        fcmToken: 'myFcmToken',
+        refreshToken: 'myRefreshToken',
+        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        walletId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+      },
     };
     const data = {
-      codeVerifier: "Code verifier",
-      uuid: "d290f1ee-6c54-4b01-90e6-d701748f0851"
-    }
+      authorizationCode: 'myauthorizationCode',
+      codeVerifier: 'oneCodeVerifier',
+      uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+    };
 
     it('should send http request containing data and privateKey', () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
@@ -112,7 +113,7 @@ describe('Register Class', () => {
         }),
       );
     });
-    
+
     it('expects response to resolve with data', async () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue(regAccessResponse);
       const response = await Register.registerAccess(data, privateKey);
