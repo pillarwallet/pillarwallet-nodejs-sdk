@@ -1,0 +1,39 @@
+{
+  "title": "Wallet Model - Register",
+  "description": "Schema definition for Wallet Model - register method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "privateKey": {
+      "description": "Private Key buffer",
+      "type": "string",
+      "pattern":"[a-fA-F0-9]{64}$"
+    },
+    "publicKey": {
+      "description": "The publicKey of one wallet",
+      "type": "string",
+      "pattern":"[a-fA-F0-9]{128}$"
+    },
+    "ethAddress": {
+      "description": "The Ethereum address of one wallet",
+      "type": "string",
+      "pattern":"^0x[a-fA-F0-9]{40}$",
+      "maxLength": 42
+    },
+    "fcmToken": {
+      "description": "The Firebase Cloud Messaging Token  of one wallet",
+      "type": "string"
+    },
+    "username": {
+      "description": "The unique username associated of one wallet",
+      "type": "string"
+    }
+  },
+  "required": [
+    "privateKey",
+    "publicKey",
+    "ethAddress",
+    "fcmToken",
+    "username"
+  ]
+}

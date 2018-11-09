@@ -3,6 +3,7 @@
  */
 import * as Ajv from 'ajv';
 import { AxiosPromise } from 'axios';
+import { v4 as uuid } from 'uuid';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
@@ -13,7 +14,12 @@ let ajv: any;
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
     privateKey: '',
+    apiUrl: '',
+    notificationsUrl: '',
+    investmentsUrl: '',
   };
+
+  public static uuid: string;
 
   constructor() {
     ajv = new Ajv({
@@ -35,6 +41,9 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
+    }
+    if (!Configuration.uuid) {
+      Configuration.uuid = uuid();
     }
   }
 
@@ -90,20 +99,20 @@ export class Configuration {
     data?: object;
     params?: object;
     sendParams?: boolean;
-    schema: object;
+    schema?: object;
     defaultRequest: any;
     url: string;
     checkSignature?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
-
-    try {
-      this.validation(schema, payload);
-    } catch (e) {
-      return Promise.reject(e);
+    if (schema) {
+      try {
+        this.validation(schema, payload);
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
-
     let request;
 
     request = {

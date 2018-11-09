@@ -1,11 +1,13 @@
 /**
  * Import required classes / libraries / constants
  */
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 import { Configuration } from './configuration';
 import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
+import { Register } from './register';
+import { ProofKey } from '../utils/pkce';
 
 /**
  * Import HTTP Request Configurations
@@ -16,6 +18,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const walletRegisterSchema = require('../schemas/wallet/register.json');
+const walletRegisterAuthSchema = require('../schemas/wallet/registerAuth.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.json');
 const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddress.json');
@@ -28,7 +31,7 @@ export class Wallet extends Configuration {
   /**
    * Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
    * @param {WalletRegister} walletRegister
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   register(walletRegister: WalletRegister): AxiosPromise {
     // validating Input
@@ -58,9 +61,57 @@ export class Wallet extends Configuration {
   }
 
   /**
+   * @name registerAuthServer
+   * @desc Method to Register the wallet in the Backend,
+   * create the UserProfile Table and register in BCX.
+   * @param {WalletRegister} walletRegister
+   * @returns {AxiosPromise}
+   */
+  async registerAuthServer(
+    walletRegister: WalletRegisterAuth,
+  ): Promise<AxiosResponse> {
+    // validating Input
+    this.validation(walletRegisterAuthSchema, walletRegister);
+    const { privateKey } = walletRegister;
+
+    // delete privateKey after usage
+    delete walletRegister.privateKey;
+
+    // generate code verifier
+    const codeVerifier = await ProofKey.codeVerifierGenerator();
+
+    if (!walletRegister.publicKey) {
+      walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
+    }
+    if (!walletRegister.ethAddress) {
+      walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(
+        privateKey,
+      );
+    }
+
+    // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
+    const responseRegisterKeys = await Register.registerKeys(
+      Configuration.uuid,
+      walletRegister.publicKey,
+    );
+
+    // Use response data to create registerAuth payload.
+    const data = {
+      nonce: responseRegisterKeys.data.nonce,
+      uuid: Configuration.uuid,
+      codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+      ethAddress: walletRegister.ethAddress,
+      fcmToken: walletRegister.fcmToken,
+      username: walletRegister.username,
+    };
+    // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
+    return await Register.registerAuth(data, privateKey);
+  }
+
+  /**
    * Method to update ethAddress and FcmToken in the Backend and to set signalRegistrationId.
    * @param {WalletUpdate} walletUpdate
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   update(walletUpdate: WalletUpdate): AxiosPromise {
     this.validation(walletUpdateSchema, walletUpdate);

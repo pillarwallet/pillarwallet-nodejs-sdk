@@ -1,13 +1,15 @@
 import { Requester } from '../../utils/requester';
+import { Register } from '../../lib/register';
 import { PillarSdk } from '../..';
+const keys = require('../utils/generateKeyPair');
 
 describe('Wallet Class', () => {
   let pSdk: PillarSdk;
 
   beforeEach(() => {
     pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      apiUrl: 'http://localhost:8080',
+      privateKey: keys.privateKey,
     });
     jest
       .spyOn(Requester, 'execute')
@@ -34,6 +36,73 @@ describe('Wallet Class', () => {
           url: 'http://localhost:8080/wallet/register',
         }),
       );
+    });
+  });
+
+  describe('The Wallet Class: registerAuthServer method', () => {
+    it('should return the expected response', async () => {
+      const registerAuthResponse = {
+        status: 200,
+        data: {
+          authorizationCode: 'Authorisation code',
+          expiresAt: '2011-06-14T04:12:36Z',
+        },
+      };
+      jest.spyOn(Register, 'registerKeys').mockImplementationOnce(() =>
+        Promise.resolve({
+          status: 200,
+          data: {
+            expiresAt: '2011-06-14T04:12:36Z',
+            nonce: 'string',
+          },
+        }),
+      );
+      jest
+        .spyOn(Register, 'registerAuth')
+        .mockImplementationOnce(() => Promise.resolve(registerAuthResponse));
+      const walletRegistrationData = {
+        privateKey: keys.privateKey,
+        publicKey: keys.publicKey,
+        ethAddress: '0x0000000000000000000000000000000000000000',
+        fcmToken: '987qwe',
+        username: 'sdfsdfs',
+      };
+
+      const response = await pSdk.wallet.registerAuthServer(
+        walletRegistrationData,
+      );
+      expect(response).toEqual(registerAuthResponse);
+    });
+
+    it('should return the respective failed response', async () => {
+      expect.assertions(1);
+      const registerKeysResponse = {
+        status: 500,
+        data: {
+          message: 'Internal server error',
+        },
+      };
+      jest
+        .spyOn(Register, 'registerKeys')
+        .mockImplementationOnce(() =>
+          Promise.reject(new Error(registerKeysResponse.data.message)),
+        );
+      jest
+        .spyOn(Register, 'registerAuth')
+        .mockImplementationOnce(() => Promise.resolve('ok'));
+      const walletRegistrationData = {
+        privateKey: keys.privateKey,
+        publicKey: keys.publicKey,
+        ethAddress: '0x0000000000000000000000000000000000000000',
+        fcmToken: '987qwe',
+        username: 'sdfsdfs',
+      };
+
+      try {
+        await pSdk.wallet.registerAuthServer(walletRegistrationData);
+      } catch (error) {
+        expect(error.message).toEqual(registerKeysResponse.data.message);
+      }
     });
   });
 
