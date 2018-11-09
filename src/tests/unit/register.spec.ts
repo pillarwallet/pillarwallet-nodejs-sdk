@@ -82,4 +82,42 @@ describe('Register Class', () => {
       expect(response.data).toEqual(regAuthResponse.data);
     });
   });
+
+  describe('registerAccess', () => {
+    const regAccessResponse = {
+      status: 200,
+      data: {
+        accessToken: "string",
+        accessTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
+        fcmToken: "string",
+        refreshToken: "string",
+        refreshTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
+        userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
+        walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"   
+      }
+    };
+    const data = {
+      codeVerifier: "Code verifier",
+      uuid: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+    }
+
+    it('should send http request containing data and privateKey', () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+      const regAccessData = { ...data };
+      Register.registerAccess(data, privateKey);
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: regAccessData,
+          url: 'http://localhost:8080/register/access',
+        }),
+      );
+    });
+    
+    it('expects response to resolve with data', async () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue(regAccessResponse);
+      const response = await Register.registerAccess(data, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regAccessResponse.data);
+    });
+  });
 });
