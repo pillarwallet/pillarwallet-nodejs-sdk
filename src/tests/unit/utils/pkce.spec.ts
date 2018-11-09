@@ -1,6 +1,6 @@
 import { ProofKey } from '../../../utils/pkce';
 
-describe.only('ProofKey Class', () => {
+describe('ProofKey Class', () => {
   const regX = new RegExp(/[a-zA-Z0-9_-]/);
   it('should generate a code_verifier', async () => {
     const codeVerifier = await ProofKey.codeVerifierGenerator();

@@ -21,7 +21,7 @@ nock('http://localhost:8080')
   .post('/register/auth')
   .reply(200, responseRegisterAuth);
 
-describe('POST /register/key', () => {
+describe('POST RegisterAuthServer', () => {
   const pSdk = new PillarSdk({
     apiUrl: 'http://localhost:8080',
     privateKey: keys.privateKey,

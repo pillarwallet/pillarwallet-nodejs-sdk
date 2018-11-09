@@ -70,13 +70,16 @@ export class Wallet extends Configuration {
   async registerAuthServer(
     walletRegister: WalletRegisterAuth,
   ): Promise<AxiosResponse> {
+    // validating Input
     this.validation(walletRegisterAuthSchema, walletRegister);
     const { privateKey } = walletRegister;
+
     // delete privateKey after usage
     delete walletRegister.privateKey;
+
     // generate code verifier
     const codeVerifier = await ProofKey.codeVerifierGenerator();
-    // validating Input
+
     if (!walletRegister.publicKey) {
       walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
     }
@@ -85,20 +88,24 @@ export class Wallet extends Configuration {
         privateKey,
       );
     }
-    return Register.registerKeys(
+
+    // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
+    const responseRegisterKeys = await Register.registerKeys(
       Configuration.uuid,
       walletRegister.publicKey,
-    ).then(response => {
-      const data = {
-        nonce: response.data.nonce,
-        uuid: Configuration.uuid,
-        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-        ethAddress: walletRegister.ethAddress,
-        fcmToken: walletRegister.fcmToken,
-        username: walletRegister.username,
-      };
-      return Register.registerAuth(data, privateKey);
-    });
+    );
+
+    // Use response data to create registerAuth payload.
+    const data = {
+      nonce: responseRegisterKeys.data.nonce,
+      uuid: Configuration.uuid,
+      codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+      ethAddress: walletRegister.ethAddress,
+      fcmToken: walletRegister.fcmToken,
+      username: walletRegister.username,
+    };
+    // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
+    return await Register.registerAuth(data, privateKey);
   }
 
   /**

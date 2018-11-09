@@ -3,7 +3,6 @@
  */
 import { AxiosPromise } from 'axios';
 import { Configuration } from './configuration';
-import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 
 /**
@@ -14,21 +13,25 @@ import { default as postConfiguration } from '../utils/requester-configurations/
 export class Register {
   /**
    * @name registerKeys
-   * @description Method to register the public key and create the Nonce on the server side
+   * @description Method to register the public key and access id on the server side
    * @param {string} publicKey
    * @param {string} uuid
    * @returns {AxiosPromise}
    */
   static registerKeys(publicKey: string, uuid: string): AxiosPromise {
-    postConfiguration.data = {
+    // data of payload
+    const data = {
       publicKey,
       uuid,
     };
 
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_KEYS;
-
-    return Requester.execute(postConfiguration);
+    // request
+    return new Configuration().executeRequest({
+      data,
+      defaultRequest: postConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_KEYS}`,
+      checkSignature: false,
+    });
   }
 
   /**
@@ -50,22 +53,27 @@ export class Register {
     privateKey: string,
   ): AxiosPromise {
     // Signing Header
-    const uuid = data.uuid;
-    // removing Access id from signature
-    delete data.uuid;
-    // Signing
-    postConfiguration.headers[
-      'X-API-Signature'
-    ] = new Configuration().checkSignature(data, privateKey);
-    // delete nonce
-    delete data.nonce;
-    // adding Access id to payload.
-    data.uuid = uuid;
-    postConfiguration.data = data;
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.REGISTER_AUTH;
-    // http request
+    const config = { ...postConfiguration };
+    const header = { ...data };
+    const payload = { ...data };
 
-    return Requester.execute(postConfiguration);
+    // removing Access id from header signature
+    delete header.uuid;
+
+    // delete nonce from payload
+    delete payload.nonce;
+
+    // Signing
+    config.headers['X-API-Signature'] = new Configuration().checkSignature(
+      header,
+      privateKey,
+    );
+
+    return new Configuration().executeRequest({
+      data: payload,
+      defaultRequest: config,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_AUTH}`,
+      checkSignature: false,
+    });
   }
 }

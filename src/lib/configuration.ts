@@ -99,20 +99,20 @@ export class Configuration {
     data?: object;
     params?: object;
     sendParams?: boolean;
-    schema: object;
+    schema?: object;
     defaultRequest: any;
     url: string;
     checkSignature?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
-
-    try {
-      this.validation(schema, payload);
-    } catch (e) {
-      return Promise.reject(e);
+    if (schema) {
+      try {
+        this.validation(schema, payload);
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
-
     let request;
 
     request = {
