@@ -105,6 +105,7 @@ describe('Register Class', () => {
     it('should send http request containing data and privateKey', () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
       const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
       Register.registerAccess(data, privateKey);
       expect(Requester.execute).toHaveBeenCalledWith(
         expect.objectContaining({
