@@ -41,6 +41,13 @@ describe('Wallet Class', () => {
 
   describe('The Wallet Class: registerAuthServer method', () => {
     it('should return the expected response', async () => {
+      const registerKeysResponse = {
+        status: 200,
+        data: {
+          expiresAt: '2011-06-14T04:12:36Z',
+          nonce: 'string',
+        },
+      };
       const registerAuthResponse = {
         status: 200,
         data: {
@@ -48,18 +55,27 @@ describe('Wallet Class', () => {
           expiresAt: '2011-06-14T04:12:36Z',
         },
       };
-      jest.spyOn(Register, 'registerKeys').mockImplementationOnce(() =>
-        Promise.resolve({
-          status: 200,
-          data: {
-            expiresAt: '2011-06-14T04:12:36Z',
-            nonce: 'string',
-          },
-        }),
-      );
+      const registerAccessResponse = {
+        status: 200,
+        data: {
+          accessToken: 'myAccessToken',
+          accessTokenExpiresAt: '2011-06-14T04:12:36Z',
+          fcmToken: 'myFcmToken',
+          refreshToken: 'myRefreshToken',
+          refreshTokenExpiresAt: '2011-06-14T04:12:36Z',
+          userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+          walletId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        },
+      };
+      jest
+        .spyOn(Register, 'registerKeys')
+        .mockImplementationOnce(() => Promise.resolve(registerKeysResponse));
       jest
         .spyOn(Register, 'registerAuth')
         .mockImplementationOnce(() => Promise.resolve(registerAuthResponse));
+      jest
+        .spyOn(Register, 'registerAccess')
+        .mockImplementationOnce(() => Promise.resolve(registerAccessResponse));
       const walletRegistrationData = {
         privateKey: keys.privateKey,
         publicKey: keys.publicKey,
@@ -71,7 +87,10 @@ describe('Wallet Class', () => {
       const response = await pSdk.wallet.registerAuthServer(
         walletRegistrationData,
       );
-      expect(response).toEqual(registerAuthResponse);
+      expect(response).toEqual(registerAccessResponse);
+      Register.registerAccess.mockRestore();
+      Register.registerAuth.mockRestore();
+      Register.registerKeys.mockRestore();
     });
 
     it('should return the respective failed response', async () => {
@@ -107,16 +126,16 @@ describe('Wallet Class', () => {
 
     it('should throw an error if invalid payload is sent', async () => {
       const walletRegistrationData = {};
-      const errMsg = "data should have required property 'privateKey', data should have required property 'publicKey', " +
-                     "data should have required property 'ethAddress', data should have required property 'fcmToken', " +
-                     "data should have required property 'username'";
+      const errMsg =
+        "data should have required property 'privateKey', data should have required property 'publicKey', " +
+        "data should have required property 'ethAddress', data should have required property 'fcmToken', " +
+        "data should have required property 'username'";
       try {
         await pSdk.wallet.registerAuthServer(walletRegistrationData);
       } catch (error) {
         expect(error.message).toEqual(errMsg);
       }
     });
-
   });
 
   describe('The Wallet Class: update method', () => {
