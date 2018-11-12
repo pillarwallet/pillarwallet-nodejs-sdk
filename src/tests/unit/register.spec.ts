@@ -93,7 +93,7 @@ describe('Register Class', () => {
         refreshToken: 'myRefreshToken',
         refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
         userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-        walletId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       },
     };
     const data = {

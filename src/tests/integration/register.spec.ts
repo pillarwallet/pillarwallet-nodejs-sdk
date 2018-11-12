@@ -77,7 +77,7 @@ describe('POST RegisterAuthServer', () => {
         .reply(200, responseRegisterKey);
     });
 
-    it('Throws a 401 error if request goes wrong', async () => {
+    it('Throws a 401 when payload authentication fails', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/auth')
@@ -89,7 +89,7 @@ describe('POST RegisterAuthServer', () => {
       }
     });
 
-    it('Throws a 500 error if request goes wrong', async () => {
+    it('Throws a 500 when an internal server error occurs', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/auth')
@@ -113,7 +113,7 @@ describe('POST RegisterAuthServer', () => {
         .reply(200, responseRegisterAuth);
     });
 
-    it('Throws a 401 error if request goes wrong', async () => {
+    it('Throws a 401 when payload authentication fails', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/access')
@@ -125,7 +125,7 @@ describe('POST RegisterAuthServer', () => {
       }
     });
 
-    it('Throws a 500 error if request goes wrong', async () => {
+    it('Throws a 500 when an internal server error occurs', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/access')

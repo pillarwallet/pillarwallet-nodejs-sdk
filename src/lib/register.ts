@@ -95,17 +95,17 @@ export class Register {
     const payload = { ...data };
     const config = { ...postConfiguration };
 
-    // removing Access id from header signature
+    // deleting Access id from header signature
     delete header.uuid;
 
-    // delete authorizationCode from payload
+    // deleting authorizationCode from payload
     delete payload.authorizationCode;
 
     // Signing Header
     config.headers[
       'X-API-Signature'
     ] = new Configuration().checkSignature(header, privateKey);
-    // http request
+    // HTTP request
     return new Configuration().executeRequest({
       data: payload,
       defaultRequest: config,
