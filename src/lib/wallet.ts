@@ -111,7 +111,7 @@ export class Wallet extends Configuration {
     );
 
     const registerAccessPayload = {
-      codeVerifier,
+      codeVerifier: codeVerifier.toString(),
       authorizationCode: responseRegisterAuth.data.authorizationCode,
       uuid: Configuration.uuid,
     };
