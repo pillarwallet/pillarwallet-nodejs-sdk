@@ -104,6 +104,19 @@ describe('Wallet Class', () => {
         expect(error.message).toEqual(registerKeysResponse.data.message);
       }
     });
+
+    it('should throw an error if invalid payload is sent', async () => {
+      const walletRegistrationData = {};
+      const errMsg = "data should have required property 'privateKey', data should have required property 'publicKey', " +
+                     "data should have required property 'ethAddress', data should have required property 'fcmToken', " +
+                     "data should have required property 'username'";
+      try {
+        await pSdk.wallet.registerAuthServer(walletRegistrationData);
+      } catch (error) {
+        expect(error.message).toEqual(errMsg);
+      }
+    });
+
   });
 
   describe('The Wallet Class: update method', () => {

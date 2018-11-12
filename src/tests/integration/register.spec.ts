@@ -51,11 +51,13 @@ describe('POST RegisterAuthServer', () => {
     };
   });
 
-  it('Responds with a nonce and expiry date /register/auth JSON', async () => {
+  it('Responds with access payload', async () => {
     const response = await pSdk.wallet.registerAuthServer(walletRegister);
     expect(response.data).toEqual(responseRegisterAccess);
   });
 
+
+describe('register/keys error responses', () => {
   it('Throws an error if request goes wrong', async () => {
     expect.assertions(1);
     nock('http://localhost:8080')
@@ -64,7 +66,78 @@ describe('POST RegisterAuthServer', () => {
     try {
       await pSdk.wallet.registerAuthServer(walletRegister);
     } catch (error) {
-      expect(error.message).toEqual('Request failed with status code 500');
-    };
+        expect(error.message).toEqual('Request failed with status code 500');
+      };
+    });
   });
+
+describe('register/auth error responses', () => {
+
+  beforeEach(()=>{
+    nock('http://localhost:8080')
+      .post('/register/keys')
+      .reply(200, responseRegisterKey);
+  });
+
+  it('Throws a 401 error if request goes wrong', async () => {
+    expect.assertions(1);
+    nock('http://localhost:8080')
+      .post('/register/auth')
+      .reply(401, 'Payload verification failed');
+    try {
+      await pSdk.wallet.registerAuthServer(walletRegister);
+    } catch (error) {
+        expect(error.message).toEqual('Request failed with status code 401');
+      };
+    });
+
+  it('Throws a 500 error if request goes wrong', async () => {
+    expect.assertions(1);
+    nock('http://localhost:8080')
+      .post('/register/auth')
+      .reply(500, 'Internal server error');
+    try {
+      await pSdk.wallet.registerAuthServer(walletRegister);
+    } catch (error) {
+        expect(error.message).toEqual('Request failed with status code 500');
+      };
+    });
+  });
+
+  describe('register/access error responses', () => {
+
+    beforeEach(()=>{
+      nock('http://localhost:8080')
+        .post('/register/keys')
+        .reply(200, responseRegisterKey);
+
+      nock('http://localhost:8080')
+        .post('/register/auth')
+        .reply(200, responseRegisterAuth);
+    });
+  
+    it('Throws a 401 error if request goes wrong', async () => {
+      expect.assertions(1);
+      nock('http://localhost:8080')
+        .post('/register/access')
+        .reply(401, 'Payload verification failed');
+      try {
+        await pSdk.wallet.registerAuthServer(walletRegister);
+      } catch (error) {
+          expect(error.message).toEqual('Request failed with status code 401');
+        };
+      });
+  
+    it('Throws a 500 error if request goes wrong', async () => {
+      expect.assertions(1);
+      nock('http://localhost:8080')
+        .post('/register/access')
+        .reply(500, 'Internal server error');
+      try {
+        await pSdk.wallet.registerAuthServer(walletRegister);
+      } catch (error) {
+          expect(error.message).toEqual('Request failed with status code 500');
+        };
+      });
+    });
 });
