@@ -89,32 +89,42 @@ export class Wallet extends Configuration {
       );
     }
 
-    // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
-    const responseRegisterKeys = await Register.registerKeys(
-      Configuration.uuid,
-      walletRegister.publicKey,
-    );
+    let responseRegisterKeys, registerAuthPayload, responseRegisterAuth, registerAccessPayload;
 
-    // Use response data to create registerAuthPayload.
-    const registerAuthPayload = {
-      nonce: responseRegisterKeys.data.nonce,
-      uuid: Configuration.uuid,
-      codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-      ethAddress: walletRegister.ethAddress,
-      fcmToken: walletRegister.fcmToken,
-      username: walletRegister.username,
+    // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
+    try {
+      responseRegisterKeys = await Register.registerKeys(
+        Configuration.uuid,
+        walletRegister.publicKey,
+      );
+
+      // Use response data to create registerAuthPayload.
+      registerAuthPayload = {
+        nonce: responseRegisterKeys.data.nonce,
+        uuid: Configuration.uuid,
+        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+        ethAddress: walletRegister.ethAddress,
+        fcmToken: walletRegister.fcmToken,
+        username: walletRegister.username,
+      };
+    } catch(e) {
+      throw e;
     };
     // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
-    const responseRegisterAuth = await Register.registerAuth(
-      registerAuthPayload,
-      privateKey,
-    );
+    try {
+      responseRegisterAuth = await Register.registerAuth(
+        registerAuthPayload,
+        privateKey,
+      );
 
-    const registerAccessPayload = {
-      codeVerifier: codeVerifier.toString(),
-      authorizationCode: responseRegisterAuth.data.authorizationCode,
-      uuid: Configuration.uuid,
-    };
+      registerAccessPayload = {
+        codeVerifier: codeVerifier.toString(),
+        authorizationCode: responseRegisterAuth.data.authorizationCode,
+        uuid: Configuration.uuid,
+      };
+    } catch(e) {
+      throw e;
+    }
 
     return await Register.registerAccess(registerAccessPayload, privateKey);
   }

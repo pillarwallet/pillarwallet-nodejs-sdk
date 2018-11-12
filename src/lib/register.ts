@@ -93,6 +93,7 @@ export class Register {
   ): AxiosPromise {
     const header = { ...data };
     const payload = { ...data };
+    const config = { ...postConfiguration };
 
     // removing Access id from header signature
     delete header.uuid;
@@ -101,11 +102,9 @@ export class Register {
     delete payload.authorizationCode;
 
     // Signing Header
-    postConfiguration.headers[
+    config.headers[
       'X-API-Signature'
     ] = new Configuration().checkSignature(header, privateKey);
-    // Signing Header
-    const config = { ...postConfiguration };
     // http request
     return new Configuration().executeRequest({
       data: payload,
