@@ -21,6 +21,7 @@ describe('Register Class', () => {
     };
 
     it('should return 400 due missing params', async () => {
+      expect.assertions(2);
       const errMsg = 'Missing UUID or publicKey';
       nock('http://localhost:8080')
         .post('/register/keys', (body: any) => {
@@ -37,6 +38,7 @@ describe('Register Class', () => {
     });
 
     it('should return 500 due internal server error', async () => {
+      expect.assertions(2);
       const errMsg = 'Internal Server Error';
       nock('http://localhost:8080')
         .post('/register/keys')
@@ -77,6 +79,7 @@ describe('Register Class', () => {
     };
 
     it('should return 400 due missing params', async () => {
+      expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       const regAuthData = { ...data };
       regAuthData.username = '';
@@ -101,6 +104,7 @@ describe('Register Class', () => {
     });
 
     it('should return 500 internal server error', async () => {
+      expect.assertions(2);
       const errMsg = 'Internal Server Error';
       const regAuthData = { ...data };
       regAuthData.username = '';
@@ -117,6 +121,7 @@ describe('Register Class', () => {
     });
 
     it('expects to return unauthorised due to invalid signature', async () => {
+      expect.assertions(2);
       const errMsg = 'Unauthorised';
       const regAuthData = { ...data };
       delete regAuthData.nonce;
@@ -180,6 +185,7 @@ describe('Register Class', () => {
     };
 
     it('should return 400 due missing params', async () => {
+      expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       nock('http://localhost:8080')
         .post('/register/access', (body: any) => {
