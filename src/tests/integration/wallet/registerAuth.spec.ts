@@ -52,8 +52,10 @@ describe('POST RegisterAuthServer', () => {
   });
 
   it('responds with access payload', async () => {
+    expect.assertions(2);
     const response = await pSdk.wallet.registerAuthServer(walletRegister);
     expect(response.data).toEqual(responseRegisterAccess);
+    expect(response.status).toEqual(200);
   });
 
   describe('register/keys error responses', () => {
@@ -62,12 +64,12 @@ describe('POST RegisterAuthServer', () => {
       .reply(500, 'Internal server error');
 
     it('throws a 500 when an internal server error occurs', async () => {
-      expect.assertions(1);
-
+      expect.assertions(2);
       try {
         await pSdk.wallet.registerAuthServer(walletRegister);
       } catch (error) {
         expect(error.message).toEqual('Request failed with status code 500');
+        expect(error.response.status).toEqual(500);
       }
     });
   });
@@ -80,7 +82,7 @@ describe('POST RegisterAuthServer', () => {
     });
 
     it('throws a 401 when payload authentication fails', async () => {
-      expect.assertions(1);
+      expect.assertions(2);
       nock('http://localhost:8080')
         .post('/register/auth')
         .reply(401, 'Payload verification failed');
@@ -88,11 +90,12 @@ describe('POST RegisterAuthServer', () => {
         await pSdk.wallet.registerAuthServer(walletRegister);
       } catch (error) {
         expect(error.message).toEqual('Request failed with status code 401');
+        expect(error.response.status).toEqual(401);
       }
     });
 
     it('throws a 500 when an internal server error occurs', async () => {
-      expect.assertions(1);
+      expect.assertions(2);
       nock('http://localhost:8080')
         .post('/register/auth')
         .reply(500, 'Internal server error');
@@ -100,6 +103,7 @@ describe('POST RegisterAuthServer', () => {
         await pSdk.wallet.registerAuthServer(walletRegister);
       } catch (error) {
         expect(error.message).toEqual('Request failed with status code 500');
+        expect(error.response.status).toEqual(500);
       }
     });
   });
@@ -116,7 +120,7 @@ describe('POST RegisterAuthServer', () => {
     });
 
     it('throws a 401 when payload authentication fails', async () => {
-      expect.assertions(1);
+      expect.assertions(2);
       nock('http://localhost:8080')
         .post('/register/access')
         .reply(401, 'Payload verification failed');
@@ -124,11 +128,12 @@ describe('POST RegisterAuthServer', () => {
         await pSdk.wallet.registerAuthServer(walletRegister);
       } catch (error) {
         expect(error.message).toEqual('Request failed with status code 401');
+        expect(error.response.status).toEqual(401);
       }
     });
 
     it('throws a 500 when an internal server error occurs', async () => {
-      expect.assertions(1);
+      expect.assertions(2);
       nock('http://localhost:8080')
         .post('/register/access')
         .reply(500, 'Internal server error');
@@ -136,6 +141,7 @@ describe('POST RegisterAuthServer', () => {
         await pSdk.wallet.registerAuthServer(walletRegister);
       } catch (error) {
         expect(error.message).toEqual('Request failed with status code 500');
+        expect(error.response.status).toEqual(500);
       }
     });
   });
