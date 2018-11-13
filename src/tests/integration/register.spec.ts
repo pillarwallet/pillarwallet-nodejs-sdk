@@ -29,7 +29,7 @@ describe('Register Class', () => {
         })
         .reply(400, errMsg);
       try {
-        await Register.registerKeys('', uuIdv4); // empty pubKey
+        await Register.registerKeys('', uuIdv4); // empty publicKey
       } catch (error) {
         expect(error.response.status).toEqual(400);
         expect(error.response.data).toEqual(errMsg);
@@ -184,7 +184,7 @@ describe('Register Class', () => {
       uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
     };
 
-    it('should return 400 due missing params', async () => {
+    it('returns a 400 error due to missing params', async () => {
       expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       nock('http://localhost:8080')
