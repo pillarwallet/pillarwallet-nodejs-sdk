@@ -125,6 +125,7 @@ describe('Wallet Class', () => {
     });
 
     it('should throw an error if invalid payload is sent', async () => {
+      expect.assertions(1);
       const walletRegistrationData = {};
       const errMsg =
         "data should have required property 'privateKey', data should have required property 'publicKey', " +
