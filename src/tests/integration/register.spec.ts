@@ -108,7 +108,7 @@ describe('Register Class', () => {
         .post('/register/auth')
         .reply(500, errMsg);
       try {
-        await Register.registerAuth(regAuthData, privateKey); // empty pubKey
+        await Register.registerAuth(regAuthData, privateKey);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data).toEqual(errMsg);
@@ -165,16 +165,13 @@ describe('Register Class', () => {
 
   describe('registerAccess', () => {
     const regAccessResponse = {
-      status: 200,
-      data: {
-        accessToken: 'myAccessToken',
-        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        fcmToken: 'myFcmToken',
-        refreshToken: 'myRefreshToken',
-        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-      },
+      accessToken: 'myAccessToken',
+      accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+      fcmToken: 'myFcmToken',
+      refreshToken: 'myRefreshToken',
+      refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+      userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
     };
     const data = {
       authorizationCode: 'myauthorizationCode',
@@ -182,24 +179,43 @@ describe('Register Class', () => {
       uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
     };
 
-    it('should send http request containing data and privateKey', () => {
-      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+    it('should return 400 due missing params', async () => {
+      const errMsg = 'Missing one or more params!';
+      nock('http://localhost:8080')
+        .post('/register/access', (body: any) => {
+          return body.codeVerifier === '' || body.uuid === '';
+        })
+        .reply(400, errMsg);
       const regAccessData = { ...data };
-      delete regAccessData.authorizationCode;
-      Register.registerAccess(data, privateKey);
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: regAccessData,
-          url: 'http://localhost:8080/register/access',
-        }),
-      );
+      regAccessData.codeVerifier = '';
+      try {
+        await Register.registerAccess(regAccessData, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
     });
 
-    it('expects response to resolve with data', async () => {
-      jest.spyOn(Requester, 'execute').mockResolvedValue(regAccessResponse);
-      const response = await Register.registerAccess(data, privateKey);
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAuthData = { ...data };
+      delete regAuthData.authorizationCode;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/access', { ...regAuthData })
+        .reply(200, regAccessResponse);
+      const response = await Register.registerAccess(regAuthData, privateKey);
       expect(response.status).toEqual(200);
-      expect(response.data).toEqual(regAccessResponse.data);
+      expect(response.data).toEqual(regAccessResponse);
+      nock.isDone();
     });
   });
 });

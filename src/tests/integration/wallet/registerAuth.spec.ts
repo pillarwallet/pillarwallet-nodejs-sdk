@@ -23,17 +23,17 @@ const responseRegisterAccess = {
   walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
 };
 
-// nock('http://localhost:8080')
-//   .post('/register/keys')
-//   .reply(200, responseRegisterKey);
-//
-// nock('http://localhost:8080')
-//   .post('/register/auth')
-//   .reply(200, responseRegisterAuth);
-//
-// nock('http://localhost:8080')
-//   .post('/register/access')
-//   .reply(200, responseRegisterAccess);
+nock('http://localhost:8080')
+  .post('/register/keys')
+  .reply(200, responseRegisterKey);
+
+nock('http://localhost:8080')
+  .post('/register/auth')
+  .reply(200, responseRegisterAuth);
+
+nock('http://localhost:8080')
+  .post('/register/access')
+  .reply(200, responseRegisterAccess);
 
 describe('POST RegisterAuthServer', () => {
   const pSdk = new PillarSdk({
@@ -51,22 +51,21 @@ describe('POST RegisterAuthServer', () => {
     };
   });
 
-  it.skip('Responds with access payload', async () => {
+  it('Responds with access payload', async () => {
     const response = await pSdk.wallet.registerAuthServer(walletRegister);
     expect(response.data).toEqual(responseRegisterAccess);
   });
 
-  describe.only('register/keys error responses', () => {
+  describe('register/keys error responses', () => {
     nock('http://localhost:8080')
       .post('/register/keys')
       .reply(500, 'Internal server error');
 
-    it.only('Throws a 500 when an internal server error occurs', async () => {
-      // expect.assertions(1);
+    it('Throws a 500 when an internal server error occurs', async () => {
+      expect.assertions(1);
 
       try {
         await pSdk.wallet.registerAuthServer(walletRegister);
-
       } catch (error) {
         expect(error.message).toEqual('Request failed with status code 500');
       }
