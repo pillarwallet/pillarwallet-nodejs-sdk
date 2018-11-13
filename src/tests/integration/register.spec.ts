@@ -127,8 +127,8 @@ describe('Register Class', () => {
       delete regAuthData.nonce;
       nock('http://localhost:8080', {
         reqheaders: {
-          'X-API-Signature': invalidValue => {
-            if (invalidValue) {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
               return true;
             }
             return false;
