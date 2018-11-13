@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
+import { ProofKey } from '../utils/pkce';
 
 let ajv: any;
 

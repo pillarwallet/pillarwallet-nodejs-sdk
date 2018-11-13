@@ -1,56 +1,246 @@
+import { Register } from '../../lib/register';
 import nock = require('nock');
-import { PillarSdk } from '../..';
+import { v4 as uuid } from 'uuid';
+import { PillarSdk } from '../../index';
 
 const keys = require('../utils/generateKeyPair');
 
-const responseRegisterKey = {
-  nonce: '3yy1uy3u13yu1y3uy3',
-  expiresAt: '2011-06-14T04:12:36Z',
-};
+describe('Register Class', () => {
+  const publicKey = 'myPub';
+  const privateKey = 'myPrivateKey';
+  const uuIdv4 = uuid();
 
-const responseRegisterAuth = {
-  authorizationCode: 'Authorisation code',
-  expiresAt: '2011-06-14T04:12:36Z',
-};
-
-nock('http://localhost:8080')
-  .post('/register/keys')
-  .reply(200, responseRegisterKey);
-
-nock('http://localhost:8080')
-  .post('/register/auth')
-  .reply(200, responseRegisterAuth);
-
-describe('POST RegisterAuthServer', () => {
-  const pSdk = new PillarSdk({
-    apiUrl: 'http://localhost:8080',
-    privateKey: keys.privateKey,
-  });
-  let walletRegister = {};
-  beforeEach(() => {
-    walletRegister = {
+  beforeAll(() => {
+    new PillarSdk({
+      apiUrl: 'http://localhost:8080',
       privateKey: keys.privateKey,
-      publicKey: keys.publicKey,
-      ethAddress: '0x0000000000000000000000000000000000000000',
-      fcmToken: '987qwe',
-      username: 'sdfsdfs',
+    });
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('registerKeys method', () => {
+    const regKeysResponse = {
+      expiresAt: '2011-06-14T04:12:36Z',
+      nonce: '4321',
     };
+
+    it('should return 400 due missing params', async () => {
+      expect.assertions(2);
+      const errMsg = 'Missing UUID or publicKey';
+      nock('http://localhost:8080')
+        .post('/register/keys', (body: { publicKey: string; uuid: string }) => {
+          return body.publicKey === '' || body.uuid === '';
+        })
+        .reply(400, errMsg);
+      try {
+        await Register.registerKeys('', uuIdv4); // empty publicKey
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('should return 500 due internal server error', async () => {
+      expect.assertions(2);
+      const errMsg = 'Internal Server Error';
+      nock('http://localhost:8080')
+        .post('/register/keys')
+        .reply(500, errMsg);
+      try {
+        await Register.registerKeys(publicKey, uuIdv4);
+      } catch (error) {
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      nock('http://localhost:8080')
+        .post('/register/keys', { publicKey, uuid: uuIdv4 })
+        .reply(200, regKeysResponse);
+      const response = await Register.registerKeys(publicKey, uuIdv4);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regKeysResponse);
+      nock.isDone();
+    });
   });
 
-  it('Responds with a nonce and expiry date /register/auth JSON', async () => {
-    const response = await pSdk.wallet.registerAuthServer(walletRegister);
-    expect(response.data).toEqual(responseRegisterAuth);
+  describe('registerAuth method', () => {
+    const regAuthResponse = {
+      authorizationCode: 'Authorisation code',
+      expiresAt: '2011-06-14T04:12:36Z',
+    };
+
+    const data = {
+      nonce: '4344132',
+      uuid: uuIdv4,
+      codeChallenge: '323423423443423432432432',
+      ethAddress: 'OneEthAddress',
+      fcmToken: 'OneFcmToken',
+      username: 'OneUserName',
+    };
+
+    it('should return 400 due missing params', async () => {
+      expect.assertions(2);
+      const errMsg = 'Missing one or more params!';
+      const regAuthData = { ...data };
+      regAuthData.username = '';
+      nock('http://localhost:8080')
+        .post(
+          '/register/auth',
+          (body: {
+            codeChallenge: string;
+            ethAddress: string;
+            fcmToken: string;
+            username: string;
+            uuid: string;
+          }) => {
+            return (
+              body.uuid === '' ||
+              body.codeChallenge === '' ||
+              body.ethAddress === '' ||
+              body.fcmToken === '' ||
+              body.username === ''
+            );
+          },
+        )
+        .reply(400, errMsg);
+      try {
+        await Register.registerAuth(regAuthData, privateKey); // empty username
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('should return 500 internal server error', async () => {
+      expect.assertions(2);
+      const errMsg = 'Internal Server Error';
+      const regAuthData = { ...data };
+      regAuthData.username = '';
+      nock('http://localhost:8080')
+        .post('/register/auth')
+        .reply(500, errMsg);
+      try {
+        await Register.registerAuth(regAuthData, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects to return unauthorised due to invalid signature', async () => {
+      expect.assertions(2);
+      const errMsg = 'Unauthorised';
+      const regAuthData = { ...data };
+      delete regAuthData.nonce;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/auth', { ...regAuthData })
+        .reply(401, errMsg);
+      try {
+        await Register.registerAuth(data, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(401);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAuthData = { ...data };
+      delete regAuthData.nonce;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/auth', { ...regAuthData })
+        .reply(200, regAuthResponse);
+      const response = await Register.registerAuth(data, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regAuthResponse);
+      nock.isDone();
+    });
   });
 
-  it('Throws an error if request goes wrong', async () => {
-    expect.assertions(1);
-    nock('http://localhost:8080')
-      .post('/register/keys')
-      .reply(500, { message: 'Internal server error' });
-    try {
-      await pSdk.wallet.registerAuthServer(walletRegister);
-    } catch (error) {
-      expect(error.message).toEqual('Request failed with status code 500');
-    }
+  describe('registerAccess', () => {
+    const regAccessResponse = {
+      accessToken: 'myAccessToken',
+      accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+      fcmToken: 'myFcmToken',
+      refreshToken: 'myRefreshToken',
+      refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+      userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+      walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+    };
+    const data = {
+      authorizationCode: 'myauthorizationCode',
+      codeVerifier: 'oneCodeVerifier',
+      uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+    };
+
+    it('returns a 400 error due to missing params', async () => {
+      expect.assertions(2);
+      const errMsg = 'Missing one or more params!';
+      nock('http://localhost:8080')
+        .post(
+          '/register/access',
+          (body: { codeVerifier: string; uuid: string }) => {
+            return body.codeVerifier === '' || body.uuid === '';
+          },
+        )
+        .reply(400, errMsg);
+      const regAccessData = { ...data };
+      regAccessData.codeVerifier = '';
+      try {
+        await Register.registerAccess(regAccessData, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAuthData = { ...data };
+      delete regAuthData.authorizationCode;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/access', { ...regAuthData })
+        .reply(200, regAccessResponse);
+      const response = await Register.registerAccess(regAuthData, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regAccessResponse);
+      nock.isDone();
+    });
   });
 });

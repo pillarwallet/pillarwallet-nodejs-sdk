@@ -82,4 +82,44 @@ describe('Register Class', () => {
       expect(response.data).toEqual(regAuthResponse.data);
     });
   });
+
+  describe('registerAccess', () => {
+    const regAccessResponse = {
+      status: 200,
+      data: {
+        accessToken: 'myAccessToken',
+        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        fcmToken: 'myFcmToken',
+        refreshToken: 'myRefreshToken',
+        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      },
+    };
+    const data = {
+      authorizationCode: 'myauthorizationCode',
+      codeVerifier: 'oneCodeVerifier',
+      uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+    };
+
+    it('should send http request containing data and privateKey', () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+      const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
+      Register.registerAccess(data, privateKey);
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: regAccessData,
+          url: 'http://localhost:8080/register/access',
+        }),
+      );
+    });
+
+    it('expects response to resolve with data', async () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue(regAccessResponse);
+      const response = await Register.registerAccess(data, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regAccessResponse.data);
+    });
+  });
 });
