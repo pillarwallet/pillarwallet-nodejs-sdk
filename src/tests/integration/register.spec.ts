@@ -1,14 +1,21 @@
 import { Register } from '../../lib/register';
-import { Requester } from '../../utils/requester';
-import { Configuration } from '../../lib/configuration';
 import nock = require('nock');
 import { v4 as uuid } from 'uuid';
+import { PillarSdk } from '../../index';
+
+const keys = require('../utils/generateKeyPair');
 
 describe('Register Class', () => {
-  Configuration.accessKeys.apiUrl = 'http://localhost:8080';
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
   const uuIdv4 = uuid();
+
+  beforeAll(() => {
+    new PillarSdk({
+      apiUrl: 'http://localhost:8080',
+      privateKey: keys.privateKey,
+    });
+  });
 
   afterAll(() => {
     jest.restoreAllMocks();
@@ -24,7 +31,7 @@ describe('Register Class', () => {
       expect.assertions(2);
       const errMsg = 'Missing UUID or publicKey';
       nock('http://localhost:8080')
-        .post('/register/keys', (body: any) => {
+        .post('/register/keys', (body: { publicKey: string; uuid: string }) => {
           return body.publicKey === '' || body.uuid === '';
         })
         .reply(400, errMsg);
@@ -84,18 +91,27 @@ describe('Register Class', () => {
       const regAuthData = { ...data };
       regAuthData.username = '';
       nock('http://localhost:8080')
-        .post('/register/auth', (body: any) => {
-          return (
-            body.uuid === '' ||
-            body.codeChallenge === '' ||
-            body.ethAddress === '' ||
-            body.fcmToken === '' ||
-            body.username === ''
-          );
-        })
+        .post(
+          '/register/auth',
+          (body: {
+            codeChallenge: string;
+            ethAddress: string;
+            fcmToken: string;
+            username: string;
+            uuid: string;
+          }) => {
+            return (
+              body.uuid === '' ||
+              body.codeChallenge === '' ||
+              body.ethAddress === '' ||
+              body.fcmToken === '' ||
+              body.username === ''
+            );
+          },
+        )
         .reply(400, errMsg);
       try {
-        await Register.registerAuth(regAuthData, privateKey); // empty pubKey
+        await Register.registerAuth(regAuthData, privateKey); // empty username
       } catch (error) {
         expect(error.response.status).toEqual(400);
         expect(error.response.data).toEqual(errMsg);
@@ -188,9 +204,12 @@ describe('Register Class', () => {
       expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       nock('http://localhost:8080')
-        .post('/register/access', (body: any) => {
-          return body.codeVerifier === '' || body.uuid === '';
-        })
+        .post(
+          '/register/access',
+          (body: { codeVerifier: string; uuid: string }) => {
+            return body.codeVerifier === '' || body.uuid === '';
+          },
+        )
         .reply(400, errMsg);
       const regAccessData = { ...data };
       regAccessData.codeVerifier = '';

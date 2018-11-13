@@ -78,7 +78,7 @@ export class Register {
 
   /**
    * @name registerAccess
-   * @description Method to send code verfifer and UUID.
+   * @description Method to send code verifier and UUID.
    * @param {object} data
    * @param {string} privateKey
    * @returns {AxiosPromise}

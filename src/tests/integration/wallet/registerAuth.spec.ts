@@ -58,7 +58,7 @@ describe('POST RegisterAuthServer', () => {
     expect(response.status).toEqual(200);
   });
 
-  describe('register/keys error responses', () => {
+  describe('/register/keys error responses', () => {
     nock('http://localhost:8080')
       .post('/register/keys')
       .reply(500, 'Internal server error');

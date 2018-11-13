@@ -93,15 +93,14 @@ export class Wallet extends Configuration {
     let responseRegisterAuth;
 
     try {
-
-    // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
+      // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
       responseRegisterKeys = await Register.registerKeys(
         Configuration.uuid,
         walletRegister.publicKey,
       );
 
-    // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
-    // Use response data to create registerAuthPayload.
+      // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
+      // Use response data to create registerAuthPayload.
       const registerAuthPayload = {
         nonce: responseRegisterKeys.data.nonce,
         uuid: Configuration.uuid,
@@ -116,9 +115,10 @@ export class Wallet extends Configuration {
         privateKey,
       );
 
-    // 3 step: Complete registration - Send code verfifer and UUID (used in previous requests).
-    // Sign the payload and authorizationCode. Receive access and refresh tokens, FCM token, user ID and wallet ID.
-    // Use responseRegisterAuth to create registerAccessPayload.
+      // 3 step: Complete registration - Send code verfifer and UUID (used in previous requests).
+      // Sign the payload and authorizationCode. Receive access and refresh tokens, FCM token, user ID and wallet ID.
+
+      // Use responseRegisterAuth to create registerAccessPayload.
       const registerAccessPayload = {
         codeVerifier: codeVerifier.toString(),
         authorizationCode: responseRegisterAuth.data.authorizationCode,
@@ -126,7 +126,6 @@ export class Wallet extends Configuration {
       };
 
       return await Register.registerAccess(registerAccessPayload, privateKey);
-      
     } catch (error) {
       throw error;
     }
