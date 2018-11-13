@@ -51,7 +51,7 @@ describe('POST RegisterAuthServer', () => {
     };
   });
 
-  it('Responds with access payload', async () => {
+  it('responds with access payload', async () => {
     const response = await pSdk.wallet.registerAuthServer(walletRegister);
     expect(response.data).toEqual(responseRegisterAccess);
   });
@@ -61,7 +61,7 @@ describe('POST RegisterAuthServer', () => {
       .post('/register/keys')
       .reply(500, 'Internal server error');
 
-    it('Throws a 500 when an internal server error occurs', async () => {
+    it('throws a 500 when an internal server error occurs', async () => {
       expect.assertions(1);
 
       try {
@@ -72,14 +72,14 @@ describe('POST RegisterAuthServer', () => {
     });
   });
 
-  describe('register/auth error responses', () => {
+  describe('/register/auth error responses', () => {
     beforeEach(() => {
       nock('http://localhost:8080')
         .post('/register/keys')
         .reply(200, responseRegisterKey);
     });
 
-    it('Throws a 401 when payload authentication fails', async () => {
+    it('throws a 401 when payload authentication fails', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/auth')
@@ -91,7 +91,7 @@ describe('POST RegisterAuthServer', () => {
       }
     });
 
-    it('Throws a 500 when an internal server error occurs', async () => {
+    it('throws a 500 when an internal server error occurs', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/auth')
@@ -104,7 +104,7 @@ describe('POST RegisterAuthServer', () => {
     });
   });
 
-  describe('register/access error responses', () => {
+  describe('/register/access error responses', () => {
     beforeEach(() => {
       nock('http://localhost:8080')
         .post('/register/keys')
@@ -115,7 +115,7 @@ describe('POST RegisterAuthServer', () => {
         .reply(200, responseRegisterAuth);
     });
 
-    it('Throws a 401 when payload authentication fails', async () => {
+    it('throws a 401 when payload authentication fails', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/access')
@@ -127,7 +127,7 @@ describe('POST RegisterAuthServer', () => {
       }
     });
 
-    it('Throws a 500 when an internal server error occurs', async () => {
+    it('throws a 500 when an internal server error occurs', async () => {
       expect.assertions(1);
       nock('http://localhost:8080')
         .post('/register/access')
