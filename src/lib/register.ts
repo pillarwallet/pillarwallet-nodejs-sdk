@@ -102,9 +102,10 @@ export class Register {
     delete payload.authorizationCode;
 
     // Signing Header
-    config.headers[
-      'X-API-Signature'
-    ] = new Configuration().checkSignature(header, privateKey);
+    config.headers['X-API-Signature'] = new Configuration().checkSignature(
+      header,
+      privateKey,
+    );
     // HTTP request
     return new Configuration().executeRequest({
       data: payload,

@@ -18,7 +18,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const walletRegisterSchema = require('../schemas/wallet/register.json');
-const walletRegisterAuthSchema = require('../schemas/wallet/registerAuth.json');
+const walletRegisterAuthSchema = require('../schemas/wallet/registerAuthServer.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.json');
 const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddress.json');
@@ -89,7 +89,8 @@ export class Wallet extends Configuration {
       );
     }
 
-    let responseRegisterKeys, registerAuthPayload, responseRegisterAuth, registerAccessPayload;
+    let responseRegisterKeys;
+    let responseRegisterAuth;
 
     // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
     try {
@@ -97,9 +98,14 @@ export class Wallet extends Configuration {
         Configuration.uuid,
         walletRegister.publicKey,
       );
+    } catch (error) {
+      throw error;
+    }
 
+    // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
+    try {
       // Use response data to create registerAuthPayload.
-      registerAuthPayload = {
+      const registerAuthPayload = {
         nonce: responseRegisterKeys.data.nonce,
         uuid: Configuration.uuid,
         codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
@@ -107,26 +113,29 @@ export class Wallet extends Configuration {
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
       };
-    } catch(e) {
-      throw e;
-    };
-    // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
-    try {
+
       responseRegisterAuth = await Register.registerAuth(
         registerAuthPayload,
         privateKey,
       );
+    } catch (error) {
+      throw error;
+    }
 
-      registerAccessPayload = {
+    // 3 step: Complete registration - Send code verfifer and UUID (used in previous requests).
+    // Sign the payload and authorizationCode. Receive access and refresh tokens, FCM token, user ID and wallet ID.
+    try {
+      // Use responseRegisterAuth to create registerAccessPayload.
+      const registerAccessPayload = {
         codeVerifier: codeVerifier.toString(),
         authorizationCode: responseRegisterAuth.data.authorizationCode,
         uuid: Configuration.uuid,
       };
-    } catch(e) {
-      throw e;
-    }
 
-    return await Register.registerAccess(registerAccessPayload, privateKey);
+      return await Register.registerAccess(registerAccessPayload, privateKey);
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**

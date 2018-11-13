@@ -1,140 +1,205 @@
+import { Register } from '../../lib/register';
+import { Requester } from '../../utils/requester';
+import { Configuration } from '../../lib/configuration';
 import nock = require('nock');
-import { PillarSdk } from '../..';
+import { v4 as uuid } from 'uuid';
 
-const keys = require('../utils/generateKeyPair');
+describe('Register Class', () => {
+  Configuration.accessKeys.apiUrl = 'http://localhost:8080';
+  const publicKey = 'myPub';
+  const privateKey = 'myPrivateKey';
+  const uuIdv4 = uuid();
 
-const responseRegisterKey = {
-  nonce: '3yy1uy3u13yu1y3uy3',
-  expiresAt: '2011-06-14T04:12:36Z',
-};
-
-const responseRegisterAuth = {
-  authorizationCode: 'Authorisation code',
-  expiresAt: '2011-06-14T04:12:36Z',
-};
-
-const responseRegisterAccess = {
-  accessToken: 'oneAccessToken',
-  accessTokenExpiresAt: '2011-06-14T04:12:36Z',
-  fcmToken: 'oneFcmToken',
-  refreshToken: 'oneRefreshoken',
-  refreshTokenExpiresAt: '2011-06-14T04:12:36Z',
-  userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-  walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-};
-
-nock('http://localhost:8080')
-  .post('/register/keys')
-  .reply(200, responseRegisterKey);
-
-nock('http://localhost:8080')
-  .post('/register/auth')
-  .reply(200, responseRegisterAuth);
-
-nock('http://localhost:8080')
-  .post('/register/access')
-  .reply(200, responseRegisterAccess);
-
-describe('POST RegisterAuthServer', () => {
-  const pSdk = new PillarSdk({
-    apiUrl: 'http://localhost:8080',
-    privateKey: keys.privateKey,
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
-  let walletRegister = {};
-  beforeEach(() => {
-    walletRegister = {
-      privateKey: keys.privateKey,
-      publicKey: keys.publicKey,
-      ethAddress: '0x0000000000000000000000000000000000000000',
-      fcmToken: '987qwe',
-      username: 'sdfsdfs',
+
+  describe('registerKeys method', () => {
+    const regKeysResponse = {
+      expiresAt: '2011-06-14T04:12:36Z',
+      nonce: '4321',
     };
-  });
 
-  it('Responds with access payload', async () => {
-    const response = await pSdk.wallet.registerAuthServer(walletRegister);
-    expect(response.data).toEqual(responseRegisterAccess);
-  });
+    it('should return 400 due missing params', async () => {
+      const errMsg = 'Missing UUID or publicKey';
+      nock('http://localhost:8080')
+        .post('/register/keys', (body: any) => {
+          return body.publicKey === '' || body.uuid === '';
+        })
+        .reply(400, errMsg);
+      try {
+        await Register.registerKeys('', uuIdv4); // empty pubKey
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
 
-  describe('register/keys error responses', () => {
-    it('Throws an error if request goes wrong', async () => {
-      expect.assertions(1);
+    it('should return 500 due internal server error', async () => {
+      const errMsg = 'Internal Server Error';
       nock('http://localhost:8080')
         .post('/register/keys')
-        .reply(500, 'Internal server error');
+        .reply(500, errMsg);
       try {
-        await pSdk.wallet.registerAuthServer(walletRegister);
+        await Register.registerKeys(publicKey, uuIdv4);
       } catch (error) {
-        expect(error.message).toEqual('Request failed with status code 500');
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
       }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      nock('http://localhost:8080')
+        .post('/register/keys', { publicKey, uuid: uuIdv4 })
+        .reply(200, regKeysResponse);
+      const response = await Register.registerKeys(publicKey, uuIdv4);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regKeysResponse);
+      nock.isDone();
     });
   });
 
-  describe('register/auth error responses', () => {
-    beforeEach(() => {
+  describe('registerAuth method', () => {
+    const regAuthResponse = {
+      authorizationCode: 'Authorisation code',
+      expiresAt: '2011-06-14T04:12:36Z',
+    };
+
+    const data = {
+      nonce: '4344132',
+      uuid: uuIdv4,
+      codeChallenge: '323423423443423432432432',
+      ethAddress: 'OneEthAddress',
+      fcmToken: 'OneFcmToken',
+      username: 'OneUserName',
+    };
+
+    it('should return 400 due missing params', async () => {
+      const errMsg = 'Missing one or more params!';
+      const regAuthData = { ...data };
+      regAuthData.username = '';
       nock('http://localhost:8080')
-        .post('/register/keys')
-        .reply(200, responseRegisterKey);
+        .post('/register/auth', (body: any) => {
+          return (
+            body.uuid === '' ||
+            body.codeChallenge === '' ||
+            body.ethAddress === '' ||
+            body.fcmToken === '' ||
+            body.username === ''
+          );
+        })
+        .reply(400, errMsg);
+      try {
+        await Register.registerAuth(regAuthData, privateKey); // empty pubKey
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
     });
 
-    it('Throws a 401 when payload authentication fails', async () => {
-      expect.assertions(1);
+    it('should return 500 internal server error', async () => {
+      const errMsg = 'Internal Server Error';
+      const regAuthData = { ...data };
+      regAuthData.username = '';
       nock('http://localhost:8080')
         .post('/register/auth')
-        .reply(401, 'Payload verification failed');
+        .reply(500, errMsg);
       try {
-        await pSdk.wallet.registerAuthServer(walletRegister);
+        await Register.registerAuth(regAuthData, privateKey); // empty pubKey
       } catch (error) {
-        expect(error.message).toEqual('Request failed with status code 401');
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
       }
+      nock.isDone();
     });
 
-    it('Throws a 500 when an internal server error occurs', async () => {
-      expect.assertions(1);
-      nock('http://localhost:8080')
-        .post('/register/auth')
-        .reply(500, 'Internal server error');
+    it('expects to return unauthorised due to invalid signature', async () => {
+      const errMsg = 'Unauthorised';
+      const regAuthData = { ...data };
+      delete regAuthData.nonce;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': invalidValue => {
+            if (invalidValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/auth', { ...regAuthData })
+        .reply(401, errMsg);
       try {
-        await pSdk.wallet.registerAuthServer(walletRegister);
+        await Register.registerAuth(data, privateKey);
       } catch (error) {
-        expect(error.message).toEqual('Request failed with status code 500');
+        expect(error.response.status).toEqual(401);
+        expect(error.response.data).toEqual(errMsg);
       }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAuthData = { ...data };
+      delete regAuthData.nonce;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/auth', { ...regAuthData })
+        .reply(200, regAuthResponse);
+      const response = await Register.registerAuth(data, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regAuthResponse);
+      nock.isDone();
     });
   });
 
-  describe('register/access error responses', () => {
-    beforeEach(() => {
-      nock('http://localhost:8080')
-        .post('/register/keys')
-        .reply(200, responseRegisterKey);
+  describe('registerAccess', () => {
+    const regAccessResponse = {
+      status: 200,
+      data: {
+        accessToken: 'myAccessToken',
+        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        fcmToken: 'myFcmToken',
+        refreshToken: 'myRefreshToken',
+        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      },
+    };
+    const data = {
+      authorizationCode: 'myauthorizationCode',
+      codeVerifier: 'oneCodeVerifier',
+      uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+    };
 
-      nock('http://localhost:8080')
-        .post('/register/auth')
-        .reply(200, responseRegisterAuth);
+    it('should send http request containing data and privateKey', () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+      const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
+      Register.registerAccess(data, privateKey);
+      expect(Requester.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: regAccessData,
+          url: 'http://localhost:8080/register/access',
+        }),
+      );
     });
 
-    it('Throws a 401 when payload authentication fails', async () => {
-      expect.assertions(1);
-      nock('http://localhost:8080')
-        .post('/register/access')
-        .reply(401, 'Payload verification failed');
-      try {
-        await pSdk.wallet.registerAuthServer(walletRegister);
-      } catch (error) {
-        expect(error.message).toEqual('Request failed with status code 401');
-      }
-    });
-
-    it('Throws a 500 when an internal server error occurs', async () => {
-      expect.assertions(1);
-      nock('http://localhost:8080')
-        .post('/register/access')
-        .reply(500, 'Internal server error');
-      try {
-        await pSdk.wallet.registerAuthServer(walletRegister);
-      } catch (error) {
-        expect(error.message).toEqual('Request failed with status code 500');
-      }
+    it('expects response to resolve with data', async () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue(regAccessResponse);
+      const response = await Register.registerAccess(data, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regAccessResponse.data);
     });
   });
 });
