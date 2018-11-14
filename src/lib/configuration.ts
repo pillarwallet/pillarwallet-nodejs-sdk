@@ -131,11 +131,22 @@ export class Configuration {
       };
     }
 
+    if ('refreshTokenExpDate' >= Date.now().toString()) {
+      // get new refreshToken
+      // send new refreshToken / get new AccessToken
+    };
+
+    if ('tokenExpDate' >= Date.now().toString()) {
+      // send refresh token / get new AccessToken
+    };
+
     if (checkSignature) {
       request.headers['X-API-Signature'] = this.checkSignature(
         payload,
         Configuration.accessKeys.privateKey,
       );
+
+      request.headers['Authorization'] = 'Bearer' + 'register access call';
     }
 
     return Requester.execute(request);
