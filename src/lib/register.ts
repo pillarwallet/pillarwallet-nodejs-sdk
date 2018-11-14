@@ -10,7 +10,7 @@ import { HttpEndpoints } from './constants/httpEndpoints';
  */
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 
-export class Register {
+export class Register extends Configuration {
   /**
    * @name registerKeys
    * @description Method to register the public key and access id on the server side
@@ -113,5 +113,25 @@ export class Register {
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
       checkSignature: false,
     });
+  }
+
+  refreshAuthToken() {
+    const data = {
+      refresh_token: this.getRefreshToken(),
+    };
+    let config;
+
+    config = {
+      ...postConfiguration,
+      data,
+      headers: {
+        Authorization: '',
+      },
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REFRESH_TOKEN}`,
+    };
+
+    config.headers['Authorization'] = `Bearer: ${this.getAccessToken()}`;
+
+    console.log(config);
   }
 }
