@@ -2,11 +2,12 @@
  * Import required classes / libraries / constants
  */
 import * as Ajv from 'ajv';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 import { v4 as uuid } from 'uuid';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
+import { Register } from './register';
 import { Requester } from '../utils/requester';
 import { ProofKey } from '../utils/pkce';
 
@@ -105,7 +106,7 @@ export class Configuration {
    * @param {url} options.url
    * @param {boolean=} options.checkSignature
    */
-  executeRequest({
+  async executeRequest({
     data,
     params,
     sendParams = true,
@@ -123,7 +124,7 @@ export class Configuration {
     url: string;
     checkSignature?: boolean;
     oauth?: boolean;
-  }): AxiosPromise {
+  }): Promise<AxiosResponse> {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
     if (schema) {
@@ -150,10 +151,6 @@ export class Configuration {
       };
     }
 
-    if (oauth) {
-      request.headers['Authorization'] = `Bearer: ${this.accessToken}`;
-    }
-
     if (checkSignature) {
       request.headers['X-API-Signature'] = this.checkSignature(
         payload,
@@ -161,6 +158,17 @@ export class Configuration {
       );
     }
 
-    return Requester.execute(request);
-  }
-}
+    if (oauth) {
+      request.headers['Authorization'] = `Bearer: ${this.accessToken}`;
+
+      const response = await Requester.execute(request)
+      if (response.status === 401) {
+        const token = await Register.refreshAuthToken();
+        this.setAccessToken(token);
+      };
+      return response;
+    };
+
+    return Requester.execute(request)
+  };
+};
