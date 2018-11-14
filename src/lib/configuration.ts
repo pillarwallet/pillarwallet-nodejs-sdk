@@ -21,6 +21,8 @@ export class Configuration {
   };
 
   public static uuid: string;
+  private accessToken: string = '';
+  private refreshToken: string = '';
 
   constructor() {
     ajv = new Ajv({
@@ -76,6 +78,21 @@ export class Configuration {
     return xAPISignature;
   }
 
+  setAccessToken(accessToken: string) {
+    this.accessToken = accessToken;
+  }
+
+  setRefreshToken(refreshToken: string) {
+    this.refreshToken = refreshToken;
+  }
+
+  getAccessToken() {
+    return this.accessToken;
+  }
+
+  getRefreshToken() {
+    return this.refreshToken;
+  }
   // TODO: We need to check it with the other endpoints and improve dependently from situation.
   /**
    * Make an Axios request based on default configuration
@@ -96,6 +113,7 @@ export class Configuration {
     defaultRequest,
     url,
     checkSignature = true,
+    oauth = true,
   }: {
     data?: object;
     params?: object;
@@ -104,6 +122,7 @@ export class Configuration {
     defaultRequest: any;
     url: string;
     checkSignature?: boolean;
+    oauth?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
@@ -131,22 +150,15 @@ export class Configuration {
       };
     }
 
-    if ('refreshTokenExpDate' >= Date.now().toString()) {
-      // get new refreshToken
-      // send new refreshToken / get new AccessToken
-    };
-
-    if ('tokenExpDate' >= Date.now().toString()) {
-      // send refresh token / get new AccessToken
-    };
+    if (oauth) {
+      request.headers['Authorization'] = `Bearer: ${this.accessToken}`;
+    }
 
     if (checkSignature) {
       request.headers['X-API-Signature'] = this.checkSignature(
         payload,
         Configuration.accessKeys.privateKey,
       );
-
-      request.headers['Authorization'] = 'Bearer' + 'register access call';
     }
 
     return Requester.execute(request);

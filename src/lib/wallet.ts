@@ -70,6 +70,7 @@ export class Wallet extends Configuration {
   async registerAuthServer(
     walletRegister: WalletRegisterAuth,
   ): Promise<AxiosResponse> {
+    let registerAuthServerResponse;
     // validating Input
     this.validation(walletRegisterAuthSchema, walletRegister);
     const { privateKey } = walletRegister;
@@ -125,10 +126,19 @@ export class Wallet extends Configuration {
         uuid: Configuration.uuid,
       };
 
-      return await Register.registerAccess(registerAccessPayload, privateKey);
+      registerAuthServerResponse = await Register.registerAccess(
+        registerAccessPayload,
+        privateKey,
+      );
     } catch (error) {
       throw error;
     }
+
+    // Set oauth Tokens
+    this.setRefreshToken(registerAuthServerResponse.data.refreshToken);
+    this.setAccessToken(registerAuthServerResponse.data.accessToken);
+
+    return registerAuthServerResponse;
   }
 
   /**
