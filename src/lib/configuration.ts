@@ -2,14 +2,13 @@
  * Import required classes / libraries / constants
  */
 import * as Ajv from 'ajv';
-import { AxiosPromise, AxiosResponse } from 'axios';
+import { AxiosPromise } from 'axios';
 import { v4 as uuid } from 'uuid';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
-import { Register } from './register';
 import { Requester } from '../utils/requester';
-import { ProofKey } from '../utils/pkce';
+
 
 let ajv: any;
 
@@ -22,8 +21,8 @@ export class Configuration {
   };
 
   public static uuid: string;
-  private accessToken: string = '';
-  private refreshToken: string = '';
+  public static accessToken: string = '';
+  public static refreshToken: string = '';
 
   constructor() {
     ajv = new Ajv({
@@ -80,20 +79,13 @@ export class Configuration {
   }
 
   setAccessToken(accessToken: string) {
-    this.accessToken = accessToken;
+    Configuration.accessToken = accessToken;
   }
 
   setRefreshToken(refreshToken: string) {
-    this.refreshToken = refreshToken;
+    Configuration.refreshToken = refreshToken;
   }
 
-  getAccessToken() {
-    return this.accessToken;
-  }
-
-  getRefreshToken() {
-    return this.refreshToken;
-  }
   // TODO: We need to check it with the other endpoints and improve dependently from situation.
   /**
    * Make an Axios request based on default configuration
@@ -106,7 +98,7 @@ export class Configuration {
    * @param {url} options.url
    * @param {boolean=} options.checkSignature
    */
-  async executeRequest({
+  executeRequest({
     data,
     params,
     sendParams = true,
@@ -124,7 +116,7 @@ export class Configuration {
     url: string;
     checkSignature?: boolean;
     oauth?: boolean;
-  }): Promise<AxiosResponse> {
+  }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
     if (schema) {
@@ -159,17 +151,8 @@ export class Configuration {
     }
 
     if (oauth) {
-      request.headers['Authorization'] = `Bearer: ${this.accessToken}`;
-
-      const response = await Requester.execute(request);
-      if (response.status === 401) {
-        const token = await Register.refreshAuthToken();
-        this.setAccessToken(token);
-        request.headers['Authorization'] = `Bearer: ${this.accessToken}`;
-      };
-      return Requester.execute(request);
-    };
-
-    return Requester.execute(request)
-  };
-};
+      request.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
+    }
+    return Requester.execute(request);
+  }
+}

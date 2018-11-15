@@ -1,7 +1,7 @@
 /**
  * Import required classes / libraries / constants
  */
-import { AxiosPromise } from 'axios';
+import axios, { AxiosPromise } from 'axios';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
 
@@ -115,13 +115,12 @@ export class Register extends Configuration {
     });
   }
 
-  refreshAuthToken() {
+  static refreshAuthToken() {
     const data = {
-      refresh_token: this.getRefreshToken(),
+      refresh_token: Configuration.refreshToken,
     };
-    let config;
 
-    config = {
+    const config = {
       ...postConfiguration,
       data,
       headers: {
@@ -130,8 +129,8 @@ export class Register extends Configuration {
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REFRESH_TOKEN}`,
     };
 
-    config.headers['Authorization'] = `Bearer: ${this.getAccessToken()}`;
+    config.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
 
-    console.log(config);
+    return axios(config);
   }
 }
