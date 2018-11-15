@@ -258,14 +258,51 @@ describe('Register Class', () => {
     };
 
     it('expects response to resolve with data and status code 200', async () => {
+      const refreshTokenData = { ...data };
       nock('http://localhost:8080')
-        .post('/register/refresh',data)
+        .post('/register/refresh', {...refreshTokenData})
         .reply(200, refreshTokenResponse);
       const response = await Register.refreshAuthToken();
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(refreshTokenResponse);
       nock.isDone();
     });
-  });
 
+    it('returns a 400 error due to missing params', async () => {
+      expect.assertions(2);
+      const errMsg = 'Missing one or more params!';
+      nock('http://localhost:8080')
+        .post(
+          '/register/refresh',
+          (body: { refreshToken: string; walletId: string }) => {
+            return body.refreshToken === '' || body.walletId === '';
+          },
+        )
+        .reply(400, errMsg);
+      const refreshTokenData = { ...data };
+      refreshTokenData.refreshToken = '';
+      try {
+        await Register.refreshAuthToken();
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('should return 500 due internal server error', async () => {
+      expect.assertions(2);
+      const errMsg = 'Internal Server Error';
+      nock('http://localhost:8080')
+        .post('/register/refresh')
+        .reply(500, errMsg);
+      try {
+        await Register.refreshAuthToken();
+      } catch (error) {
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+  });
 });
