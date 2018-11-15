@@ -1,7 +1,7 @@
+import { AxiosPromise } from 'axios';
+import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
-import { Requester } from '../../utils/requester';
-import { AxiosPromise } from 'axios';
 
 describe('The Configuration Class', () => {
   let configuration: Configuration;
@@ -15,18 +15,20 @@ describe('The Configuration Class', () => {
 
   describe('executeRequest method', () => {
     const checkSignature: boolean = false;
+    const oauth: boolean = false;
     const data: any = { id: 'data' };
     const params: object = { id: 'params' };
     const schema: object = { id: 'schema' };
-    const defaultRequest: any = {
-      url: '',
-      method: 'POST',
-      headers: {},
-    };
+    let defaultRequest: any;
     let url: string;
     const promise: PromiseConstructor = Promise;
 
     beforeEach(() => {
+      defaultRequest = {
+        url: '',
+        method: 'POST',
+        headers: {},
+      };
       url = apiUrl + HttpEndpoints.USER_VALIDATE;
       jest
         .spyOn(configuration, 'validation')
@@ -115,6 +117,7 @@ describe('The Configuration Class', () => {
         defaultRequest,
         url,
         checkSignature,
+        oauth,
       });
 
       expect(defaultRequest).toEqual({
@@ -177,6 +180,7 @@ describe('The Configuration Class', () => {
           defaultRequest,
           url,
           checkSignature,
+          oauth
         });
 
         expect(Requester.execute).toHaveBeenCalledWith({
@@ -199,6 +203,7 @@ describe('The Configuration Class', () => {
           schema,
           defaultRequest,
           url,
+          oauth,
         });
 
         expect(Requester.execute).toHaveBeenCalledWith({

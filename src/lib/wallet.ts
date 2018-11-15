@@ -135,8 +135,8 @@ export class Wallet extends Configuration {
     }
 
     // Set oauth Tokens
-    this.setRefreshToken(registerAuthServerResponse.data.refreshToken);
-    this.setAccessToken(registerAuthServerResponse.data.accessToken);
+    Configuration.refreshToken = registerAuthServerResponse.data.refreshToken;
+    Configuration.accessToken = registerAuthServerResponse.data.accessToken;
 
     return registerAuthServerResponse;
   }

@@ -10,7 +10,7 @@ export class Requester {
    */
   static execute(incomingRequestOptions: any) {
     // Try to refresh access token if it is expired
-    if (incomingRequestOptions.headers['Authorization']) {
+    if (incomingRequestOptions.headers.Authorization) {
       return axios(incomingRequestOptions).catch(error => {
         if (error.config && error.response && error.response.status === 401) {
           return Register.refreshAuthToken().then((response: any) => {

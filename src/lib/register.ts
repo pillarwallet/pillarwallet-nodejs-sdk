@@ -1,16 +1,16 @@
 /**
  * Import required classes / libraries / constants
  */
+import { HttpEndpoints } from './constants/httpEndpoints';
 import axios, { AxiosPromise } from 'axios';
 import { Configuration } from './configuration';
-import { HttpEndpoints } from './constants/httpEndpoints';
 
 /**
  * Import HTTP Request Configurations
  */
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 
-export class Register extends Configuration {
+export class Register {
   /**
    * @name registerKeys
    * @description Method to register the public key and access id on the server side
@@ -31,7 +31,6 @@ export class Register extends Configuration {
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_KEYS}`,
       checkSignature: false,
-      oauth: false,
     });
   }
 
@@ -74,7 +73,6 @@ export class Register extends Configuration {
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_AUTH}`,
       checkSignature: false,
-      oauth: false,
     });
   }
 
@@ -114,7 +112,6 @@ export class Register extends Configuration {
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
       checkSignature: false,
-      oauth: false,
     });
   }
 

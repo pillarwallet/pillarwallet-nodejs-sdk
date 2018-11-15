@@ -6,7 +6,8 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-describe('user endpoints', () => {
+// TODO: Mock api using nock library
+describe.skip('user endpoints', () => {
   const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
 

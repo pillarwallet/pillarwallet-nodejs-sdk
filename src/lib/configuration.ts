@@ -77,14 +77,6 @@ export class Configuration {
     return xAPISignature;
   }
 
-  setAccessToken(accessToken: string) {
-    Configuration.accessToken = accessToken;
-  }
-
-  setRefreshToken(refreshToken: string) {
-    Configuration.refreshToken = refreshToken;
-  }
-
   // TODO: We need to check it with the other endpoints and improve dependently from situation.
   /**
    * Make an Axios request based on default configuration
@@ -105,7 +97,7 @@ export class Configuration {
     defaultRequest,
     url,
     checkSignature = true,
-    oauth = true,
+    oauth = false,
   }: {
     data?: object;
     params?: object;
@@ -142,7 +134,16 @@ export class Configuration {
       };
     }
 
+    if (!request.headers) {
+      request.headers = {};
+    }
+
     if (checkSignature) {
+      if (!request.headers['X-API-Signature']) {
+        request.headers = {
+          'X-API-Signature': '',
+        };
+      }
       request.headers['X-API-Signature'] = this.checkSignature(
         payload,
         Configuration.accessKeys.privateKey,
@@ -150,6 +151,11 @@ export class Configuration {
     }
 
     if (oauth) {
+      if (!request.headers.Authorization) {
+        request.headers = {
+          Authorization: '',
+        };
+      }
       request.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
     }
 
