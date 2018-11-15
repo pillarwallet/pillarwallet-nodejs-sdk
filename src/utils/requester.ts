@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosPromise, AxiosResponse } from 'axios';
 import { Register } from '../lib/register';
 import { Configuration } from '../lib/configuration';
 
@@ -9,7 +9,7 @@ export class Requester {
    * @returns {AxiosPromise}
    */
   static execute(incomingRequestOptions: any) {
-    return axios(incomingRequestOptions).catch((error): Promise<AxiosResponse<any>> | undefined => {
+    return axios(incomingRequestOptions).catch(error => {
       if (error.config && error.response && error.response.status === 401) {
         return Register.refreshAuthToken().then((response: any) => {
           Configuration.accessToken = response.data.accessToken;
@@ -21,6 +21,7 @@ export class Requester {
           return axios(error.config);
         });
       }
+      return error;
     });
   }
 }
