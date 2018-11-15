@@ -21,16 +21,11 @@ describe('Register Class', () => {
     jest.restoreAllMocks();
   });
 
-  describe.only('registerKeys method', () => {
+  describe('registerKeys method', () => {
     const regKeysResponse = {
       expiresAt: '2011-06-14T04:12:36Z',
       nonce: '4321',
     };
-
-    it.only('', () => {
-      const reg = new Register();
-      reg.refreshAuthToken();
-    });
 
     it('should return 400 due missing params', async () => {
       expect.assertions(2);
@@ -248,4 +243,29 @@ describe('Register Class', () => {
       nock.isDone();
     });
   });
+
+  describe('refreshToken method', () =>{
+    const data = {
+      refreshToken: "string",
+      walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+    };
+
+    const refreshTokenResponse = {
+      accessToken: "string",
+      accessTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
+      userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+    };
+
+    it('expects response to resolve with data and status code 200', async () => {
+      nock('http://localhost:8080')
+        .post('/register/refresh',data)
+        .reply(200, refreshTokenResponse);
+      const response = await Register.refreshAuthToken();
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(refreshTokenResponse);
+      nock.isDone();
+    });
+  });
+
 });

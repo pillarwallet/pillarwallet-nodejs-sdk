@@ -2,8 +2,8 @@ import { Register } from '../../lib/register';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 jest.mock('axios');
-import mockAxios from 'axios';
 
 describe('Register Class', () => {
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
@@ -125,25 +125,39 @@ describe('Register Class', () => {
     });
   });
 
-  describe('refreshAuthToken', async () => {
+  describe('refreshAuthToken', () => {
     const refreshAuthTokenResponse = {
       status: 200,
       data: {
         accessToken: 'myAccessToken',
-        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        fcmToken: 'myFcmToken',
+        accessTokenExpiresAt: '2016-07-12T23:34:21Z',
         refreshToken: 'myRefreshToken',
-        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        refreshTokenExpiresAt: '2016-07-12T23:34:21Z',
       },
     };
 
-    it('expects response to resolve with data', async () =>{
-      mockAxios.mockResolvedValue(refreshAuthTokenResponse);
+    it('should return status 200 with expected data', async () => {
+      Configuration.refreshToken = 'myRefreshToken';
+      Configuration.accessToken = 'myAccessToken';
+      axios.mockResolvedValue('');
+      await Register.refreshAuthToken();
+      expect(axios).toHaveBeenCalledWith(
+        expect.objectContaining({
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer: myAccessToken',
+          },
+          data: { refresh_token: 'myRefreshToken' },
+          url: 'http://localhost:8080/register/refresh',
+        }),
+      );
+    });
+
+    it('should return status 200 with expected data', async () => {
+      axios.mockResolvedValue(refreshAuthTokenResponse);
       const response = await Register.refreshAuthToken();
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(refreshAuthTokenResponse.data);
     });
-  })
+  });
 });

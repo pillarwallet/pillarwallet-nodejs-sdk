@@ -31,6 +31,7 @@ export class Register extends Configuration {
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_KEYS}`,
       checkSignature: false,
+      oauth: false,
     });
   }
 
@@ -73,6 +74,7 @@ export class Register extends Configuration {
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_AUTH}`,
       checkSignature: false,
+      oauth: false,
     });
   }
 
@@ -112,6 +114,7 @@ export class Register extends Configuration {
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
       checkSignature: false,
+      oauth: false,
     });
   }
 
@@ -126,7 +129,9 @@ export class Register extends Configuration {
       headers: {
         Authorization: '',
       },
-      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REFRESH_TOKEN}`,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.REGISTER_REFRESH
+      }`,
     };
 
     config.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;

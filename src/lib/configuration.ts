@@ -9,7 +9,6 @@ import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
 
-
 let ajv: any;
 
 export class Configuration {
@@ -153,6 +152,7 @@ export class Configuration {
     if (oauth) {
       request.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
     }
+
     return Requester.execute(request);
   }
 }
