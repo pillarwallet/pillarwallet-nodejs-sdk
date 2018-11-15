@@ -22,7 +22,7 @@ export class Requester {
           return axios(error.config);
         });
       }
-      return error;
+      throw error;
     });
   }
 }

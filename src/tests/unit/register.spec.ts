@@ -2,10 +2,10 @@ import { Register } from '../../lib/register';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 jest.mock('axios');
-import mockAxios from 'axios';
 
-describe('Register Class', () => {
+describe.only('Register Class', () => {
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
@@ -125,23 +125,21 @@ describe('Register Class', () => {
     });
   });
 
-  describe('refreshAuthToken', async () => {
+  describe.only('refreshAuthToken', async () => {
     const refreshAuthTokenResponse = {
       status: 200,
       data: {
         accessToken: 'myAccessToken',
         accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        fcmToken: 'myFcmToken',
         refreshToken: 'myRefreshToken',
         refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       },
     };
 
     it('expects response to resolve with data', async () =>{
-      mockAxios.mockResolvedValue(refreshAuthTokenResponse);
+      axios.mockResolvedValue(refreshAuthTokenResponse);
       const response = await Register.refreshAuthToken();
+      console.log(response);
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(refreshAuthTokenResponse.data);
     });

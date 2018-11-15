@@ -21,16 +21,11 @@ describe('Register Class', () => {
     jest.restoreAllMocks();
   });
 
-  describe.only('registerKeys method', () => {
+  describe('registerKeys method', () => {
     const regKeysResponse = {
       expiresAt: '2011-06-14T04:12:36Z',
       nonce: '4321',
     };
-
-    it.only('', () => {
-      const reg = new Register();
-      reg.refreshAuthToken();
-    });
 
     it('should return 400 due missing params', async () => {
       expect.assertions(2);
@@ -159,8 +154,10 @@ describe('Register Class', () => {
         .post('/register/auth', { ...regAuthData })
         .reply(401, errMsg);
       try {
-        await Register.registerAuth(data, privateKey);
+       await Register.registerAuth(data, privateKey);
+
       } catch (error) {
+        console.log(error);
         expect(error.response.status).toEqual(401);
         expect(error.response.data).toEqual(errMsg);
       }
