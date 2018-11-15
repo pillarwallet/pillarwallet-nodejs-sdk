@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 jest.mock('axios');
 
-describe.only('Register Class', () => {
+describe('Register Class', () => {
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
@@ -125,7 +125,7 @@ describe.only('Register Class', () => {
     });
   });
 
-  describe.only('refreshAuthToken', () => {
+  describe('refreshAuthToken', () => {
     const refreshAuthTokenResponse = {
       status: 200,
       data: {

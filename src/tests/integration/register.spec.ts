@@ -154,10 +154,8 @@ describe('Register Class', () => {
         .post('/register/auth', { ...regAuthData })
         .reply(401, errMsg);
       try {
-       await Register.registerAuth(data, privateKey);
-
+        await Register.registerAuth(data, privateKey);
       } catch (error) {
-        console.log(error);
         expect(error.response.status).toEqual(401);
         expect(error.response.data).toEqual(errMsg);
       }
