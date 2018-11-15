@@ -125,23 +125,39 @@ describe.only('Register Class', () => {
     });
   });
 
-  describe.only('refreshAuthToken', async () => {
+  describe.only('refreshAuthToken', () => {
     const refreshAuthTokenResponse = {
       status: 200,
       data: {
         accessToken: 'myAccessToken',
-        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        accessTokenExpiresAt: '2016-07-12T23:34:21Z',
         refreshToken: 'myRefreshToken',
-        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        refreshTokenExpiresAt: '2016-07-12T23:34:21Z',
       },
     };
 
-    it('expects response to resolve with data', async () =>{
+    it('should return status 200 with expected data', async () => {
+      Configuration.refreshToken = 'myRefreshToken';
+      Configuration.accessToken = 'myAccessToken';
+      axios.mockResolvedValue('');
+      await Register.refreshAuthToken();
+      expect(axios).toHaveBeenCalledWith(
+        expect.objectContaining({
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer: myAccessToken',
+          },
+          data: { refresh_token: 'myRefreshToken' },
+          url: 'http://localhost:8080/register/refresh',
+        }),
+      );
+    });
+
+    it('should return status 200 with expected data', async () => {
       axios.mockResolvedValue(refreshAuthTokenResponse);
       const response = await Register.refreshAuthToken();
-      console.log(response);
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(refreshAuthTokenResponse.data);
     });
-  })
+  });
 });

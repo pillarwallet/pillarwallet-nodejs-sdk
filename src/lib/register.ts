@@ -126,7 +126,9 @@ export class Register extends Configuration {
       headers: {
         Authorization: '',
       },
-      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REFRESH_TOKEN}`,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.REGISTER_REFRESH
+      }`,
     };
 
     config.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
