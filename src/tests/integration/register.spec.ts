@@ -201,7 +201,7 @@ describe('Register Class', () => {
       uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
     };
 
-    it('returns a 400 error due to missing params', async () => {
+    it('should return 400 error due to missing params', async () => {
       expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       nock('http://localhost:8080')
@@ -223,9 +223,28 @@ describe('Register Class', () => {
       nock.isDone();
     });
 
-    it('expects response to resolve with data and status code 200', async () => {
-      const regAuthData = { ...data };
-      delete regAuthData.authorizationCode;
+    it('should return 500 due internal server error', async () => {
+      expect.assertions(2);
+      const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
+      const errMsg = 'Internal Server Error';
+      nock('http://localhost:8080')
+        .post('/register/access')
+        .reply(500, errMsg);
+      try {
+        await Register.registerAccess(regAccessData, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects to return unauthorised due to invalid signature', async () => {
+      expect.assertions(2);
+      const errMsg = 'Unauthorised';
+      const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
       nock('http://localhost:8080', {
         reqheaders: {
           'X-API-Signature': headerValue => {
@@ -236,22 +255,50 @@ describe('Register Class', () => {
           },
         },
       })
-        .post('/register/access', { ...regAuthData })
+        .post('/register/access', { ...regAccessData })
+        .reply(401, errMsg);
+      try {
+        await Register.registerAccess(data, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(401);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/access', { ...regAccessData })
         .reply(200, regAccessResponse);
-      const response = await Register.registerAccess(regAuthData, privateKey);
+      const response = await Register.registerAccess(regAccessData, privateKey);
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(regAccessResponse);
       nock.isDone();
     });
   });
 
-  describe('refreshToken method', () => {
-    Configuration.refreshToken = 'oneRefreshToken';
-    Configuration.accessToken = 'oneAccessToken';
+  describe('refreshAuthToken method', () => {
+    
+    let data;
 
-    const data = {
-      refreshToken: Configuration.refreshToken,
-    };
+    beforeEach(() => {
+      Configuration.refreshToken = 'oneRefreshToken';
+      Configuration.accessToken = 'oneAccessToken';
+      data = {
+        refreshToken: Configuration.refreshToken,
+      };
+    });
 
     const refreshTokenResponse = {
       accessToken: 'myAccessToken',
@@ -260,22 +307,7 @@ describe('Register Class', () => {
       refreshTokenExpiresAt: '2016-07-12T23:34:21Z',
     };
 
-    it('expects response to resolve with data and status code 200', async () => {
-      const refreshTokenData = { ...data };
-      nock('http://localhost:8080')
-        .post('/register/refresh', {
-          ...refreshTokenData,
-        })
-        .reply(200, {
-          ...refreshTokenResponse,
-        });
-      const response = await Register.refreshAuthToken();
-      expect(response.status).toEqual(200);
-      expect(response.data).toEqual(refreshTokenResponse);
-      nock.isDone();
-    });
-
-    it('returns a 400 error due to missing params', async () => {
+    it('should return 400 error due to missing params', async () => {
       Configuration.refreshToken = '';
       expect.assertions(2);
       const errMsg = 'Missing one or more params!';
@@ -303,6 +335,47 @@ describe('Register Class', () => {
         await Register.refreshAuthToken();
       } catch (error) {
         expect(error.response.status).toEqual(500);
+        expect(error.response.data).toEqual(errMsg);
+      }
+      nock.isDone();
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const refreshTokenData = { ...data };
+      nock('http://localhost:8080')
+        .post('/register/refresh', {
+          ...refreshTokenData,
+        })
+        .reply(200, {
+          ...refreshTokenResponse,
+        });
+      const response = await Register.refreshAuthToken();
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(refreshTokenResponse);
+      nock.isDone();
+    });
+
+    it('expects to return unauthorised due to invalid signature', async () => {
+      expect.assertions(2);
+      const errMsg = 'Unauthorised';
+      const regAuthData = { ...data };
+      delete regAuthData.nonce;
+      nock('http://localhost:8080', {
+        reqheaders: {
+          'X-API-Signature': headerValue => {
+            if (headerValue) {
+              return true;
+            }
+            return false;
+          },
+        },
+      })
+        .post('/register/auth', { ...regAuthData })
+        .reply(401, errMsg);
+      try {
+        await Register.registerAuth(data, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(401);
         expect(error.response.data).toEqual(errMsg);
       }
       nock.isDone();
