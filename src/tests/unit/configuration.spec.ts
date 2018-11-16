@@ -215,7 +215,7 @@ describe('The Configuration Class', () => {
 
     describe('when oauth is true (default = false)', () => {
       it('exectutes the request with the `Authorization` header', () => {
-        Configuration.accessToken = 'oneAccessToken'
+        Configuration.accessToken = 'oneAccessToken';
 
         configuration.executeRequest({
           data,

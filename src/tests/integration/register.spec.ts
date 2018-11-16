@@ -2,6 +2,7 @@ import { Register } from '../../lib/register';
 import nock = require('nock');
 import { v4 as uuid } from 'uuid';
 import { PillarSdk } from '../../index';
+import { Configuration } from '../../lib/configuration';
 
 const keys = require('../utils/generateKeyPair');
 
@@ -244,24 +245,30 @@ describe('Register Class', () => {
     });
   });
 
-  describe('refreshToken method', () =>{
+  describe('refreshToken method', () => {
+    Configuration.refreshToken = 'oneRefreshToken';
+    Configuration.accessToken = 'oneAccessToken';
+
     const data = {
-      refreshToken: "string",
-      walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+      refreshToken: Configuration.refreshToken,
     };
 
     const refreshTokenResponse = {
-      accessToken: "string",
-      accessTokenExpiresAt: "YYYY-mm-ddTHH:MM:ssZ",
-      userId: "d290f1ee-6c54-4b01-90e6-d701748f0851",
-      walletId: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+      accessToken: 'myAccessToken',
+      accessTokenExpiresAt: '2016-07-12T23:34:21Z',
+      refreshToken: 'myRefreshToken',
+      refreshTokenExpiresAt: '2016-07-12T23:34:21Z',
     };
 
     it('expects response to resolve with data and status code 200', async () => {
       const refreshTokenData = { ...data };
       nock('http://localhost:8080')
-        .post('/register/refresh', {...refreshTokenData})
-        .reply(200, refreshTokenResponse);
+        .post('/register/refresh', {
+          ...refreshTokenData,
+        })
+        .reply(200, {
+          ...refreshTokenResponse,
+        });
       const response = await Register.refreshAuthToken();
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(refreshTokenResponse);
@@ -269,18 +276,14 @@ describe('Register Class', () => {
     });
 
     it('returns a 400 error due to missing params', async () => {
+      Configuration.refreshToken = '';
       expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       nock('http://localhost:8080')
-        .post(
-          '/register/refresh',
-          (body: { refreshToken: string; walletId: string }) => {
-            return body.refreshToken === '' || body.walletId === '';
-          },
-        )
+        .post('/register/refresh', (body: { refreshToken: string }) => {
+          return body.refreshToken === '';
+        })
         .reply(400, errMsg);
-      const refreshTokenData = { ...data };
-      refreshTokenData.refreshToken = '';
       try {
         await Register.refreshAuthToken();
       } catch (error) {

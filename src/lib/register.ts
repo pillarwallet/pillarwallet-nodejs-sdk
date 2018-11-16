@@ -115,9 +115,14 @@ export class Register {
     });
   }
 
+  /**
+   * @name refreshAuthToken
+   * @description Method to refresh accessToken once refreshToken is not expired.
+   * @returns {AxiosPromise}
+   */
   static refreshAuthToken() {
     const data = {
-      refresh_token: Configuration.refreshToken,
+      refreshToken: Configuration.refreshToken,
     };
 
     const config = {
