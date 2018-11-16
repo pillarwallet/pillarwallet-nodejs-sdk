@@ -136,7 +136,7 @@ describe('Register Class', () => {
       },
     };
 
-    it('should return status 200 with expected data', async () => {
+    it('should send http request containing data and header', async () => {
       Configuration.refreshToken = 'myRefreshToken';
       Configuration.accessToken = 'myAccessToken';
       axios.mockResolvedValue('');
@@ -147,13 +147,13 @@ describe('Register Class', () => {
           headers: {
             Authorization: 'Bearer: myAccessToken',
           },
-          data: { refresh_token: 'myRefreshToken' },
+          data: { refreshToken: 'myRefreshToken' },
           url: 'http://localhost:8080/register/refresh',
         }),
       );
     });
 
-    it('should return status 200 with expected data', async () => {
+    it('expects response to resolve with data', async () => {
       axios.mockResolvedValue(refreshAuthTokenResponse);
       const response = await Register.refreshAuthToken();
       expect(response.status).toEqual(200);
