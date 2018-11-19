@@ -142,7 +142,8 @@ export class Connection extends Configuration {
   }
 
   /**
-   * Disconnects a connection between two users
+   * @name disconnect
+   * @desc Disconnects a connection between two users
    * @param {ConnectionDisconnect} disconnectConfiguration
    * @returns {axios.AxiosPromise}
    */
@@ -155,7 +156,7 @@ export class Connection extends Configuration {
     );
     postConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_DISCONNECT;
-      postConfiguration.data = disconnectConfiguration;
+    postConfiguration.data = disconnectConfiguration;
 
     return Requester.execute(postConfiguration);
   }
