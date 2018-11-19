@@ -154,7 +154,7 @@ export class Connection extends Configuration {
       Configuration.accessKeys.privateKey,
     );
     postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_INVITE;
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_DISCONNECT;
       postConfiguration.data = disconnectConfiguration;
 
     return Requester.execute(postConfiguration);
