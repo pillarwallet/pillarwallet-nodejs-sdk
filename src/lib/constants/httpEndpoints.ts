@@ -15,6 +15,7 @@ export enum HttpEndpoints {
   CONNECTION_CANCEL = '/connection/cancel',
   CONNECTION_BLOCK = '/connection/block',
   CONNECTION_MUTE = '/connection/mute',
+  CONNECTION_DISCONNECT = '/connection/disconnect',
   NOTIFICATION_LIST = '/notification/list',
   INVESTMENTS_DEPOSIT_REQUEST = '/investment/wallet/deposit-request',
   INVESTMENTS_USER_ICO = '/users',

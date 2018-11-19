@@ -21,6 +21,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Cancel](#connection-cancel)
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
+    - [Connection Disconnect] (#connection-disconnect)
     - [Notification List](#notification-list)
     - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
@@ -471,6 +472,29 @@ Mutes future communication from another contact.
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'Connection muted' | String  |
+
+### Connection Disconnect
+
+```typescript
+pillarSdk.connection.disconnect(inputParams)
+```
+
+Disconnects a connection between two users.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection is successfully disconnected' | String  |
 
 ### Notification List
 

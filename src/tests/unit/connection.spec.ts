@@ -152,4 +152,27 @@ describe('Connection Class', () => {
       );
     });
   });
+
+  /**
+   * Connection: Disconnect method
+   */
+  describe('Disconnect method', () => {
+    it('should successfully call with valid data', () => {
+      const connectionDisconnectData = {
+        targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        accessKey: 'abc123',
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
+
+      pSdk.connection.disconnect(connectionDisconnectData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.anything() },
+          data: connectionDisconnectData,
+          url: 'http://localhost:8080/connection/invite',
+        }),
+      );
+    });
+  });
 });
