@@ -176,4 +176,31 @@ describe('connection endpoints', () => {
      */
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
+
+  it('The Connection Class: Disconnect ', () => {
+    const inputParams = {
+      targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      accessKey: 'abc123',
+      walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+    };
+
+    pSdk.connection
+      .disconnect(inputParams)
+      .then((response: any) => {
+        // Successful response!
+        return response;
+      })
+      .catch((error: any) => {
+        // Unsuccessful response.
+        return error;
+      });
+
+    /**
+     * TODO: Currently waiting on a development
+     * or testing environment before we can asset
+     * a correct / expected response. For now, just
+     * using a spy to ensure that the request was made.
+     */
+    expect(requesterExecuteSpy).toHaveBeenCalled();
+  });
 });
