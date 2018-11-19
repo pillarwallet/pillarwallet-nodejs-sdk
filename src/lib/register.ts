@@ -43,12 +43,12 @@ export class Register {
    */
   static registerAuth(
     data: {
-      nonce: string;
       codeChallenge: string;
       ethAddress: string;
       fcmToken: string;
       username: string;
       uuid: string;
+      nonce: string;
     },
     privateKey: string,
   ): AxiosPromise {
@@ -86,17 +86,14 @@ export class Register {
   static registerAccess(
     data: {
       codeVerifier: string;
-      authorizationCode: string;
       uuid: string;
+      authorizationCode: string;
     },
     privateKey: string,
   ): AxiosPromise {
     const header = { ...data };
     const payload = { ...data };
     const config = { ...postConfiguration };
-
-    // deleting Access id from header signature
-    delete header.uuid;
 
     // deleting authorizationCode from payload
     delete payload.authorizationCode;

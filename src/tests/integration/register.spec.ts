@@ -7,8 +7,8 @@ import { Configuration } from '../../lib/configuration';
 const keys = require('../utils/generateKeyPair');
 
 describe('Register Class', () => {
-  const publicKey = 'myPub';
-  const privateKey = 'myPrivateKey';
+  const publicKey = keys.publicKey;
+  const privateKey = keys.privateKey;
   const uuIdv4 = uuid();
 
   beforeAll(() => {
@@ -289,7 +289,7 @@ describe('Register Class', () => {
   });
 
   describe('refreshAuthToken method', () => {
-    
+
     let data;
 
     beforeEach(() => {

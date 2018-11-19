@@ -103,12 +103,12 @@ export class Wallet extends Configuration {
       // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
       // Use response data to create registerAuthPayload.
       const registerAuthPayload = {
-        nonce: responseRegisterKeys.data.nonce,
-        uuid: Configuration.uuid,
         codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
         ethAddress: walletRegister.ethAddress,
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
+        nonce: responseRegisterKeys.data.nonce,
+        uuid: Configuration.uuid,
       };
 
       responseRegisterAuth = await Register.registerAuth(
