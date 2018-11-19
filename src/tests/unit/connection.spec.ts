@@ -170,7 +170,7 @@ describe('Connection Class', () => {
         expect.objectContaining({
           headers: { 'X-API-Signature': expect.anything() },
           data: connectionDisconnectData,
-          url: 'http://localhost:8080/connection/invite',
+          url: 'http://localhost:8080/connection/disconnect',
         }),
       );
     });
