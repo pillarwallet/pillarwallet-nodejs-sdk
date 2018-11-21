@@ -20,6 +20,7 @@ const connectionRejectSchema = require('../schemas/connection/reject.json');
 const connectionCancelSchema = require('../schemas/connection/cancel.json');
 const connectionBlockSchema = require('../schemas/connection/block.json');
 const connectionMuteSchema = require('../schemas/connection/mute.json');
+const connectionDisconnectSchema = require('../schemas/connection/disconnect.json');
 
 export class Connection extends Configuration {
   constructor() {
@@ -136,6 +137,26 @@ export class Connection extends Configuration {
     postConfiguration.url =
       Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_MUTE;
     postConfiguration.data = muteConfiguration;
+
+    return Requester.execute(postConfiguration);
+  }
+
+  /**
+   * @name disconnect
+   * @desc Disconnects a connection between two users
+   * @param {ConnectionDisconnect} disconnectConfiguration
+   * @returns {axios.AxiosPromise}
+   */
+  disconnect(disconnectConfiguration: ConnectionDisconnect): AxiosPromise {
+    this.validation(connectionDisconnectSchema, disconnectConfiguration);
+
+    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      disconnectConfiguration,
+      Configuration.accessKeys.privateKey,
+    );
+    postConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_DISCONNECT;
+    postConfiguration.data = disconnectConfiguration;
 
     return Requester.execute(postConfiguration);
   }
