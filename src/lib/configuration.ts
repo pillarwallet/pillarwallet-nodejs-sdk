@@ -139,11 +139,6 @@ export class Configuration {
     }
 
     if (checkSignature) {
-      if (!request.headers['X-API-Signature']) {
-        request.headers = {
-          'X-API-Signature': '',
-        };
-      }
       request.headers['X-API-Signature'] = this.checkSignature(
         payload,
         Configuration.accessKeys.privateKey,
@@ -151,11 +146,6 @@ export class Configuration {
     }
 
     if (oauth) {
-      if (!request.headers.Authorization) {
-        request.headers = {
-          Authorization: '',
-        };
-      }
       request.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
     }
 

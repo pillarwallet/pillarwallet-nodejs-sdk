@@ -1,3 +1,4 @@
+// tslint:disable: object-shorthand-properties-first
 import { Register } from '../../lib/register';
 import { v4 as uuid } from 'uuid';
 import { PillarSdk } from '../../index';
@@ -48,9 +49,9 @@ describe('Register Tests with real Api', () => {
         codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
         ethAddress: keys.ethAddress,
         fcmToken: 'OneFcmToken',
-        username, // tslint:disable-line
-        uuid, // tslint:disable-line
-        nonce, // tslint:disable-line
+        username,
+        uuid,
+        nonce,
       };
       const responseAuth = await Register.registerAuth(data, privateKey);
       authorizationCode = responseAuth.data.authorizationCode;

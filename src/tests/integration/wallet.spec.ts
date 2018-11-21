@@ -1,4 +1,4 @@
-import { runInNewContext } from 'vm';
+// tslint:disable: object-shorthand-properties-first
 const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { Register } from '../../lib/register';
@@ -7,7 +7,7 @@ import { PillarSdk } from '../..';
 // TODO: TECHNICAL DEPT!! Create a configurable way to use or one Mock for api (e.g. nock library)
 // TODO: or the real api that is currently being used.
 
-describe.skip('wallet endpoints', () => {
+describe('wallet endpoints', () => {
   const username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
@@ -93,7 +93,7 @@ describe.skip('wallet endpoints', () => {
         publicKey: keys.publicKey,
         ethAddress: keys.ethAddress,
         fcmToken: '987qwe',
-        username, // tslint:disable-line
+        username,
       };
 
       const responseAuth = await pSdk.wallet.registerAuthServer(

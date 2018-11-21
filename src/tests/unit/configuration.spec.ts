@@ -117,7 +117,6 @@ describe('The Configuration Class', () => {
         defaultRequest,
         url,
         checkSignature,
-        oauth,
       });
 
       expect(defaultRequest).toEqual({

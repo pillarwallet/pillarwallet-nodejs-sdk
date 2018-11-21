@@ -353,31 +353,5 @@ describe('Register Class', () => {
       expect(response.data).toEqual(refreshTokenResponse);
       nock.isDone();
     });
-
-    it('expects to return unauthorised due to invalid signature', async () => {
-      expect.assertions(2);
-      const errMsg = 'Unauthorised';
-      const regAuthData = { ...data };
-      delete regAuthData.nonce;
-      nock('http://localhost:8080', {
-        reqheaders: {
-          'X-API-Signature': headerValue => {
-            if (headerValue) {
-              return true;
-            }
-            return false;
-          },
-        },
-      })
-        .post('/register/auth', { ...regAuthData })
-        .reply(401, errMsg);
-      try {
-        await Register.registerAuth(data, privateKey);
-      } catch (error) {
-        expect(error.response.status).toEqual(401);
-        expect(error.response.data).toEqual(errMsg);
-      }
-      nock.isDone();
-    });
   });
 });

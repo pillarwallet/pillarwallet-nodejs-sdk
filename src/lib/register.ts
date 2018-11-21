@@ -114,7 +114,7 @@ export class Register {
 
   /**
    * @name refreshAuthToken
-   * @description Method to refresh accessToken once refreshToken is not expired.
+   * @description Method to refresh accessToken.
    * @returns {AxiosPromise}
    */
   static refreshAuthToken() {
@@ -125,15 +125,10 @@ export class Register {
     const config = {
       ...postConfiguration,
       data,
-      headers: {
-        Authorization: '',
-      },
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.REGISTER_REFRESH
       }`,
     };
-
-    config.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
 
     return axios(config);
   }

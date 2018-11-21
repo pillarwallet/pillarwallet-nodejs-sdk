@@ -144,9 +144,6 @@ describe('Register Class', () => {
       expect(axios).toHaveBeenCalledWith(
         expect.objectContaining({
           method: 'POST',
-          headers: {
-            Authorization: 'Bearer: myAccessToken',
-          },
           data: { refreshToken: 'myRefreshToken' },
           url: 'http://localhost:8080/register/refresh',
         }),

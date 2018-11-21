@@ -12,6 +12,7 @@ export class Requester {
     // Try to refresh access token if it is expired
     if (incomingRequestOptions.headers.Authorization) {
       return axios(incomingRequestOptions).catch(error => {
+        // TODO: What would happen if we banned the user and the server would always return 401?
         if (error.config && error.response && error.response.status === 401) {
           return Register.refreshAuthToken().then((response: any) => {
             Configuration.accessToken = response.data.accessToken;
