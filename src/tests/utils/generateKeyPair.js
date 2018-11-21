@@ -1,6 +1,14 @@
 const pk = require('../../utils/private-key-derivatives');
+const EC = require('elliptic').ec;
+const ecSecp256k1 = new EC('secp256k1');
+const keys = ecSecp256k1.genKeyPair();
+
+const privateKey = keys.getPrivate().toString('hex');
+const publicKey = pk.PrivateKeyDerivatives.getPublicKey(privateKey).toString();
+const ethAddress = pk.PrivateKeyDerivatives.getEthAddress(privateKey).toString();
+
 module.exports = {
-  privateKey: '3a1076bf45ab87712ad64ccb3b10217737f7faacbf1232e88fdd9a537d8fe266',
-  publicKey: pk.PrivateKeyDerivatives.getPublicKey('3a1076bf45ab87712ad64ccb3b10217737f7faacbf1232e88fdd9a537d8fe266').toString(),
-  ethAddress: pk.PrivateKeyDerivatives.getEthAddress('3a1076bf45ab87712ad64ccb3b10217737f7faacbf1232e88fdd9a537d8fe266').toString(),
+  privateKey,
+  publicKey,
+  ethAddress,
 };
