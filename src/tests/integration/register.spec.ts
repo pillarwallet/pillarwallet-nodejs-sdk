@@ -289,7 +289,6 @@ describe('Register Class', () => {
   });
 
   describe('refreshAuthToken method', () => {
-
     let data;
 
     beforeEach(() => {
