@@ -11,7 +11,20 @@
     "walletId": {
       "description": "The wallet ID",
       "type": "string"
+    },
+    "targetUserId": {
+      "description": "The target user ID",
+      "type": "string"
+    },
+    "mute": {
+      "description": "True/false value to mute/unmute the connection",
+      "type": "boolean"
     }
   },
-  "required": [ "accessKey", "walletId" ]
+  "required": [
+    "accessKey",
+    "walletId",
+    "targetUserId",
+    "mute"
+  ]
 }
