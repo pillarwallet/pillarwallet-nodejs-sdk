@@ -78,7 +78,7 @@ export class Wallet extends Configuration {
 
     // Generate public key and address from private key.
     const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
-    const Address = PrivateKeyDerivatives.getEthAddress(privateKey);
+    const address = PrivateKeyDerivatives.getEthAddress(privateKey);
 
     // Delete privateKey after usage
     delete walletRegister.privateKey;
@@ -100,7 +100,7 @@ export class Wallet extends Configuration {
       // Use response data to create registerAuthPayload.
       const registerAuthPayload = {
         codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-        ethAddress: Address,
+        ethAddress: address,
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
         nonce: responseRegisterKeys.data.nonce,
