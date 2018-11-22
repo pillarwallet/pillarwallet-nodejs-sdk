@@ -71,24 +71,20 @@ export class Wallet extends Configuration {
     walletRegister: WalletRegisterAuth,
   ): Promise<AxiosResponse> {
     let registerAuthServerResponse;
-    // validating Input
+
+    // Validating Input
     this.validation(walletRegisterAuthSchema, walletRegister);
     const { privateKey } = walletRegister;
 
-    // delete privateKey after usage
+    // Generate public key and address from private key.
+    const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
+    const address = PrivateKeyDerivatives.getEthAddress(privateKey);
+
+    // Delete privateKey after usage
     delete walletRegister.privateKey;
 
-    // generate code verifier
+    // Generate code verifier
     const codeVerifier = await ProofKey.codeVerifierGenerator();
-
-    if (!walletRegister.publicKey) {
-      walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
-    }
-    if (!walletRegister.ethAddress) {
-      walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(
-        privateKey,
-      );
-    }
 
     let responseRegisterKeys;
     let responseRegisterAuth;
@@ -96,7 +92,7 @@ export class Wallet extends Configuration {
     try {
       // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
       responseRegisterKeys = await Register.registerKeys(
-        walletRegister.publicKey,
+        publicKey,
         Configuration.uuid,
       );
 
@@ -104,7 +100,7 @@ export class Wallet extends Configuration {
       // Use response data to create registerAuthPayload.
       const registerAuthPayload = {
         codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-        ethAddress: walletRegister.ethAddress,
+        ethAddress: address,
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
         nonce: responseRegisterKeys.data.nonce,

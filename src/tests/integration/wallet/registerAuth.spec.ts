@@ -44,8 +44,6 @@ describe('POST RegisterAuthServer', () => {
   beforeEach(() => {
     walletRegister = {
       privateKey: keys.privateKey,
-      publicKey: keys.publicKey,
-      ethAddress: '0x0000000000000000000000000000000000000000',
       fcmToken: '987qwe',
       username: 'sdfsdfs',
     };
