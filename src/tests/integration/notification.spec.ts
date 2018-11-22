@@ -6,6 +6,8 @@ describe('notification endpoints', () => {
   const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
 
+  requesterExecuteSpy.mockImplementation(() => Promise.resolve());
+
   beforeEach(() => {
     pSdk = new PillarSdk({
       privateKey: keys.privateKey,
@@ -17,6 +19,10 @@ describe('notification endpoints', () => {
     requesterExecuteSpy.mockClear();
   });
 
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   describe('Notification list', () => {
     it('Expect success', async () => {
       const inputParams = {
@@ -25,16 +31,8 @@ describe('notification endpoints', () => {
         type: 'message',
         fetchLatest: true,
       };
-      await pSdk.notification
-        .list(inputParams)
-        .then((response: any) => {
-          // Successful response!
-          return response;
-        })
-        .catch((error: any) => {
-          // Unsuccessful response.
-          return error;
-        });
+
+      await pSdk.notification.list(inputParams);
 
       /**
        * TODO: Currently waiting on a development

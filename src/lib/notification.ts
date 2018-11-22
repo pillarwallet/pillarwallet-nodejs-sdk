@@ -3,7 +3,6 @@
  */
 import { AxiosPromise } from 'axios';
 import { Configuration } from './configuration';
-import { Requester } from '../utils/requester';
 import { HttpEndpoints } from './constants/httpEndpoints';
 
 /**
@@ -17,27 +16,20 @@ import { default as getConfiguration } from '../utils/requester-configurations/g
 const notificationListSchema = require('../schemas/notification/list.json');
 
 export class Notification extends Configuration {
-  constructor() {
-    super();
-  }
-
   /**
-   * Provides a list of notifications for a specific wallet user.
+   * @name list
+   * @desc Provides a list of notifications for a specific wallet user.
    * @param {NotificationList} notificationList
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   list(notificationList: NotificationList): AxiosPromise {
-    this.validation(notificationListSchema, notificationList);
-
-    getConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      notificationList,
-      Configuration.accessKeys.privateKey,
-    );
-    getConfiguration.params = notificationList;
-    getConfiguration.url =
-      Configuration.accessKeys.notificationsUrl +
-      HttpEndpoints.NOTIFICATION_LIST;
-
-    return Requester.execute(getConfiguration);
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
+      schema: notificationListSchema,
+      params: notificationList,
+      url: `${Configuration.accessKeys.notificationsUrl}${
+        HttpEndpoints.NOTIFICATION_LIST
+      }`,
+    });
   }
 }
