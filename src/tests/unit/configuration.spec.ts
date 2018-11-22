@@ -1,7 +1,7 @@
+import { AxiosPromise } from 'axios';
+import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
-import { Requester } from '../../utils/requester';
-import { AxiosPromise } from 'axios';
 
 describe('The Configuration Class', () => {
   let configuration: Configuration;
@@ -15,18 +15,20 @@ describe('The Configuration Class', () => {
 
   describe('executeRequest method', () => {
     const checkSignature: boolean = false;
+    const oauth: boolean = true;
     const data: any = { id: 'data' };
     const params: object = { id: 'params' };
     const schema: object = { id: 'schema' };
-    const defaultRequest: any = {
-      url: '',
-      method: 'POST',
-      headers: {},
-    };
+    let defaultRequest: any;
     let url: string;
     const promise: PromiseConstructor = Promise;
 
     beforeEach(() => {
+      defaultRequest = {
+        url: '',
+        method: 'POST',
+        headers: {},
+      };
       url = apiUrl + HttpEndpoints.USER_VALIDATE;
       jest
         .spyOn(configuration, 'validation')
@@ -206,6 +208,28 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'http://localhost:8080/user/validate',
           headers: { 'X-API-Signature': 'signature' },
+        });
+      });
+    });
+
+    describe('when oauth is true (default = false)', () => {
+      it('exectutes the request with the `Authorization` header', () => {
+        Configuration.accessToken = 'oneAccessToken';
+
+        configuration.executeRequest({
+          data,
+          schema,
+          defaultRequest,
+          url,
+          checkSignature,
+          oauth,
+        });
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          data,
+          method: 'POST',
+          url: 'http://localhost:8080/user/validate',
+          headers: { Authorization: 'Bearer: oneAccessToken' },
         });
       });
     });

@@ -70,6 +70,7 @@ export class Wallet extends Configuration {
   async registerAuthServer(
     walletRegister: WalletRegisterAuth,
   ): Promise<AxiosResponse> {
+    let registerAuthServerResponse;
     // validating Input
     this.validation(walletRegisterAuthSchema, walletRegister);
     const { privateKey } = walletRegister;
@@ -95,19 +96,19 @@ export class Wallet extends Configuration {
     try {
       // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
       responseRegisterKeys = await Register.registerKeys(
-        Configuration.uuid,
         walletRegister.publicKey,
+        Configuration.uuid,
       );
 
       // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
       // Use response data to create registerAuthPayload.
       const registerAuthPayload = {
-        nonce: responseRegisterKeys.data.nonce,
-        uuid: Configuration.uuid,
         codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
         ethAddress: walletRegister.ethAddress,
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
+        nonce: responseRegisterKeys.data.nonce,
+        uuid: Configuration.uuid,
       };
 
       responseRegisterAuth = await Register.registerAuth(
@@ -121,14 +122,23 @@ export class Wallet extends Configuration {
       // Use responseRegisterAuth to create registerAccessPayload.
       const registerAccessPayload = {
         codeVerifier: codeVerifier.toString(),
-        authorizationCode: responseRegisterAuth.data.authorizationCode,
         uuid: Configuration.uuid,
+        authorizationCode: responseRegisterAuth.data.authorizationCode,
       };
 
-      return await Register.registerAccess(registerAccessPayload, privateKey);
+      registerAuthServerResponse = await Register.registerAccess(
+        registerAccessPayload,
+        privateKey,
+      );
     } catch (error) {
       throw error;
     }
+
+    // Set oauth Tokens
+    Configuration.refreshToken = registerAuthServerResponse.data.refreshToken;
+    Configuration.accessToken = registerAuthServerResponse.data.accessToken;
+
+    return registerAuthServerResponse;
   }
 
   /**

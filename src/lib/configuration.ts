@@ -8,7 +8,6 @@ import { v4 as uuid } from 'uuid';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
-import { ProofKey } from '../utils/pkce';
 
 let ajv: any;
 
@@ -21,6 +20,8 @@ export class Configuration {
   };
 
   public static uuid: string;
+  public static accessToken: string = '';
+  public static refreshToken: string = '';
 
   constructor() {
     ajv = new Ajv({
@@ -96,6 +97,7 @@ export class Configuration {
     defaultRequest,
     url,
     checkSignature = true,
+    oauth = false,
   }: {
     data?: object;
     params?: object;
@@ -104,6 +106,7 @@ export class Configuration {
     defaultRequest: any;
     url: string;
     checkSignature?: boolean;
+    oauth?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
@@ -131,11 +134,19 @@ export class Configuration {
       };
     }
 
+    if (!request.headers) {
+      request.headers = {};
+    }
+
     if (checkSignature) {
       request.headers['X-API-Signature'] = this.checkSignature(
         payload,
         Configuration.accessKeys.privateKey,
       );
+    }
+
+    if (oauth) {
+      request.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
     }
 
     return Requester.execute(request);

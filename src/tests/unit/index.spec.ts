@@ -1,10 +1,10 @@
 import { PillarSdk } from '../../index';
+import { Configuration } from '../../lib/configuration';
 import { Asset } from '../../lib/asset';
 import { Connection } from '../../lib/connection';
 import { Notification } from '../../lib/notification';
 import { User } from '../../lib/user';
 import { Wallet } from '../../lib/wallet';
-import { Configuration } from '../../lib/configuration';
 import { Investments } from '../../lib/investments';
 
 describe('The Pillar SDK Class', () => {

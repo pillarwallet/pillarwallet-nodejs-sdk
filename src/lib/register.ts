@@ -1,9 +1,9 @@
 /**
  * Import required classes / libraries / constants
  */
-import { AxiosPromise } from 'axios';
-import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
+import axios, { AxiosPromise } from 'axios';
+import { Configuration } from './configuration';
 
 /**
  * Import HTTP Request Configurations
@@ -43,12 +43,12 @@ export class Register {
    */
   static registerAuth(
     data: {
-      nonce: string;
       codeChallenge: string;
       ethAddress: string;
       fcmToken: string;
       username: string;
       uuid: string;
+      nonce: string;
     },
     privateKey: string,
   ): AxiosPromise {
@@ -86,17 +86,14 @@ export class Register {
   static registerAccess(
     data: {
       codeVerifier: string;
-      authorizationCode: string;
       uuid: string;
+      authorizationCode: string;
     },
     privateKey: string,
   ): AxiosPromise {
     const header = { ...data };
     const payload = { ...data };
     const config = { ...postConfiguration };
-
-    // deleting Access id from header signature
-    delete header.uuid;
 
     // deleting authorizationCode from payload
     delete payload.authorizationCode;
@@ -113,5 +110,26 @@ export class Register {
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
       checkSignature: false,
     });
+  }
+
+  /**
+   * @name refreshAuthToken
+   * @description Method to refresh accessToken.
+   * @returns {AxiosPromise}
+   */
+  static refreshAuthToken() {
+    const data = {
+      refreshToken: Configuration.refreshToken,
+    };
+
+    const config = {
+      ...postConfiguration,
+      data,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.REGISTER_REFRESH
+      }`,
+    };
+
+    return axios(config);
   }
 }

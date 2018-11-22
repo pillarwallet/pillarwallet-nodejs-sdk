@@ -1,10 +1,12 @@
 import { Wallet } from './lib/wallet';
+import { Register } from './lib/register';
 import { Asset } from './lib/asset';
 import { Connection } from './lib/connection';
 import { User } from './lib/user';
 import { Notification } from './lib/notification';
 import { Configuration } from './lib/configuration';
 import { Investments } from './lib/investments';
+
 import * as Ajv from 'ajv';
 
 const pillarSdkConstructorSchema = require('../src/schemas/pillarsdk-constructor.json');
@@ -19,6 +21,7 @@ export class PillarSdk extends Configuration {
   user: User = new User();
   notification: Notification = new Notification();
   configuration: Configuration = new Configuration();
+  register: Register = new Register();
 
   /**
    * Set the SDK variables

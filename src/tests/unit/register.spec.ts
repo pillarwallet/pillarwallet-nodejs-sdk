@@ -2,6 +2,8 @@ import { Register } from '../../lib/register';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
+jest.mock('axios');
 
 describe('Register Class', () => {
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
@@ -120,6 +122,39 @@ describe('Register Class', () => {
       const response = await Register.registerAccess(data, privateKey);
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(regAccessResponse.data);
+    });
+  });
+
+  describe('refreshAuthToken', () => {
+    const refreshAuthTokenResponse = {
+      status: 200,
+      data: {
+        accessToken: 'myAccessToken',
+        accessTokenExpiresAt: '2016-07-12T23:34:21Z',
+        refreshToken: 'myRefreshToken',
+        refreshTokenExpiresAt: '2016-07-12T23:34:21Z',
+      },
+    };
+
+    it('should send http request containing data and header', async () => {
+      Configuration.refreshToken = 'myRefreshToken';
+      Configuration.accessToken = 'myAccessToken';
+      axios.mockResolvedValue('');
+      await Register.refreshAuthToken();
+      expect(axios).toHaveBeenCalledWith(
+        expect.objectContaining({
+          method: 'POST',
+          data: { refreshToken: 'myRefreshToken' },
+          url: 'http://localhost:8080/register/refresh',
+        }),
+      );
+    });
+
+    it('expects response to resolve with data', async () => {
+      axios.mockResolvedValue(refreshAuthTokenResponse);
+      const response = await Register.refreshAuthToken();
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(refreshAuthTokenResponse.data);
     });
   });
 });

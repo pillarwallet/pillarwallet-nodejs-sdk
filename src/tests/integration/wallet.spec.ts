@@ -1,9 +1,16 @@
-import { runInNewContext } from 'vm';
+// tslint:disable: object-shorthand-properties-first
 const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
+import { Register } from '../../lib/register';
 import { PillarSdk } from '../..';
 
+// TODO: TECHNICAL DEPT!! Create a configurable way to use or one Mock for api (e.g. nock library)
+// TODO: or the real api that is currently being used.
+
 describe('wallet endpoints', () => {
+  const username = `User${Math.random()
+    .toString(36)
+    .substring(7)}`;
   const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
 
@@ -76,6 +83,41 @@ describe('wallet endpoints', () => {
        * using a spy to ensure that the request was made.
        */
       expect(requesterExecuteSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('The Wallet registerAuthServer method', () => {
+    it('should return the expected response', async () => {
+      const walletRegistrationData = {
+        privateKey: keys.privateKey,
+        publicKey: keys.publicKey,
+        ethAddress: keys.ethAddress,
+        fcmToken: '987qwe',
+        username,
+      };
+
+      const responseAuth = await pSdk.wallet.registerAuthServer(
+        walletRegistrationData,
+      );
+      expect(responseAuth.data).toEqual({
+        accessToken: expect.any(String),
+        refreshToken: expect.any(String),
+        accessTokenExpiresAt: expect.any(String),
+        refreshTokenExpiresAt: expect.any(String),
+        fcmToken: expect.any(String),
+        userId: expect.any(String),
+        walletId: expect.any(String),
+      });
+    });
+
+    it('refresh token', async () => {
+      const responseRefresh = await Register.refreshAuthToken();
+      expect(responseRefresh.data).toEqual({
+        accessToken: expect.any(String),
+        refreshToken: expect.any(String),
+        accessTokenExpiresAt: expect.any(String),
+        refreshTokenExpiresAt: expect.any(String),
+      });
     });
   });
 
