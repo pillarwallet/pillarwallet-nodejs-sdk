@@ -1,10 +1,9 @@
 /**
  * Import required classes / libraries / constants
  */
-import axios, { AxiosPromise } from 'axios';
+import { AxiosPromise } from 'axios';
 import { Readable } from 'stream';
 import * as formatters from '@pillarwallet/common-formatters';
-import { Requester } from '../utils/requester';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
 
@@ -29,6 +28,7 @@ const userValidateSchema = require('../schemas/user/validate.json');
 const profileImageSchema = require('../schemas/user/profileImage.json');
 const deleteProfileImageSchema = require('../schemas/user/deleteProfileImage.json');
 const uploadProfileImageSchema = require('../schemas/user/uploadProfileImage.json');
+const uploadProfileImageFormDataSchema = require('../schemas/user/uploadProfileImageFormData.json');
 const updateNotificationPreferencesSchema = require('../schemas/user/userNotificationPreferences.json');
 const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePassword.json');
@@ -36,138 +36,102 @@ const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
 const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
 
 export class User extends Configuration {
-  constructor() {
-    super();
-  }
-
   /**
-   * Updates data elements on an existing wallet user.
+   * @name update
+   * @desc Updates data elements on an existing wallet user.
    * @param {UserUpdate} userUpdate
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   update(userUpdate: UserUpdate): AxiosPromise {
-    this.validation(userUpdateSchema, userUpdate);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      userUpdate,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.data = userUpdate;
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.USER_UPDATE;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      data: userUpdate,
+      defaultRequest: postConfiguration,
+      schema: userUpdateSchema,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_UPDATE}`,
+    });
   }
 
   /**
-   * Retrieve information on an existing wallet user
+   * @name info
+   * @desc Retrieve information on an existing wallet user
    * @param {UserInfo} userInfo
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   info(userInfo: UserInfo): AxiosPromise {
-    this.validation(userInfoSchema, userInfo);
-
-    const config = {
-      ...getConfiguration,
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
       params: userInfo,
+      schema: userInfoSchema,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_INFO}`,
-    };
-
-    config.headers['X-API-Signature'] = this.checkSignature(
-      userInfo,
-      Configuration.accessKeys.privateKey,
-    );
-
-    return Requester.execute(config);
+    });
   }
 
   /**
    * @name infoById
-   * @description Provides the user data by the target user id and users access keys
+   * @desc Provides the user data by the target user id and users access keys
    * @param {string} targetUserId
    * @param {UserInfoById} query
    * @returns {AxiosPromise}
    */
   infoById(targetUserId: string, query: UserInfoById): AxiosPromise {
-    this.validation(userInfoByIdSchema, query);
-
-    const config = {
-      ...getConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_INFO_BY_ID +
-        targetUserId,
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
       params: query,
-    };
-
-    config.headers['X-API-Signature'] = this.checkSignature(
-      query,
-      Configuration.accessKeys.privateKey,
-    );
-
-    return Requester.execute(config);
+      schema: userInfoByIdSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_INFO_BY_ID
+      }${targetUserId}`,
+    });
   }
 
   /**
-   * Provides a list of users that contain the search criteria in either their first name or last
+   * @name search
+   * @desc Provides a list of users that contain the search criteria in either their first name or last
    * name, and is not the current wallet user.
    * Also it performs a check if the search string term is at least 2 characters and if the user
    * allows their profile to be searched.
    * @param {UserSearch} userSearch
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   search(userSearch: UserSearch): AxiosPromise {
-    this.validation(userSearchSchema, userSearch);
-
-    const config = {
-      ...getConfiguration,
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
       params: userSearch,
+      schema: userSearchSchema,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_SEARCH}`,
-    };
-    config.headers['X-API-Signature'] = this.checkSignature(
-      userSearch,
-      Configuration.accessKeys.privateKey,
-    );
-
-    return Requester.execute(config);
+    });
   }
 
   /**
-   * Remove an existing wallet user profile from the database
+   * @name delete
+   * @desc Remove an existing wallet user profile from the database
    * @param {UserDelete} userDelete
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   delete(userDelete: UserDelete): AxiosPromise {
-    this.validation(userDeleteSchema, userDelete);
-
-    deleteConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      userDelete,
-      Configuration.accessKeys.privateKey,
-    );
-    deleteConfiguration.data = userDelete;
-    deleteConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.USER_DELETE;
-
-    return Requester.execute(deleteConfiguration);
+    return this.executeRequest({
+      data: userDelete,
+      defaultRequest: deleteConfiguration,
+      schema: userDeleteSchema,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_DELETE}`,
+    });
   }
 
   /**
-   * Retrieve the userId of an existing wallet useror return not-found
+   * @name usernameSearch
+   * @desc Retrieve the userId of an existing user or return not found
    * @param {UserUsernameSearch} userUsernameSearch
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   usernameSearch(userUsernameSearch: UserUsernameSearch): AxiosPromise {
-    this.validation(userUsernameSearchSchema, userUsernameSearch);
-
-    const config = {
-      ...getConfiguration,
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
       params: userUsernameSearch,
+      schema: userUsernameSearchSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.USER_USERNAME_SEARCH
       }`,
-    };
-
-    return Requester.execute(config);
+    });
   }
 
   validate(data: UserValidate): AxiosPromise {
@@ -181,67 +145,70 @@ export class User extends Configuration {
   }
 
   profileImage(data: ProfileImage): AxiosPromise {
-    this.validation(profileImageSchema, data);
-
-    const config = {
-      ...getConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_IMAGE +
-        '/' +
-        data.imageName,
-      responseType: 'stream',
-    };
-    return Requester.execute(config);
+    return this.executeRequest({
+      defaultRequest: { ...getConfiguration, responseType: 'stream' },
+      schema: profileImageSchema,
+      // Assign data to params for validation
+      params: data,
+      // But don't include it in the request
+      sendParams: false,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}/${
+        data.imageName
+      }`,
+    });
   }
 
   uploadProfileImage(image: Readable, query: UploadProfileImage): AxiosPromise {
-    this.validation(uploadProfileImageSchema, query);
+    try {
+      this.validation(uploadProfileImageSchema, query);
+    } catch (e) {
+      return Promise.reject(e);
+    }
 
-    const config = {
-      ...postConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_IMAGE +
-        '?walletId=' +
-        query.walletId,
+    /**
+     * TODO
+     *
+     * This will need to be updated along with the `executeRequest` method when
+     * both authorisation flows are in use.
+     *
+     * As payload signing will be removed it's not worth refactoring `executeRequest`
+     * to handle the request for this method.
+     */
+
+    return this.executeRequest({
+      checkSignature: false,
       data: image,
-    };
-    config.headers['X-API-Signature'] = this.checkSignature(
-      query,
-      Configuration.accessKeys.privateKey,
-    );
-
-    return Requester.execute(config);
+      defaultRequest: {
+        ...postConfiguration,
+        headers: {
+          ...postConfiguration.headers,
+          'X-API-Signature': this.checkSignature(
+            query,
+            Configuration.accessKeys.privateKey,
+          ),
+        },
+      },
+      params: query,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
+    });
   }
 
   /**
    * @name uploadProfileImageFormData
-   * @description Upload a profile image using form data
+   * @desc Upload a profile image using form data
    * @param {string} walletId
    * @param {FormData} formData
    * @returns {AxiosPromise}
    */
   uploadProfileImageFormData(walletId: string, formData: any): AxiosPromise {
-    // TODO validation
-    // TODO unit tests
-
     /**
      * formData should contain `walletId` and `image` fields
      */
-
-    const config = {
-      method: 'POST',
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_IMAGE,
-      headers: {
-        'X-API-Signature': this.checkSignature(
-          { walletId },
-          Configuration.accessKeys.privateKey,
-        ),
-        'Content-Type': '',
-      },
-      data: formData,
-    };
+    try {
+      this.validation(uploadProfileImageFormDataSchema, formData);
+    } catch (e) {
+      return Promise.reject(e);
+    }
 
     /**
      * A FormData object from the browser should mean that the Content-Type
@@ -255,15 +222,43 @@ export class User extends Configuration {
      * TODO Figure out a better way to do this,
      * i.e. integration tests should run from a browser/browser-like environment
      */
+
+    /**
+     * TODO
+     *
+     * This will need to be updated along with the `executeRequest` method when
+     * both authorisation flows are in use.
+     *
+     * As payload signing will be removed it's not worth refactoring `executeRequest`
+     * to handle the request for this method.
+     */
+
+    const baseRequest = {
+      ...postConfiguration,
+      headers: {
+        'Content-Type': '',
+        'X-API-Signature': this.checkSignature(
+          { walletId },
+          Configuration.accessKeys.privateKey,
+        ),
+      },
+    };
+    delete baseRequest.json;
+
     if (formData._boundary) {
-      config.headers['Content-Type'] = `multipart/form-data; boundary=${
+      baseRequest.headers['Content-Type'] = `multipart/form-data; boundary=${
         formData._boundary
       }`;
     } else {
-      delete config.headers['Content-Type'];
+      delete baseRequest.headers['Content-Type'];
     }
 
-    return Requester.execute(config);
+    return this.executeRequest({
+      defaultRequest: baseRequest,
+      checkSignature: false,
+      data: formData,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
+    });
   }
 
   deleteProfileImage(data: DeleteProfileImage): AxiosPromise {
@@ -277,39 +272,33 @@ export class User extends Configuration {
 
   /**
    * @name imageByUserId
-   * @description Get user's profile image using user's ID
+   * @desc Get user's profile image using user's ID
    * @param {ImageByUserId} data
    * @returns {AxiosPromise}
    */
   imageByUserId(data: ImageByUserId): AxiosPromise {
+    const params = {
+      walletId: data.walletId,
+    };
+
     try {
       this.validation(imageByUserIdSchema, data);
     } catch (e) {
       return Promise.reject(e);
     }
 
-    const query = {
-      walletId: data.walletId,
-    };
-
-    const config = {
-      ...getConfiguration,
-      url:
-        `${Configuration.accessKeys.apiUrl}` +
-        `${HttpEndpoints.USER_IMAGE_BY_USER_ID}/${data.userId}`,
-      params: query,
-    };
-    config.headers['X-API-Signature'] = this.checkSignature(
-      query,
-      Configuration.accessKeys.privateKey,
-    );
-
-    return Requester.execute(config);
+    return this.executeRequest({
+      params,
+      defaultRequest: getConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_IMAGE_BY_USER_ID
+      }/${data.userId}`,
+    });
   }
 
   /**
    * @name createOneTimePassword
-   * @description Create a one-time password for email or phone,
+   * @desc Create a one-time password for email or phone,
    * store it on the user record,
    * then send an email or SMS to the user
    * @param {UserCreateOneTimePassword} data
@@ -325,15 +314,15 @@ export class User extends Configuration {
       data: formattedData,
       schema: userCreateOneTimePasswordSchema,
       defaultRequest: postConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_CREATE_ONE_TIME_PASSWORD,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_CREATE_ONE_TIME_PASSWORD
+      }`,
     });
   }
 
   /**
    * @name validateEmail
-   * @description Validate a one-time password sent via email
+   * @desc Validate a one-time password sent via email
    * @param {UserValidateEmail} data
    * @returns {AxiosPromise}
    */
@@ -342,13 +331,15 @@ export class User extends Configuration {
       data,
       schema: userValidateEmailSchema,
       defaultRequest: postConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE_EMAIL,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_VALIDATE_EMAIL
+      }`,
     });
   }
 
   /**
    * @name validatePhone
-   * @description Validate a one-time password sent via SMS
+   * @desc Validate a one-time password sent via SMS
    * @param {UserValidatePhone} userValidatePhone
    * @returns {AxiosPromise}
    */
@@ -360,13 +351,15 @@ export class User extends Configuration {
       data,
       schema: userValidatePhoneSchema,
       defaultRequest: postConfiguration,
-      url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE_PHONE,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_VALIDATE_PHONE
+      }`,
     });
   }
 
   /**
    * @name updateNotificationPreferences
-   * @description Update notification preferences for given user
+   * @desc Update notification preferences for given user
    *
    * @param {UpdateNotificationPreferences} data
    * @returns {AxiosPromise}
@@ -378,9 +371,9 @@ export class User extends Configuration {
       data,
       schema: updateNotificationPreferencesSchema,
       defaultRequest: putConfiguration,
-      url:
-        Configuration.accessKeys.apiUrl +
-        HttpEndpoints.USER_NOTIFICATION_PREFERENCES,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_NOTIFICATION_PREFERENCES
+      }`,
     });
   }
 }
