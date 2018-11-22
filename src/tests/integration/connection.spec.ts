@@ -2,9 +2,11 @@ const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-describe('connection endpoints', () => {
+describe('Connection Class', () => {
   const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
+
+  requesterExecuteSpy.mockImplementation(() => {});
 
   beforeEach(() => {
     pSdk = new PillarSdk({
@@ -16,23 +18,14 @@ describe('connection endpoints', () => {
     requesterExecuteSpy.mockClear();
   });
 
-  it('The Connection Class: Invite ', () => {
+  it('.invite', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    pSdk.connection
-      .invite(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.invite(inputParams);
 
     /**
      * TODO: Currently waiting on a development
@@ -43,7 +36,7 @@ describe('connection endpoints', () => {
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
-  it('The Connection Class: Accept ', () => {
+  it('.accept', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -51,16 +44,7 @@ describe('connection endpoints', () => {
       targetUserAccessKey: 'hello',
     };
 
-    pSdk.connection
-      .accept(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.accept(inputParams);
 
     /**
      * TODO: Currently waiting on a development
@@ -71,23 +55,14 @@ describe('connection endpoints', () => {
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
-  it('The Connection Class: Reject ', () => {
+  it('.reject', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    pSdk.connection
-      .reject(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.reject(inputParams);
 
     /**
      * TODO: Currently waiting on a development
@@ -98,23 +73,14 @@ describe('connection endpoints', () => {
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
-  it('The Connection Class: Cancel ', () => {
+  it('.cancel', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    pSdk.connection
-      .cancel(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.cancel(inputParams);
 
     /**
      * TODO: Currently waiting on a development
@@ -125,22 +91,13 @@ describe('connection endpoints', () => {
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
-  it('The Connection Class: Block ', () => {
+  it('.block', () => {
     const inputParams = {
       accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
-    pSdk.connection
-      .block(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.block(inputParams);
 
     /**
      * TODO: Currently waiting on a development
@@ -151,7 +108,7 @@ describe('connection endpoints', () => {
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
-  it('The Connection Class: Mute ', () => {
+  it('.mute', () => {
     const inputParams = {
       accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -159,16 +116,7 @@ describe('connection endpoints', () => {
       mute: true,
     };
 
-    pSdk.connection
-      .mute(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.mute(inputParams);
 
     /**
      * TODO: Currently waiting on a development
@@ -179,23 +127,14 @@ describe('connection endpoints', () => {
     expect(requesterExecuteSpy).toHaveBeenCalled();
   });
 
-  it('The Connection Class: Disconnect ', () => {
+  it('.disconnect', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       accessKey: 'abc123',
       walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
     };
 
-    pSdk.connection
-      .disconnect(inputParams)
-      .then((response: any) => {
-        // Successful response!
-        return response;
-      })
-      .catch((error: any) => {
-        // Unsuccessful response.
-        return error;
-      });
+    pSdk.connection.disconnect(inputParams);
 
     /**
      * TODO: Currently waiting on a development
