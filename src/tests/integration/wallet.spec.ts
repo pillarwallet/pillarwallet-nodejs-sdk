@@ -90,8 +90,6 @@ describe('wallet endpoints', () => {
     it('should return the expected response', async () => {
       const walletRegistrationData = {
         privateKey: keys.privateKey,
-        publicKey: keys.publicKey,
-        ethAddress: keys.ethAddress,
         fcmToken: '987qwe',
         username,
       };

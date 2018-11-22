@@ -78,8 +78,6 @@ describe('Wallet Class', () => {
         .mockImplementationOnce(() => Promise.resolve(registerAccessResponse));
       const walletRegistrationData = {
         privateKey: keys.privateKey,
-        publicKey: keys.publicKey,
-        ethAddress: '0x0000000000000000000000000000000000000000',
         fcmToken: '987qwe',
         username: 'sdfsdfs',
       };
@@ -111,8 +109,6 @@ describe('Wallet Class', () => {
         .mockImplementationOnce(() => Promise.resolve('ok'));
       const walletRegistrationData = {
         privateKey: keys.privateKey,
-        publicKey: keys.publicKey,
-        ethAddress: '0x0000000000000000000000000000000000000000',
         fcmToken: '987qwe',
         username: 'sdfsdfs',
       };
@@ -128,8 +124,7 @@ describe('Wallet Class', () => {
       expect.assertions(1);
       const walletRegistrationData = {};
       const errMsg =
-        "data should have required property 'privateKey', data should have required property 'publicKey', " +
-        "data should have required property 'ethAddress', data should have required property 'fcmToken', " +
+        "data should have required property 'privateKey', data should have required property 'fcmToken', " +
         "data should have required property 'username'";
       try {
         await pSdk.wallet.registerAuthServer(walletRegistrationData);
