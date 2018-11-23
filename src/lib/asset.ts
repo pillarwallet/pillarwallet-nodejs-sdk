@@ -10,8 +10,6 @@ import { HttpEndpoints } from '../lib/constants/httpEndpoints';
  * Import HTTP Request Configurations
  */
 import { default as getConfiguration } from '../utils/requester-configurations/get';
-import { default as putConfiguration } from '../utils/requester-configurations/put';
-import { default as deleteConfiguration } from '../utils/requester-configurations/delete';
 
 /**
  * Import Validation Schemas
@@ -19,6 +17,7 @@ import { default as deleteConfiguration } from '../utils/requester-configuration
 const assetDefaultsSchema = require('../schemas/assets/defaults.json');
 const assetSearchSchema = require('../schemas/assets/search.json');
 const assetListSchema = require('../schemas/assets/list.json');
+const assetPreferredSchema = require('../schemas/assets/preferred.json');
 
 export class Asset extends Configuration {
   constructor() {
@@ -26,7 +25,9 @@ export class Asset extends Configuration {
   }
 
   /**
-   * Returns a list of assets that are marked as default assets.
+   * @name defaults
+   * @description Returns a list of assets that are marked as default assets.
+   *
    * @param {AssetDefaults} assetDefaults
    * @returns {axios.AxiosPromise}
    */
@@ -46,8 +47,32 @@ export class Asset extends Configuration {
   }
 
   /**
-   * Returns a list of assets that contain the search criteria which would be the name,
+   * @name preferred
+   * @description Returns a list of assets that are marked as preferred.
+   *
+   * @param {AssetPreferred} assetPreferred
+   * @returns {axios.AxiosPromise}
+   */
+  preferred(assetPreferred: AssetPreferred): AxiosPromise {
+    // validation
+    this.validation(assetPreferredSchema, assetPreferred);
+    // setting the request
+    getConfiguration.headers['X-API-Signature'] = this.checkSignature(
+      assetPreferred,
+      Configuration.accessKeys.privateKey,
+    );
+    getConfiguration.params = assetPreferred;
+    getConfiguration.url =
+      Configuration.accessKeys.apiUrl + HttpEndpoints.ASSET_PREFERRED;
+
+    return Requester.execute(getConfiguration);
+  }
+
+  /**
+   * @name search
+   * @description Returns a list of assets that contain the search criteria which would be the name,
    * token symbol or smartcontract hexadecimal.
+   *
    * @param {AssetSearch} assetSearch
    * @returns {axios.AxiosPromise}
    */
@@ -66,7 +91,9 @@ export class Asset extends Configuration {
   }
 
   /**
-   * Returns a list of assets.
+   * @name list
+   * @description Returns a list of assets.
+   *
    * @param {AssetList} assetList
    * @returns {axios.AxiosPromise}
    */

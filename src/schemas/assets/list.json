@@ -7,6 +7,10 @@
     "walletId": {
       "description": "The wallet ID",
       "type": "string"
+    },
+    "symbols": {
+      "description": "The symbols to return",
+      "type": "array"
     }
   },
   "required": [ "walletId" ]
