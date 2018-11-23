@@ -10,6 +10,7 @@ export enum HttpEndpoints {
   ASSET_DEFAULT = '/asset/defaults',
   ASSET_SEARCH = '/asset/search',
   ASSET_LIST = '/asset/list',
+  ASSET_PREFERRED = '/asset/preferred',
   CONNECTION_INVITE = '/connection/invite',
   CONNECTION_ACCEPT = '/connection/accept',
   CONNECTION_REJECT = '/connection/reject',

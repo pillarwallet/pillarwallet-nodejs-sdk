@@ -34,6 +34,35 @@ describe('Asset Class', () => {
     });
   });
 
+  describe('The Asset Class: Preferred method', () => {
+    it('should successfully call with valid data', () => {
+      const assetPreferredData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
+
+      pSdk.asset.preferred(assetPreferredData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.anything() },
+          params: assetPreferredData,
+          url: 'http://localhost:8080/asset/preferred',
+        }),
+      );
+    });
+
+    it('should not successfully call with valid data', () => {
+      const assetPreferredData = {
+        walletId: null,
+      };
+
+      expect(() => {
+        pSdk.asset.preferred(assetPreferredData);
+      }).toThrowError(TypeError);
+      expect(requesterExecuteSpy).not.toHaveBeenCalled();
+    });
+  });
+
   describe('The Asset Class: Search method', () => {
     it('should successfully call with valid data', () => {
       const assetSearchData = {
@@ -60,6 +89,24 @@ describe('Asset Class', () => {
       };
 
       pSdk.asset.list(assetListData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          headers: { 'X-API-Signature': expect.anything() },
+          params: assetListData,
+          url: 'http://localhost:8080/asset/list',
+        }),
+      );
+    });
+
+    it('should successfully call with an additional array of symvols to return', async () => {
+      const assetListData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
+      };
+
+      const lol = await pSdk.asset.list(assetListData);
+      console.log(lol);
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
