@@ -10,7 +10,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 - [Response and Error](#response-and-error)
 - [Methods](#methods)
     - [Wallet Update](#wallet-update)
-    - [Wallet Register Auth Server](#wallet-register-auth-server) 
+    - [Wallet Register Auth Server](#wallet-register-auth-server)
     - [Wallet Register Address](#wallet-register-address)
     - [Wallet Unregister Address](#wallet-unregister-address)
     - [Asset Defaults](#asset-defaults)
@@ -467,7 +467,7 @@ Cancels a connection invitation from another user.
 pillarSdk.connection.block(inputParams)
 ```
 
-Blocks a connection request from another user.
+Blocks/unblocks a connection request from another user.
 
 **Input Parameters**
 
@@ -475,13 +475,15 @@ Blocks a connection request from another user.
 | ------------- | ------------- | ------------- | ------------- |
 | accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| block  | True/false to block/unblock the connection. | Boolean  | Required  |
 
 **Expected Output**
 
 | Name  | Output | Type |
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
-| message  | 'Connection blocked' | String  |
+| message  | 'Connection blocked/accepted' | String  |
 
 ### Connection Mute
 
