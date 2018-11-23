@@ -117,6 +117,8 @@ describe('Connection Class', () => {
       const connectionBlockData = {
         accessKey: '123abc',
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        targetUserId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+        block: true,
       };
 
       pSdk.connection.block(connectionBlockData);
