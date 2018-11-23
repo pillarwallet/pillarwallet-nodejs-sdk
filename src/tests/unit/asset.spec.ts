@@ -105,8 +105,7 @@ describe('Asset Class', () => {
         symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
       };
 
-      const lol = await pSdk.asset.list(assetListData);
-      console.log(lol);
+      pSdk.asset.list(assetListData);
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
