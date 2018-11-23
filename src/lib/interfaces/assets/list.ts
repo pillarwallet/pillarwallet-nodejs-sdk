@@ -1,4 +1,4 @@
 interface AssetList {
   walletId: string;
-  symbols: [];
+  symbols: string[];
 }
