@@ -4,6 +4,7 @@ import { Configuration } from '../../lib/configuration';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 jest.mock('axios');
+import { default as postConfiguration } from '../../utils/requester-configurations/post';
 
 describe('Register Class', () => {
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
@@ -27,15 +28,14 @@ describe('Register Class', () => {
     it('should send http request containing publicKey and identifier', () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
       Register.registerKeys(publicKey, uuIdv4);
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: {
-            publicKey,
-            uuid: uuIdv4,
-          },
-          url: 'http://localhost:8080/register/keys',
-        }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        data: {
+          publicKey,
+          uuid: uuIdv4,
+        },
+        url: 'http://localhost:8080/register/keys',
+      });
     });
 
     it('expects response to resolve with data', async () => {
@@ -69,12 +69,12 @@ describe('Register Class', () => {
       const regAuthData = { ...data };
       delete regAuthData.nonce;
       Register.registerAuth(data, privateKey);
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: regAuthData,
-          url: 'http://localhost:8080/register/auth',
-        }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.any(String) },
+        data: regAuthData,
+        url: 'http://localhost:8080/register/auth',
+      });
     });
 
     it('expects response to resolve with data', async () => {
@@ -109,12 +109,12 @@ describe('Register Class', () => {
       const regAccessData = { ...data };
       delete regAccessData.authorizationCode;
       Register.registerAccess(data, privateKey);
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: regAccessData,
-          url: 'http://localhost:8080/register/access',
-        }),
-      );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.any(String) },
+        data: regAccessData,
+        url: 'http://localhost:8080/register/access',
+      });
     });
 
     it('expects response to resolve with data', async () => {

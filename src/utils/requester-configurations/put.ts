@@ -1,9 +1,7 @@
 export default {
   url: '',
   method: 'PUT',
-  headers: {
-    'X-API-Signature': '',
-  },
+  headers: {},
   data: {},
   json: true,
 };

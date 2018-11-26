@@ -1,8 +1,6 @@
 export default {
   url: '',
   method: 'GET',
-  headers: {
-    'X-API-Signature': '',
-  },
+  headers: {},
   params: {},
 };

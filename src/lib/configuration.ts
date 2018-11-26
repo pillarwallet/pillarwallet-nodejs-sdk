@@ -87,7 +87,7 @@ export class Configuration {
    * @param {object} options.schema
    * @param {any} options.defaultRequest
    * @param {url} options.url
-   * @param {boolean=} options.checkSignature
+   * @param {boolean=} options.oauth
    */
   executeRequest({
     data,
@@ -96,8 +96,7 @@ export class Configuration {
     schema,
     defaultRequest,
     url,
-    checkSignature = true,
-    oauth = false,
+    oauth = true,
   }: {
     data?: object;
     params?: object;
@@ -136,13 +135,6 @@ export class Configuration {
 
     if (!request.headers) {
       request.headers = {};
-    }
-
-    if (checkSignature) {
-      request.headers['X-API-Signature'] = this.checkSignature(
-        payload,
-        Configuration.accessKeys.privateKey,
-      );
     }
 
     if (oauth) {
