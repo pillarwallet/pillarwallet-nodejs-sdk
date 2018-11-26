@@ -1,22 +1,25 @@
-import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
+import { default as getConfiguration } from '../../utils/requester-configurations/get';
 
 describe('Asset Class', () => {
-  const requesterExecuteSpy = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
+  let requesterExecuteSpy: any;
 
   beforeEach(() => {
     pSdk = new PillarSdk({
       privateKey:
         'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
     });
+    requesterExecuteSpy = jest
+      .spyOn(pSdk.asset, 'executeRequest')
+      .mockResolvedValue('');
   });
 
   afterEach(() => {
     requesterExecuteSpy.mockClear();
   });
 
-  describe('The Asset Class: Defaults method', () => {
+  describe('.defaults', () => {
     it('should successfully call with valid data', () => {
       const assetDefaultsData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -26,7 +29,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
+          defaultRequest: getConfiguration,
           params: assetDefaultsData,
           url: 'http://localhost:8080/asset/defaults',
         }),
@@ -34,7 +37,7 @@ describe('Asset Class', () => {
     });
   });
 
-  describe('The Asset Class: Preferred method', () => {
+  describe('.preferred', () => {
     it('should successfully call with valid data', () => {
       const assetPreferredData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -44,7 +47,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
+          defaultRequest: getConfiguration,
           params: assetPreferredData,
           url: 'http://localhost:8080/asset/preferred',
         }),
@@ -63,7 +66,7 @@ describe('Asset Class', () => {
     });
   });
 
-  describe('The Asset Class: Search method', () => {
+  describe('.search', () => {
     it('should successfully call with valid data', () => {
       const assetSearchData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -74,7 +77,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
+          defaultRequest: getConfiguration,
           params: assetSearchData,
           url: 'http://localhost:8080/asset/search',
         }),
@@ -82,7 +85,7 @@ describe('Asset Class', () => {
     });
   });
 
-  describe('The Asset Class: List method', () => {
+  describe('.list', () => {
     it('should successfully call with valid data', () => {
       const assetListData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -92,14 +95,14 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
+          defaultRequest: getConfiguration,
           params: assetListData,
           url: 'http://localhost:8080/asset/list',
         }),
       );
     });
 
-    it('should successfully call with an additional array of symvols to return', async () => {
+    it('should successfully call with an additional array of symbols to return', async () => {
       const assetListData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
@@ -109,7 +112,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
+          defaultRequest: getConfiguration,
           params: assetListData,
           url: 'http://localhost:8080/asset/list',
         }),
