@@ -23,141 +23,127 @@ const connectionMuteSchema = require('../schemas/connection/mute.json');
 const connectionDisconnectSchema = require('../schemas/connection/disconnect.json');
 
 export class Connection extends Configuration {
-  constructor() {
-    super();
-  }
-
   /**
-   * Creates a connection invitation for a user to create a relationship with another contact
+   * @name invite
+   * @desc Creates a connection invitation for a user to create a relationship with another contact
    * @param {ConnectionInvite} inviteConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   invite(inviteConfiguration: ConnectionInvite): AxiosPromise {
-    this.validation(connectionInviteSchema, inviteConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      inviteConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_INVITE;
-    postConfiguration.data = inviteConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: inviteConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionInviteSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_INVITE
+      }`,
+    });
   }
 
   /**
-   * Accept a connection invitation from another user
+   * @name accept
+   * @desc Accept a connection invitation from another user
    * @param {ConnectionAccept} acceptConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   accept(acceptConfiguration: ConnectionAccept): AxiosPromise {
-    this.validation(connectionAcceptSchema, acceptConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      acceptConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_ACCEPT;
-    postConfiguration.data = acceptConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: acceptConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionAcceptSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_ACCEPT
+      }`,
+    });
   }
 
   /**
-   * Reject a connection invitation from another user
+   * @name reject
+   * @desc Reject a connection invitation from another user
    * @param {ConnectionReject} rejectConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   reject(rejectConfiguration: ConnectionReject): AxiosPromise {
-    this.validation(connectionRejectSchema, rejectConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      rejectConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_REJECT;
-    postConfiguration.data = rejectConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: rejectConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionRejectSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_REJECT
+      }`,
+    });
   }
 
   /**
-   * Cancels a connection invitation that a user previously initiated
+   * @name cancel
+   * @desc Cancels a connection invitation that a user previously initiated
    * @param {ConnectionCancel} cancelConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   cancel(cancelConfiguration: ConnectionCancel): AxiosPromise {
-    this.validation(connectionCancelSchema, cancelConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      cancelConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_CANCEL;
-    postConfiguration.data = cancelConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: cancelConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionCancelSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_CANCEL
+      }`,
+    });
   }
 
   /**
-   * Blocks a connection request from another user
+   * @name block
+   * @desc Blocks a connection request from another user
    * @param {ConnectionBlock} blockConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   block(blockConfiguration: ConnectionBlock): AxiosPromise {
-    this.validation(connectionBlockSchema, blockConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      blockConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_BLOCK;
-    postConfiguration.data = blockConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: blockConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionBlockSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_BLOCK
+      }`,
+    });
   }
 
   /**
-   * Mutes another user
+   * @name mute
+   * @desc Mutes another user
    * @param {ConnectionMute} muteConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   mute(muteConfiguration: ConnectionMute): AxiosPromise {
-    this.validation(connectionMuteSchema, muteConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      muteConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_MUTE;
-    postConfiguration.data = muteConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: muteConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionMuteSchema,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.CONNECTION_MUTE}`,
+    });
   }
 
   /**
    * @name disconnect
    * @desc Disconnects a connection between two users
    * @param {ConnectionDisconnect} disconnectConfiguration
-   * @returns {axios.AxiosPromise}
+   * @returns {AxiosPromise}
    */
   disconnect(disconnectConfiguration: ConnectionDisconnect): AxiosPromise {
-    this.validation(connectionDisconnectSchema, disconnectConfiguration);
-
-    postConfiguration.headers['X-API-Signature'] = this.checkSignature(
-      disconnectConfiguration,
-      Configuration.accessKeys.privateKey,
-    );
-    postConfiguration.url =
-      Configuration.accessKeys.apiUrl + HttpEndpoints.CONNECTION_DISCONNECT;
-    postConfiguration.data = disconnectConfiguration;
-
-    return Requester.execute(postConfiguration);
+    return this.executeRequest({
+      checkSignature: true,
+      data: disconnectConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionDisconnectSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_DISCONNECT
+      }`,
+    });
   }
 }

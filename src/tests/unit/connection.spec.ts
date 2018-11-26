@@ -1,9 +1,15 @@
+import { default as postConfiguration } from '../../utils/requester-configurations/post';
+import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
 describe('Connection Class', () => {
-  const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
+  const requesterExecuteSpy: any = jest
+    .spyOn(Requester, 'execute')
+    .mockImplementation(() => {});
   let pSdk: PillarSdk;
+
+  jest.spyOn(Configuration.prototype, 'executeRequest');
 
   beforeEach(() => {
     pSdk = new PillarSdk({
@@ -14,12 +20,17 @@ describe('Connection Class', () => {
 
   afterEach(() => {
     requesterExecuteSpy.mockClear();
+    Configuration.prototype.executeRequest.mockClear();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   /**
    * Connection: Invite method
    */
-  describe('Invite method', () => {
+  describe('.invite', () => {
     it('should successfully call with valid data', () => {
       const connectionInviteData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -29,20 +40,20 @@ describe('Connection Class', () => {
 
       pSdk.connection.invite(connectionInviteData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionInviteData,
-          url: 'http://localhost:8080/connection/invite',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionInviteData,
+        url: 'http://localhost:8080/connection/invite',
+      });
     });
   });
 
   /**
    * Connection: Accept method
    */
-  describe('Accept method', () => {
+  describe('.accept', () => {
     it('should successfully call with valid data', () => {
       const connectionAcceptData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -53,20 +64,20 @@ describe('Connection Class', () => {
 
       pSdk.connection.accept(connectionAcceptData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionAcceptData,
-          url: 'http://localhost:8080/connection/accept',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionAcceptData,
+        url: 'http://localhost:8080/connection/accept',
+      });
     });
   });
 
   /**
    * Connection: Reject method
    */
-  describe('Reject method', () => {
+  describe('.reject', () => {
     it('should successfully call with valid data', () => {
       const connectionRejectData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -76,20 +87,20 @@ describe('Connection Class', () => {
 
       pSdk.connection.reject(connectionRejectData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionRejectData,
-          url: 'http://localhost:8080/connection/reject',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionRejectData,
+        url: 'http://localhost:8080/connection/reject',
+      });
     });
   });
 
   /**
    * Connection: Cancel method
    */
-  describe('Cancel method', () => {
+  describe('.cancel', () => {
     it('should successfully call with valid data', () => {
       const connectionCancelData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -99,20 +110,20 @@ describe('Connection Class', () => {
 
       pSdk.connection.cancel(connectionCancelData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionCancelData,
-          url: 'http://localhost:8080/connection/cancel',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionCancelData,
+        url: 'http://localhost:8080/connection/cancel',
+      });
     });
   });
 
   /**
    * Connection: Block method
    */
-  describe('Block method', () => {
+  describe('.block', () => {
     it('should successfully call with valid data', () => {
       const connectionBlockData = {
         accessKey: '123abc',
@@ -123,20 +134,20 @@ describe('Connection Class', () => {
 
       pSdk.connection.block(connectionBlockData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionBlockData,
-          url: 'http://localhost:8080/connection/block',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionBlockData,
+        url: 'http://localhost:8080/connection/block',
+      });
     });
   });
 
   /**
    * Connection: Mute method
    */
-  describe('Mute method', () => {
+  describe('.mute', () => {
     it('should successfully call with valid data', () => {
       const connectionMuteData = {
         accessKey: '123abc',
@@ -147,20 +158,20 @@ describe('Connection Class', () => {
 
       pSdk.connection.mute(connectionMuteData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionMuteData,
-          url: 'http://localhost:8080/connection/mute',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionMuteData,
+        url: 'http://localhost:8080/connection/mute',
+      });
     });
   });
 
   /**
    * Connection: Disconnect method
    */
-  describe('Disconnect method', () => {
+  describe('.disconnect', () => {
     it('should successfully call with valid data', () => {
       const connectionDisconnectData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -170,13 +181,13 @@ describe('Connection Class', () => {
 
       pSdk.connection.disconnect(connectionDisconnectData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: connectionDisconnectData,
-          url: 'http://localhost:8080/connection/disconnect',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionDisconnectData,
+        url: 'http://localhost:8080/connection/disconnect',
+      });
     });
   });
 });
