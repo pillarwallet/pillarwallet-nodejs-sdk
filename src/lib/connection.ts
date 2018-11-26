@@ -1,7 +1,6 @@
 /**
  * Import required classes / libraries / constants
  */
-import { Requester } from '../utils/requester';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 import { Configuration } from './configuration';
 import { AxiosPromise } from 'axios';

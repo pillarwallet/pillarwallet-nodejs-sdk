@@ -30,7 +30,7 @@ export class Register {
       data,
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_KEYS}`,
-      oauth: false,
+      auth: false,
     });
   }
 
@@ -72,7 +72,7 @@ export class Register {
       data: payload,
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_AUTH}`,
-      oauth: false,
+      auth: false,
     });
   }
 
@@ -109,7 +109,7 @@ export class Register {
       data: payload,
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
-      oauth: false,
+      auth: false,
     });
   }
 

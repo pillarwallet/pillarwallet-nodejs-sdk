@@ -14,7 +14,7 @@ describe('The Configuration Class', () => {
   });
 
   describe('executeRequest method', () => {
-    const oauth: boolean = false;
+    const auth: boolean = false;
     const data: any = { id: 'data' };
     const params: object = { id: 'params' };
     const schema: object = { id: 'schema' };
@@ -45,7 +45,7 @@ describe('The Configuration Class', () => {
         schema,
         defaultRequest,
         url,
-        oauth,
+        auth,
       });
 
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
@@ -112,7 +112,7 @@ describe('The Configuration Class', () => {
         schema,
         defaultRequest,
         url,
-        oauth,
+        auth,
       });
 
       expect(defaultRequest).toEqual({
@@ -127,7 +127,7 @@ describe('The Configuration Class', () => {
         data,
         schema,
         url,
-        oauth,
+        auth,
         defaultRequest: {
           url: '',
           method: 'POST',
@@ -147,7 +147,7 @@ describe('The Configuration Class', () => {
         params,
         schema,
         url,
-        oauth,
+        auth,
         defaultRequest: { method: 'GET' },
       });
 
@@ -173,7 +173,7 @@ describe('The Configuration Class', () => {
           schema,
           defaultRequest,
           url,
-          oauth,
+          auth,
         });
 
         expect(Requester.execute).toHaveBeenCalledWith({
@@ -185,7 +185,7 @@ describe('The Configuration Class', () => {
       });
     });
 
-    describe('when oauth is true (default = false)', () => {
+    describe('when auth is true (default = false)', () => {
       it('executes the request with the `Authorization` header', () => {
         Configuration.accessToken = 'oneAccessToken';
 
