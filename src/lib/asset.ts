@@ -19,10 +19,6 @@ const assetListSchema = require('../schemas/assets/list.json');
 const assetPreferredSchema = require('../schemas/assets/preferred.json');
 
 export class Asset extends Configuration {
-  constructor() {
-    super();
-  }
-
   /**
    * @name defaults
    * @desc Returns a list of assets that are marked as default assets.
