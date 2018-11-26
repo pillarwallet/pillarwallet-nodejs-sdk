@@ -54,15 +54,18 @@ describe('Asset Class', () => {
       );
     });
 
-    it('should not successfully call with valid data', () => {
+    it('should not successfully call with valid data', async () => {
+      requesterExecuteSpy.mockRestore();
       const assetPreferredData = {
         walletId: null,
       };
 
-      expect(() => {
-        pSdk.asset.preferred(assetPreferredData);
-      }).toThrowError(TypeError);
-      expect(requesterExecuteSpy).not.toHaveBeenCalled();
+      try {
+        await pSdk.asset.preferred(assetPreferredData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual('data.walletId should be string');
+      }
     });
   });
 
