@@ -1,26 +1,38 @@
+import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
 import { Register } from '../../lib/register';
 import { PillarSdk } from '../..';
+import { default as postConfiguration } from '../../utils/requester-configurations/post';
 const keys = require('../utils/generateKeyPair');
 
 describe('Wallet Class', () => {
   let pSdk: PillarSdk;
+
+  const mockExecuteRequest = jest.spyOn(
+    Configuration.prototype,
+    'executeRequest',
+  );
+  const mockRequesterExecute = jest
+    .spyOn(Requester, 'execute')
+    .mockImplementation(() => Promise.resolve());
 
   beforeEach(() => {
     pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
       privateKey: keys.privateKey,
     });
-    jest
-      .spyOn(Requester, 'execute')
-      .mockImplementationOnce(() => Promise.resolve());
   });
 
   afterEach(() => {
-    Requester.execute.mockRestore();
+    mockExecuteRequest.mockClear();
+    mockRequesterExecute.mockClear();
   });
 
-  describe('The Wallet Class: register method', () => {
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('.register', () => {
     it('should successfully call with valid data', () => {
       const walletRegistrationData = {
         fcmToken: '987qwe',
@@ -29,17 +41,33 @@ describe('Wallet Class', () => {
 
       pSdk.wallet.register(walletRegistrationData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: walletRegistrationData,
-          url: 'http://localhost:8080/wallet/register',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: walletRegistrationData,
+        url: 'http://localhost:8080/wallet/register',
+      });
+    });
+
+    it('validates data', async () => {
+      expect.assertions(3);
+
+      try {
+        await pSdk.wallet.register({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error);
+        expect(e.message).toMatch(
+          "data should have required property 'fcmToken'",
+        );
+        expect(e.message).toMatch(
+          "data should have required property 'username'",
+        );
+      }
     });
   });
 
-  describe('The Wallet Class: registerAuthServer method', () => {
+  describe('.registerAuthServer', () => {
     it('should return the expected response', async () => {
       const registerKeysResponse = {
         status: 200,
@@ -81,11 +109,12 @@ describe('Wallet Class', () => {
         fcmToken: '987qwe',
         username: 'sdfsdfs',
       };
-
       const response = await pSdk.wallet.registerAuthServer(
         walletRegistrationData,
       );
+
       expect(response).toEqual(registerAccessResponse);
+
       Register.registerAccess.mockRestore();
       Register.registerAuth.mockRestore();
       Register.registerKeys.mockRestore();
@@ -134,7 +163,7 @@ describe('Wallet Class', () => {
     });
   });
 
-  describe('The Wallet Class: update method', () => {
+  describe('.update', () => {
     it('should successfully call with valid data', () => {
       const walletUpdateData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -143,17 +172,33 @@ describe('Wallet Class', () => {
 
       pSdk.wallet.update(walletUpdateData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: walletUpdateData,
-          url: 'http://localhost:8080/wallet/update',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: walletUpdateData,
+        url: 'http://localhost:8080/wallet/update',
+      });
+    });
+
+    it('validates data', async () => {
+      expect.assertions(3);
+
+      try {
+        await pSdk.wallet.update({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error);
+        expect(e.message).toMatch(
+          "data should have required property 'walletId'",
+        );
+        expect(e.message).toMatch(
+          "data should have required property 'fcmToken'",
+        );
+      }
     });
   });
 
-  describe('The Wallet Class: registerAddress method', () => {
+  describe('.registerAddress', () => {
     it('should successfully call with valid data', () => {
       const walletRegisterAddressData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -164,13 +209,13 @@ describe('Wallet Class', () => {
 
       pSdk.wallet.registerAddress(walletRegisterAddressData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: walletRegisterAddressData,
-          url: 'http://localhost:8080/wallet/register-address',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: walletRegisterAddressData,
+        url: 'http://localhost:8080/wallet/register-address',
+      });
     });
 
     it('should thrown error due to invalid data (schema validation)', async () => {
@@ -191,7 +236,7 @@ describe('Wallet Class', () => {
     });
   });
 
-  describe('The Wallet Class: unregisterAddress method', () => {
+  describe('.unregisterAddress', () => {
     it('should successfully call with valid data', () => {
       const walletUnregisterAddressData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -201,13 +246,13 @@ describe('Wallet Class', () => {
 
       pSdk.wallet.unregisterAddress(walletUnregisterAddressData);
 
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          headers: { 'X-API-Signature': expect.anything() },
-          data: walletUnregisterAddressData,
-          url: 'http://localhost:8080/wallet/unregister-address',
-        }),
-      );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.anything() },
+        data: walletUnregisterAddressData,
+        url: 'http://localhost:8080/wallet/unregister-address',
+      });
     });
 
     it('should thrown error due to invalid data (schema validation) ', async () => {
