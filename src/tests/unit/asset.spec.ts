@@ -1,18 +1,18 @@
 import { PillarSdk } from '../..';
 import { default as getConfiguration } from '../../utils/requester-configurations/get';
+import { Requester } from '../../utils/requester';
 
 describe('Asset Class', () => {
   let pSdk: PillarSdk;
-  let requesterExecuteSpy: any;
+  const requesterExecuteSpy = jest
+    .spyOn(Requester, 'execute')
+    .mockResolvedValue('');
 
   beforeEach(() => {
     pSdk = new PillarSdk({
       privateKey:
         'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
     });
-    requesterExecuteSpy = jest
-      .spyOn(pSdk.asset, 'executeRequest')
-      .mockResolvedValue('');
   });
 
   afterEach(() => {
@@ -27,13 +27,25 @@ describe('Asset Class', () => {
 
       pSdk.asset.defaults(assetDefaultsData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          defaultRequest: getConfiguration,
-          params: assetDefaultsData,
-          url: 'http://localhost:8080/asset/defaults',
-        }),
-      );
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { 'X-API-Signature': expect.anything() },
+        params: assetDefaultsData,
+        url: 'http://localhost:8080/asset/defaults',
+      });
+    });
+
+    it('should throw an error if called with invalid data', async () => {
+      const assetDefaultData = {
+        walletId: null,
+      };
+
+      try {
+        await pSdk.asset.defaults(assetDefaultData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual('data.walletId should be string');
+      }
     });
   });
 
@@ -45,17 +57,15 @@ describe('Asset Class', () => {
 
       pSdk.asset.preferred(assetPreferredData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          defaultRequest: getConfiguration,
-          params: assetPreferredData,
-          url: 'http://localhost:8080/asset/preferred',
-        }),
-      );
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { 'X-API-Signature': expect.anything() },
+        params: assetPreferredData,
+        url: 'http://localhost:8080/asset/preferred',
+      });
     });
 
-    it('should not successfully call with valid data', async () => {
-      requesterExecuteSpy.mockRestore();
+    it('should throw an error if called with invalid data', async () => {
       const assetPreferredData = {
         walletId: null,
       };
@@ -78,33 +88,31 @@ describe('Asset Class', () => {
 
       pSdk.asset.search(assetSearchData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          defaultRequest: getConfiguration,
-          params: assetSearchData,
-          url: 'http://localhost:8080/asset/search',
-        }),
-      );
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { 'X-API-Signature': expect.anything() },
+        params: assetSearchData,
+        url: 'http://localhost:8080/asset/search',
+      });
+    });
+
+    it('should throw an error if called with invalid data', async () => {
+      const assetSearchData = {
+        walletId: null,
+      };
+
+      try {
+        await pSdk.asset.search(assetSearchData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual(
+          "data.walletId should be string, data should have required property 'query'",
+        );
+      }
     });
   });
 
   describe('.list', () => {
-    it('should successfully call with valid data', () => {
-      const assetListData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
-
-      pSdk.asset.list(assetListData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          defaultRequest: getConfiguration,
-          params: assetListData,
-          url: 'http://localhost:8080/asset/list',
-        }),
-      );
-    });
-
     it('should successfully call with an additional array of symbols to return', async () => {
       const assetListData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -113,13 +121,28 @@ describe('Asset Class', () => {
 
       pSdk.asset.list(assetListData);
 
-      expect(requesterExecuteSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          defaultRequest: getConfiguration,
-          params: assetListData,
-          url: 'http://localhost:8080/asset/list',
-        }),
-      );
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { 'X-API-Signature': expect.anything() },
+        params: assetListData,
+        url: 'http://localhost:8080/asset/list',
+      });
+    });
+
+    it('should throw an error if called with invalid data', async () => {
+      const assetListData = {
+        walletId: null,
+        symbols: false,
+      };
+
+      try {
+        await pSdk.asset.list(assetListData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual(
+          'data.walletId should be string, data.symbols should be array',
+        );
+      }
     });
   });
 });
