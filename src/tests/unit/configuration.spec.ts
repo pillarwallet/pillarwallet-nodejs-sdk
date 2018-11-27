@@ -9,7 +9,7 @@ describe('The Configuration Class', () => {
 
   beforeEach(() => {
     configuration = new Configuration();
-    configuration.initialise({});
+    configuration.initialise({ privateKey: 'onePrivateKey' });
     apiUrl = Configuration.accessKeys.apiUrl;
   });
 
@@ -137,7 +137,7 @@ describe('The Configuration Class', () => {
       });
 
       const req = Requester.execute.mock.calls[0][0];
-      expect(req.data).toBe(data);
+      expect(req.data).toEqual(data);
     });
 
     it('adds `params` object to request', () => {
@@ -152,7 +152,7 @@ describe('The Configuration Class', () => {
       });
 
       const req = Requester.execute.mock.calls[0][0];
-      expect(req.params).toBe(params);
+      expect(req.params).toEqual(params);
     });
 
     it('returns a promise when the request is made', () => {

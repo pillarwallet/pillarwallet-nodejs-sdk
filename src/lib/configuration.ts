@@ -121,24 +121,17 @@ export class Configuration {
     request = {
       ...defaultRequest,
       url,
+      headers: { ...defaultRequest.headers },
     };
 
     // check if method needs data to be sent or if it uses data within the url
     if (sendParams) {
-      request = {
-        ...defaultRequest,
-        data,
-        params,
-        url,
-      };
-    }
-
-    if (!request.headers) {
-      request.headers = {};
+      request.data = data;
+      request.params = params;
     }
 
     if (auth) {
-      if (!Configuration.accessToken) {
+      if (!Configuration.accessToken || Configuration.accessToken === '') {
         request.headers['X-API-Signature'] = this.checkSignature(
           payload,
           Configuration.accessKeys.privateKey,
