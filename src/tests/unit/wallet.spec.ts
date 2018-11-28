@@ -51,6 +51,27 @@ describe('Wallet Class', () => {
       });
     });
 
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const walletRegistrationData = {
+          fcmToken: '987qwe',
+          username: 'sdfsdfs',
+        };
+
+        pSdk.wallet.register(walletRegistrationData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: walletRegistrationData,
+          url: 'http://localhost:8080/wallet/register',
+        });
+      },
+    );
+
     it('validates data', async () => {
       expect.assertions(3);
 
@@ -182,6 +203,27 @@ describe('Wallet Class', () => {
       });
     });
 
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const walletUpdateData = {
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          fcmToken: '987qwe',
+        };
+
+        pSdk.wallet.update(walletUpdateData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: walletUpdateData,
+          url: 'http://localhost:8080/wallet/update',
+        });
+      },
+    );
+
     it('validates data', async () => {
       expect.assertions(3);
 
@@ -219,6 +261,29 @@ describe('Wallet Class', () => {
       });
     });
 
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const walletRegisterAddressData = {
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          blockchain: 'ethereum',
+          blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+          fcmToken: 'sdcxxczdsds',
+        };
+
+        pSdk.wallet.registerAddress(walletRegisterAddressData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: walletRegisterAddressData,
+          url: 'http://localhost:8080/wallet/register-address',
+        });
+      },
+    );
+
     it('should thrown error due to invalid data (schema validation)', async () => {
       expect.assertions(2);
       const message = "data should have required property 'walletId'";
@@ -255,6 +320,28 @@ describe('Wallet Class', () => {
         url: 'http://localhost:8080/wallet/unregister-address',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const walletUnregisterAddressData = {
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          blockchain: 'ethereum',
+          blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+        };
+
+        pSdk.wallet.unregisterAddress(walletUnregisterAddressData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: walletUnregisterAddressData,
+          url: 'http://localhost:8080/wallet/unregister-address',
+        });
+      },
+    );
 
     it('should thrown error due to invalid data (schema validation) ', async () => {
       expect.assertions(2);
