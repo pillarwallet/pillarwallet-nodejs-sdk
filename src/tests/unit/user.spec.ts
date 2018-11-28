@@ -141,6 +141,9 @@ describe('User Class', () => {
           HttpEndpoints.USER_INFO_BY_ID
         }${targetUserId}`,
         params: query,
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/),
+        },
       });
     });
   });
@@ -411,6 +414,9 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...deleteConfiguration,
         data,
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/),
+        },
         url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
       });
     });
@@ -646,6 +652,9 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...putConfiguration,
         data,
+        headers: {
+          'X-API-Signature': expect.stringMatching(/.+/),
+        },
         url: 'http://localhost:8080/user/update-notification-preferences',
       });
     });

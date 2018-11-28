@@ -52,7 +52,10 @@ export class Register {
     },
     privateKey: string,
   ): AxiosPromise {
-    const config = { ...postConfiguration };
+    const config = {
+      ...postConfiguration,
+      headers: { 'X-API-Signature': '' },
+    };
     const header = { ...data };
     const payload = { ...data };
 
@@ -93,7 +96,10 @@ export class Register {
   ): AxiosPromise {
     const header = { ...data };
     const payload = { ...data };
-    const config = { ...postConfiguration };
+    const config = {
+      ...postConfiguration,
+      headers: { 'X-API-Signature': '' },
+    };
 
     // deleting authorizationCode from payload
     delete payload.authorizationCode;
