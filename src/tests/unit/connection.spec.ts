@@ -19,6 +19,7 @@ describe('Connection Class', () => {
   });
 
   afterEach(() => {
+    Configuration.accessToken = '';
     requesterExecuteSpy.mockClear();
     Configuration.prototype.executeRequest.mockClear();
   });
@@ -48,6 +49,28 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/invite',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionInviteData = {
+          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          accessKey: 'abc123',
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        };
+
+        pSdk.connection.invite(connectionInviteData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionInviteData,
+          url: 'http://localhost:8080/connection/invite',
+        });
+      },
+    );
   });
 
   /**
@@ -72,6 +95,30 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/accept',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionAcceptData = {
+          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          sourceUserAccessKey: 'hello',
+          targetUserAccessKey: 'hello',
+        };
+
+        pSdk.connection.accept(connectionAcceptData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionAcceptData,
+          url: 'http://localhost:8080/connection/accept',
+        });
+      },
+    );
   });
 
   /**
@@ -95,6 +142,28 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/reject',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionRejectData = {
+          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          accessKey: '123abc',
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        };
+
+        pSdk.connection.reject(connectionRejectData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionRejectData,
+          url: 'http://localhost:8080/connection/reject',
+        });
+      },
+    );
   });
 
   /**
@@ -118,6 +187,29 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/cancel',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionCancelData = {
+          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          accessKey: '123abc',
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        };
+
+        pSdk.connection.cancel(connectionCancelData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionCancelData,
+          url: 'http://localhost:8080/connection/cancel',
+        });
+      },
+    );
   });
 
   /**
@@ -142,6 +234,30 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/block',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionBlockData = {
+          accessKey: '123abc',
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          targetUserId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+          block: true,
+        };
+
+        pSdk.connection.block(connectionBlockData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionBlockData,
+          url: 'http://localhost:8080/connection/block',
+        });
+      },
+    );
   });
 
   /**
@@ -166,6 +282,30 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/mute',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionMuteData = {
+          accessKey: '123abc',
+          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          targetUserId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+          mute: true,
+        };
+
+        pSdk.connection.mute(connectionMuteData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionMuteData,
+          url: 'http://localhost:8080/connection/mute',
+        });
+      },
+    );
   });
 
   /**
@@ -189,5 +329,28 @@ describe('Connection Class', () => {
         url: 'http://localhost:8080/connection/disconnect',
       });
     });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.accessToken = 'myAccessToken';
+        const connectionDisconnectData = {
+          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+          accessKey: 'abc123',
+          walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+        };
+
+        pSdk.connection.disconnect(connectionDisconnectData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionDisconnectData,
+          url: 'http://localhost:8080/connection/disconnect',
+        });
+      },
+    );
   });
 });
