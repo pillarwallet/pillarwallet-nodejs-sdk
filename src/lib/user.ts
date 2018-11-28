@@ -35,6 +35,32 @@ const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePa
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
 const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
 
+const setAuthHeader = ({
+  checkSignature,
+  payload,
+}: {
+  checkSignature: Function;
+  payload: object;
+}) => {
+  const headers = {
+    Authorization: '',
+    'X-API-Signature': '',
+  };
+
+  if (Configuration.accessToken) {
+    headers.Authorization = `Bearer ${Configuration.accessToken}`;
+    delete headers['X-API-Signature'];
+  } else {
+    headers['X-API-Signature'] = checkSignature(
+      payload,
+      Configuration.accessKeys.privateKey,
+    );
+    delete headers.Authorization;
+  }
+
+  return headers;
+};
+
 export class User extends Configuration {
   /**
    * @name update
@@ -166,28 +192,17 @@ export class User extends Configuration {
       return Promise.reject(e);
     }
 
-    /**
-     * TODO
-     *
-     * This will need to be updated along with the `executeRequest` method when
-     * both authorisation flows are in use.
-     *
-     * As payload signing will be removed it's not worth refactoring `executeRequest`
-     * to handle the request for this method.
-     */
+    const headers = setAuthHeader({
+      checkSignature: this.checkSignature,
+      payload: query,
+    });
 
     return this.executeRequest({
       auth: false,
       data: image,
       defaultRequest: {
         ...postConfiguration,
-        headers: {
-          ...postConfiguration.headers,
-          'X-API-Signature': this.checkSignature(
-            query,
-            Configuration.accessKeys.privateKey,
-          ),
-        },
+        headers,
       },
       params: query,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
@@ -224,25 +239,17 @@ export class User extends Configuration {
      * i.e. integration tests should run from a browser/browser-like environment
      */
 
-    /**
-     * TODO
-     *
-     * This will need to be updated along with the `executeRequest` method when
-     * both authorisation flows are in use.
-     *
-     * As payload signing will be removed it's not worth refactoring `executeRequest`
-     * to handle the request for this method.
-     */
+    const headers = {
+      ...setAuthHeader({
+        checkSignature: this.checkSignature,
+        payload: { walletId },
+      }),
+      'Content-Type': '',
+    };
 
     const baseRequest = {
       ...postConfiguration,
-      headers: {
-        'Content-Type': '',
-        'X-API-Signature': this.checkSignature(
-          { walletId },
-          Configuration.accessKeys.privateKey,
-        ),
-      },
+      headers,
     };
     delete baseRequest.json;
 

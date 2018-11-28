@@ -17,6 +17,7 @@ const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
 describe('User Class', () => {
   const privateKey: string =
     'aef23212dbaadfa322321231231313123131312312312312312312312312312a';
+  const accessToken = 'myAccessToken';
   let pSdk: PillarSdk;
   let user: User;
 
@@ -42,12 +43,13 @@ describe('User Class', () => {
   });
 
   afterEach(() => {
+    Configuration.accessToken = '';
     mockRequesterExecute.mockClear();
     configRequestSpy.mockClear();
   });
 
   describe('.update', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const userUpdateData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
         firstName: 'Bob',
@@ -73,6 +75,34 @@ describe('User Class', () => {
       });
     });
 
+    it('should successfully call with valid data with Authorization header', () => {
+      const userUpdateData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        firstName: 'Bob',
+        lastName: 'Jones',
+        email: 'bob@acme-corp.com',
+        phone: '+44 77 1111 2222',
+        country: 'UK',
+        state: 'CA',
+        city: 'London',
+        tagline: 'Social media consultant',
+        taglineStatus: false,
+        userSearchable: true,
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.update(userUpdateData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: `Bearer ${accessToken}` },
+        data: userUpdateData,
+        url: 'http://localhost:8080/user/update',
+      });
+    });
+
     it('returns a rejected promise when validation fails', async () => {
       expect.assertions(2);
 
@@ -86,7 +116,7 @@ describe('User Class', () => {
   });
 
   describe('.info', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const userInfoData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       };
@@ -97,6 +127,24 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        params: userInfoData,
+        url: 'http://localhost:8080/user/info',
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const userInfoData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.info(userInfoData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
         url: 'http://localhost:8080/user/info',
       });
@@ -125,15 +173,17 @@ describe('User Class', () => {
         userAccessKey: 'user-access-key',
         targetUserAccessKey: 'target-user-access-key',
       };
-
-      user.infoById(targetUserId, query);
     });
 
     it('should validate query', () => {
+      user.infoById(targetUserId, query);
+
       expect(user.validation).toHaveBeenCalledWith(userInfoByIdSchema, query);
     });
 
-    it('should successfully call requester execute with valid data', () => {
+    it('should successfully call requester execute with valid data with key signature header', () => {
+      user.infoById(targetUserId, query);
+
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
@@ -146,10 +196,28 @@ describe('User Class', () => {
         },
       });
     });
+
+    it('should successfully call requester execute with valid data with Authorization header', () => {
+      Configuration.accessToken = accessToken;
+
+      user.infoById(targetUserId, query);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        url: `${Configuration.accessKeys.apiUrl}${
+          HttpEndpoints.USER_INFO_BY_ID
+        }${targetUserId}`,
+        params: query,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    });
   });
 
   describe('.search', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const userSearchData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
         query: 'searchform',
@@ -162,6 +230,27 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        params: userSearchData,
+        url: 'http://localhost:8080/user/search',
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const userSearchData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+        query: 'searchform',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.search(userSearchData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
         params: userSearchData,
         url: 'http://localhost:8080/user/search',
@@ -184,7 +273,7 @@ describe('User Class', () => {
   });
 
   describe('.delete', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const userInfoData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       };
@@ -195,6 +284,24 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...deleteConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: userInfoData,
+        url: 'http://localhost:8080/user/delete',
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const userInfoData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.delete(userInfoData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...deleteConfiguration,
+        headers: { Authorization: `Bearer ${accessToken}` },
         data: userInfoData,
         url: 'http://localhost:8080/user/delete',
       });
@@ -213,7 +320,7 @@ describe('User Class', () => {
   });
 
   describe('.usernameSearch', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const usernameSearch = {
         username: 'bob',
       };
@@ -224,6 +331,24 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        params: usernameSearch,
+        url: 'http://localhost:8080/user/search-username',
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const usernameSearch = {
+        username: 'bob',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.usernameSearch(usernameSearch);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: `Bearer ${accessToken}` },
         params: usernameSearch,
         url: 'http://localhost:8080/user/search-username',
       });
@@ -309,7 +434,7 @@ describe('User Class', () => {
   describe('.uploadProfileImage', () => {
     const image = new Readable();
 
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const query = { walletId: '0000' };
 
       user.uploadProfileImage(image, query);
@@ -332,6 +457,23 @@ describe('User Class', () => {
       });
     });
 
+    it('should successfully call with valid data with Authorization header', () => {
+      const query = { walletId: '0000' };
+
+      Configuration.accessToken = accessToken;
+
+      user.uploadProfileImage(image, query);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        data: image,
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: query,
+        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}`,
+      });
+    });
+
     it('returns a rejected promise when validation fails', async () => {
       expect.assertions(2);
 
@@ -347,7 +489,7 @@ describe('User Class', () => {
   describe('.uploadProfileImageFormData', () => {
     const walletId = 'wallet-id';
 
-    it('makes a POST request with valid data', () => {
+    it('makes a POST request with valid data with key signature header', () => {
       const data = {
         walletId,
         _boundary: '12345',
@@ -362,6 +504,29 @@ describe('User Class', () => {
         headers: {
           'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
           'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        method: 'POST',
+        url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
+      });
+    });
+
+    it('makes a POST request with valid data with Authorization header', () => {
+      const data = {
+        walletId,
+        _boundary: '12345',
+        image: {},
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.uploadProfileImageFormData(walletId, data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toBeCalledWith({
+        data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
         },
         method: 'POST',
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
@@ -405,7 +570,7 @@ describe('User Class', () => {
   });
 
   describe('.deleteProfileImage', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const data = { walletId: 'wallet-id' };
 
       user.deleteProfileImage(data);
@@ -416,6 +581,24 @@ describe('User Class', () => {
         data,
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const data = { walletId: 'wallet-id' };
+
+      Configuration.accessToken = accessToken;
+
+      user.deleteProfileImage(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...deleteConfiguration,
+        data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
         url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
       });
@@ -458,7 +641,7 @@ describe('User Class', () => {
       }
     });
 
-    it('executes a GET request based on input data', () => {
+    it('executes a GET request based on input data with key signature header', () => {
       const data = {
         walletId: 'walletId',
         userId: 'userId',
@@ -476,10 +659,31 @@ describe('User Class', () => {
         params: { walletId: 'walletId' },
       });
     });
+
+    it('executes a GET request based on input data with Authorization header', () => {
+      const data = {
+        walletId: 'walletId',
+        userId: 'userId',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.imageByUserId(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        method: 'GET',
+        url: 'http://localhost:8080/user/image-by-userid/userId',
+        params: { walletId: 'walletId' },
+      });
+    });
   });
 
   describe('.createOneTimePassword', () => {
-    it('successfully calls with email address', () => {
+    it('successfully calls with email address with key signature header', () => {
       const data = {
         email: 'foo@email.com',
         walletId: '12345',
@@ -492,6 +696,25 @@ describe('User Class', () => {
         ...postConfiguration,
         data,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        url: 'http://localhost:8080/user/create-one-time-password',
+      });
+    });
+
+    it('successfully calls with email address with Authorization header', () => {
+      const data = {
+        email: 'foo@email.com',
+        walletId: '12345',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.createOneTimePassword(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        data,
+        headers: { Authorization: `Bearer ${accessToken}` },
         url: 'http://localhost:8080/user/create-one-time-password',
       });
     });
@@ -565,7 +788,7 @@ describe('User Class', () => {
   });
 
   describe('.validateEmail', () => {
-    it('makes a POST request', () => {
+    it('makes a POST request with key signature header', () => {
       const data = {
         walletId: 'walletId',
         email: 'foo@bar.com',
@@ -580,6 +803,28 @@ describe('User Class', () => {
         data,
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        url: 'http://localhost:8080/user/validate-email',
+      });
+    });
+
+    it('makes a POST request with Authorization header', () => {
+      const data = {
+        walletId: 'walletId',
+        email: 'foo@bar.com',
+        oneTimePassword: '12345',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.validateEmail(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
         url: 'http://localhost:8080/user/validate-email',
       });
@@ -624,6 +869,28 @@ describe('User Class', () => {
       });
     });
 
+    it('makes a POST request with Authorization header', () => {
+      const data = {
+        walletId: 'walletId',
+        phone: '+1 (2) 34-56',
+        oneTimePassword: '54321',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.validatePhone(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        data: { ...data, phone: '+123456' },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        url: 'http://localhost:8080/user/validate-phone',
+      });
+    });
+
     it('validates input data based on schema', async () => {
       expect.assertions(4);
 
@@ -643,7 +910,7 @@ describe('User Class', () => {
   });
 
   describe('.updateNotificationPreferences', () => {
-    it('should successfully call with valid data', () => {
+    it('should successfully call with valid data with key signature header', () => {
       const data = { walletId: 'wallet-id' };
 
       user.updateNotificationPreferences(data);
@@ -654,6 +921,24 @@ describe('User Class', () => {
         data,
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
+        },
+        url: 'http://localhost:8080/user/update-notification-preferences',
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const data = { walletId: 'wallet-id' };
+
+      Configuration.accessToken = accessToken;
+
+      user.updateNotificationPreferences(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...putConfiguration,
+        data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
         url: 'http://localhost:8080/user/update-notification-preferences',
       });
