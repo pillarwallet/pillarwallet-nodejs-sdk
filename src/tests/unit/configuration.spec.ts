@@ -9,13 +9,12 @@ describe('The Configuration Class', () => {
 
   beforeEach(() => {
     configuration = new Configuration();
-    configuration.initialise({});
+    configuration.initialise({ privateKey: 'onePrivateKey' });
     apiUrl = Configuration.accessKeys.apiUrl;
   });
 
   describe('executeRequest method', () => {
-    const checkSignature: boolean = false;
-    const oauth: boolean = true;
+    const auth: boolean = false;
     const data: any = { id: 'data' };
     const params: object = { id: 'params' };
     const schema: object = { id: 'schema' };
@@ -46,7 +45,7 @@ describe('The Configuration Class', () => {
         schema,
         defaultRequest,
         url,
-        checkSignature,
+        auth,
       });
 
       expect(configuration.validation).toHaveBeenCalledWith(schema, data);
@@ -55,7 +54,6 @@ describe('The Configuration Class', () => {
     it('validates `params` for GET requests', () => {
       configuration.executeRequest({
         url,
-        checkSignature,
         params,
         schema,
         defaultRequest: { method: 'GET' },
@@ -67,7 +65,6 @@ describe('The Configuration Class', () => {
     it('validates `data` for POST requests', () => {
       configuration.executeRequest({
         url,
-        checkSignature,
         data,
         schema,
         defaultRequest: { method: 'POST' },
@@ -81,7 +78,6 @@ describe('The Configuration Class', () => {
 
       configuration.executeRequest({
         url,
-        checkSignature,
         data,
         schema,
         defaultRequest: { method: 'PUT' },
@@ -116,7 +112,7 @@ describe('The Configuration Class', () => {
         schema,
         defaultRequest,
         url,
-        checkSignature,
+        auth,
       });
 
       expect(defaultRequest).toEqual({
@@ -131,7 +127,7 @@ describe('The Configuration Class', () => {
         data,
         schema,
         url,
-        checkSignature,
+        auth,
         defaultRequest: {
           url: '',
           method: 'POST',
@@ -151,7 +147,7 @@ describe('The Configuration Class', () => {
         params,
         schema,
         url,
-        checkSignature,
+        auth,
         defaultRequest: { method: 'GET' },
       });
 
@@ -165,20 +161,19 @@ describe('The Configuration Class', () => {
         schema,
         defaultRequest,
         url,
-        checkSignature,
       });
 
       expect(res).toEqual(promise);
     });
 
-    describe('when checkSignature is false', () => {
-      it('executes the request without the `X-API-Signature` header', () => {
+    describe('when auth is false (default = true)', () => {
+      it('executes the request without headers', () => {
         configuration.executeRequest({
           data,
           schema,
           defaultRequest,
           url,
-          checkSignature,
+          auth,
         });
 
         expect(Requester.execute).toHaveBeenCalledWith({
@@ -190,30 +185,8 @@ describe('The Configuration Class', () => {
       });
     });
 
-    describe('when checkSignature is true (default)', () => {
-      it('exectutes the request with the `X-API-Signature` header', () => {
-        jest
-          .spyOn(configuration, 'checkSignature')
-          .mockImplementation(() => 'signature');
-
-        configuration.executeRequest({
-          data,
-          schema,
-          defaultRequest,
-          url,
-        });
-
-        expect(Requester.execute).toHaveBeenCalledWith({
-          data,
-          method: 'POST',
-          url: 'http://localhost:8080/user/validate',
-          headers: { 'X-API-Signature': 'signature' },
-        });
-      });
-    });
-
-    describe('when oauth is true (default = false)', () => {
-      it('exectutes the request with the `Authorization` header', () => {
+    describe('when auth is true (default)', () => {
+      it('if there is an access token, then executes the request with the `Authorization` header', () => {
         Configuration.accessToken = 'oneAccessToken';
 
         configuration.executeRequest({
@@ -221,15 +194,30 @@ describe('The Configuration Class', () => {
           schema,
           defaultRequest,
           url,
-          checkSignature,
-          oauth,
         });
 
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
           method: 'POST',
           url: 'http://localhost:8080/user/validate',
-          headers: { Authorization: 'Bearer: oneAccessToken' },
+          headers: { Authorization: 'Bearer oneAccessToken' },
+        });
+      });
+
+      it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
+        Configuration.accessToken = '';
+        configuration.executeRequest({
+          data,
+          schema,
+          defaultRequest,
+          url,
+        });
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          data,
+          method: 'POST',
+          url: 'http://localhost:8080/user/validate',
+          headers: { 'X-API-Signature': expect.any(String) },
         });
       });
     });

@@ -1,7 +1,6 @@
 /**
  * Import required classes / libraries / constants
  */
-import { Requester } from '../utils/requester';
 import { HttpEndpoints } from '../lib/constants/httpEndpoints';
 import { Configuration } from './configuration';
 import { AxiosPromise } from 'axios';
@@ -31,7 +30,6 @@ export class Connection extends Configuration {
    */
   invite(inviteConfiguration: ConnectionInvite): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: inviteConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionInviteSchema,
@@ -49,7 +47,6 @@ export class Connection extends Configuration {
    */
   accept(acceptConfiguration: ConnectionAccept): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: acceptConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionAcceptSchema,
@@ -67,7 +64,6 @@ export class Connection extends Configuration {
    */
   reject(rejectConfiguration: ConnectionReject): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: rejectConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionRejectSchema,
@@ -85,7 +81,6 @@ export class Connection extends Configuration {
    */
   cancel(cancelConfiguration: ConnectionCancel): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: cancelConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionCancelSchema,
@@ -103,7 +98,6 @@ export class Connection extends Configuration {
    */
   block(blockConfiguration: ConnectionBlock): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: blockConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionBlockSchema,
@@ -121,7 +115,6 @@ export class Connection extends Configuration {
    */
   mute(muteConfiguration: ConnectionMute): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: muteConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionMuteSchema,
@@ -137,7 +130,6 @@ export class Connection extends Configuration {
    */
   disconnect(disconnectConfiguration: ConnectionDisconnect): AxiosPromise {
     return this.executeRequest({
-      checkSignature: true,
       data: disconnectConfiguration,
       defaultRequest: postConfiguration,
       schema: connectionDisconnectSchema,

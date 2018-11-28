@@ -140,12 +140,13 @@ export class User extends Configuration {
       schema: userValidateSchema,
       defaultRequest: postConfiguration,
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_VALIDATE,
-      checkSignature: false,
+      auth: false,
     });
   }
 
   profileImage(data: ProfileImage): AxiosPromise {
     return this.executeRequest({
+      auth: false,
       defaultRequest: { ...getConfiguration, responseType: 'stream' },
       schema: profileImageSchema,
       // Assign data to params for validation
@@ -176,7 +177,7 @@ export class User extends Configuration {
      */
 
     return this.executeRequest({
-      checkSignature: false,
+      auth: false,
       data: image,
       defaultRequest: {
         ...postConfiguration,
@@ -255,7 +256,7 @@ export class User extends Configuration {
 
     return this.executeRequest({
       defaultRequest: baseRequest,
-      checkSignature: false,
+      auth: false,
       data: formData,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
     });

@@ -24,6 +24,7 @@ describe('Wallet Class', () => {
   });
 
   afterEach(() => {
+    Configuration.accessToken = '';
     mockExecuteRequest.mockClear();
     mockRequesterExecute.mockClear();
   });

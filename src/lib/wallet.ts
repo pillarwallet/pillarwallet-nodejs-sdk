@@ -120,7 +120,7 @@ export class Wallet extends Configuration {
       throw error;
     }
 
-    // Set oauth Tokens
+    // Set auth Tokens
     Configuration.refreshToken = registerAuthServerResponse.data.refreshToken;
     Configuration.accessToken = registerAuthServerResponse.data.accessToken;
 

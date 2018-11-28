@@ -30,7 +30,7 @@ export class Register {
       data,
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_KEYS}`,
-      checkSignature: false,
+      auth: false,
     });
   }
 
@@ -52,7 +52,10 @@ export class Register {
     },
     privateKey: string,
   ): AxiosPromise {
-    const config = { ...postConfiguration };
+    const config = {
+      ...postConfiguration,
+      headers: { 'X-API-Signature': '' },
+    };
     const header = { ...data };
     const payload = { ...data };
 
@@ -72,7 +75,7 @@ export class Register {
       data: payload,
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_AUTH}`,
-      checkSignature: false,
+      auth: false,
     });
   }
 
@@ -93,7 +96,10 @@ export class Register {
   ): AxiosPromise {
     const header = { ...data };
     const payload = { ...data };
-    const config = { ...postConfiguration };
+    const config = {
+      ...postConfiguration,
+      headers: { 'X-API-Signature': '' },
+    };
 
     // deleting authorizationCode from payload
     delete payload.authorizationCode;
@@ -103,12 +109,13 @@ export class Register {
       header,
       privateKey,
     );
+
     // HTTP request
     return new Configuration().executeRequest({
       data: payload,
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
-      checkSignature: false,
+      auth: false,
     });
   }
 

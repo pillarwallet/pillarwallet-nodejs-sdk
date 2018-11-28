@@ -87,7 +87,7 @@ export class Configuration {
    * @param {object} options.schema
    * @param {any} options.defaultRequest
    * @param {url} options.url
-   * @param {boolean=} options.checkSignature
+   * @param {boolean=} options.auth
    */
   executeRequest({
     data,
@@ -96,8 +96,7 @@ export class Configuration {
     schema,
     defaultRequest,
     url,
-    checkSignature = true,
-    oauth = false,
+    auth = true,
   }: {
     data?: object;
     params?: object;
@@ -105,8 +104,7 @@ export class Configuration {
     schema?: object;
     defaultRequest: any;
     url: string;
-    checkSignature?: boolean;
-    oauth?: boolean;
+    auth?: boolean;
   }): AxiosPromise {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
@@ -122,31 +120,26 @@ export class Configuration {
     request = {
       ...defaultRequest,
       url,
+      headers: { ...defaultRequest.headers },
     };
 
     // check if method needs data to be sent or if it uses data within the url
     if (sendParams) {
-      request = {
-        ...defaultRequest,
-        data,
-        params,
-        url,
-      };
+      request.data = data;
+      request.params = params;
     }
 
-    if (!request.headers) {
-      request.headers = {};
-    }
-
-    if (checkSignature) {
-      request.headers['X-API-Signature'] = this.checkSignature(
-        payload,
-        Configuration.accessKeys.privateKey,
-      );
-    }
-
-    if (oauth) {
-      request.headers['Authorization'] = `Bearer: ${Configuration.accessToken}`;
+    if (auth) {
+      if (Configuration.accessToken) {
+        request.headers['Authorization'] = `Bearer ${
+          Configuration.accessToken
+        }`;
+      } else {
+        request.headers['X-API-Signature'] = this.checkSignature(
+          payload,
+          Configuration.accessKeys.privateKey,
+        );
+      }
     }
 
     return Requester.execute(request);
