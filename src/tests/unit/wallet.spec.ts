@@ -63,7 +63,6 @@ describe('Wallet Class', () => {
 
         pSdk.wallet.register(walletRegistrationData);
 
-        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
         expect(Requester.execute).toHaveBeenCalledWith({
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
