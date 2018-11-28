@@ -47,7 +47,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith({
         ...getConfiguration,
-        headers: { Authorization: expect.anything() },
+        headers: { Authorization: 'Bearer myAccessToken' },
         params: assetDefaultsData,
         url: 'http://localhost:8080/asset/defaults',
       });
@@ -93,7 +93,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith({
         ...getConfiguration,
-        headers: { Authorization: expect.anything() },
+        headers: { Authorization: 'Bearer myAccessToken' },
         params: assetPreferredData,
         url: 'http://localhost:8080/asset/preferred',
       });
@@ -141,7 +141,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith({
         ...getConfiguration,
-        headers: { Authorization: expect.anything() },
+        headers: { Authorization: 'Bearer myAccessToken' },
         params: assetSearchData,
         url: 'http://localhost:8080/asset/search',
       });
@@ -191,7 +191,7 @@ describe('Asset Class', () => {
 
       expect(requesterExecuteSpy).toHaveBeenCalledWith({
         ...getConfiguration,
-        headers: { Authorization: expect.anything() },
+        headers: { Authorization: 'Bearer myAccessToken' },
         params: assetListData,
         url: 'http://localhost:8080/asset/list',
       });

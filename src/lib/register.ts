@@ -52,7 +52,7 @@ export class Register {
     },
     privateKey: string,
   ): AxiosPromise {
-    const config: any = { ...postConfiguration };
+    const config = { ...postConfiguration };
     const header = { ...data };
     const payload = { ...data };
 
@@ -93,7 +93,7 @@ export class Register {
   ): AxiosPromise {
     const header = { ...data };
     const payload = { ...data };
-    const config: any = { ...postConfiguration };
+    const config = { ...postConfiguration };
 
     // deleting authorizationCode from payload
     delete payload.authorizationCode;

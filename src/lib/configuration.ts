@@ -104,7 +104,6 @@ export class Configuration {
     schema?: object;
     defaultRequest: any;
     url: string;
-    checkSignature?: boolean;
     auth?: boolean;
   }): AxiosPromise {
     const payload: any =
@@ -131,15 +130,15 @@ export class Configuration {
     }
 
     if (auth) {
-      if (!Configuration.accessToken || Configuration.accessToken === '') {
+      if (Configuration.accessToken) {
+        request.headers['Authorization'] = `Bearer ${
+          Configuration.accessToken
+        }`;
+      } else {
         request.headers['X-API-Signature'] = this.checkSignature(
           payload,
           Configuration.accessKeys.privateKey,
         );
-      } else {
-        request.headers['Authorization'] = `Bearer: ${
-          Configuration.accessToken
-        }`;
       }
     }
 

@@ -137,7 +137,7 @@ describe('The Configuration Class', () => {
       });
 
       const req = Requester.execute.mock.calls[0][0];
-      expect(req.data).toEqual(data);
+      expect(req.data).toBe(data);
     });
 
     it('adds `params` object to request', () => {
@@ -152,7 +152,7 @@ describe('The Configuration Class', () => {
       });
 
       const req = Requester.execute.mock.calls[0][0];
-      expect(req.params).toEqual(params);
+      expect(req.params).toBe(params);
     });
 
     it('returns a promise when the request is made', () => {
@@ -166,8 +166,8 @@ describe('The Configuration Class', () => {
       expect(res).toEqual(promise);
     });
 
-    describe('when checkSignature is false', () => {
-      it('executes the request without the `Authorization` header', () => {
+    describe('when auth is false (default = true)', () => {
+      it('executes the request without headers', () => {
         configuration.executeRequest({
           data,
           schema,
@@ -185,8 +185,8 @@ describe('The Configuration Class', () => {
       });
     });
 
-    describe('when auth is true (default = false)', () => {
-      it('executes the request with the `Authorization` header', () => {
+    describe('when auth is true (default)', () => {
+      it('if there is an access token, then executes the request with the `Authorization` header', () => {
         Configuration.accessToken = 'oneAccessToken';
 
         configuration.executeRequest({
@@ -200,7 +200,24 @@ describe('The Configuration Class', () => {
           data,
           method: 'POST',
           url: 'http://localhost:8080/user/validate',
-          headers: { Authorization: 'Bearer: oneAccessToken' },
+          headers: { Authorization: 'Bearer oneAccessToken' },
+        });
+      });
+
+      it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
+        Configuration.accessToken = '';
+        configuration.executeRequest({
+          data,
+          schema,
+          defaultRequest,
+          url,
+        });
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          data,
+          method: 'POST',
+          url: 'http://localhost:8080/user/validate',
+          headers: { 'X-API-Signature': expect.any(String) },
         });
       });
     });
