@@ -221,7 +221,7 @@ export class User extends Configuration {
      * formData should contain `walletId` and `image` fields
      */
     try {
-      this.validation(uploadProfileImageFormDataSchema, formData);
+      this.validation(uploadProfileImageFormDataSchema, { walletId });
     } catch (e) {
       return Promise.reject(e);
     }

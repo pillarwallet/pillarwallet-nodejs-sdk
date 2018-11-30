@@ -534,18 +534,13 @@ describe('User Class', () => {
     });
 
     it('returns a rejected promise when validation fails', async () => {
-      expect.assertions(3);
-
-      const data = {};
+      expect.assertions(2);
 
       try {
-        await user.uploadProfileImageFormData(walletId, data);
+        await user.uploadProfileImageFormData();
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch("data should have required property 'image'");
-        expect(e.message).toMatch(
-          "data should have required property 'walletId'",
-        );
+        expect(e.message).toBe("data should have required property 'walletId'");
       }
     });
 
