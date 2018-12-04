@@ -72,9 +72,6 @@ export class Wallet extends Configuration {
     const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
     const address = PrivateKeyDerivatives.getEthAddress(privateKey);
 
-    // Delete privateKey after usage
-    delete walletRegister.privateKey;
-
     // Generate code verifier
     const codeVerifier = await ProofKey.codeVerifierGenerator();
 
