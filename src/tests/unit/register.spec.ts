@@ -141,13 +141,13 @@ describe('Register Class', () => {
       Configuration.accessToken = 'myAccessToken';
       axios.mockResolvedValue('');
       await Register.refreshAuthToken();
-      expect(axios).toHaveBeenCalledWith(
-        expect.objectContaining({
-          method: 'POST',
-          data: { refreshToken: 'myRefreshToken' },
-          url: 'http://localhost:8080/register/refresh',
-        }),
-      );
+      expect(axios).toHaveBeenCalledWith({
+        method: 'POST',
+        headers: {},
+        data: { refreshToken: 'myRefreshToken' },
+        url: 'http://localhost:8080/register/refresh',
+        json: true,
+      });
     });
 
     it('expects response to resolve with data', async () => {

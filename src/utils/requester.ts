@@ -8,7 +8,7 @@ export class Requester {
    * @param incomingRequestOptions
    * @returns {AxiosPromise}
    */
-  static execute(incomingRequestOptions: any) {
+  static execute(incomingRequestOptions: any): AxiosPromise {
     // Try to refresh access token if it is expired
     if (incomingRequestOptions.headers.Authorization) {
       return axios(incomingRequestOptions).catch(error => {
@@ -17,11 +17,15 @@ export class Requester {
           return Register.refreshAuthToken().then((response: any) => {
             Configuration.accessToken = response.data.accessToken;
             Configuration.refreshToken = response.data.refreshToken;
-            error.config.headers['Authorization'] = `Bearer: ${
-              Configuration.accessToken
-            }`;
+            const options = {
+              ...error.config,
+              headers: {
+                ...error.config.heders,
+                Authorization: `Bearer ${Configuration.accessToken}`,
+              },
+            };
 
-            return axios(error.config);
+            return axios(options);
           });
         }
         throw error;
