@@ -956,4 +956,51 @@ describe('User Class', () => {
       }
     });
   });
+
+  describe('.backupedAccessTokens', () => {
+    it('should successfully call with valid data with key signature header', () => {
+      const userInfoData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      };
+
+      user.backupedAccessTokens(userInfoData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        params: userInfoData,
+        url: 'http://localhost:8080/user/backuped-access-tokens',
+      });
+    });
+
+    it('should successfully call with valid data with Authorization header', () => {
+      const userInfoData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      };
+
+      Configuration.accessToken = accessToken;
+
+      user.backupedAccessTokens(userInfoData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: userInfoData,
+        url: 'http://localhost:8080/user/backuped-access-tokens',
+      });
+    });
+
+    it('returns a rejected promise when validation fails', async () => {
+      expect.assertions(2);
+
+      try {
+        await user.backupedAccessTokens({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toBe("data should have required property 'walletId'");
+      }
+    });
+  });
 });

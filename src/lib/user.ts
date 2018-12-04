@@ -384,4 +384,20 @@ export class User extends Configuration {
       }`,
     });
   }
+
+  /**
+   * Retrieve backuped access tokens of current wallet user
+   * @param {UserInfo} userInfo
+   * @returns {AxiosPromise}
+   */
+  backupedAccessTokens(userInfo: UserInfo): AxiosPromise {
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
+      params: userInfo,
+      schema: userInfoSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.BACKUPED_ACCESS_TOKENS
+      }`,
+    });
+  }
 }
