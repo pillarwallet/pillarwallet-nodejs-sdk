@@ -1,6 +1,6 @@
 import { Register } from '../../lib/register';
 import nock = require('nock');
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 import { PillarSdk } from '../../index';
 import { Configuration } from '../../lib/configuration';
 
@@ -9,13 +9,17 @@ const keys = require('../utils/generateKeyPair');
 describe('Register Class', () => {
   const publicKey = keys.publicKey;
   const privateKey = keys.privateKey;
-  const uuIdv4 = uuid();
+  let uuid;
 
   beforeAll(() => {
     new PillarSdk({
       apiUrl: 'http://localhost:8080',
       privateKey: keys.privateKey,
     });
+  });
+
+  beforeEach(() => {
+    uuid = uuidV4();
   });
 
   afterAll(() => {
@@ -37,7 +41,7 @@ describe('Register Class', () => {
         })
         .reply(400, errMsg);
       try {
-        await Register.registerKeys('', uuIdv4); // empty publicKey
+        await Register.registerKeys('', uuid); // empty publicKey
       } catch (error) {
         expect(error.response.status).toEqual(400);
         expect(error.response.data).toEqual(errMsg);
@@ -52,7 +56,7 @@ describe('Register Class', () => {
         .post('/register/keys')
         .reply(500, errMsg);
       try {
-        await Register.registerKeys(publicKey, uuIdv4);
+        await Register.registerKeys(publicKey, uuid);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data).toEqual(errMsg);
@@ -62,9 +66,9 @@ describe('Register Class', () => {
 
     it('expects response to resolve with data and status code 200', async () => {
       nock('http://localhost:8080')
-        .post('/register/keys', { publicKey, uuid: uuIdv4 })
+        .post('/register/keys', { publicKey, uuid })
         .reply(200, regKeysResponse);
-      const response = await Register.registerKeys(publicKey, uuIdv4);
+      const response = await Register.registerKeys(publicKey, uuid);
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(regKeysResponse);
       nock.isDone();
@@ -76,15 +80,18 @@ describe('Register Class', () => {
       authorizationCode: 'Authorisation code',
       expiresAt: '2011-06-14T04:12:36Z',
     };
+    let data;
 
-    const data = {
-      nonce: '4344132',
-      uuid: uuIdv4,
-      codeChallenge: '323423423443423432432432',
-      ethAddress: 'OneEthAddress',
-      fcmToken: 'OneFcmToken',
-      username: 'OneUserName',
-    };
+    beforeEach(() => {
+      data = {
+        uuid,
+        nonce: '4344132',
+        codeChallenge: '323423423443423432432432',
+        ethAddress: 'OneEthAddress',
+        fcmToken: 'OneFcmToken',
+        username: 'OneUserName',
+      };
+    });
 
     it('should return 400 due missing params', async () => {
       expect.assertions(2);
@@ -195,11 +202,15 @@ describe('Register Class', () => {
       userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
       walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
     };
-    const data = {
-      authorizationCode: 'myauthorizationCode',
-      codeVerifier: 'oneCodeVerifier',
-      uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-    };
+    let data;
+
+    beforeEach(() => {
+      data = {
+        uuid,
+        authorizationCode: 'myauthorizationCode',
+        codeVerifier: 'oneCodeVerifier',
+      };
+    });
 
     it('should return 400 error due to missing params', async () => {
       expect.assertions(2);

@@ -2,6 +2,7 @@
  * Import required classes / libraries / constants
  */
 import { AxiosPromise, AxiosResponse } from 'axios';
+import { v4 as uuidV4 } from 'uuid';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
 import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
@@ -60,6 +61,7 @@ export class Wallet extends Configuration {
   async registerAuthServer(
     walletRegister: WalletRegisterAuth,
   ): Promise<AxiosResponse> {
+    const uuid = uuidV4();
     let registerAuthServerResponse;
 
     // Validating Input
@@ -81,10 +83,7 @@ export class Wallet extends Configuration {
 
     try {
       // 1 step: Initiate registration - Send a UUID and public key, receive a short living nonce.
-      responseRegisterKeys = await Register.registerKeys(
-        publicKey,
-        Configuration.uuid,
-      );
+      responseRegisterKeys = await Register.registerKeys(publicKey, uuid);
 
       // 2 step: Request authorisation code - Send a UUID and public key, receive a short living nonce.
       // Use response data to create registerAuthPayload.
@@ -94,7 +93,7 @@ export class Wallet extends Configuration {
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
         nonce: responseRegisterKeys.data.nonce,
-        uuid: Configuration.uuid,
+        uuid, // tslint:disable-line object-shorthand-properties-first
       };
 
       responseRegisterAuth = await Register.registerAuth(
@@ -108,7 +107,7 @@ export class Wallet extends Configuration {
       // Use responseRegisterAuth to create registerAccessPayload.
       const registerAccessPayload = {
         codeVerifier: codeVerifier.toString(),
-        uuid: Configuration.uuid,
+        uuid, // tslint:disable-line object-shorthand-properties-first
         authorizationCode: responseRegisterAuth.data.authorizationCode,
       };
 
