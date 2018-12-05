@@ -96,7 +96,7 @@ const pillarSdk = new PillarSdk({
 To use backend services, register the wallet:
 
 ```typescript
-pillarSdk.wallet.register(inputParams)
+pillarSdk.wallet.registerAuthServer(inputParams)
 ```
 
 Register the wallet in the backend, create the UserProfile table, and register the wallet in BCX(Blockchain Explorer).
@@ -106,7 +106,8 @@ Wallet can not be created without username.
 ```typescript
 const inputParams = {
   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
-  username: 'bob123'
+  privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+  username: 'bob123',
 };
 ```
 
@@ -116,6 +117,7 @@ const inputParams = {
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
 | username  | The Username of One Wallet.  | String  | Required  |
 
 **Expected Output**
@@ -123,7 +125,11 @@ const inputParams = {
 | Name  | Output | Type |
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
-| message  | 'Wallet created successfully' | String  |
+| accessToken | eg. 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiVlx1MDAxNcKbwoNUwoonbFPCu8KhwrYiLCJpYXQiOjE0NDQyNjI1NDMsImV4cCI6MTQ0NDI2MjU2M30.MldruS1PvZaRZIJR4legQaauQ3_DYKxxP2rFnD37Ip4' | String |
+| accessTokenExpiresAt | 'YYYY-mm-ddTHH:MM:ssZ' | String |
+| refreshToken | eg. 'fdb8fdbecf1d03ce5e6125c067733c0d51de209c' | String |,
+| refreshTokenExpiresAt | 'YYYY-mm-ddTHH:MM:ssZ' | String |
+| fcmToken  | eg. 'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ' | String  |
 | walletId  | e.g. '6e081b82-dbed-4485-bdbc-a808ad911758' | UUID |
 | userId  | e.g. '7e081b82-cabd-3321-aadd-b443212378bd' | UUID |
 
@@ -131,27 +137,18 @@ const inputParams = {
 
 To get the response and error for these methods, use:
 
- ```
- pillarSdk.wallet.register(
- {
-   fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
-   username: 'bob123'
-  })
- .then((response) => {
-   // Successful response!
-   result = response.result;
-   message = response.message;
-   walletId = response.walletId;
-   userId = response.userId;
- })
- .catch((error) => {
-   // Unsuccessful response.
-   name = error.name;
-   status = error.statusCode;
-   message = error.message;
-   error = error.error;
- });
- ```
+ ```javascript
+ try {
+  const response = await pillarSdk.wallet.registerAuthServer({
+    fcmToken: 'cMctpybZfwyFTyRJBo4omxpgoF2JWf-tlJc8fB0Swrq0z7',
+    privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
+    username: 'bob123'
+  });
+  // Use successful response
+ } catch (e) {
+  // Handle unsuccessful response
+ }
+```
 
 ## Methods
 
@@ -185,7 +182,7 @@ Updates Fcm Token in the backend.
 pillarSdk.wallet.registerAuthServer(inputParams)
 ```
 
-Register the wallet in the backend, authentication server(OAUTH),
+Register the wallet in the backend, authentication server(OAuth),
 create the UserProfile table, and register the wallet in BCX(Blockchain Explorer).
 Wallet can not be created without username.
 
