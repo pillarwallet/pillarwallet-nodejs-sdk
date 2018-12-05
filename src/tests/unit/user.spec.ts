@@ -957,20 +957,20 @@ describe('User Class', () => {
     });
   });
 
-  describe('.backupedAccessTokens', () => {
+  describe('.savedAccessTokens', () => {
     it('should successfully call with valid data with key signature header', () => {
       const userInfoData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       };
 
-      user.backupedAccessTokens(userInfoData);
+      user.savedAccessTokens(userInfoData);
 
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         params: userInfoData,
-        url: 'http://localhost:8080/user/backuped-access-tokens',
+        url: 'http://localhost:8080/user/saved-access-tokens',
       });
     });
 
@@ -981,14 +981,14 @@ describe('User Class', () => {
 
       Configuration.accessToken = accessToken;
 
-      user.backupedAccessTokens(userInfoData);
+      user.savedAccessTokens(userInfoData);
 
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
-        url: 'http://localhost:8080/user/backuped-access-tokens',
+        url: 'http://localhost:8080/user/saved-access-tokens',
       });
     });
 
@@ -996,7 +996,7 @@ describe('User Class', () => {
       expect.assertions(2);
 
       try {
-        await user.backupedAccessTokens({});
+        await user.savedAccessTokens({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
         expect(e.message).toBe("data should have required property 'walletId'");

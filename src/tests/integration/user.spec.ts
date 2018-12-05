@@ -326,7 +326,7 @@ describe.skip('user endpoints', () => {
     });
   });
 
-  describe('Get User`s Backuped Access Tokens method', () => {
+  describe('Get User`s Saved Access Tokens method', () => {
     it('should return successful message', () => {
       const inputParams = {
         walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
