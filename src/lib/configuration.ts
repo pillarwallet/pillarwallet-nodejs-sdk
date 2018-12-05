@@ -19,7 +19,6 @@ export class Configuration {
     investmentsUrl: '',
   };
 
-  public static uuid: string;
   public static accessToken: string = '';
   public static refreshToken: string = '';
 
@@ -43,9 +42,6 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
-    }
-    if (!Configuration.uuid) {
-      Configuration.uuid = uuid();
     }
   }
 

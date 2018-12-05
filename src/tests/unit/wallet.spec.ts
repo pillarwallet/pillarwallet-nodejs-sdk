@@ -90,6 +90,28 @@ describe('Wallet Class', () => {
   });
 
   describe('.registerAuthServer', () => {
+    const walletRegistrationData = {
+      privateKey: keys.privateKey,
+      fcmToken: '987qwe',
+      username: 'sdfsdfs',
+    };
+
+    jest.spyOn(Register, 'registerKeys');
+    jest.spyOn(Register, 'registerAuth');
+    jest.spyOn(Register, 'registerAccess');
+
+    afterEach(() => {
+      Register.registerKeys.mockClear();
+      Register.registerAuth.mockClear();
+      Register.registerAccess.mockClear();
+    });
+
+    afterAll(() => {
+      Register.registerKeys.mockRestore();
+      Register.registerAuth.mockRestore();
+      Register.registerAccess.mockRestore();
+    });
+
     it('should return the expected response', async () => {
       const registerKeysResponse = {
         status: 200,
@@ -117,29 +139,41 @@ describe('Wallet Class', () => {
           walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
         },
       };
-      jest
-        .spyOn(Register, 'registerKeys')
-        .mockImplementationOnce(() => Promise.resolve(registerKeysResponse));
-      jest
-        .spyOn(Register, 'registerAuth')
-        .mockImplementationOnce(() => Promise.resolve(registerAuthResponse));
-      jest
-        .spyOn(Register, 'registerAccess')
-        .mockImplementationOnce(() => Promise.resolve(registerAccessResponse));
-      const walletRegistrationData = {
-        privateKey: keys.privateKey,
-        fcmToken: '987qwe',
-        username: 'sdfsdfs',
-      };
+
+      Register.registerKeys.mockImplementationOnce(() =>
+        Promise.resolve(registerKeysResponse),
+      );
+      Register.registerAuth.mockImplementationOnce(() =>
+        Promise.resolve(registerAuthResponse),
+      );
+      Register.registerAccess.mockImplementationOnce(() =>
+        Promise.resolve(registerAccessResponse),
+      );
+
       const response = await pSdk.wallet.registerAuthServer(
         walletRegistrationData,
       );
 
       expect(response).toEqual(registerAccessResponse);
+    });
 
-      Register.registerAccess.mockRestore();
-      Register.registerAuth.mockRestore();
-      Register.registerKeys.mockRestore();
+    it('creates a new UUID for each registration attempt', async () => {
+      Register.registerKeys.mockImplementation(() =>
+        Promise.reject(new Error('Registration failed')),
+      );
+
+      try {
+        await pSdk.wallet.registerAuthServer(walletRegistrationData);
+      } catch (e) {}
+
+      try {
+        await pSdk.wallet.registerAuthServer(walletRegistrationData);
+      } catch (e) {}
+
+      const [, uuidFirstCall] = Register.registerKeys.mock.calls[0];
+      const [, uuidSecondCall] = Register.registerKeys.mock.calls[1];
+
+      expect(uuidFirstCall).not.toBe(uuidSecondCall);
     });
 
     it('should return the respective failed response', async () => {
@@ -150,19 +184,10 @@ describe('Wallet Class', () => {
           message: 'Internal server error',
         },
       };
-      jest
-        .spyOn(Register, 'registerKeys')
-        .mockImplementationOnce(() =>
-          Promise.reject(new Error(registerKeysResponse.data.message)),
-        );
-      jest
-        .spyOn(Register, 'registerAuth')
-        .mockImplementationOnce(() => Promise.resolve('ok'));
-      const walletRegistrationData = {
-        privateKey: keys.privateKey,
-        fcmToken: '987qwe',
-        username: 'sdfsdfs',
-      };
+      Register.registerKeys.mockImplementationOnce(() =>
+        Promise.reject(new Error(registerKeysResponse.data.message)),
+      );
+      Register.registerAuth.mockImplementationOnce(() => Promise.resolve('ok'));
 
       try {
         await pSdk.wallet.registerAuthServer(walletRegistrationData);
@@ -173,12 +198,12 @@ describe('Wallet Class', () => {
 
     it('should throw an error if invalid payload is sent', async () => {
       expect.assertions(1);
-      const walletRegistrationData = {};
+      const invalidWalletRegistrationData = {};
       const errMsg =
         "data should have required property 'privateKey', data should have required property 'fcmToken', " +
         "data should have required property 'username'";
       try {
-        await pSdk.wallet.registerAuthServer(walletRegistrationData);
+        await pSdk.wallet.registerAuthServer(invalidWalletRegistrationData);
       } catch (error) {
         expect(error.message).toEqual(errMsg);
       }
