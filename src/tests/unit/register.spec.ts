@@ -1,18 +1,24 @@
 import { Register } from '../../lib/register';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 import axios from 'axios';
 jest.mock('axios');
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
 
 describe('Register Class', () => {
+  const apiUrl = Configuration.accessKeys.apiUrl;
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
-  const uuIdv4 = uuid();
+  let uuid;
+
+  beforeEach(() => {
+    uuid = uuidV4();
+  });
 
   afterAll(() => {
+    Configuration.accessKeys.apiUrl = apiUrl;
     jest.restoreAllMocks();
   });
 
@@ -27,12 +33,12 @@ describe('Register Class', () => {
 
     it('should send http request containing publicKey and identifier', () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
-      Register.registerKeys(publicKey, uuIdv4);
+      Register.registerKeys(publicKey, uuid);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
         data: {
           publicKey,
-          uuid: uuIdv4,
+          uuid,
         },
         url: 'http://localhost:8080/register/keys',
       });
@@ -40,7 +46,7 @@ describe('Register Class', () => {
 
     it('expects response to resolve with data', async () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue(regKeysResponse);
-      const response = await Register.registerKeys(publicKey, uuIdv4);
+      const response = await Register.registerKeys(publicKey, uuid);
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(regKeysResponse.data);
     });
@@ -56,8 +62,8 @@ describe('Register Class', () => {
     };
 
     const data = {
+      uuid,
       nonce: '4344132',
-      uuid: uuIdv4,
       codeChallenge: '323423423443423432432432',
       ethAddress: 'OneEthAddress',
       fcmToken: 'OneFcmToken',
@@ -141,13 +147,13 @@ describe('Register Class', () => {
       Configuration.accessToken = 'myAccessToken';
       axios.mockResolvedValue('');
       await Register.refreshAuthToken();
-      expect(axios).toHaveBeenCalledWith(
-        expect.objectContaining({
-          method: 'POST',
-          data: { refreshToken: 'myRefreshToken' },
-          url: 'http://localhost:8080/register/refresh',
-        }),
-      );
+      expect(axios).toHaveBeenCalledWith({
+        method: 'POST',
+        headers: {},
+        data: { refreshToken: 'myRefreshToken' },
+        url: 'http://localhost:8080/register/refresh',
+        json: true,
+      });
     });
 
     it('expects response to resolve with data', async () => {

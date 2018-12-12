@@ -1,6 +1,6 @@
 // tslint:disable: object-shorthand-properties-first
 import { Register } from '../../lib/register';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 import { PillarSdk } from '../../index';
 import { ProofKey } from '../../utils/pkce';
 
@@ -9,13 +9,17 @@ const keys = require('../utils/generateKeyPair');
 // TODO: TECHNICAL DEPT!! Create a configurable way to use or one Mock for api (e.g. nock library)
 // TODO: or the real api that is currently being used.
 
-describe('Register Tests with real Api', () => {
+/**
+ * It's not possible to run these tests independently
+ * Skip these for now and update as part of the OAuth tidy up work
+ */
+describe.skip('Register Tests with real Api', () => {
   const publicKey = keys.publicKey.toString();
   const privateKey = keys.privateKey.toString();
-  const uuIdv4 = uuid();
   const username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
+  let uuid;
 
   beforeAll(() => {
     new PillarSdk({
@@ -24,15 +28,18 @@ describe('Register Tests with real Api', () => {
     });
   });
 
+  beforeEach(() => {
+    uuid = uuidV4();
+  });
+
   describe('registerKeys method', () => {
-    const uuid = uuIdv4;
     let nonce: any;
     let authorizationCode: any;
     const codeVerifier = '48vt2vE0U09f7Oao9-P-HlrUycEZeo35ubZa0ppIasI';
 
     let response: any;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       response = await Register.registerKeys(publicKey, uuid);
       nonce = response.data.nonce;
     });
