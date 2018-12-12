@@ -384,4 +384,20 @@ export class User extends Configuration {
       }`,
     });
   }
+
+  /**
+   * Retrieve access tokens of current wallet user
+   * @param {UserInfo} userInfo
+   * @returns {AxiosPromise}
+   */
+  accessTokens(userInfo: UserInfo): AxiosPromise {
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
+      params: userInfo,
+      schema: userInfoSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_ACCESS_TOKENS
+      }`,
+    });
+  }
 }

@@ -325,4 +325,33 @@ describe.skip('user endpoints', () => {
       });
     });
   });
+
+  describe('Get User`s Saved Access Tokens method', () => {
+    it('should return successful message', () => {
+      const inputParams = {
+        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
+      };
+
+      pSdk.user
+        .info(inputParams)
+        .then((response: any) => {
+          // Successful response!
+          // console.log(response.data);
+          return response;
+        })
+        .catch((error: any) => {
+          // Unsuccessful response.
+          // console.log(error);
+          return error;
+        });
+
+      /**
+       * TODO: Currently waiting on a development
+       * or testing environment before we can asset
+       * a correct / expected response. For now, just
+       * using a spy to ensure that the request was made.
+       */
+      expect(requesterExecuteSpy).toHaveBeenCalled();
+    });
+  });
 });

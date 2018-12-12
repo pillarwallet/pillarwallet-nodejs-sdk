@@ -34,4 +34,5 @@ export enum HttpEndpoints {
   USER_VALIDATE_EMAIL = '/user/validate-email',
   USER_VALIDATE_PHONE = '/user/validate-phone',
   USER_NOTIFICATION_PREFERENCES = '/user/update-notification-preferences',
+  USER_ACCESS_TOKENS = '/user/access-tokens',
 }
