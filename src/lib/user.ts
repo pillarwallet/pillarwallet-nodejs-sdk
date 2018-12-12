@@ -386,17 +386,17 @@ export class User extends Configuration {
   }
 
   /**
-   * Retrieve saved access tokens of current wallet user
+   * Retrieve access tokens of current wallet user
    * @param {UserInfo} userInfo
    * @returns {AxiosPromise}
    */
-  savedAccessTokens(userInfo: UserInfo): AxiosPromise {
+  accessTokens(userInfo: UserInfo): AxiosPromise {
     return this.executeRequest({
       defaultRequest: getConfiguration,
       params: userInfo,
       schema: userInfoSchema,
       url: `${Configuration.accessKeys.apiUrl}${
-        HttpEndpoints.SAVED_ACCESS_TOKENS
+        HttpEndpoints.USER_ACCESS_TOKENS
       }`,
     });
   }
