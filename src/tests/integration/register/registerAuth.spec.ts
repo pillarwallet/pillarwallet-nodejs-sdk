@@ -1,26 +1,32 @@
 // tslint:disable: object-shorthand-properties-first
-import { PillarSdk } from '../../../index';
-
+// check node environment
 const env = process.env.NODE_ENV;
-
+// imports
+import { PillarSdk } from '../../../index';
 import { v4 as uuidV4 } from 'uuid';
 import { Register } from '../../../lib/register';
 import { ProofKey } from '../../../utils/pkce';
-
+// HTTP server mocking library
 const nock = require('nock');
+// Key pairs( Private, Public, Address )
 const keys = require('../../utils/generateKeyPair');
 
 describe('registerAuth method', () => {
+  // Key pairs
   const publicKey = keys.publicKey.toString();
   const privateKey = keys.privateKey.toString();
+  const ethAddress = keys.ethAddress.toString();
+  // Generate random username
   const username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
+  // Generate code verifier from library
   const codeVerifier = ProofKey.codeVerifierGenerator();
+  // Variables
   let data: any;
   let uuid: string;
   let nonce: string;
-
+  // Expected responses
   const errMissingParams = {
     message:
       'data.username should NOT be shorter than 4 characters, data.username should pass "regexp" keyword validation',
@@ -37,14 +43,18 @@ describe('registerAuth method', () => {
   };
 
   beforeAll(async () => {
+    // Set SDK Config
     new PillarSdk({
       privateKey,
       apiUrl: 'http://localhost:8080',
     });
+    // Generate Register unique Id
     uuid = uuidV4();
     const response = await Register.registerKeys(publicKey, uuid);
+    // Use nonce for future requests
     nonce = response.data.nonce;
 
+    // If env is test use HTTP server mocking library, else use localhost
     if (env === 'test') {
       const mockApi = nock('http://localhost:8080');
       mockApi
@@ -77,12 +87,10 @@ describe('registerAuth method', () => {
           expiresAt: '2011-06-14T04:12:36Z',
         });
     }
-  });
-
-  beforeEach(() => {
+    // registerAuth Parameters
     data = {
       codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-      ethAddress: keys.ethAddress,
+      ethAddress,
       fcmToken: 'OneFcmToken',
       username,
       uuid,
@@ -109,6 +117,7 @@ describe('registerAuth method', () => {
       expect(error.response.data.message).toEqual(errMissingParams.message);
     }
   });
+
   if (env === 'test') {
     it('should return 500 internal server error', async () => {
       expect.assertions(2);
