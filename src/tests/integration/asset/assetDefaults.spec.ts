@@ -1,3 +1,5 @@
+// tslint:disable: object-shorthand-properties-first
+// check node environment
 const env = process.env.NODE_ENV;
 
 const keys = require('../../utils/generateKeyPair');
@@ -7,9 +9,7 @@ import nock = require('nock');
 
 describe('Asset Default', () => {
   // Key pairs
-  const publicKey = keys.publicKey.toString();
   const privateKey = keys.privateKey.toString();
-  const ethAddress = keys.ethAddress.toString();
 
   // Generate random username
   const username = `User${Math.random()
@@ -88,7 +88,7 @@ describe('Asset Default', () => {
       username,
     };
 
-    if (env !== 'test') {
+    if (env === 'test') {
       const mockApi = nock('http://localhost:8080');
       mockApi
         .post('/register/keys')
@@ -103,7 +103,7 @@ describe('Asset Default', () => {
         })
         .post('/register/access')
         .reply(200, {
-          accessToken: 'accesToken',
+          accessToken: 'accessToken',
           refreshToken: 'refreshToken',
           walletId: 'walletId',
         })
@@ -117,11 +117,9 @@ describe('Asset Default', () => {
         .reply(401, errUnauthorized)
         .post('/register/refresh')
         .reply(200, {
-          accessToken: 'accesToken',
+          accessToken: 'accessToken',
           refreshToken: 'refreshToken',
         })
-        .get('/asset/defaults?walletId=walletId')
-        .reply(200, responseData)
         .get('/asset/defaults?walletId=walletId')
         .reply(200, responseData);
     }
@@ -157,7 +155,7 @@ describe('Asset Default', () => {
     }
   });
 
-  if (env !== 'test') {
+  if (env === 'test') {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         walletId,
@@ -172,7 +170,7 @@ describe('Asset Default', () => {
     });
   }
 
-  it('expects to return unauthorized due to invalid accessToken', async () => {
+  it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
     const inputParams = {
       walletId,
     };
@@ -185,17 +183,5 @@ describe('Asset Default', () => {
       expect(error.response.status).toEqual(401);
       expect(error.response.data.message).toEqual(errUnauthorized.message);
     }
-  });
-
-  it('expects to return array containing assets and status 200, using X-API-Signature', async () => {
-    const inputParams = {
-      walletId,
-    };
-
-    Configuration.accessToken = '';
-
-    const responseDefaults = await pSdk.asset.defaults(inputParams);
-    expect(responseDefaults.status).toBe(200);
-    expect(responseDefaults.data).toEqual(expect.any(Array));
   });
 });
