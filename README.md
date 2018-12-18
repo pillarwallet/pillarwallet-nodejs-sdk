@@ -519,7 +519,8 @@ Disconnects a connection between two users.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| accessKey  | The Access Key. | String  | Required  |
+| sourceUserAccessKey  | Source User Access Key. | String  | Required  |
+| targetUserAccessKey  | Target User Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
