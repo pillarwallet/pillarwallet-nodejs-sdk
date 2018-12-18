@@ -116,7 +116,7 @@ workflows:
       - whitesource:
           filters:
             branches:
-              only: feature/add-whitesource
+              only: master
       - test:
           requires:
             - build
