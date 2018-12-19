@@ -9,11 +9,11 @@
       "type": "string"
     },
     "sourceUserAccessKey": {
-      "description": "The shared access key",
+      "description": "The source user shared access key",
       "type": "string"
     },
     "targetUserAccessKey": {
-      "description": "The shared access key",
+      "description": "The target user shared access key",
       "type": "string"
     },
     "walletId": {
