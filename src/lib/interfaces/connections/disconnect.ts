@@ -1,5 +1,6 @@
 interface ConnectionDisconnect {
   targetUserId: string;
-  accessKey: string;
+  sourceUserAccessKey: string;
+  targetUserAccessKey: string;
   walletId: string;
 }

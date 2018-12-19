@@ -132,7 +132,8 @@ describe('Connection Class', () => {
   it('.disconnect', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      accessKey: 'abc123',
+      sourceUserAccessKey: 'abc123',
+      targetUserAccessKey: 'abc124',
       walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
     };
 
