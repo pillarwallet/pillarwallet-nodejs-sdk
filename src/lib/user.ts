@@ -35,27 +35,13 @@ const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePa
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
 const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
 
-const setAuthHeader = ({
-  checkSignature,
-  payload,
-}: {
-  checkSignature: Function;
-  payload: object;
-}) => {
+const setAuthHeader = () => {
   const headers = {
     Authorization: '',
-    'X-API-Signature': '',
   };
 
   if (Configuration.accessToken) {
     headers.Authorization = `Bearer ${Configuration.accessToken}`;
-    delete headers['X-API-Signature'];
-  } else {
-    headers['X-API-Signature'] = checkSignature(
-      payload,
-      Configuration.accessKeys.privateKey,
-    );
-    delete headers.Authorization;
   }
 
   return headers;

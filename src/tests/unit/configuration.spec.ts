@@ -7,9 +7,17 @@ describe('The Configuration Class', () => {
   let configuration: Configuration;
   let apiUrl: string;
 
+  // Mock Register Process
+  Configuration.accessToken = 'OneAccessToken';
+  Configuration.refreshToken = 'OneRefreshToken';
+
   beforeEach(() => {
     configuration = new Configuration();
-    configuration.initialise({ privateKey: 'onePrivateKey' });
+    configuration.initialise({
+      apiUrl: 'http://localhost:8080',
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
+    });
     apiUrl = Configuration.accessKeys.apiUrl;
   });
 
@@ -201,23 +209,6 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'http://localhost:8080/user/validate',
           headers: { Authorization: 'Bearer oneAccessToken' },
-        });
-      });
-
-      it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
-        Configuration.accessToken = '';
-        configuration.executeRequest({
-          data,
-          schema,
-          defaultRequest,
-          url,
-        });
-
-        expect(Requester.execute).toHaveBeenCalledWith({
-          data,
-          method: 'POST',
-          url: 'http://localhost:8080/user/validate',
-          headers: { 'X-API-Signature': expect.any(String) },
         });
       });
     });

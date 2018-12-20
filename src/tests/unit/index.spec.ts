@@ -11,8 +11,8 @@ describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
     const pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
     });
 
     expect(pSdk).toBeInstanceOf(PillarSdk);
@@ -30,8 +30,6 @@ describe('The Pillar SDK Class', () => {
     try {
       new PillarSdk({
         apiUrl: 'localhos8080',
-        privateKey:
-          'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
       });
     } catch (e) {
       errorThrown = e;
@@ -40,11 +38,10 @@ describe('The Pillar SDK Class', () => {
     expect(errorThrown).toBeInstanceOf(Error);
   });
 
-  it('should fail to call due invalid privatekey', () => {
+  it('should fail to call privateKey', () => {
     let errorThrown;
     try {
       new PillarSdk({
-        apiUrl: 'http://localhost:8080',
         privateKey: 'increasethepeace',
       });
     } catch (e) {

@@ -1,12 +1,13 @@
 import { PillarSdk } from '../../../index';
 
-describe('The Investment Class', () => {
+// TODO: Mock api using nock library
+describe.skip('The Investment Class', () => {
   let pSdk: PillarSdk;
 
   beforeEach(() => {
     pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      apiUrl: 'http://localhost:8080',
+      notificationsUrl: 'http://localhost:8081',
       investmentsUrl: 'http://localhost:8082',
     });
   });

@@ -4,11 +4,6 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "privateKey": {
-      "description": "Private Key buffer",
-      "type": [ "string" ],
-      "pattern":"[a-fA-F0-9]{64}$"
-    },
     "apiUrl": {
       "description": "API Url definition",
       "type": [ "string" ],
@@ -25,5 +20,5 @@
       "format": "uri"
     }
   },
-  "required": [ "privateKey" ]
+  "required": [ "apiUrl", "notificationsUrl", "investmentsUrl" ]
 }

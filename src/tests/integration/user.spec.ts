@@ -14,7 +14,8 @@ describe.skip('user endpoints', () => {
   beforeEach(() => {
     pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
-      privateKey: keys.privateKey,
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
     });
   });
 

@@ -30,8 +30,9 @@ describe('registerKeys method', () => {
 
   beforeAll(() => {
     new PillarSdk({
-      privateKey,
       apiUrl: 'http://localhost:8080',
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
     });
     uuid = uuidV4();
     if (env === 'test') {

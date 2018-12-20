@@ -3,7 +3,6 @@
  */
 import * as Ajv from 'ajv';
 import { AxiosPromise } from 'axios';
-import { v4 as uuid } from 'uuid';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
@@ -13,7 +12,6 @@ let ajv: any;
 
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
-    privateKey: '',
     apiUrl: '',
     notificationsUrl: '',
     investmentsUrl: '',

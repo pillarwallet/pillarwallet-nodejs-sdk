@@ -25,33 +25,6 @@ const walletUnregisterAddressSchema = require('../schemas/wallet/unregisterAddre
 
 export class Wallet extends Configuration {
   /**
-   * @name register
-   * @desc Method to Register the wallet in the Backend, create the UserProfile Table and register in BCX.
-   * @param {WalletRegister} walletRegister
-   * @returns {AxiosPromise}
-   */
-  register(walletRegister: WalletRegister): AxiosPromise {
-    // validating Input
-    if (!walletRegister.publicKey) {
-      walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(
-        Configuration.accessKeys.privateKey,
-      );
-    }
-    if (!walletRegister.ethAddress) {
-      walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(
-        Configuration.accessKeys.privateKey,
-      );
-    }
-
-    return this.executeRequest({
-      schema: walletRegisterSchema,
-      data: walletRegister,
-      defaultRequest: postConfiguration,
-      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.WALLET_REGISTER}`,
-    });
-  }
-
-  /**
    * @name registerAuthServer
    * @desc Method to Register the wallet in the Backend,
    * create the UserProfile Table and register in BCX.

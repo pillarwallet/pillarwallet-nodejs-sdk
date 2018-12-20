@@ -45,17 +45,16 @@ describe('registerAuth method', () => {
   beforeAll(async () => {
     // Set SDK Config
     new PillarSdk({
-      privateKey,
       apiUrl: 'http://localhost:8080',
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
     });
     // Generate Register unique Id
     uuid = uuidV4();
-    const response = await Register.registerKeys(publicKey, uuid);
-    // Use nonce for future requests
-    nonce = response.data.nonce;
 
     // If env is test use HTTP server mocking library, else use localhost
     if (env === 'test') {
+      nonce = 'anyNonce';
       const mockApi = nock('http://localhost:8080');
       mockApi
         .post(
@@ -86,6 +85,10 @@ describe('registerAuth method', () => {
           authorizationCode: 'Authorisation code',
           expiresAt: '2011-06-14T04:12:36Z',
         });
+    } else {
+      const response = await Register.registerKeys(publicKey, uuid);
+      // Use nonce for future requests
+      nonce = response.data.nonce;
     }
     // registerAuth Parameters
     data = {

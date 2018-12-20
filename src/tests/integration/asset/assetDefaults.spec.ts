@@ -80,7 +80,8 @@ describe('Asset Default', () => {
   beforeAll(async () => {
     pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
-      privateKey,
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
     });
     const walletRegister = {
       privateKey,

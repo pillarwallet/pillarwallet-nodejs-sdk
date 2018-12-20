@@ -1,13 +1,18 @@
 import { PillarSdk } from '../../../index';
 import { Requester } from '../../../utils/requester';
+import { Configuration } from '../../../lib/configuration';
 
 describe('The Investment Class', () => {
   let pSdk: PillarSdk;
 
+  // Mock Register Process
+  Configuration.accessToken = 'OneAccessToken';
+  Configuration.refreshToken = 'OneRefreshToken';
+
   beforeEach(() => {
     pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      apiUrl: 'http://localhost:8080',
+      notificationsUrl: 'http://localhost:8081',
       investmentsUrl: 'http://localhost:8082',
     });
     jest

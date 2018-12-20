@@ -78,7 +78,6 @@ const pillarSdk = new PillarSdk({
   apiUrl: 'http://localhost:8080',
   notificationsUrl: 'https://localhost:8081',
   investmentsUrl: 'https://localhost:8082',
-  privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
 
@@ -86,10 +85,9 @@ const pillarSdk = new PillarSdk({
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
-| apiUrl  | URL where API is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
-| notificationsUrl  | URL where the Notifications Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
-| investmentsUrl  | URL where the Investments Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
+| apiUrl  | URL where API is hosted. String with URL format. e.g. "http://<url>".| String  | Required  |
+| notificationsUrl  | URL where the Notifications Service is hosted. String with URL format. e.g. "http://<url>".| String  | Required  |
+| investmentsUrl  | URL where the Investments Service is hosted. String with URL format. e.g. "http://<url>".| String  | Required  |
 
 #### 2 - Register the Wallet
 

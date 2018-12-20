@@ -1,16 +1,38 @@
+// tslint:disable: object-shorthand-properties-first
 const hdkey = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
-describe('asset endpoints', () => {
+// TODO: Mock api using nock library
+describe.skip('asset endpoints', () => {
   const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
 
-  beforeEach(() => {
+  let walletId: string;
+  const username = `User${Math.random()
+    .toString(36)
+    .substring(7)}`;
+  // Key pairs
+  const privateKey = hdkey.privateKey.toString();
+  const walletRegister = {
+    privateKey,
+    fcmToken: '987qwe',
+    username,
+  };
+
+  beforeAll(async () => {
+    let response: any;
     pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
-      privateKey: hdkey.privateKey,
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
     });
+    try {
+      response = await pSdk.wallet.registerAuthServer(walletRegister);
+      walletId = response.data.walletId;
+    } catch (e) {
+      throw e;
+    }
   });
 
   afterEach(() => {
