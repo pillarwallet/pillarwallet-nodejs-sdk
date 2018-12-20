@@ -178,10 +178,7 @@ export class User extends Configuration {
       return Promise.reject(e);
     }
 
-    const headers = setAuthHeader({
-      checkSignature: this.checkSignature,
-      payload: query,
-    });
+    const headers = setAuthHeader();
 
     return this.executeRequest({
       auth: false,
@@ -226,10 +223,7 @@ export class User extends Configuration {
      */
 
     const headers = {
-      ...setAuthHeader({
-        checkSignature: this.checkSignature,
-        payload: { walletId },
-      }),
+      ...setAuthHeader(),
       'Content-Type': '',
     };
 

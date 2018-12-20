@@ -128,11 +128,6 @@ export class Configuration {
         request.headers['Authorization'] = `Bearer ${
           Configuration.accessToken
         }`;
-      } else {
-        request.headers['X-API-Signature'] = this.checkSignature(
-          payload,
-          Configuration.accessKeys.privateKey,
-        );
       }
     }
 
