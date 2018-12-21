@@ -14,6 +14,8 @@ let ajv: any;
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
     privateKey: '',
+    updateOAuthFn: undefined,
+    oAuthTokens: {accessToken: '', refreshToken: ''},
     apiUrl: '',
     notificationsUrl: '',
     investmentsUrl: '',
@@ -26,6 +28,16 @@ export class Configuration {
     ajv = new Ajv({
       allErrors: true,
     });
+  }
+
+  /**
+   * Return an object with accessToken and refreshToken
+   */
+  getTokens() {
+    return {
+      accesToken: Configuration.accessToken,
+      refreshToken: Configuration.refreshToken,
+    }
   }
 
   /**
@@ -42,6 +54,14 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
+    }
+    if (Configuration.accessKeys.oAuthTokens) {
+      Configuration.accessToken = Configuration.accessKeys.oAuthTokens.accessToken;
+      Configuration.refreshToken = Configuration.accessKeys.oAuthTokens.refreshToken;
+    } else {
+      if (Configuration.accessKeys.updateOAuthFn) {
+        //TODO: get access and refresh token again from the API
+      }
     }
   }
 

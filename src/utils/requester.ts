@@ -25,6 +25,13 @@ export class Requester {
               },
             };
 
+            if (Configuration.accessToken && Configuration.refreshToken && Configuration.accessKeys.updateOAuthFn !== undefined) {
+              Configuration.accessKeys.updateOAuthFn({
+                accessToken: Configuration.accessToken,
+                refreshToken: Configuration.refreshToken
+              });
+            }
+
             return axios(options);
           });
         }

@@ -222,4 +222,19 @@ describe('The Configuration Class', () => {
       });
     });
   });
+
+  describe('getTokens method', () => {
+    it('should return an object with empty properties', () => {
+      const tokens = configuration.getTokens();
+      expect(tokens).toEqual({accesToken: '', refreshToken: ''});
+    });
+
+    it('should return an object with the expected properties', () => {
+      Configuration.accessToken = 'oneAccessToken';
+      Configuration.refreshToken = 'oneRefreshToken';
+
+      const tokens = configuration.getTokens();
+      expect(tokens).toEqual({accesToken: 'oneAccessToken', refreshToken: 'oneRefreshToken'});
+    });
+  });
 });
