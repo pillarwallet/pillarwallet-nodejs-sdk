@@ -187,7 +187,7 @@ describe('The Configuration Class', () => {
 
     describe('when auth is true (default)', () => {
       it('if there is an access token, then executes the request with the `Authorization` header', () => {
-        Configuration.accessToken = 'oneAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
 
         configuration.executeRequest({
           data,
@@ -205,7 +205,7 @@ describe('The Configuration Class', () => {
       });
 
       it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
-        Configuration.accessToken = '';
+        Configuration.accessKeys.oAuthTokens.accessToken = '';
         configuration.executeRequest({
           data,
           schema,
@@ -226,15 +226,18 @@ describe('The Configuration Class', () => {
   describe('getTokens method', () => {
     it('should return an object with empty properties', () => {
       const tokens = configuration.getTokens();
-      expect(tokens).toEqual({accesToken: '', refreshToken: ''});
+      expect(tokens).toEqual({ accessToken: '', refreshToken: '' });
     });
 
     it('should return an object with the expected properties', () => {
-      Configuration.accessToken = 'oneAccessToken';
-      Configuration.refreshToken = 'oneRefreshToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
+      Configuration.accessKeys.oAuthTokens.refreshToken = 'oneRefreshToken';
 
       const tokens = configuration.getTokens();
-      expect(tokens).toEqual({accesToken: 'oneAccessToken', refreshToken: 'oneRefreshToken'});
+      expect(tokens).toEqual({
+        accessToken: 'oneAccessToken',
+        refreshToken: 'oneRefreshToken',
+      });
     });
   });
 });

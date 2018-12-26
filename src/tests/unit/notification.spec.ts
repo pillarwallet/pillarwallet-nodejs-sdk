@@ -20,7 +20,7 @@ describe('Notification Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessToken = '';
+    Configuration.accessKeys.oAuthTokens.accessToken = '';
     Configuration.prototype.executeRequest.mockClear();
   });
 
@@ -54,7 +54,7 @@ describe('Notification Class', () => {
         type: 'message',
       };
 
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
 
       pSdk.notification.list(notificationData);
 

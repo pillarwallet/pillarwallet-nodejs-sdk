@@ -143,8 +143,8 @@ describe('Register Class', () => {
     };
 
     it('should send http request containing data and header', async () => {
-      Configuration.refreshToken = 'myRefreshToken';
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.refreshToken = 'myRefreshToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
       axios.mockResolvedValue('');
       await Register.refreshAuthToken();
       expect(axios).toHaveBeenCalledWith({

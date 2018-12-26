@@ -175,7 +175,7 @@ describe('Asset Default', () => {
       walletId,
     };
 
-    Configuration.accessToken = 'invalid';
+    Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
 
     try {
       await pSdk.asset.defaults(inputParams);

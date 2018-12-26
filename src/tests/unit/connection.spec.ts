@@ -19,7 +19,7 @@ describe('Connection Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessToken = '';
+    Configuration.accessKeys.oAuthTokens.accessToken = '';
     requesterExecuteSpy.mockClear();
     Configuration.prototype.executeRequest.mockClear();
   });
@@ -54,7 +54,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionInviteData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           accessKey: 'abc123',
@@ -100,7 +100,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionAcceptData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -147,7 +147,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionRejectData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           accessKey: '123abc',
@@ -192,7 +192,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionCancelData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           accessKey: '123abc',
@@ -239,7 +239,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionBlockData = {
           accessKey: '123abc',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -287,7 +287,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionMuteData = {
           accessKey: '123abc',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -335,7 +335,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const connectionDisconnectData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           sourceUserAccessKey: 'abc123',

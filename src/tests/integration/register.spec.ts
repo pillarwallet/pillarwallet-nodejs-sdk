@@ -303,10 +303,10 @@ describe('Register Class', () => {
     let data;
 
     beforeEach(() => {
-      Configuration.refreshToken = 'oneRefreshToken';
-      Configuration.accessToken = 'oneAccessToken';
+      Configuration.accessKeys.oAuthTokens.refreshToken = 'oneRefreshToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
       data = {
-        refreshToken: Configuration.refreshToken,
+        refreshToken: Configuration.accessKeys.oAuthTokens.refreshToken,
       };
     });
 
@@ -318,7 +318,7 @@ describe('Register Class', () => {
     };
 
     it('should return 400 error due to missing params', async () => {
-      Configuration.refreshToken = '';
+      Configuration.accessKeys.oAuthTokens.refreshToken = '';
       expect.assertions(2);
       const errMsg = 'Missing one or more params!';
       nock('http://localhost:8080')

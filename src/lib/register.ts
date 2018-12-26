@@ -125,18 +125,25 @@ export class Register {
    * @returns {AxiosPromise}
    */
   static refreshAuthToken() {
-    const data = {
-      refreshToken: Configuration.refreshToken,
-    };
+    if (
+      Configuration.accessKeys.oAuthTokens &&
+      Configuration.accessKeys.oAuthTokens.refreshToken
+    ) {
+      const data = {
+        refreshToken: Configuration.accessKeys.oAuthTokens.refreshToken,
+      };
 
-    const config = {
-      ...postConfiguration,
-      data,
-      url: `${Configuration.accessKeys.apiUrl}${
-        HttpEndpoints.REGISTER_REFRESH
-      }`,
-    };
+      const config = {
+        ...postConfiguration,
+        data,
+        url: `${Configuration.accessKeys.apiUrl}${
+          HttpEndpoints.REGISTER_REFRESH
+        }`,
+      };
 
-    return axios(config);
+      return axios(config);
+    }
+
+    throw new Error('Refresh Token is not assigned!');
   }
 }

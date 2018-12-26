@@ -15,23 +15,23 @@ export class Requester {
         // TODO: What would happen if we banned the user and the server would always return 401?
         if (error.config && error.response && error.response.status === 401) {
           return Register.refreshAuthToken().then((response: any) => {
-            Configuration.accessToken = response.data.accessToken;
-            Configuration.refreshToken = response.data.refreshToken;
+            // Set auth Tokens
+            const tokens = { ...response.data };
+            if (tokens.accessToken && tokens.refreshToken) {
+              Configuration.setAuthTokens(
+                tokens.accessToken,
+                tokens.refreshToken,
+              );
+            } else {
+              throw 'Refresh or access token returned empty from the server!';
+            }
             const options = {
               ...error.config,
               headers: {
                 ...error.config.heders,
-                Authorization: `Bearer ${Configuration.accessToken}`,
+                Authorization: `Bearer ${tokens.accessToken}`,
               },
             };
-
-            if (Configuration.accessToken && Configuration.refreshToken && Configuration.accessKeys.updateOAuthFn !== undefined) {
-              Configuration.accessKeys.updateOAuthFn({
-                accessToken: Configuration.accessToken,
-                refreshToken: Configuration.refreshToken
-              });
-            }
-
             return axios(options);
           });
         }
