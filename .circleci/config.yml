@@ -113,13 +113,12 @@ workflows:
   build_test_and_deploy:
     jobs:
       - build
-      - whitesource:
-          filters:
-            branches:
-              only: master
       - test:
           requires:
             - build
+      - whitesource:
+          requires:
+            - test
       - publish:
           requires:
             - test
