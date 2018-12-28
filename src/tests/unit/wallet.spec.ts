@@ -24,7 +24,7 @@ describe('Wallet Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessToken = '';
+    Configuration.accessKeys.oAuthTokens.accessToken = '';
     mockExecuteRequest.mockClear();
     mockRequesterExecute.mockClear();
   });
@@ -55,7 +55,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const walletRegistrationData = {
           fcmToken: '987qwe',
           username: 'sdfsdfs',
@@ -232,7 +232,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const walletUpdateData = {
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           fcmToken: '987qwe',
@@ -290,7 +290,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const walletRegisterAddressData = {
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           blockchain: 'ethereum',
@@ -350,7 +350,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessToken = 'myAccessToken';
+        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
         const walletUnregisterAddressData = {
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           blockchain: 'ethereum',

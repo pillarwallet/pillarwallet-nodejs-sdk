@@ -43,7 +43,7 @@ describe('User Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessToken = '';
+    Configuration.accessKeys.oAuthTokens.accessToken = '';
     mockRequesterExecute.mockClear();
     configRequestSpy.mockClear();
   });
@@ -90,7 +90,7 @@ describe('User Class', () => {
         userSearchable: true,
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.update(userUpdateData);
 
@@ -137,7 +137,7 @@ describe('User Class', () => {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.info(userInfoData);
 
@@ -198,7 +198,7 @@ describe('User Class', () => {
     });
 
     it('should successfully call requester execute with valid data with Authorization header', () => {
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.infoById(targetUserId, query);
 
@@ -242,7 +242,7 @@ describe('User Class', () => {
         query: 'searchform',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.search(userSearchData);
 
@@ -294,7 +294,7 @@ describe('User Class', () => {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.delete(userInfoData);
 
@@ -341,7 +341,7 @@ describe('User Class', () => {
         username: 'bob',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.usernameSearch(usernameSearch);
 
@@ -460,7 +460,7 @@ describe('User Class', () => {
     it('should successfully call with valid data with Authorization header', () => {
       const query = { walletId: '0000' };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.uploadProfileImage(image, query);
 
@@ -517,7 +517,7 @@ describe('User Class', () => {
         image: {},
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.uploadProfileImageFormData(walletId, data);
 
@@ -584,7 +584,7 @@ describe('User Class', () => {
     it('should successfully call with valid data with Authorization header', () => {
       const data = { walletId: 'wallet-id' };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.deleteProfileImage(data);
 
@@ -661,7 +661,7 @@ describe('User Class', () => {
         userId: 'userId',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.imageByUserId(data);
 
@@ -701,7 +701,7 @@ describe('User Class', () => {
         walletId: '12345',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.createOneTimePassword(data);
 
@@ -810,7 +810,7 @@ describe('User Class', () => {
         oneTimePassword: '12345',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.validateEmail(data);
 
@@ -871,7 +871,7 @@ describe('User Class', () => {
         oneTimePassword: '54321',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.validatePhone(data);
 
@@ -924,7 +924,7 @@ describe('User Class', () => {
     it('should successfully call with valid data with Authorization header', () => {
       const data = { walletId: 'wallet-id' };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.updateNotificationPreferences(data);
 
@@ -979,7 +979,7 @@ describe('User Class', () => {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
       };
 
-      Configuration.accessToken = accessToken;
+      Configuration.accessKeys.oAuthTokens.accessToken = accessToken;
 
       user.accessTokens(userInfoData);
 

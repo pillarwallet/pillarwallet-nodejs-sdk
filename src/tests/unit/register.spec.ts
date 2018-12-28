@@ -1,3 +1,4 @@
+// tslint:disable: object-shorthand-properties-first
 import { Register } from '../../lib/register';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
@@ -5,10 +6,14 @@ import { v4 as uuidV4 } from 'uuid';
 import axios from 'axios';
 jest.mock('axios');
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
+import { ProofKey } from '../../utils/pkce';
+import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
+const keys = require('../utils/generateKeyPair');
 
 describe('Register Class', () => {
   const apiUrl = Configuration.accessKeys.apiUrl;
   Configuration.accessKeys.apiUrl = 'http://localhost:8080';
+  Configuration.accessKeys.privateKey = keys.privateKey.toString();
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
   let uuid;
@@ -131,6 +136,50 @@ describe('Register Class', () => {
     });
   });
 
+  describe('registerTokens', () => {
+    const regTokensResponse = {
+      status: 200,
+      data: {
+        accessToken: 'myAccessToken',
+        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        refreshToken: 'myRefreshToken',
+        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+      },
+    };
+
+    it('should send http request', async () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+
+      const codeVerifier = await ProofKey.codeVerifierGenerator();
+
+      const data = {
+        publicKey: PrivateKeyDerivatives.getPublicKey(
+          Configuration.accessKeys.privateKey,
+        ),
+        uuid: expect.any(String),
+        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+        codeVerifier: codeVerifier.toString(),
+      };
+
+      Register.registerTokens(codeVerifier.toString());
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.any(String) },
+        data,
+        url: 'http://localhost:8080/register/tokens',
+      });
+    });
+
+    it('expects response to resolve with data', async () => {
+      jest.spyOn(Requester, 'execute').mockResolvedValue(regTokensResponse);
+      const codeVerifier = await ProofKey.codeVerifierGenerator();
+      const response = await Register.registerTokens(codeVerifier.toString());
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(regTokensResponse.data);
+    });
+  });
+
   describe('refreshAuthToken', () => {
     const refreshAuthTokenResponse = {
       status: 200,
@@ -143,8 +192,8 @@ describe('Register Class', () => {
     };
 
     it('should send http request containing data and header', async () => {
-      Configuration.refreshToken = 'myRefreshToken';
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.refreshToken = 'myRefreshToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
       axios.mockResolvedValue('');
       await Register.refreshAuthToken();
       expect(axios).toHaveBeenCalledWith({

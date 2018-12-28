@@ -47,8 +47,13 @@ const setAuthHeader = ({
     'X-API-Signature': '',
   };
 
-  if (Configuration.accessToken) {
-    headers.Authorization = `Bearer ${Configuration.accessToken}`;
+  if (
+    Configuration.accessKeys.oAuthTokens &&
+    Configuration.accessKeys.oAuthTokens.accessToken
+  ) {
+    headers.Authorization = `Bearer ${
+      Configuration.accessKeys.oAuthTokens.accessToken
+    }`;
     delete headers['X-API-Signature'];
   } else {
     headers['X-API-Signature'] = checkSignature(

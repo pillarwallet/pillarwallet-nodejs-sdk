@@ -45,6 +45,10 @@ describe('Requester utility', () => {
 
     jest.spyOn(Register, 'refreshAuthToken');
 
+    beforeEach(() => {
+      Configuration.setAuthTokens('accessToken', 'refreshToken');
+    });
+
     afterEach(() => {
       Register.refreshAuthToken.mockClear();
     });
@@ -80,9 +84,6 @@ describe('Requester utility', () => {
 
       describe('with refreshed tokens', () => {
         beforeEach(() => {
-          Configuration.accessToken = 'accessToken';
-          Configuration.refreshToken = 'refreshToken';
-
           axios.mockImplementationOnce(() =>
             Promise.resolve({
               data: {
@@ -96,8 +97,12 @@ describe('Requester utility', () => {
         it('stores updated tokens', async () => {
           await Requester.execute(options);
 
-          expect(Configuration.accessToken).toBe('updatedAccessToken');
-          expect(Configuration.refreshToken).toBe('updatedRefreshToken');
+          expect(Configuration.accessKeys.oAuthTokens.accessToken).toBe(
+            'updatedAccessToken',
+          );
+          expect(Configuration.accessKeys.oAuthTokens.refreshToken).toBe(
+            'updatedRefreshToken',
+          );
           expect(axios).toHaveBeenCalledTimes(3);
         });
 

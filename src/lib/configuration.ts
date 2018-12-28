@@ -3,24 +3,24 @@
  */
 import * as Ajv from 'ajv';
 import { AxiosPromise } from 'axios';
-import { v4 as uuid } from 'uuid';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
+import { ProofKey } from '../utils/pkce';
+import { Register } from './register';
 
 let ajv: any;
 
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
     privateKey: '',
+    updateOAuthFn: undefined,
+    oAuthTokens: { accessToken: '', refreshToken: '' },
     apiUrl: '',
     notificationsUrl: '',
     investmentsUrl: '',
   };
-
-  public static accessToken: string = '';
-  public static refreshToken: string = '';
 
   constructor() {
     ajv = new Ajv({
@@ -28,11 +28,35 @@ export class Configuration {
     });
   }
 
+  static setAuthTokens(accessToken: string, refreshToken: string) {
+    Configuration.accessKeys.oAuthTokens = {
+      accessToken,
+      refreshToken,
+    };
+    if (
+      Configuration.accessKeys.oAuthTokens &&
+      Configuration.accessKeys.oAuthTokens.accessToken &&
+      Configuration.accessKeys.oAuthTokens.refreshToken &&
+      Configuration.accessKeys.updateOAuthFn !== undefined
+    ) {
+      // Callback function to frontEnd
+      Configuration.accessKeys.updateOAuthFn({
+        ...Configuration.accessKeys.oAuthTokens,
+      });
+    }
+  }
+  /**
+   * Return an object with accessToken and refreshToken
+   */
+  getTokens() {
+    return { ...Configuration.accessKeys.oAuthTokens };
+  }
+
   /**
    * Set SDK variables for Configuration.
    * @param {PillarSdkConfiguration} incomingConfiguration
    */
-  initialise(incomingConfiguration: PillarSdkConfiguration) {
+  async initialise(incomingConfiguration: PillarSdkConfiguration) {
     Configuration.accessKeys = incomingConfiguration;
     if (!Configuration.accessKeys.apiUrl) {
       Configuration.accessKeys.apiUrl = 'http://localhost:8080';
@@ -42,6 +66,24 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
+    }
+    if (!Configuration.accessKeys.oAuthTokens) {
+      if (Configuration.accessKeys.updateOAuthFn !== undefined) {
+        // Generate code verifier
+        const codeVerifier = await ProofKey.codeVerifierGenerator();
+        const registerTokensServerResponse = await Register.registerTokens(
+          codeVerifier.toString(),
+        );
+        Configuration.setAuthTokens(
+          registerTokensServerResponse.data.accessToken,
+          registerTokensServerResponse.data.refreshToken,
+        );
+      } else {
+        Configuration.accessKeys.oAuthTokens = {
+          accessToken: '',
+          refreshToken: '',
+        };
+      }
     }
   }
 
@@ -126,9 +168,12 @@ export class Configuration {
     }
 
     if (auth) {
-      if (Configuration.accessToken) {
+      if (
+        Configuration.accessKeys.oAuthTokens &&
+        Configuration.accessKeys.oAuthTokens.accessToken
+      ) {
         request.headers['Authorization'] = `Bearer ${
-          Configuration.accessToken
+          Configuration.accessKeys.oAuthTokens.accessToken
         }`;
       } else {
         request.headers['X-API-Signature'] = this.checkSignature(

@@ -117,8 +117,14 @@ export class Wallet extends Configuration {
     }
 
     // Set auth Tokens
-    Configuration.refreshToken = registerAuthServerResponse.data.refreshToken;
-    Configuration.accessToken = registerAuthServerResponse.data.accessToken;
+    const tokens = { ...registerAuthServerResponse.data };
+    if (tokens.accessToken && tokens.refreshToken) {
+      Configuration.setAuthTokens(tokens.refreshToken, tokens.accessToken);
+    } else {
+      throw new Error(
+        'Refresh or access token returned empty from the server!',
+      );
+    }
 
     return registerAuthServerResponse;
   }

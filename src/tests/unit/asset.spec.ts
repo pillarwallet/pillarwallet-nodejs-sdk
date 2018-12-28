@@ -18,7 +18,7 @@ describe('Asset Class', () => {
 
   afterEach(() => {
     requesterExecuteSpy.mockClear();
-    Configuration.accessToken = '';
+    Configuration.accessKeys.oAuthTokens.accessToken = '';
   });
 
   describe('.defaults', () => {
@@ -38,7 +38,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
       const assetDefaultsData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
@@ -84,7 +84,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
       const assetPreferredData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
@@ -131,7 +131,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
       const assetSearchData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         query: 'searchthis',
@@ -181,7 +181,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
       const assetListData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         symbols: ['SYM', 'BOL', 'LOG', 'NASE'],

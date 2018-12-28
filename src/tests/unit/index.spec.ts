@@ -25,6 +25,39 @@ describe('The Pillar SDK Class', () => {
     expect(pSdk.investments).toBeInstanceOf(Investments);
   });
 
+  it('should correctly instantiate with all properties', () => {
+    const pSdk = new PillarSdk({
+      apiUrl: 'http://localhost:8080',
+      privateKey:
+        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+      oAuthTokens: {
+        accessToken: 'oneAccessToken',
+        refreshToken: 'oneRefreshToken',
+      },
+      updateOAuthFn: (response: {
+        accessToken: string;
+        refreshToken: string;
+      }) => {
+        return `Callback called: ${response}`;
+      },
+      notificationsUrl: 'http://localhost:8081',
+      investmentsUrl: 'http://localhost:8082',
+    });
+
+    expect(pSdk).toBeInstanceOf(PillarSdk);
+    expect(pSdk.asset).toBeInstanceOf(Asset);
+    expect(pSdk.connection).toBeInstanceOf(Connection);
+    expect(pSdk.notification).toBeInstanceOf(Notification);
+    expect(pSdk.user).toBeInstanceOf(User);
+    expect(pSdk.wallet).toBeInstanceOf(Wallet);
+    expect(pSdk.configuration).toBeInstanceOf(Configuration);
+    expect(pSdk.investments).toBeInstanceOf(Investments);
+    expect(pSdk.getTokens()).toEqual({
+      accessToken: 'oneAccessToken',
+      refreshToken: 'oneRefreshToken',
+    });
+  });
+
   it('should fail to call due invalid apiUrl', () => {
     let errorThrown;
     try {
