@@ -3,7 +3,11 @@
  */
 import { HttpEndpoints } from './constants/httpEndpoints';
 import axios, { AxiosPromise } from 'axios';
+import { v4 as uuidV4 } from 'uuid';
+
 import { Configuration } from './configuration';
+import { ProofKey } from '../utils/pkce';
+import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
 
 /**
  * Import HTTP Request Configurations
@@ -115,6 +119,44 @@ export class Register {
       data: payload,
       defaultRequest: config,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_ACCESS}`,
+      auth: false,
+    });
+  }
+
+  /**
+   * @name registerTokens
+   * @description Method to authenticate when tokens are not provided in the initalise method
+   * @param {string} codeVerifier
+   * @returns {AxiosPromise}
+   */
+  static registerTokens(codeVerifier: string): AxiosPromise {
+    const data = {
+      publicKey: PrivateKeyDerivatives.getPublicKey(
+        Configuration.accessKeys.privateKey,
+      ),
+      uuid: uuidV4(),
+      codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier),
+      codeVerifier: codeVerifier.toString(),
+    };
+
+    const header = { ...data };
+    const payload = { ...data };
+    const config = {
+      ...postConfiguration,
+      headers: { 'X-API-Signature': '' },
+    };
+
+    // Signing Header
+    config.headers['X-API-Signature'] = new Configuration().checkSignature(
+      header,
+      Configuration.accessKeys.privateKey,
+    );
+
+    // HTTP request
+    return new Configuration().executeRequest({
+      data: payload,
+      defaultRequest: config,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REGISTER_TOKENS}`,
       auth: false,
     });
   }

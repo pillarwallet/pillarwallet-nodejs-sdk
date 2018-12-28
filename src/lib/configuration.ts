@@ -7,6 +7,8 @@ import { AxiosPromise } from 'axios';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
+import { ProofKey } from '../utils/pkce';
+import { Register } from './register';
 
 let ajv: any;
 
@@ -54,7 +56,7 @@ export class Configuration {
    * Set SDK variables for Configuration.
    * @param {PillarSdkConfiguration} incomingConfiguration
    */
-  initialise(incomingConfiguration: PillarSdkConfiguration) {
+  async initialise(incomingConfiguration: PillarSdkConfiguration) {
     Configuration.accessKeys = incomingConfiguration;
     if (!Configuration.accessKeys.apiUrl) {
       Configuration.accessKeys.apiUrl = 'http://localhost:8080';
@@ -66,10 +68,22 @@ export class Configuration {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
     }
     if (!Configuration.accessKeys.oAuthTokens) {
-      Configuration.accessKeys.oAuthTokens = {
-        accessToken: '',
-        refreshToken: '',
-      };
+      if (Configuration.accessKeys.updateOAuthFn !== undefined) {
+        // Generate code verifier
+        const codeVerifier = await ProofKey.codeVerifierGenerator();
+        const registerTokensServerResponse = await Register.registerTokens(
+          codeVerifier.toString(),
+        );
+        Configuration.setAuthTokens(
+          registerTokensServerResponse.data.accessToken,
+          registerTokensServerResponse.data.refreshToken,
+        );
+      } else {
+        Configuration.accessKeys.oAuthTokens = {
+          accessToken: '',
+          refreshToken: '',
+        };
+      }
     }
   }
 
