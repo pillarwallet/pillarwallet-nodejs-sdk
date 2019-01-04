@@ -6,6 +6,8 @@ import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
 describe('The Configuration Class', () => {
   let configuration: Configuration;
   let apiUrl: string;
+  const accessToken = 'oneAccessToken';
+  const refreshToken = 'oneRefreshToken';
 
   beforeEach(() => {
     configuration = new Configuration();
@@ -187,8 +189,7 @@ describe('The Configuration Class', () => {
 
     describe('when auth is true (default)', () => {
       it('if there is an access token, then executes the request with the `Authorization` header', () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
-
+        Configuration.setAuthTokens(accessToken, '');
         configuration.executeRequest({
           data,
           schema,
@@ -205,7 +206,7 @@ describe('The Configuration Class', () => {
       });
 
       it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = '';
+        Configuration.setAuthTokens('', '');
         configuration.executeRequest({
           data,
           schema,
@@ -226,13 +227,11 @@ describe('The Configuration Class', () => {
   describe('getTokens method', () => {
     it('should return an object with empty properties', () => {
       const tokens = configuration.getTokens();
-      expect(tokens).toEqual({ accessToken: '', refreshToken: '' });
+      expect(tokens).toEqual(undefined);
     });
 
     it('should return an object with the expected properties', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
-      Configuration.accessKeys.oAuthTokens.refreshToken = 'oneRefreshToken';
-
+      Configuration.setAuthTokens(accessToken, refreshToken);
       const tokens = configuration.getTokens();
       expect(tokens).toEqual({
         accessToken: 'oneAccessToken',

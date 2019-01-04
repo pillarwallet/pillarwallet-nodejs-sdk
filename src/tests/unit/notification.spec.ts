@@ -6,6 +6,7 @@ import { default as getConfiguration } from '../../utils/requester-configuration
 describe('Notification Class', () => {
   const spy = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
+  const accessToken = 'myAccessToken';
 
   jest.spyOn(Configuration.prototype, 'executeRequest');
 
@@ -20,7 +21,7 @@ describe('Notification Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessKeys.oAuthTokens.accessToken = '';
+    Configuration.setAuthTokens('', '');
     Configuration.prototype.executeRequest.mockClear();
   });
 
@@ -54,7 +55,7 @@ describe('Notification Class', () => {
         type: 'message',
       };
 
-      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.setAuthTokens(accessToken, '');
 
       pSdk.notification.list(notificationData);
 

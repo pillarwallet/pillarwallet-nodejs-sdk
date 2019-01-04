@@ -49,14 +49,17 @@ export class Configuration {
    * Return an object with accessToken and refreshToken
    */
   getTokens() {
-    return { ...Configuration.accessKeys.oAuthTokens };
+    if (Configuration.accessKeys.oAuthTokens) {
+      return { ...Configuration.accessKeys.oAuthTokens };
+    }
+    return undefined;
   }
 
   /**
    * Set SDK variables for Configuration.
    * @param {PillarSdkConfiguration} incomingConfiguration
    */
-  async initialise(incomingConfiguration: PillarSdkConfiguration) {
+  initialise(incomingConfiguration: PillarSdkConfiguration) {
     Configuration.accessKeys = incomingConfiguration;
     if (!Configuration.accessKeys.apiUrl) {
       Configuration.accessKeys.apiUrl = 'http://localhost:8080';
@@ -66,24 +69,6 @@ export class Configuration {
     }
     if (!Configuration.accessKeys.investmentsUrl) {
       Configuration.accessKeys.investmentsUrl = 'http://localhost:8082';
-    }
-    if (!Configuration.accessKeys.oAuthTokens) {
-      if (Configuration.accessKeys.updateOAuthFn !== undefined) {
-        // Generate code verifier
-        const codeVerifier = await ProofKey.codeVerifierGenerator();
-        const registerTokensServerResponse = await Register.registerTokens(
-          codeVerifier.toString(),
-        );
-        Configuration.setAuthTokens(
-          registerTokensServerResponse.data.accessToken,
-          registerTokensServerResponse.data.refreshToken,
-        );
-      } else {
-        Configuration.accessKeys.oAuthTokens = {
-          accessToken: '',
-          refreshToken: '',
-        };
-      }
     }
   }
 
