@@ -130,24 +130,6 @@ export class Register {
    * @returns {AxiosPromise}
    */
   static registerTokens(codeVerifier: string): AxiosPromise {
-    // if (!Configuration.accessKeys.oAuthTokens) {
-    //   if (Configuration.accessKeys.updateOAuthFn !== undefined) {
-    //     // Generate code verifier
-    //     const codeVerifier = await ProofKey.codeVerifierGenerator();
-    //     const registerTokensServerResponse = await Register.registerTokens(
-    //       codeVerifier.toString(),
-    //     );
-    //     Configuration.setAuthTokens(
-    //       registerTokensServerResponse.data.accessToken,
-    //       registerTokensServerResponse.data.refreshToken,
-    //     );
-    //   } else {
-    //     Configuration.accessKeys.oAuthTokens = {
-    //       accessToken: '',
-    //       refreshToken: '',
-    //     };
-    //   }
-    // }
     const data = {
       publicKey: PrivateKeyDerivatives.getPublicKey(
         Configuration.accessKeys.privateKey,

@@ -2,13 +2,13 @@
  * Import required classes / libraries / constants
  */
 import * as Ajv from 'ajv';
-import { AxiosPromise } from 'axios';
+import { AxiosResponse } from 'axios';
 
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
-import { ProofKey } from '../utils/pkce';
 import { Register } from './register';
+import { ProofKey } from '../utils/pkce';
 
 let ajv: any;
 
@@ -112,7 +112,7 @@ export class Configuration {
    * @param {url} options.url
    * @param {boolean=} options.auth
    */
-  executeRequest({
+  async executeRequest({
     data,
     params,
     sendParams = true,
@@ -128,7 +128,7 @@ export class Configuration {
     defaultRequest: any;
     url: string;
     auth?: boolean;
-  }): AxiosPromise {
+  }): Promise<AxiosResponse> {
     const payload: any =
       defaultRequest.method.toLowerCase() === 'get' ? params : data;
     if (schema) {
@@ -161,10 +161,34 @@ export class Configuration {
           Configuration.accessKeys.oAuthTokens.accessToken
         }`;
       } else {
-        request.headers['X-API-Signature'] = this.checkSignature(
-          payload,
-          Configuration.accessKeys.privateKey,
-        );
+        if (Configuration.accessKeys.updateOAuthFn !== undefined) {
+          // Generate code verifier
+          const codeVerifier = await ProofKey.codeVerifierGenerator();
+          const registerTokensServerResponse = await Register.registerTokens(
+            codeVerifier.toString(),
+          );
+          Configuration.setAuthTokens(
+            registerTokensServerResponse.data.accessToken,
+            registerTokensServerResponse.data.refreshToken,
+          );
+          if (
+            Configuration.accessKeys.oAuthTokens &&
+            Configuration.accessKeys.oAuthTokens.accessToken
+          ) {
+            request.headers['Authorization'] = `Bearer ${
+              Configuration.accessKeys.oAuthTokens.accessToken
+            }`;
+          } else {
+            return Promise.reject(
+              new Error('Failed to sign headers with updated oAuth tokens!'),
+            );
+          }
+        } else {
+          request.headers['X-API-Signature'] = this.checkSignature(
+            payload,
+            Configuration.accessKeys.privateKey,
+          );
+        }
       }
     }
 
