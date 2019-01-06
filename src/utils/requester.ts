@@ -1,6 +1,7 @@
 import axios, { AxiosPromise } from 'axios';
 import { Register } from '../lib/register';
 import { Configuration } from '../lib/configuration';
+import { ProofKey } from '../utils/pkce';
 
 export class Requester {
   /**
@@ -14,26 +15,56 @@ export class Requester {
       return axios(incomingRequestOptions).catch(error => {
         // TODO: What would happen if we banned the user and the server would always return 401?
         if (error.config && error.response && error.response.status === 401) {
-          return Register.refreshAuthToken().then((response: any) => {
-            // Set auth Tokens
-            const tokens = { ...response.data };
-            if (tokens.accessToken && tokens.refreshToken) {
-              Configuration.setAuthTokens(
-                tokens.accessToken,
-                tokens.refreshToken,
-              );
-            } else {
-              throw 'Refresh or access token returned empty from the server!';
-            }
-            const options = {
-              ...error.config,
-              headers: {
-                ...error.config.heders,
-                Authorization: `Bearer ${tokens.accessToken}`,
-              },
-            };
-            return axios(options);
-          });
+          return Register.refreshAuthToken()
+            .then((response: any) => {
+              // Set auth Tokens
+              const tokens = { ...response.data };
+              if (tokens.accessToken && tokens.refreshToken) {
+                Configuration.setAuthTokens(
+                  tokens.accessToken,
+                  tokens.refreshToken,
+                );
+              } else {
+                throw 'Refresh or access token returned empty from the server!';
+              }
+              const options = {
+                ...error.config,
+                headers: {
+                  ...error.config.heders,
+                  Authorization: `Bearer ${tokens.accessToken}`,
+                },
+              };
+              return axios(options);
+            })
+            .catch(async error => {
+              if (
+                error.response.status === 400 &&
+                error.response.data &&
+                error.response.data.message ===
+                  'Invalid grant: refresh token has expired'
+              ) {
+                const codeVerifier = await ProofKey.codeVerifierGenerator();
+                return Register.registerTokens(codeVerifier.toString()).then(
+                  (response: any) => {
+                    // Set auth Tokens
+                    const tokens = { ...response.data };
+                    if (tokens.accessToken && tokens.refreshToken) {
+                      Configuration.setAuthTokens(
+                        tokens.accessToken,
+                        tokens.refreshToken,
+                      );
+                    } else {
+                      throw 'Refresh or access token returned empty from the server!';
+                    }
+                    incomingRequestOptions.headers.Authorization = `Bearer ${
+                      tokens.accessToken
+                    }`;
+                    return axios(incomingRequestOptions);
+                  },
+                );
+              }
+              throw error;
+            });
         }
         throw error;
       });
