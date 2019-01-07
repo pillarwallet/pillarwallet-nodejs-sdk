@@ -19,14 +19,7 @@ export class Requester {
             .then((response: any) => {
               // Set auth Tokens
               const tokens = { ...response.data };
-              if (tokens.accessToken && tokens.refreshToken) {
-                Configuration.setAuthTokens(
-                  tokens.accessToken,
-                  tokens.refreshToken,
-                );
-              } else {
-                throw 'Refresh or access token returned empty from the server!';
-              }
+              this.setTokens(tokens);
               const options = {
                 ...error.config,
                 headers: {
@@ -48,14 +41,7 @@ export class Requester {
                   (response: any) => {
                     // Set auth Tokens
                     const tokens = { ...response.data };
-                    if (tokens.accessToken && tokens.refreshToken) {
-                      Configuration.setAuthTokens(
-                        tokens.accessToken,
-                        tokens.refreshToken,
-                      );
-                    } else {
-                      throw 'Refresh or access token returned empty from the server!';
-                    }
+                    this.setTokens(tokens);
                     incomingRequestOptions.headers.Authorization = `Bearer ${
                       tokens.accessToken
                     }`;
@@ -70,5 +56,16 @@ export class Requester {
       });
     }
     return axios(incomingRequestOptions);
+  }
+
+  private static setTokens(tokens: any) {
+    if (tokens.accessToken && tokens.refreshToken) {
+      Configuration.setAuthTokens(
+        tokens.accessToken,
+        tokens.refreshToken,
+      );
+    } else {
+      throw 'Refresh or access token returned empty from the server!';
+    }
   }
 }
