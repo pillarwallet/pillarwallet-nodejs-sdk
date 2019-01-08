@@ -23,7 +23,7 @@ export class Requester {
               const options = {
                 ...error.config,
                 headers: {
-                  ...error.config.heders,
+                  ...error.config.headers,
                   Authorization: `Bearer ${tokens.accessToken}`,
                 },
               };

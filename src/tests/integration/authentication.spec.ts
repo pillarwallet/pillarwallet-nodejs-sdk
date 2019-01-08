@@ -26,16 +26,17 @@ describe('Authentication scenarios', () => {
   let walletId: string;
   let pSdk: PillarSdk;
 
+  const walletRegister = {
+    privateKey,
+    fcmToken: '987qwe',
+    username,
+  };
+
   beforeAll(async () => {
     pSdk = new PillarSdk({
       apiUrl: 'http://localhost:8080',
       privateKey,
     });
-    const walletRegister = {
-      privateKey,
-      fcmToken: '987qwe',
-      username,
-    };
 
     if (env === 'test') {
       const data = {
