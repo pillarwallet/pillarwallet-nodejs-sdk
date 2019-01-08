@@ -5,9 +5,11 @@ import { Configuration } from '../../lib/configuration';
 
 describe('Asset Class', () => {
   let pSdk: PillarSdk;
+
   const requesterExecuteSpy = jest
     .spyOn(Requester, 'execute')
     .mockResolvedValue('');
+  const accesToken = 'myAccessToken';
 
   beforeEach(() => {
     pSdk = new PillarSdk({
@@ -18,7 +20,7 @@ describe('Asset Class', () => {
 
   afterEach(() => {
     requesterExecuteSpy.mockClear();
-    Configuration.accessKeys.oAuthTokens.accessToken = '';
+    Configuration.setAuthTokens('', '');
   });
 
   describe('.defaults', () => {
@@ -38,7 +40,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.setAuthTokens(accesToken, '');
       const assetDefaultsData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
@@ -84,7 +86,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.setAuthTokens(accesToken, '');
       const assetPreferredData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
@@ -131,7 +133,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.setAuthTokens(accesToken, '');
       const assetSearchData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         query: 'searchthis',
@@ -181,7 +183,7 @@ describe('Asset Class', () => {
     });
 
     it('should successfully call with valid data with Authorization header', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.setAuthTokens(accesToken, '');
       const assetListData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
