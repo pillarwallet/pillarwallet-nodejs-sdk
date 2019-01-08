@@ -7,6 +7,7 @@ const keys = require('../utils/generateKeyPair');
 
 describe('Wallet Class', () => {
   let pSdk: PillarSdk;
+  const accessToken = 'myAccessToken';
 
   const mockExecuteRequest = jest.spyOn(
     Configuration.prototype,
@@ -24,7 +25,7 @@ describe('Wallet Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessKeys.oAuthTokens.accessToken = '';
+    Configuration.setAuthTokens('', '');
     mockExecuteRequest.mockClear();
     mockRequesterExecute.mockClear();
   });
@@ -55,7 +56,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const walletRegistrationData = {
           fcmToken: '987qwe',
           username: 'sdfsdfs',
@@ -232,7 +233,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const walletUpdateData = {
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           fcmToken: '987qwe',
@@ -290,7 +291,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const walletRegisterAddressData = {
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           blockchain: 'ethereum',
@@ -350,7 +351,7 @@ describe('Wallet Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const walletUnregisterAddressData = {
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           blockchain: 'ethereum',

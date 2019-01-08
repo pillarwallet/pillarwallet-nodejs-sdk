@@ -8,6 +8,7 @@ describe('Connection Class', () => {
     .spyOn(Requester, 'execute')
     .mockImplementation(() => {});
   let pSdk: PillarSdk;
+  const accessToken = 'myAccessToken';
 
   jest.spyOn(Configuration.prototype, 'executeRequest');
 
@@ -19,7 +20,7 @@ describe('Connection Class', () => {
   });
 
   afterEach(() => {
-    Configuration.accessKeys.oAuthTokens.accessToken = '';
+    Configuration.setAuthTokens('', '');
     requesterExecuteSpy.mockClear();
     Configuration.prototype.executeRequest.mockClear();
   });
@@ -54,7 +55,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionInviteData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           accessKey: 'abc123',
@@ -100,7 +101,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionAcceptData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -147,7 +148,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionRejectData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           accessKey: '123abc',
@@ -192,7 +193,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionCancelData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           accessKey: '123abc',
@@ -239,7 +240,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionBlockData = {
           accessKey: '123abc',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -287,7 +288,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionMuteData = {
           accessKey: '123abc',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -335,7 +336,7 @@ describe('Connection Class', () => {
       'when accessToken is set, should successfully call' +
         ' with valid data with Authorization header',
       () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+        Configuration.setAuthTokens(accessToken, '');
         const connectionDisconnectData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           sourceUserAccessKey: 'abc123',

@@ -2,10 +2,14 @@ import { AxiosPromise } from 'axios';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
+import { ProofKey } from '../../utils/pkce';
+import { Register } from '../../lib/register';
 
 describe('The Configuration Class', () => {
   let configuration: Configuration;
   let apiUrl: string;
+  const accessToken = 'oneAccessToken';
+  const refreshToken = 'oneRefreshToken';
 
   beforeEach(() => {
     configuration = new Configuration();
@@ -155,8 +159,8 @@ describe('The Configuration Class', () => {
       expect(req.params).toBe(params);
     });
 
-    it('returns a promise when the request is made', () => {
-      const res: AxiosPromise = configuration.executeRequest({
+    it('returns a promise when the request is made', async () => {
+      const res = await configuration.executeRequest({
         data,
         schema,
         defaultRequest,
@@ -187,8 +191,7 @@ describe('The Configuration Class', () => {
 
     describe('when auth is true (default)', () => {
       it('if there is an access token, then executes the request with the `Authorization` header', () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
-
+        Configuration.setAuthTokens(accessToken, '');
         configuration.executeRequest({
           data,
           schema,
@@ -205,7 +208,7 @@ describe('The Configuration Class', () => {
       });
 
       it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
-        Configuration.accessKeys.oAuthTokens.accessToken = '';
+        Configuration.setAuthTokens('', '');
         configuration.executeRequest({
           data,
           schema,
@@ -221,18 +224,97 @@ describe('The Configuration Class', () => {
         });
       });
     });
+
+    it(
+      'check if registerTokens method is called when updateOAuthFn' +
+        ' is set but oAuthTokens property is not.',
+      async () => {
+        jest
+          .spyOn(ProofKey, 'codeVerifierGenerator')
+          .mockImplementation(() => 'codeVerifier');
+        jest.spyOn(Register, 'registerTokens').mockImplementation(() =>
+          Promise.resolve({
+            data: {
+              accessToken: 'oneAccessToken',
+              refreshToken: 'oneRefreshToken',
+            },
+          }),
+        );
+        Configuration.setAuthTokens('', '');
+        Configuration.accessKeys.updateOAuthFn = () => {
+          return 'oneUpdateOAuthFn';
+        };
+
+        await configuration.executeRequest({
+          data,
+          schema,
+          defaultRequest,
+          url,
+        });
+
+        expect(Register.registerTokens).toHaveBeenCalledWith('codeVerifier');
+        expect(Requester.execute).toHaveBeenCalledWith({
+          data,
+          method: 'POST',
+          url: 'http://localhost:8080/user/validate',
+          headers: { Authorization: expect.any(String) },
+        });
+
+        Register.registerTokens.mockRestore();
+        ProofKey.codeVerifierGenerator.mockRestore();
+      },
+    );
+
+    it(
+      'check if registerTokens method is called when updateOAuthFn' +
+        ' is set but oAuthTokens property is not.',
+      async () => {
+        expect.assertions(2);
+        jest
+          .spyOn(ProofKey, 'codeVerifierGenerator')
+          .mockImplementation(() => 'codeVerifier');
+        jest.spyOn(Configuration, 'setAuthTokens').mockImplementation(() => '');
+        jest.spyOn(Register, 'registerTokens').mockImplementation(() =>
+          Promise.resolve({
+            data: {
+              accessToken: 'oneAccessToken',
+              refreshToken: 'oneRefreshToken',
+            },
+          }),
+        );
+        Configuration.setAuthTokens('', '');
+        Configuration.accessKeys.updateOAuthFn = () => {
+          return 'oneUpdateOAuthFn';
+        };
+        try {
+          await configuration.executeRequest({
+            data,
+            schema,
+            defaultRequest,
+            url,
+          });
+        } catch (e) {
+          expect(e.message).toEqual(
+            'Failed to sign headers with updated oAuth tokens!',
+          );
+          expect(Register.registerTokens).toHaveBeenCalledWith('codeVerifier');
+        }
+
+        Register.registerTokens.mockRestore();
+        ProofKey.codeVerifierGenerator.mockRestore();
+        Configuration.setAuthTokens.mockRestore();
+      },
+    );
   });
 
   describe('getTokens method', () => {
     it('should return an object with empty properties', () => {
       const tokens = configuration.getTokens();
-      expect(tokens).toEqual({ accessToken: '', refreshToken: '' });
+      expect(tokens).toEqual(null);
     });
 
     it('should return an object with the expected properties', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'oneAccessToken';
-      Configuration.accessKeys.oAuthTokens.refreshToken = 'oneRefreshToken';
-
+      Configuration.setAuthTokens(accessToken, refreshToken);
       const tokens = configuration.getTokens();
       expect(tokens).toEqual({
         accessToken: 'oneAccessToken',
