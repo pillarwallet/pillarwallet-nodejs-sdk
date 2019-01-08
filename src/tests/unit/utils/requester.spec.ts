@@ -44,13 +44,16 @@ describe('Requester utility', () => {
     };
 
     jest.spyOn(Register, 'refreshAuthToken');
+    jest.spyOn(Register, 'registerTokens');
 
     beforeEach(() => {
       Configuration.setAuthTokens('accessToken', 'refreshToken');
+      Configuration.accessKeys.privateKey = 'onePrivateKey';
     });
 
     afterEach(() => {
       Register.refreshAuthToken.mockClear();
+      Register.registerTokens.mockClear();
     });
 
     describe('when response is 401', () => {
@@ -66,18 +69,22 @@ describe('Requester utility', () => {
       });
 
       it('tries to refresh access tokens', async () => {
-        expect.assertions(4);
+        expect.assertions(3);
 
+        const errorResponseRefreshToken = {
+          response: {
+            status: 400,
+          },
+        };
         axios.mockImplementationOnce(() =>
-          Promise.reject(new Error('Refresh token error')),
+          Promise.reject(errorResponseRefreshToken),
         );
 
         try {
           await Requester.execute(options);
         } catch (e) {
           expect(Register.refreshAuthToken).toHaveBeenCalledTimes(1);
-          expect(e).toBeInstanceOf(Error);
-          expect(e.message).toBe('Refresh token error');
+          expect(e.response.status).toBe(400);
           expect(axios).toHaveBeenCalledTimes(2);
         }
       });
@@ -114,6 +121,59 @@ describe('Requester utility', () => {
             headers: { Authorization: 'Bearer updatedAccessToken' },
           });
           expect(options.headers.Authorization).toBe('Bearer access');
+        });
+      });
+
+      describe('when refresh token is expired', () => {
+        beforeEach(() => {
+          const errorResponseRefreshToken = {
+            response: {
+              status: 400,
+              data: {
+                message: 'Invalid grant: refresh token has expired',
+              },
+            },
+          };
+          axios.mockImplementationOnce(() =>
+            Promise.reject(errorResponseRefreshToken),
+          );
+        });
+
+        it('stores updated tokens', async () => {
+          axios.mockImplementationOnce(() =>
+            Promise.resolve({
+              data: {
+                accessToken: 'updatedAccessToken',
+                refreshToken: 'updatedRefreshToken',
+              },
+            }),
+          );
+
+          await Requester.execute(options);
+
+          expect(Configuration.accessKeys.oAuthTokens.accessToken).toBe(
+            'updatedAccessToken',
+          );
+          expect(Configuration.accessKeys.oAuthTokens.refreshToken).toBe(
+            'updatedRefreshToken',
+          );
+          expect(axios).toHaveBeenCalledTimes(4);
+        });
+
+        it('tries to refresh access tokens', async () => {
+          axios.mockImplementationOnce(() =>
+            Promise.reject(new Error('registerTokens error')),
+          );
+
+          try {
+            await Requester.execute(options);
+          } catch (e) {
+            expect(Register.refreshAuthToken).toHaveBeenCalledTimes(1);
+            expect(Register.registerTokens).toHaveBeenCalledTimes(1);
+            expect(e).toBeInstanceOf(Error);
+            expect(e.message).toBe('registerTokens error');
+            expect(axios).toHaveBeenCalledTimes(3);
+          }
         });
       });
     });
