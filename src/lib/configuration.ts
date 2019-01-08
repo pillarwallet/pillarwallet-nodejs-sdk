@@ -37,7 +37,7 @@ export class Configuration {
       Configuration.accessKeys.oAuthTokens &&
       Configuration.accessKeys.oAuthTokens.accessToken &&
       Configuration.accessKeys.oAuthTokens.refreshToken &&
-      Configuration.accessKeys.updateOAuthFn !== undefined
+      Configuration.accessKeys.updateOAuthFn
     ) {
       // Callback function to frontEnd
       Configuration.accessKeys.updateOAuthFn({
@@ -52,7 +52,7 @@ export class Configuration {
     if (Configuration.accessKeys.oAuthTokens) {
       return { ...Configuration.accessKeys.oAuthTokens };
     }
-    return undefined;
+    return null;
   }
 
   /**
@@ -161,7 +161,7 @@ export class Configuration {
           Configuration.accessKeys.oAuthTokens.accessToken
         }`;
       } else {
-        if (Configuration.accessKeys.updateOAuthFn !== undefined) {
+        if (Configuration.accessKeys.updateOAuthFn) {
           // Generate code verifier
           const codeVerifier = await ProofKey.codeVerifierGenerator();
           const registerTokensServerResponse = await Register.registerTokens(

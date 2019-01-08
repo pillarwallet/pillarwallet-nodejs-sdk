@@ -310,7 +310,7 @@ describe('The Configuration Class', () => {
   describe('getTokens method', () => {
     it('should return an object with empty properties', () => {
       const tokens = configuration.getTokens();
-      expect(tokens).toEqual(undefined);
+      expect(tokens).toEqual(null);
     });
 
     it('should return an object with the expected properties', () => {
