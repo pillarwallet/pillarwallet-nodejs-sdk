@@ -86,39 +86,6 @@ describe('wallet endpoints', () => {
     });
   });
 
-  describe('The Wallet registerAuthServer method', () => {
-    it('should return the expected response', async () => {
-      const walletRegistrationData = {
-        privateKey: keys.privateKey,
-        fcmToken: '987qwe',
-        username,
-      };
-
-      const responseAuth = await pSdk.wallet.registerAuthServer(
-        walletRegistrationData,
-      );
-      expect(responseAuth.data).toEqual({
-        accessToken: expect.any(String),
-        refreshToken: expect.any(String),
-        accessTokenExpiresAt: expect.any(String),
-        refreshTokenExpiresAt: expect.any(String),
-        fcmToken: expect.any(String),
-        userId: expect.any(String),
-        walletId: expect.any(String),
-      });
-    });
-
-    it('refresh token', async () => {
-      const responseRefresh = await Register.refreshAuthToken();
-      expect(responseRefresh.data).toEqual({
-        accessToken: expect.any(String),
-        refreshToken: expect.any(String),
-        accessTokenExpiresAt: expect.any(String),
-        refreshTokenExpiresAt: expect.any(String),
-      });
-    });
-  });
-
   // we still can not automatically run the integration tests.
   describe('The Wallet registerAddress method', () => {
     it('calls the API with valid data', async () => {

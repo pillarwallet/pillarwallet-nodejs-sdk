@@ -132,6 +132,13 @@ describe('Asset Default', () => {
     }
   });
 
+  afterAll(() => {
+    jest.restoreAllMocks();
+    if (env === 'test') {
+      nock.cleanAll();
+    }
+  });
+
   it('expects to return array containing assets and status 200', async () => {
     const inputParams = {
       walletId,
