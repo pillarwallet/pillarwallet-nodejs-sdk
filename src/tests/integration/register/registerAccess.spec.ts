@@ -11,7 +11,7 @@ const nock = require('nock');
 // Key pairs( Private, Public, Address )
 const keys = require('../../utils/generateKeyPair');
 
-describe('registerAuth method', () => {
+describe('registerAccess method', () => {
   // Key pairs
   const publicKey = keys.publicKey.toString();
   const privateKey = keys.privateKey.toString();
@@ -20,29 +20,38 @@ describe('registerAuth method', () => {
   const username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
-  // Generate code verifier from library
-  const codeVerifier = ProofKey.codeVerifierGenerator();
+
   // Variables
   let data: any;
   let uuid: string;
   let nonce: string;
+  let authorizationCode: string;
+
   // Expected responses
-  const errMissingParams = {
-    message:
-      'data.username should NOT be shorter than 4 characters, data.username should pass "regexp" keyword validation',
-  };
   const errInternal = {
     message: 'Internal Server Error',
   };
   const errUnauthorized = {
     message: 'Signature not verified',
   };
-  const responseRegisterAuth = {
-    authorizationCode: expect.any(String),
-    expiresAt: expect.any(String),
+
+  const errMissingParams = {
+    message: 'Missing parameter: `code_verifier`',
+  };
+
+  const responseRegisterAccess = {
+    accessToken: expect.any(String),
+    accessTokenExpiresAt: expect.any(String),
+    fcmToken: expect.any(String),
+    refreshToken: expect.any(String),
+    refreshTokenExpiresAt: expect.any(String),
+    userId: expect.any(String),
+    walletId: expect.any(String),
   };
 
   beforeAll(async () => {
+    // Generate code verifier from library
+    const codeVerifier = await ProofKey.codeVerifierGenerator();
     // Set SDK Config
     new PillarSdk({
       privateKey,
@@ -60,47 +69,59 @@ describe('registerAuth method', () => {
           expiresAt: '2015-03-21T05:41:32Z',
           nonce: 'AxCDF23232',
         })
-        .post(
-          '/register/auth',
-          (body: {
-            codeChallenge: string;
-            ethAddress: string;
-            fcmToken: string;
-            username: string;
-            uuid: string;
-          }) => {
-            return (
-              body.uuid === '' ||
-              body.codeChallenge === '' ||
-              body.ethAddress === '' ||
-              body.fcmToken === '' ||
-              body.username === ''
-            );
-          },
-        )
-        .reply(400, errMissingParams)
-        .post('/register/auth')
-        .reply(500, errInternal)
-        .post('/register/auth')
-        .reply(401, errUnauthorized)
         .post('/register/auth')
         .reply(200, {
           authorizationCode: 'Authorisation code',
           expiresAt: '2011-06-14T04:12:36Z',
+        })
+        .post(
+          '/register/access',
+          (body: { codeVerifier: string; uuid: string }) => {
+            return body.codeVerifier === '' || body.uuid === '';
+          },
+        )
+        .reply(400, errMissingParams)
+        .post('/register/access')
+        .reply(500, errInternal)
+        .post('/register/access')
+        .reply(401, errUnauthorized)
+        .post('/register/access')
+        .reply(200, {
+          accessToken: 'myAccessToken',
+          accessTokenExpiresAt: '2016-07-12T23:34:21Z',
+          refreshToken: 'myRefreshToken',
+          refreshTokenExpiresAt: '2016-07-12T23:34:21Z',
+          fcmToken: 'fcmToken',
+          userId: 'userId',
+          walletId: 'walletId',
         });
     }
-    const response = await Register.registerKeys(publicKey, uuid);
+
+    const registerKeysResponse = await Register.registerKeys(publicKey, uuid);
     // Use nonce for future requests
-    nonce = response.data.nonce;
+    nonce = registerKeysResponse.data.nonce;
 
     // registerAuth Parameters
-    data = {
+    const registerAuthData = {
       codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
       ethAddress,
       fcmToken: 'OneFcmToken',
       username,
       uuid,
       nonce,
+    };
+
+    const registerAuthResponse = await Register.registerAuth(
+      registerAuthData,
+      privateKey,
+    );
+    // Use authorizationCode for future requests
+    authorizationCode = registerAuthResponse.data.authorizationCode;
+
+    data = {
+      codeVerifier: codeVerifier.toString(),
+      uuid,
+      authorizationCode,
     };
   });
 
@@ -111,13 +132,11 @@ describe('registerAuth method', () => {
     }
   });
 
-  it('should return 400 due missing params', async () => {
-    expect.assertions(2);
-    const regAuthData = { ...data };
-    // empty username
-    regAuthData.username = '';
+  it('should return 400 error due to missing params', async () => {
+    const regAccessData = { ...data };
+    regAccessData.codeVerifier = '';
     try {
-      await Register.registerAuth(regAuthData, privateKey); // empty username
+      await Register.registerAccess(regAccessData, privateKey);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errMissingParams.message);
@@ -125,24 +144,24 @@ describe('registerAuth method', () => {
   });
 
   if (env === 'test') {
-    it('should return 500 internal server error', async () => {
-      expect.assertions(2);
-      const regAuthData = { ...data };
+    it('should return 500 due internal server error', async () => {
+      const regAccessData = { ...data };
+      delete regAccessData.authorizationCode;
+
       try {
-        await Register.registerAuth(regAuthData, privateKey);
+        await Register.registerAccess(regAccessData, privateKey);
       } catch (error) {
         expect(error.response.status).toEqual(500);
-        expect(error.response.data).toEqual(errInternal);
+        expect(error.response.data.message).toEqual(errInternal.message);
       }
     });
   }
 
   it('expects to return unauthorised due to invalid signature', async () => {
-    expect.assertions(2);
-    const regAuthData = { ...data };
-    delete regAuthData.nonce;
+    const regAccessData = { ...data };
+    delete regAccessData.authorizationCode;
     try {
-      await Register.registerAuth(regAuthData, privateKey);
+      await Register.registerAccess(regAccessData, privateKey);
     } catch (error) {
       expect(error.response.status).toEqual(401);
       expect(error.response.data.message).toEqual(errUnauthorized.message);
@@ -150,9 +169,8 @@ describe('registerAuth method', () => {
   });
 
   it('expects response to resolve with data and status code 200', async () => {
-    const regAuthData = { ...data };
-    const response = await Register.registerAuth(regAuthData, privateKey);
+    const response = await Register.registerAccess(data, privateKey);
     expect(response.status).toEqual(200);
-    expect(response.data).toEqual(responseRegisterAuth);
+    expect(response.data).toEqual(responseRegisterAccess);
   });
 });

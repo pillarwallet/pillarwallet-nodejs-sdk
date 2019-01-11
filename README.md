@@ -940,6 +940,7 @@ pillarSdk.user.usernameSearch(inputParams);
 ```
 
 Retrieve the userId of an existing wallet user or return not-found.
+Returns an error message if the username is Inappropriate.
 
 **Input Parameters**
 
@@ -952,6 +953,14 @@ Retrieve the userId of an existing wallet user or return not-found.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | userId  | The User Identifier | UUID  | Required  |
+
+**Expected Output for Inappropriate username**
+
+| Name  | Value |
+| ------------- | ------------- |
+| error  | Bad Request |
+| message  | Inappropriate username |
+| statusCode  | 400 |
 
 ### User Validate
 

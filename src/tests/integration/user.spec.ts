@@ -152,20 +152,6 @@ describe.skip('user endpoints', () => {
       const res = await pSdk.user.validate({ username });
       expect(res.data).toEqual({ username, id: expect.any(String) });
     });
-
-    // we still can not automatically run the integration tests.
-    it('Username Search', async () => {
-      const username = 'existinguser';
-      const walletParams = {
-        username,
-        ethAddress: '0xf7362f724e2c4f00c85c4d1faf42b1dd4e1a9dfe',
-        fcmToken: 'abc123',
-      };
-
-      await pSdk.wallet.register(walletParams);
-      const res = await pSdk.user.usernameSearch({ username });
-      expect(res.data).toEqual({ username });
-    });
   });
 
   // we still can not automatically run the integration tests.

@@ -60,10 +60,7 @@ export class Requester {
 
   private static setTokens(tokens: any) {
     if (tokens.accessToken && tokens.refreshToken) {
-      Configuration.setAuthTokens(
-        tokens.accessToken,
-        tokens.refreshToken,
-      );
+      Configuration.setAuthTokens(tokens.accessToken, tokens.refreshToken);
     } else {
       throw 'Refresh or access token returned empty from the server!';
     }

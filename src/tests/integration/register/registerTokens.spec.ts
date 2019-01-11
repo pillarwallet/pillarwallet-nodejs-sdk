@@ -76,6 +76,13 @@ describe('registerTokens method', () => {
     }
   });
 
+  afterAll(() => {
+    jest.restoreAllMocks();
+    if (env === 'test') {
+      nock.cleanAll();
+    }
+  });
+
   it('expects response to resolve with data and status code 200', async () => {
     const codeVerifier = await ProofKey.codeVerifierGenerator();
 

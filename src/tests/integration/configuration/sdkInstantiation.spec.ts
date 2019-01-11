@@ -122,18 +122,6 @@ describe('Reproducing wallet import flow', () => {
     });
   });
 
-  // TODO: Attention, this test is failing because /register/tokens in the Api backend
-  // TODO: does not record a new tuple in register Table !!!
-  it.skip('should call user.info with Authorization header', async () => {
-    const responseUserInfo = await pSdk2.user.info({
-      walletId: responseValidate.data.walletId,
-    });
-    expect(responseUserInfo.status).toEqual(200);
-    expect(responseUserInfo.config.headers.Authorization).toEqual(
-      expect.any(String),
-    );
-  });
-
   it('should register wallet and generate new Oauth Tokens', async () => {
     const registerAuthPayload = {
       username,

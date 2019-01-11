@@ -56,7 +56,7 @@ describe('registerKeys method', () => {
   afterAll(() => {
     jest.restoreAllMocks();
     if (env === 'test') {
-      nock.isDone();
+      nock.cleanAll();
     }
   });
 
