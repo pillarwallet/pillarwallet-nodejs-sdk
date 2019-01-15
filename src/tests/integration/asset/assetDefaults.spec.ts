@@ -82,6 +82,8 @@ describe('Asset Default', () => {
       apiUrl: 'http://localhost:8080',
       privateKey,
     });
+    pSdk.setUsername('username');
+
     const walletRegister = {
       privateKey,
       fcmToken: '987qwe',

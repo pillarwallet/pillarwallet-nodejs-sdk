@@ -169,10 +169,12 @@ export class Register {
   static refreshAuthToken() {
     if (
       Configuration.accessKeys.oAuthTokens &&
-      Configuration.accessKeys.oAuthTokens.refreshToken
+      Configuration.accessKeys.oAuthTokens.refreshToken &&
+      Configuration.accessKeys.username
     ) {
       const data = {
         refreshToken: Configuration.accessKeys.oAuthTokens.refreshToken,
+        username: Configuration.accessKeys.username,
       };
 
       const config = {

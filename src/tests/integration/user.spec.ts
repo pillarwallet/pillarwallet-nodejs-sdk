@@ -66,13 +66,9 @@ describe.skip('user endpoints', () => {
       pSdk.user
         .info(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
@@ -94,13 +90,9 @@ describe.skip('user endpoints', () => {
       pSdk.user
         .search(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
@@ -157,10 +149,14 @@ describe.skip('user endpoints', () => {
   // we still can not automatically run the integration tests.
   describe('User updateNotificationPreferences method', () => {
     it('should return successful message and object', async () => {
+      const username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
       const inputParams = {
+        username,
         fcmToken:
           'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
-        username: 'bob123',
       };
 
       const res = await pSdk.wallet.register(inputParams);
@@ -321,13 +317,9 @@ describe.skip('user endpoints', () => {
       pSdk.user
         .info(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
