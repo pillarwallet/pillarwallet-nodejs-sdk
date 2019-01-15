@@ -38,9 +38,12 @@ describe('Authentication scenarios', () => {
       privateKey,
     });
 
+    pSdk.configuration.setUsername(username);
+
     if (env === 'test') {
       const data = {
         refreshToken: 'refreshToken',
+        username,
       };
 
       const refreshTokenData = { ...data };
@@ -93,6 +96,7 @@ describe('Authentication scenarios', () => {
         .reply(200, {
           ...refreshTokenResponse,
         })
+        .persist()
         .get('/user/info?walletId=walletId')
         .reply(200, {
           id: 'id',

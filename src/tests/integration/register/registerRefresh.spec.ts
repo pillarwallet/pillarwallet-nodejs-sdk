@@ -77,6 +77,7 @@ describe('registerRefresh method', () => {
       username,
     };
 
+    pSdk.configuration.setUsername(username);
     await pSdk.wallet.registerAuthServer(walletRegister);
   });
 

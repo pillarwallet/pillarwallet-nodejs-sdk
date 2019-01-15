@@ -194,12 +194,16 @@ describe('Register Class', () => {
     it('should send http request containing data and header', async () => {
       Configuration.accessKeys.oAuthTokens.refreshToken = 'myRefreshToken';
       Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.accessKeys.username = 'refreshUsername';
       axios.mockResolvedValue('');
       await Register.refreshAuthToken();
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
         headers: {},
-        data: { refreshToken: 'myRefreshToken' },
+        data: {
+          refreshToken: 'myRefreshToken',
+          username: Configuration.accessKeys.username,
+        },
         url: 'http://localhost:8080/register/refresh',
         json: true,
       });

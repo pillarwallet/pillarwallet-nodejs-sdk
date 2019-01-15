@@ -20,6 +20,7 @@ export class Configuration {
     apiUrl: '',
     notificationsUrl: '',
     investmentsUrl: '',
+    username: undefined,
   };
 
   constructor() {
@@ -45,6 +46,22 @@ export class Configuration {
       });
     }
   }
+
+  /**
+   * @name setUsername
+   * @description Sets the username for this instance. Please
+   * note that refreshing a token will not work until this is
+   * set.
+   *
+   * @param incomingUsername the incoming username
+   *
+   * @returns incomingUsername
+   */
+  setUsername(incomingUsername: string) {
+    Configuration.accessKeys.username = incomingUsername;
+    return incomingUsername;
+  }
+
   /**
    * Return an object with accessToken and refreshToken
    */

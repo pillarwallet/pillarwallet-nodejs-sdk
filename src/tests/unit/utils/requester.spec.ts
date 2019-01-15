@@ -49,6 +49,7 @@ describe('Requester utility', () => {
     beforeEach(() => {
       Configuration.setAuthTokens('accessToken', 'refreshToken');
       Configuration.accessKeys.privateKey = 'onePrivateKey';
+      Configuration.accessKeys.username = 'refreshedUser';
     });
 
     afterEach(() => {

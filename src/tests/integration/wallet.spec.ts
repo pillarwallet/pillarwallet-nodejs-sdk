@@ -27,22 +27,23 @@ describe('wallet endpoints', () => {
 
   describe('Wallet Registration', () => {
     it('Expect Return Success', () => {
+      // Generate random username
+      const username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
       const inputParams = {
         fcmToken:
           'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
-        username: 'bob123',
+        username,
       };
 
       pSdk.wallet
         .register(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
@@ -66,13 +67,9 @@ describe('wallet endpoints', () => {
       const result = pSdk.wallet
         .update(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
@@ -87,12 +84,15 @@ describe('wallet endpoints', () => {
   });
 
   // we still can not automatically run the integration tests.
-  describe('The Wallet registerAddress method', () => {
+  describe.skip('The Wallet registerAddress method', () => {
     it('calls the API with valid data', async () => {
+      const username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
       const inputParams = {
         fcmToken:
           'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
-        username: 'bob123',
+        username,
       };
 
       const res = await pSdk.wallet.register(inputParams);
@@ -113,12 +113,16 @@ describe('wallet endpoints', () => {
   });
 
   // we still can not automatically run the integration tests.
-  describe('The Wallet unregisterAddress method', () => {
+  describe.skip('The Wallet unregisterAddress method', () => {
     it('calls the API with valid data', async () => {
+      const username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
       const inputParams = {
         fcmToken:
           'cMctpybZfwk:APA9arnIbla0UDSDGs_w7buoP2apxFIzI6YUdSFPLe2ANR-OrFiaAvJ',
-        username: 'bob123',
+        username,
       };
 
       const res = await pSdk.wallet.register(inputParams);

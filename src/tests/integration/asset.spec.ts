@@ -27,13 +27,9 @@ describe('asset endpoints', () => {
       pSdk.asset
         .search(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
@@ -56,13 +52,9 @@ describe('asset endpoints', () => {
       pSdk.asset
         .list(inputParams)
         .then((response: any) => {
-          // Successful response!
-          // console.log(response.data);
           return response;
         })
         .catch((error: any) => {
-          // Unsuccessful response.
-          // console.log(error);
           return error;
         });
 
