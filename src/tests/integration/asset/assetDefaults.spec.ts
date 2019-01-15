@@ -82,7 +82,7 @@ describe('Asset Default', () => {
       apiUrl: 'http://localhost:8080',
       privateKey,
     });
-    pSdk.setUsername('username');
+    pSdk.configuration.setUsername('username');
 
     const walletRegister = {
       privateKey,

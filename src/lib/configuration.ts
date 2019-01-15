@@ -54,9 +54,12 @@ export class Configuration {
    * set.
    *
    * @param incomingUsername the incoming username
+   *
+   * @returns incomingUsername
    */
   setUsername(incomingUsername: string) {
     Configuration.accessKeys.username = incomingUsername;
+    return incomingUsername;
   }
 
   /**
