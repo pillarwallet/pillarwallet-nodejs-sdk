@@ -1,0 +1,17 @@
+{
+  "title": "Self Award Badge Model",
+  "description": "Schema definition for Self Award Badge Model",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    },
+    "event": {
+      "description": "Event name",
+      "type": "string"
+    }
+  },
+  "required": [ "walletId", "event" ]
+}

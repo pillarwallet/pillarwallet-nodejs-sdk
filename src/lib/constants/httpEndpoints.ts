@@ -36,4 +36,6 @@ export enum HttpEndpoints {
   USER_VALIDATE_PHONE = '/user/validate-phone',
   USER_NOTIFICATION_PREFERENCES = '/user/update-notification-preferences',
   USER_ACCESS_TOKENS = '/user/access-tokens',
+  USER_BADGES = '/badge/my',
+  SELF_AWARD_BADGE = '/badge/self-award',
 }

@@ -1,0 +1,3 @@
+interface UserBadges {
+  walletId: string;
+}
