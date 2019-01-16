@@ -23,7 +23,7 @@ export class PillarSdk extends Configuration {
   notification: Notification = new Notification();
   configuration: Configuration = new Configuration();
   register: Register = new Register();
-  badge: Register = new Badge();
+  badge: Badge = new Badge();
 
   /**
    * Set the SDK variables
