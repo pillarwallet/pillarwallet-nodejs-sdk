@@ -124,5 +124,6 @@ workflows:
             - test
           filters:
             branches:
-              - master
-              - fix/invalid-refresh-token-recovery
+              only:
+                - master
+                - fix/invalid-refresh-token-recovery
