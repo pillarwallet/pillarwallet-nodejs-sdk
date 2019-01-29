@@ -126,4 +126,3 @@ workflows:
             branches:
               only:
                 - master
-                - fix/invalid-refresh-token-recovery
