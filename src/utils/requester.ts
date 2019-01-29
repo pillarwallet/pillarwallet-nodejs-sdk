@@ -11,7 +11,6 @@ export class Requester {
    */
   static execute(incomingRequestOptions: any): AxiosPromise {
     // Try to refresh access token if it is expired
-    console.log('SDK-REQUEST', incomingRequestOptions);
     if (incomingRequestOptions.headers.Authorization) {
       return axios(incomingRequestOptions).catch(error => {
         // TODO: What would happen if we banned the user and the server would always return 401?
@@ -31,7 +30,6 @@ export class Requester {
               return axios(options);
             })
             .catch(async error => {
-              console.log('SDK-REQUEST-ERROR', error);
               if (
                 error.response.status === 400 &&
                 error.response.data &&
