@@ -228,9 +228,7 @@ describe('Register Class', () => {
         },
         url: 'https://localhost:8080/register/refresh',
         json: true,
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        httpsAgent: expect.any(Object),
       });
     });
 

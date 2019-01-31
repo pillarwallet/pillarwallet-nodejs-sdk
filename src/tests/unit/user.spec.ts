@@ -530,9 +530,7 @@ describe('User Class', () => {
         method: 'POST',
         params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        httpsAgent: expect.any(Object),
       });
     });
 
@@ -557,9 +555,7 @@ describe('User Class', () => {
         method: 'POST',
         params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        httpsAgent: expect.any(Object),
       });
     });
 
@@ -591,9 +587,7 @@ describe('User Class', () => {
         method: 'POST',
         params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        httpsAgent: expect.any(Object),
       });
     });
   });
@@ -687,9 +681,7 @@ describe('User Class', () => {
         method: 'GET',
         url: 'https://localhost:8080/user/image-by-userid/userId',
         params: { walletId: 'walletId' },
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        httpsAgent: expect.any(Object),
       });
     });
 
@@ -712,9 +704,7 @@ describe('User Class', () => {
         method: 'GET',
         url: 'https://localhost:8080/user/image-by-userid/userId',
         params: { walletId: 'walletId' },
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        httpsAgent: expect.any(Object),
       });
     });
   });
