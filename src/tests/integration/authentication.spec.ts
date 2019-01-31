@@ -55,7 +55,7 @@ describe('Authentication scenarios', () => {
 
   beforeAll(async () => {
     pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       privateKey,
     });
 
@@ -81,7 +81,7 @@ describe('Authentication scenarios', () => {
         message: 'Invalid grant: refresh token has expired',
       };
 
-      const mockApi = nock('http://localhost:8080');
+      const mockApi = nock('https://localhost:8080');
       mockApi
         .post('/register/keys')
         .reply(200, {

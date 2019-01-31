@@ -44,21 +44,21 @@ const responseRegisterAccess = {
   walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
 };
 
-nock('http://localhost:8080')
+nock('https://localhost:8080')
   .post('/register/keys')
   .reply(200, responseRegisterKey);
 
-nock('http://localhost:8080')
+nock('https://localhost:8080')
   .post('/register/auth')
   .reply(200, responseRegisterAuth);
 
-nock('http://localhost:8080')
+nock('https://localhost:8080')
   .post('/register/access')
   .reply(200, responseRegisterAccess);
 
 describe('POST RegisterAuthServer', () => {
   const pSdk = new PillarSdk({
-    apiUrl: 'http://localhost:8080',
+    apiUrl: 'https://localhost:8080',
     privateKey: keys.privateKey,
   });
   let walletRegister = {};
@@ -78,7 +78,7 @@ describe('POST RegisterAuthServer', () => {
   });
 
   describe('/register/keys error responses', () => {
-    nock('http://localhost:8080')
+    nock('https://localhost:8080')
       .post('/register/keys')
       .reply(500, 'Internal server error');
 
@@ -95,14 +95,14 @@ describe('POST RegisterAuthServer', () => {
 
   describe('/register/auth error responses', () => {
     beforeEach(() => {
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/keys')
         .reply(200, responseRegisterKey);
     });
 
     it('throws a 401 when payload authentication fails', async () => {
       expect.assertions(2);
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/auth')
         .reply(401, 'Payload verification failed');
       try {
@@ -115,7 +115,7 @@ describe('POST RegisterAuthServer', () => {
 
     it('throws a 500 when an internal server error occurs', async () => {
       expect.assertions(2);
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/auth')
         .reply(500, 'Internal server error');
       try {
@@ -129,18 +129,18 @@ describe('POST RegisterAuthServer', () => {
 
   describe('/register/access error responses', () => {
     beforeEach(() => {
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/keys')
         .reply(200, responseRegisterKey);
 
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/auth')
         .reply(200, responseRegisterAuth);
     });
 
     it('throws a 401 when payload authentication fails', async () => {
       expect.assertions(2);
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/access')
         .reply(401, 'Payload verification failed');
       try {
@@ -153,7 +153,7 @@ describe('POST RegisterAuthServer', () => {
 
     it('throws a 500 when an internal server error occurs', async () => {
       expect.assertions(2);
-      nock('http://localhost:8080')
+      nock('https://localhost:8080')
         .post('/register/access')
         .reply(500, 'Internal server error');
       try {

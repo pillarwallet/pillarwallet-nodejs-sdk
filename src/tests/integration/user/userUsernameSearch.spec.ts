@@ -49,12 +49,12 @@ describe('userUsernameSearch method', () => {
 
   beforeAll(async () => {
     pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       privateKey: keys.privateKey,
     });
 
     if (env === 'test') {
-      const mockApi = nock('http://localhost:8080');
+      const mockApi = nock('https://localhost:8080');
       mockApi
         .post('/wallet/register')
         .reply(200)

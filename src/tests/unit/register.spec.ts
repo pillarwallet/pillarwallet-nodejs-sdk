@@ -30,10 +30,11 @@ import { default as postConfiguration } from '../../utils/requester-configuratio
 import { ProofKey } from '../../utils/pkce';
 import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
 const keys = require('../utils/generateKeyPair');
+const https = require('https');
 
 describe('Register Class', () => {
   const apiUrl = Configuration.accessKeys.apiUrl;
-  Configuration.accessKeys.apiUrl = 'http://localhost:8080';
+  Configuration.accessKeys.apiUrl = 'https://localhost:8080';
   Configuration.accessKeys.privateKey = keys.privateKey.toString();
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
@@ -66,7 +67,7 @@ describe('Register Class', () => {
           publicKey,
           uuid,
         },
-        url: 'http://localhost:8080/register/keys',
+        url: 'https://localhost:8080/register/keys',
       });
     });
 
@@ -105,7 +106,7 @@ describe('Register Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.any(String) },
         data: regAuthData,
-        url: 'http://localhost:8080/register/auth',
+        url: 'https://localhost:8080/register/auth',
       });
     });
 
@@ -145,7 +146,7 @@ describe('Register Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.any(String) },
         data: regAccessData,
-        url: 'http://localhost:8080/register/access',
+        url: 'https://localhost:8080/register/access',
       });
     });
 
@@ -188,7 +189,7 @@ describe('Register Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.any(String) },
         data,
-        url: 'http://localhost:8080/register/tokens',
+        url: 'https://localhost:8080/register/tokens',
       });
     });
 
@@ -225,8 +226,11 @@ describe('Register Class', () => {
           refreshToken: 'myRefreshToken',
           username: Configuration.accessKeys.username,
         },
-        url: 'http://localhost:8080/register/refresh',
+        url: 'https://localhost:8080/register/refresh',
         json: true,
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       });
     });
 

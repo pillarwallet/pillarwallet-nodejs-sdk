@@ -52,11 +52,11 @@ describe('registerKeys method', () => {
   beforeAll(() => {
     new PillarSdk({
       privateKey,
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
     });
     uuid = uuidV4();
     if (env === 'test') {
-      const mockApi = nock('http://localhost:8080');
+      const mockApi = nock('https://localhost:8080');
       mockApi
         .post('/register/keys', (body: { publicKey: string; uuid: string }) => {
           return body.publicKey === '' || body.uuid === '';

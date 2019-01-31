@@ -40,7 +40,7 @@ describe('Wallet Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       privateKey: keys.privateKey,
     });
   });
@@ -69,7 +69,7 @@ describe('Wallet Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: walletRegistrationData,
-        url: 'http://localhost:8080/wallet/register',
+        url: 'https://localhost:8080/wallet/register',
       });
     });
 
@@ -89,7 +89,7 @@ describe('Wallet Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletRegistrationData,
-          url: 'http://localhost:8080/wallet/register',
+          url: 'https://localhost:8080/wallet/register',
         });
       },
     );
@@ -246,7 +246,7 @@ describe('Wallet Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: walletUpdateData,
-        url: 'http://localhost:8080/wallet/update',
+        url: 'https://localhost:8080/wallet/update',
       });
     });
 
@@ -266,7 +266,7 @@ describe('Wallet Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletUpdateData,
-          url: 'http://localhost:8080/wallet/update',
+          url: 'https://localhost:8080/wallet/update',
         });
       },
     );
@@ -304,7 +304,7 @@ describe('Wallet Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: walletRegisterAddressData,
-        url: 'http://localhost:8080/wallet/register-address',
+        url: 'https://localhost:8080/wallet/register-address',
       });
     });
 
@@ -326,7 +326,7 @@ describe('Wallet Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletRegisterAddressData,
-          url: 'http://localhost:8080/wallet/register-address',
+          url: 'https://localhost:8080/wallet/register-address',
         });
       },
     );
@@ -364,7 +364,7 @@ describe('Wallet Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         data: walletUnregisterAddressData,
-        url: 'http://localhost:8080/wallet/unregister-address',
+        url: 'https://localhost:8080/wallet/unregister-address',
       });
     });
 
@@ -385,7 +385,7 @@ describe('Wallet Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletUnregisterAddressData,
-          url: 'http://localhost:8080/wallet/unregister-address',
+          url: 'https://localhost:8080/wallet/unregister-address',
         });
       },
     );

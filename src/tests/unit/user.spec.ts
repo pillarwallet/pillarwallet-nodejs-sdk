@@ -29,6 +29,7 @@ import { default as getConfiguration } from '../../utils/requester-configuration
 import { default as putConfiguration } from '../../utils/requester-configurations/put';
 import { Readable } from 'stream';
 import { PillarSdk } from '../..';
+const https = require('https');
 
 const profileImageSchema = require('../../schemas/user/profileImage.json');
 const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.json');
@@ -92,7 +93,7 @@ describe('User Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: userUpdateData,
-        url: 'http://localhost:8080/user/update',
+        url: 'https://localhost:8080/user/update',
       });
     });
 
@@ -120,7 +121,7 @@ describe('User Class', () => {
         ...postConfiguration,
         headers: { Authorization: `Bearer ${accessToken}` },
         data: userUpdateData,
-        url: 'http://localhost:8080/user/update',
+        url: 'https://localhost:8080/user/update',
       });
     });
 
@@ -149,7 +150,7 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         params: userInfoData,
-        url: 'http://localhost:8080/user/info',
+        url: 'https://localhost:8080/user/info',
       });
     });
 
@@ -167,7 +168,7 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
-        url: 'http://localhost:8080/user/info',
+        url: 'https://localhost:8080/user/info',
       });
     });
 
@@ -253,7 +254,7 @@ describe('User Class', () => {
           'X-API-Signature': expect.stringMatching(/.+/),
         },
         params: userSearchData,
-        url: 'http://localhost:8080/user/search',
+        url: 'https://localhost:8080/user/search',
       });
     });
 
@@ -274,7 +275,7 @@ describe('User Class', () => {
           Authorization: `Bearer ${accessToken}`,
         },
         params: userSearchData,
-        url: 'http://localhost:8080/user/search',
+        url: 'https://localhost:8080/user/search',
       });
     });
 
@@ -306,7 +307,7 @@ describe('User Class', () => {
         ...deleteConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: userInfoData,
-        url: 'http://localhost:8080/user/delete',
+        url: 'https://localhost:8080/user/delete',
       });
     });
 
@@ -324,7 +325,7 @@ describe('User Class', () => {
         ...deleteConfiguration,
         headers: { Authorization: `Bearer ${accessToken}` },
         data: userInfoData,
-        url: 'http://localhost:8080/user/delete',
+        url: 'https://localhost:8080/user/delete',
       });
     });
 
@@ -353,7 +354,7 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         params: usernameSearch,
-        url: 'http://localhost:8080/user/search-username',
+        url: 'https://localhost:8080/user/search-username',
       });
     });
 
@@ -371,7 +372,7 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: { Authorization: `Bearer ${accessToken}` },
         params: usernameSearch,
-        url: 'http://localhost:8080/user/search-username',
+        url: 'https://localhost:8080/user/search-username',
       });
     });
 
@@ -397,7 +398,7 @@ describe('User Class', () => {
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
         data,
-        url: `http://localhost:8080${HttpEndpoints.USER_VALIDATE}`,
+        url: `https://localhost:8080${HttpEndpoints.USER_VALIDATE}`,
       });
     });
 
@@ -431,7 +432,7 @@ describe('User Class', () => {
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
-        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}/${
+        url: `https://localhost:8080${HttpEndpoints.USER_IMAGE}/${
           data.imageName
         }`,
         responseType: 'stream',
@@ -474,7 +475,7 @@ describe('User Class', () => {
         data: image,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         params: query,
-        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}`,
+        url: `https://localhost:8080${HttpEndpoints.USER_IMAGE}`,
       });
     });
 
@@ -491,7 +492,7 @@ describe('User Class', () => {
         data: image,
         headers: { Authorization: `Bearer ${accessToken}` },
         params: query,
-        url: `http://localhost:8080${HttpEndpoints.USER_IMAGE}`,
+        url: `https://localhost:8080${HttpEndpoints.USER_IMAGE}`,
       });
     });
 
@@ -524,10 +525,14 @@ describe('User Class', () => {
         data,
         headers: {
           'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-          'X-API-Signature': expect.stringMatching(/.+/),
+          'X-API-Signature': 'signature',
         },
         method: 'POST',
+        params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       });
     });
 
@@ -550,7 +555,11 @@ describe('User Class', () => {
           'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
         },
         method: 'POST',
+        params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       });
     });
 
@@ -577,10 +586,14 @@ describe('User Class', () => {
       expect(Requester.execute).toBeCalledWith({
         data,
         headers: {
-          'X-API-Signature': expect.stringMatching(/.+/),
+          'X-API-Signature': 'signature',
         },
         method: 'POST',
+        params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       });
     });
   });
@@ -598,7 +611,7 @@ describe('User Class', () => {
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
         },
-        url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
+        url: 'https://localhost:8080' + HttpEndpoints.USER_IMAGE,
       });
     });
 
@@ -616,7 +629,7 @@ describe('User Class', () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        url: 'http://localhost:8080' + HttpEndpoints.USER_IMAGE,
+        url: 'https://localhost:8080' + HttpEndpoints.USER_IMAGE,
       });
     });
 
@@ -667,12 +680,16 @@ describe('User Class', () => {
 
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
+        data: undefined,
         headers: {
-          'X-API-Signature': expect.stringMatching(/.+/),
+          'X-API-Signature': 'signature',
         },
         method: 'GET',
-        url: 'http://localhost:8080/user/image-by-userid/userId',
+        url: 'https://localhost:8080/user/image-by-userid/userId',
         params: { walletId: 'walletId' },
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       });
     });
 
@@ -688,12 +705,16 @@ describe('User Class', () => {
 
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
+        data: undefined,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
         method: 'GET',
-        url: 'http://localhost:8080/user/image-by-userid/userId',
+        url: 'https://localhost:8080/user/image-by-userid/userId',
         params: { walletId: 'walletId' },
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
       });
     });
   });
@@ -712,7 +733,7 @@ describe('User Class', () => {
         ...postConfiguration,
         data,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-        url: 'http://localhost:8080/user/create-one-time-password',
+        url: 'https://localhost:8080/user/create-one-time-password',
       });
     });
 
@@ -731,7 +752,7 @@ describe('User Class', () => {
         ...postConfiguration,
         data,
         headers: { Authorization: `Bearer ${accessToken}` },
-        url: 'http://localhost:8080/user/create-one-time-password',
+        url: 'https://localhost:8080/user/create-one-time-password',
       });
     });
 
@@ -748,7 +769,7 @@ describe('User Class', () => {
         ...postConfiguration,
         data,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-        url: 'http://localhost:8080/user/create-one-time-password',
+        url: 'https://localhost:8080/user/create-one-time-password',
       });
     });
 
@@ -820,7 +841,7 @@ describe('User Class', () => {
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
         },
-        url: 'http://localhost:8080/user/validate-email',
+        url: 'https://localhost:8080/user/validate-email',
       });
     });
 
@@ -842,7 +863,7 @@ describe('User Class', () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        url: 'http://localhost:8080/user/validate-email',
+        url: 'https://localhost:8080/user/validate-email',
       });
     });
 
@@ -881,7 +902,7 @@ describe('User Class', () => {
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
         },
-        url: 'http://localhost:8080/user/validate-phone',
+        url: 'https://localhost:8080/user/validate-phone',
       });
     });
 
@@ -903,7 +924,7 @@ describe('User Class', () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        url: 'http://localhost:8080/user/validate-phone',
+        url: 'https://localhost:8080/user/validate-phone',
       });
     });
 
@@ -938,7 +959,7 @@ describe('User Class', () => {
         headers: {
           'X-API-Signature': expect.stringMatching(/.+/),
         },
-        url: 'http://localhost:8080/user/update-notification-preferences',
+        url: 'https://localhost:8080/user/update-notification-preferences',
       });
     });
 
@@ -956,7 +977,7 @@ describe('User Class', () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        url: 'http://localhost:8080/user/update-notification-preferences',
+        url: 'https://localhost:8080/user/update-notification-preferences',
       });
     });
 
@@ -991,7 +1012,7 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         params: userInfoData,
-        url: 'http://localhost:8080/user/access-tokens',
+        url: 'https://localhost:8080/user/access-tokens',
       });
     });
 
@@ -1009,7 +1030,7 @@ describe('User Class', () => {
         ...getConfiguration,
         headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
-        url: 'http://localhost:8080/user/access-tokens',
+        url: 'https://localhost:8080/user/access-tokens',
       });
     });
 

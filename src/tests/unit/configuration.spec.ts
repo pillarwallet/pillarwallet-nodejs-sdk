@@ -204,7 +204,7 @@ describe('The Configuration Class', () => {
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
           method: 'POST',
-          url: 'http://localhost:8080/user/validate',
+          url: 'https://localhost:8080/user/validate',
           headers: {},
         });
       });
@@ -223,7 +223,7 @@ describe('The Configuration Class', () => {
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
           method: 'POST',
-          url: 'http://localhost:8080/user/validate',
+          url: 'https://localhost:8080/user/validate',
           headers: { Authorization: 'Bearer oneAccessToken' },
         });
       });
@@ -240,7 +240,7 @@ describe('The Configuration Class', () => {
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
           method: 'POST',
-          url: 'http://localhost:8080/user/validate',
+          url: 'https://localhost:8080/user/validate',
           headers: { 'X-API-Signature': expect.any(String) },
         });
       });
@@ -277,7 +277,7 @@ describe('The Configuration Class', () => {
         expect(Requester.execute).toHaveBeenCalledWith({
           data,
           method: 'POST',
-          url: 'http://localhost:8080/user/validate',
+          url: 'https://localhost:8080/user/validate',
           headers: { Authorization: expect.any(String) },
         });
 

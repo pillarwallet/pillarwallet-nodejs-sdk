@@ -29,7 +29,7 @@ describe('asset endpoints', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       privateKey: hdkey.privateKey,
     });
   });
