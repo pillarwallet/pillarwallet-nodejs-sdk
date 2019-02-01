@@ -79,27 +79,27 @@ if (env === 'test') {
     },
   };
 
-  nock('http://localhost:8080')
+  nock('https://localhost:8080')
     .post('/wallet/register')
     .reply(200, responseRegister);
 
-  nock('http://localhost:8080')
+  nock('https://localhost:8080')
     .post('/user/validate')
     .reply(200, responseUserValidate);
 
-  nock('http://localhost:8080')
+  nock('https://localhost:8080')
     .post('/register/keys')
     .reply(200, responseRegisterKey);
 
-  nock('http://localhost:8080')
+  nock('https://localhost:8080')
     .post('/register/auth')
     .reply(200, responseRegisterAuth);
 
-  nock('http://localhost:8080')
+  nock('https://localhost:8080')
     .post('/register/access')
     .reply(200, responseRegisterAccess);
 
-  nock('http://localhost:8080')
+  nock('https://localhost:8080')
     .get('/user/info?walletId=' + responseRegisterAccess.walletId)
     .reply(200, responseUserInfo);
 }
@@ -107,7 +107,7 @@ if (env === 'test') {
 describe('First Step - register wallet', () => {
   it('responds with access payload', async () => {
     const pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       notificationsUrl: 'http://localhost:8081',
       investmentsUrl: 'http://localhost:8082',
       privateKey: keys.privateKey,
@@ -121,7 +121,7 @@ describe('Reproducing wallet import flow', () => {
   let pSdk2: any;
   beforeAll(() => {
     pSdk2 = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       notificationsUrl: 'http://localhost:8081',
       investmentsUrl: 'http://localhost:8082',
       privateKey: keys.privateKey,

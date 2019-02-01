@@ -75,7 +75,7 @@ Instantiate the Pillar SDK, then set the apiUrl (optional), notificationsUrl (op
 
 ```
 const pillarSdk = new PillarSdk({
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'https://localhost:8080',
   notificationsUrl: 'https://localhost:8081',
   investmentsUrl: 'https://localhost:8082',
   privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',

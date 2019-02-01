@@ -76,14 +76,14 @@ describe('registerAccess method', () => {
     // Set SDK Config
     new PillarSdk({
       privateKey,
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
     });
     // Generate Register unique Id
     uuid = uuidV4();
 
     // If env is test use HTTP server mocking library, else use localhost
     if (env === 'test') {
-      const mockApi = nock('http://localhost:8080');
+      const mockApi = nock('https://localhost:8080');
       mockApi
         .post('/register/keys', { publicKey, uuid })
         .reply(200, {

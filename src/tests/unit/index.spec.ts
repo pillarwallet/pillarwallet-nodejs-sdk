@@ -31,7 +31,7 @@ import { Investments } from '../../lib/investments';
 describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
     const pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       privateKey:
         'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
     });
@@ -48,7 +48,7 @@ describe('The Pillar SDK Class', () => {
 
   it('should correctly instantiate with all properties', () => {
     const pSdk = new PillarSdk({
-      apiUrl: 'http://localhost:8080',
+      apiUrl: 'https://localhost:8080',
       privateKey:
         'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
       oAuthTokens: {
@@ -98,7 +98,7 @@ describe('The Pillar SDK Class', () => {
     let errorThrown;
     try {
       new PillarSdk({
-        apiUrl: 'http://localhost:8080',
+        apiUrl: 'https://localhost:8080',
         privateKey: 'increasethepeace',
       });
     } catch (e) {

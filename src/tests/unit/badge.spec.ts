@@ -57,7 +57,7 @@ describe('Badge Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         params: userBadgesData,
-        url: 'http://localhost:8080/badge/my',
+        url: 'https://localhost:8080/badge/my',
       });
     });
 
@@ -73,7 +73,7 @@ describe('Badge Class', () => {
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         params: userBadgesData,
-        url: 'http://localhost:8080/badge/my',
+        url: 'https://localhost:8080/badge/my',
       });
     });
 
@@ -104,7 +104,7 @@ describe('Badge Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         data: selfAwardBadgeData,
-        url: 'http://localhost:8080/badge/self-award',
+        url: 'https://localhost:8080/badge/self-award',
       });
     });
 
@@ -121,7 +121,7 @@ describe('Badge Class', () => {
         ...postConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         data: selfAwardBadgeData,
-        url: 'http://localhost:8080/badge/self-award',
+        url: 'https://localhost:8080/badge/self-award',
       });
     });
 

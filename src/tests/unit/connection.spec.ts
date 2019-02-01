@@ -68,7 +68,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionInviteData,
-        url: 'http://localhost:8080/connection/invite',
+        url: 'https://localhost:8080/connection/invite',
       });
     });
 
@@ -89,7 +89,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionInviteData,
-          url: 'http://localhost:8080/connection/invite',
+          url: 'https://localhost:8080/connection/invite',
         });
       },
     );
@@ -114,7 +114,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionAcceptData,
-        url: 'http://localhost:8080/connection/accept',
+        url: 'https://localhost:8080/connection/accept',
       });
     });
 
@@ -137,7 +137,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionAcceptData,
-          url: 'http://localhost:8080/connection/accept',
+          url: 'https://localhost:8080/connection/accept',
         });
       },
     );
@@ -161,7 +161,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionRejectData,
-        url: 'http://localhost:8080/connection/reject',
+        url: 'https://localhost:8080/connection/reject',
       });
     });
 
@@ -182,7 +182,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionRejectData,
-          url: 'http://localhost:8080/connection/reject',
+          url: 'https://localhost:8080/connection/reject',
         });
       },
     );
@@ -206,7 +206,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionCancelData,
-        url: 'http://localhost:8080/connection/cancel',
+        url: 'https://localhost:8080/connection/cancel',
       });
     });
 
@@ -228,7 +228,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionCancelData,
-          url: 'http://localhost:8080/connection/cancel',
+          url: 'https://localhost:8080/connection/cancel',
         });
       },
     );
@@ -253,7 +253,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionBlockData,
-        url: 'http://localhost:8080/connection/block',
+        url: 'https://localhost:8080/connection/block',
       });
     });
 
@@ -276,7 +276,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionBlockData,
-          url: 'http://localhost:8080/connection/block',
+          url: 'https://localhost:8080/connection/block',
         });
       },
     );
@@ -301,7 +301,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionMuteData,
-        url: 'http://localhost:8080/connection/mute',
+        url: 'https://localhost:8080/connection/mute',
       });
     });
 
@@ -324,7 +324,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionMuteData,
-          url: 'http://localhost:8080/connection/mute',
+          url: 'https://localhost:8080/connection/mute',
         });
       },
     );
@@ -349,7 +349,7 @@ describe('Connection Class', () => {
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
         data: connectionDisconnectData,
-        url: 'http://localhost:8080/connection/disconnect',
+        url: 'https://localhost:8080/connection/disconnect',
       });
     });
 
@@ -372,7 +372,7 @@ describe('Connection Class', () => {
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionDisconnectData,
-          url: 'http://localhost:8080/connection/disconnect',
+          url: 'https://localhost:8080/connection/disconnect',
         });
       },
     );

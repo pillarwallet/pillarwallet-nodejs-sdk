@@ -100,7 +100,7 @@ export class Configuration {
   initialise(incomingConfiguration: PillarSdkConfiguration) {
     Configuration.accessKeys = incomingConfiguration;
     if (!Configuration.accessKeys.apiUrl) {
-      Configuration.accessKeys.apiUrl = 'http://localhost:8080';
+      Configuration.accessKeys.apiUrl = 'https://localhost:8080';
     }
     if (!Configuration.accessKeys.notificationsUrl) {
       Configuration.accessKeys.notificationsUrl = 'http://localhost:8081';

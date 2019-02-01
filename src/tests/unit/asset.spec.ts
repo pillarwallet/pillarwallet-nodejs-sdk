@@ -56,7 +56,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         params: assetDefaultsData,
-        url: 'http://localhost:8080/asset/defaults',
+        url: 'https://localhost:8080/asset/defaults',
       });
     });
 
@@ -72,7 +72,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetDefaultsData,
-        url: 'http://localhost:8080/asset/defaults',
+        url: 'https://localhost:8080/asset/defaults',
       });
     });
 
@@ -102,7 +102,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         params: assetPreferredData,
-        url: 'http://localhost:8080/asset/preferred',
+        url: 'https://localhost:8080/asset/preferred',
       });
     });
 
@@ -118,7 +118,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetPreferredData,
-        url: 'http://localhost:8080/asset/preferred',
+        url: 'https://localhost:8080/asset/preferred',
       });
     });
 
@@ -149,7 +149,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         params: assetSearchData,
-        url: 'http://localhost:8080/asset/search',
+        url: 'https://localhost:8080/asset/search',
       });
     });
 
@@ -166,7 +166,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetSearchData,
-        url: 'http://localhost:8080/asset/search',
+        url: 'https://localhost:8080/asset/search',
       });
     });
 
@@ -199,7 +199,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { 'X-API-Signature': expect.anything() },
         params: assetListData,
-        url: 'http://localhost:8080/asset/list',
+        url: 'https://localhost:8080/asset/list',
       });
     });
 
@@ -216,7 +216,7 @@ describe('Asset Class', () => {
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetListData,
-        url: 'http://localhost:8080/asset/list',
+        url: 'https://localhost:8080/asset/list',
       });
     });
 
