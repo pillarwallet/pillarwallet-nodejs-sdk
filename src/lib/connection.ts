@@ -30,6 +30,7 @@ import { AxiosPromise } from 'axios';
  * Import HTTP Request Configurations
  */
 import { default as postConfiguration } from '../utils/requester-configurations/post';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
 
 /**
  * Import Validation Schemas
@@ -41,6 +42,7 @@ const connectionCancelSchema = require('../schemas/connection/cancel.json');
 const connectionBlockSchema = require('../schemas/connection/block.json');
 const connectionMuteSchema = require('../schemas/connection/mute.json');
 const connectionDisconnectSchema = require('../schemas/connection/disconnect.json');
+const connectionCountSchema = require('../schemas/connection/count.json');
 
 export class Connection extends Configuration {
   /**
@@ -156,6 +158,23 @@ export class Connection extends Configuration {
       schema: connectionDisconnectSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_DISCONNECT
+      }`,
+    });
+  }
+
+  /**
+   * @name count
+   * @desc Returns the number of connections a user has
+   * @param {ConnectionCount} countConfiguration
+   * @returns {AxiosPromise}
+   */
+  count(params: ConnectionCount): AxiosPromise {
+    return this.executeRequest({
+      params,
+      defaultRequest: getConfiguration,
+      schema: connectionCountSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_COUNT
       }`,
     });
   }

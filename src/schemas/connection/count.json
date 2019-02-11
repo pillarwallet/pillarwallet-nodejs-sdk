@@ -1,0 +1,13 @@
+{
+    "title": "Connection Model - Count",
+    "description": "Schema definition for Connection Model - count method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      }
+    },
+    "required": [ "walletId" ]
+  }
