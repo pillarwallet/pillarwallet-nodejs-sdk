@@ -23,6 +23,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
     - [Connection Disconnect](#connection-disconnect)
+    - [Connection Count](#connection-count)
     - [Notification List](#notification-list)
     - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
@@ -529,6 +530,25 @@ Disconnects a connection between two users.
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'Connection is successfully disconnected' | String  |
+
+### Connection Count
+
+```typescript
+pillarSdk.connection.count(inputParams)
+```
+
+Returns the number of connections a user has
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| userId  | The User Identifier | String  | 
+| count  | The number of connections | Number  | 
 
 ### Notification List
 
