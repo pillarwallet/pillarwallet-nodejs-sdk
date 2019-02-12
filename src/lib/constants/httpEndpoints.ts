@@ -60,4 +60,5 @@ export enum HttpEndpoints {
   USER_ACCESS_TOKENS = '/user/access-tokens',
   USER_BADGES = '/badge/my',
   SELF_AWARD_BADGE = '/badge/self-award',
+  AUTHENTICATION_APPROVE_LOGIN = '/authentication/approve-login',
 }
