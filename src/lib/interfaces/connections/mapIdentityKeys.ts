@@ -18,5 +18,10 @@ SOFTWARE.
 */
 interface ConnectionMapIdentityKeys {
   walletId: string;
-  identityKeys: [];
+  identityKeys: [
+    {
+      sourceIdentityKey: string;
+      targetIdentityKey: string;
+    }
+  ];
 }
