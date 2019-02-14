@@ -23,6 +23,8 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
     - [Connection Disconnect](#connection-disconnect)
+    - [Connection Count](#connection-count)
+    - [Connection Map Identity Keys](#connection-map-identity-keys)
     - [Notification List](#notification-list)
     - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
@@ -529,6 +531,44 @@ Disconnects a connection between two users.
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'Connection is successfully disconnected' | String  |
+
+### Connection Count
+
+```typescript
+pillarSdk.connection.count(inputParams)
+```
+
+Returns the number of connections a user has
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| userId  | The User Identifier | String  |
+| count  | The number of connections | Number  |
+
+### Connection Map Identity Keys
+
+```typescript
+pillarSdk.connection.mapIdentityKeys(inputParams)
+```
+
+Returns an array of user's connection mapped by identity keys
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| identityKeys  | The Identity Keys of a user. | Array  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | A list of connections | Array  |
 
 ### Notification List
 

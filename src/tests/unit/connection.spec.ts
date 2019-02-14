@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
+import { default as getConfiguration } from '../../utils/requester-configurations/get';
 import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
@@ -373,6 +374,94 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionDisconnectData,
           url: 'https://localhost:8080/connection/disconnect',
+        });
+      },
+    );
+  });
+
+  /**
+   * Connection: Count method
+   */
+  describe('.count', () => {
+    it('should successfully call with valid data', () => {
+      const connectionCountData = {
+        walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+      };
+
+      pSdk.connection.count(connectionCountData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: undefined,
+        params: connectionCountData,
+        url: 'https://localhost:8080/connection/count',
+      });
+    });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.setAuthTokens(accessToken, '');
+        const connectionCountData = {
+          walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+        };
+
+        pSdk.connection.count(connectionCountData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...getConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: undefined,
+          params: connectionCountData,
+          url: 'https://localhost:8080/connection/count',
+        });
+      },
+    );
+  });
+
+  /**
+   * Connection: Disconnect Map Identity Keys
+   */
+  describe('.mapIdentityKeys', () => {
+    it('should successfully call with valid data', () => {
+      const connectionMapIdentityKeysData = {
+        walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+        identityKeys: [],
+      };
+
+      pSdk.connection.mapIdentityKeys(connectionMapIdentityKeysData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
+        data: connectionMapIdentityKeysData,
+        url: 'https://localhost:8080/connection/map-identity-keys',
+      });
+    });
+
+    it(
+      'when accessToken is set, should successfully call' +
+        ' with valid data with Authorization header',
+      () => {
+        Configuration.setAuthTokens(accessToken, '');
+        const connectionMapIdentityKeysData = {
+          walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+          identityKeys: [],
+        };
+
+        pSdk.connection.mapIdentityKeys(connectionMapIdentityKeysData);
+
+        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: connectionMapIdentityKeysData,
+          url: 'https://localhost:8080/connection/map-identity-keys',
         });
       },
     );

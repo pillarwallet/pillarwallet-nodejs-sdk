@@ -40,6 +40,8 @@ export enum HttpEndpoints {
   CONNECTION_BLOCK = '/connection/block',
   CONNECTION_MUTE = '/connection/mute',
   CONNECTION_DISCONNECT = '/connection/disconnect',
+  CONNECTION_COUNT = '/connection/count',
+  CONNECTION_MAP_IDENTITY_KEYS = '/connection/map-identity-keys',
   NOTIFICATION_LIST = '/notification/list',
   INVESTMENTS_DEPOSIT_REQUEST = '/investment/wallet/deposit-request',
   INVESTMENTS_USER_ICO = '/users',
