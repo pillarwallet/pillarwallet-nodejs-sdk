@@ -1,0 +1,20 @@
+{
+    "title": "Connection Model - mapIdentityKeys",
+    "description": "Schema definition for Connection Model - mapIdentityKeys method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "identityKeys": {
+        "description": "Generated identity keys",
+        "type": "array"
+      }
+    },
+    "required": [
+      "walletId",
+      "identityKeys"
+    ]
+  }
