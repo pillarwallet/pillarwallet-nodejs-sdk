@@ -8,14 +8,10 @@
       "description": "The target user ID",
       "type": "string"
     },
-    "accessKey": {
-      "description": "The shared access key",
-      "type": "string"
-    },
     "walletId": {
       "description": "The wallet ID",
       "type": "string"
     }
   },
-  "required": [ "targetUserId", "accessKey", "walletId" ]
+  "required": [ "targetUserId", "walletId" ]
 }
