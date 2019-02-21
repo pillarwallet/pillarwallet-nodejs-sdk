@@ -570,6 +570,26 @@ Returns an array of user's connection mapped by identity keys
 | ------------- | ------------- | ------------- |
 | result  | A list of connections | Array  |
 
+### Connection Update Identity Keys
+
+```typescript
+pillarSdk.connection.updateIdentityKeys(inputParams)
+```
+
+Updates the connection's identity keys
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| connections  | The Connections of a user. | Array  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Updated connections' | String  |
+
 ### Notification List
 
 ```typescript
