@@ -498,7 +498,7 @@ describe('Connection Class', () => {
           connections: [],
         };
 
-        pSdk.connection.mapIdentityKeys(connectionUpdateIdentityKeysData);
+        pSdk.connection.updateIdentityKeys(connectionUpdateIdentityKeysData);
 
         expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
         expect(Requester.execute).toHaveBeenCalledWith({
