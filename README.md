@@ -25,6 +25,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Disconnect](#connection-disconnect)
     - [Connection Count](#connection-count)
     - [Connection Map Identity Keys](#connection-map-identity-keys)
+    - [Connection Update Identity Keys](#connection-update-identity-keys)
     - [Notification List](#notification-list)
     - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
@@ -587,8 +588,7 @@ Updates the connection's identity keys
 
 | Name  | Output | Type |
 | ------------- | ------------- | ------------- |
-| result  | 'success' | String  |
-| message  | 'Updated connections' | String  |
+| result  | A list of connections | Array  |
 
 ### Notification List
 

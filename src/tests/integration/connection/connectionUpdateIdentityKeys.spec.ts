@@ -45,10 +45,22 @@ describe('Connection Update Identity Keys', () => {
   let targetUserId: string;
   let pSdk: PillarSdk;
 
-  const responseData = {
-    result: 'success',
-    message: 'Updated connections',
-  };
+  const responseData = [
+    {
+      sourceConnection: {
+        userId: 'userId',
+        targetUserId: 'target-user-id',
+        sourceIdentityKey: 'abc',
+        status: 'pending',
+      },
+      targetConnection: {
+        userId: 'target-user-id',
+        targetUserId: 'userId',
+        targetIdentityKey: 'abc',
+        status: 'pending',
+      },
+    },
+  ];
 
   const responseDataConnectionInvite = {
     result: 'success',
@@ -202,7 +214,22 @@ describe('Connection Update Identity Keys', () => {
 
     const response = await pSdk.connection.updateIdentityKeys(inputParams);
     expect(response.status).toBe(200);
-    expect(response.data).toEqual(responseData);
+    expect(response.data).toEqual([
+      {
+        sourceConnection: {
+          userId: expect.any(String),
+          targetUserId: expect.any(String),
+          sourceIdentityKey: expect.any(String),
+          status: 'pending',
+        },
+        targetConnection: {
+          userId: expect.any(String),
+          targetUserId: expect.any(String),
+          targetIdentityKey: expect.any(String),
+          status: 'pending',
+        },
+      },
+    ]);
   });
 
   it('should return 400 due invalid params', async () => {
