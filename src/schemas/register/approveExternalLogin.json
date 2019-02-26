@@ -1,0 +1,15 @@
+{
+    "title": "Register Model - approveExternalLogin",
+    "description": "Schema definition for Register Model - approveExternalLogin method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "loginToken": {
+        "description": "The login token to authenticate",
+        "type": "string"
+      }
+    },
+    "required": [
+      "loginToken"
+    ]
+  }
