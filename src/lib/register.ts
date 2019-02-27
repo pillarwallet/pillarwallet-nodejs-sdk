@@ -34,6 +34,12 @@ import { PrivateKeyDerivatives } from '../utils/private-key-derivatives';
  * Import HTTP Request Configurations
  */
 import { default as postConfiguration } from '../utils/requester-configurations/post';
+import { default as getConfiguration } from '../utils/requester-configurations/get';
+
+/**
+ * Import Validation Schemas
+ */
+const registerApproveExternalLoginSchema = require('../schemas/register/approveExternalLogin.json');
 
 export class Register {
   /**
@@ -210,5 +216,24 @@ export class Register {
     }
 
     throw new Error('Refresh Token is not assigned!');
+  }
+
+  /**
+   * @name approveExternalLogin
+   * @desc Method to authenticate a login token
+   * @param {RegisterApproveExternalLogin} params
+   * @returns {AxiosPromise}
+   */
+  static approveExternalLogin(
+    params: RegisterApproveExternalLogin,
+  ): AxiosPromise {
+    return new Configuration().executeRequest({
+      params,
+      defaultRequest: getConfiguration,
+      schema: registerApproveExternalLoginSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.REGISTER_APPROVE_EXTERNAL_LOGIN
+      }`,
+    });
   }
 }
