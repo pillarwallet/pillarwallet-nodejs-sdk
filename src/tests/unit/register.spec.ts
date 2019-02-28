@@ -30,6 +30,7 @@ import { default as postConfiguration } from '../../utils/requester-configuratio
 import { default as getConfiguration } from '../../utils/requester-configurations/get';
 import { ProofKey } from '../../utils/pkce';
 import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
+import { PillarSdk } from '../..';
 const keys = require('../utils/generateKeyPair');
 const https = require('https');
 
@@ -39,6 +40,10 @@ describe('Register Class', () => {
   Configuration.accessKeys.privateKey = keys.privateKey.toString();
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
+  const pSdk = new PillarSdk({
+    privateKey:
+      'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
+  });
   let uuid;
 
   beforeEach(() => {
@@ -216,9 +221,9 @@ describe('Register Class', () => {
     };
 
     it('should send http request containing loginToken', () => {
-      Configuration.accessKeys.oAuthTokens.accessToken = 'myAccessToken';
+      Configuration.accessKeys.oAuthTokens = { refreshToken: 'myRefreshToken', accessToken: 'myAccessToken' };
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
-      Register.approveExternalLogin(approveExternalLoginData);
+      pSdk.register.approveExternalLogin(approveExternalLoginData);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
@@ -234,7 +239,7 @@ describe('Register Class', () => {
       jest
         .spyOn(Requester, 'execute')
         .mockResolvedValue(approveExternalLoginResponse);
-      const response = await Register.approveExternalLogin(
+      const response = await pSdk.register.approveExternalLogin(
         approveExternalLoginData,
       );
       expect(response.status).toEqual('success');

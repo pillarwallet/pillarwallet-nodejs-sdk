@@ -224,9 +224,7 @@ export class Register {
    * @param {RegisterApproveExternalLogin} params
    * @returns {AxiosPromise}
    */
-  static approveExternalLogin(
-    params: RegisterApproveExternalLogin,
-  ): AxiosPromise {
+  approveExternalLogin(params: RegisterApproveExternalLogin): AxiosPromise {
     return new Configuration().executeRequest({
       params,
       defaultRequest: getConfiguration,
