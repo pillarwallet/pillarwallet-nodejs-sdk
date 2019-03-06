@@ -44,7 +44,7 @@ describe('registerKeys method', () => {
     message: 'Internal Server Error',
   };
   const errConflictUuid = {
-    message: 'A valid nonce exists for this registration',
+    message: 'Duplicate UUID',
   };
   // variable for Universally unique identifier
   let uuid: string;
@@ -70,7 +70,7 @@ describe('registerKeys method', () => {
           nonce: 'AxCDF23232',
         })
         .post('/register/keys', { publicKey, uuid })
-        .reply(409, errConflictUuid);
+        .reply(400, errConflictUuid);
     }
   });
 
@@ -114,7 +114,7 @@ describe('registerKeys method', () => {
     try {
       await Register.registerKeys(publicKey, uuid);
     } catch (error) {
-      expect(error.response.status).toEqual(409);
+      expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errConflictUuid.message);
     }
   });

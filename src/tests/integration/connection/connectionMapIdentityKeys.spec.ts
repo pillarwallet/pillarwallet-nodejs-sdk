@@ -25,7 +25,6 @@ const env = process.env.NODE_ENV;
 
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
-import { Configuration } from '../../../lib/configuration';
 import nock = require('nock');
 
 describe('Connection Map Identity Keys', () => {
@@ -43,11 +42,8 @@ describe('Connection Map Identity Keys', () => {
 
   const responseData = [
     {
-      userId: 'userId',
-      targetUserId: 'target-user-id',
       sourceIdentityKey: 'abc',
       targetIdentityKey: 'xyz',
-      status: 'pending',
     },
   ];
 
@@ -102,15 +98,7 @@ describe('Connection Map Identity Keys', () => {
         .reply(400, errInvalidWalletId)
         .post('/connection/map-identity-keys')
         .reply(500, errInternal)
-        .post('/connection/map-identity-keys')
-        .reply(401, errUnauthorized)
-        .post('/register/refresh')
-        .reply(200, {
-          accessToken: 'accessToken',
-          refreshToken: 'refreshToken',
-        })
-        .post('/connection/map-identity-keys')
-        .reply(200, responseData);
+        .post('/connection/map-identity-keys');
     }
 
     try {
@@ -144,11 +132,8 @@ describe('Connection Map Identity Keys', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual([
       {
-        userId: 'userId',
-        targetUserId: 'target-user-id',
         sourceIdentityKey: 'abc',
         targetIdentityKey: 'xyz',
-        status: 'pending',
       },
     ]);
   });
@@ -182,20 +167,4 @@ describe('Connection Map Identity Keys', () => {
       }
     });
   }
-
-  it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
-    const inputParams = {
-      walletId,
-      identityKeys: [],
-    };
-
-    Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
-
-    try {
-      await pSdk.connection.mapIdentityKeys(inputParams);
-    } catch (error) {
-      expect(error.response.status).toEqual(401);
-      expect(error.response.data.message).toEqual(errUnauthorized.message);
-    }
-  });
 });

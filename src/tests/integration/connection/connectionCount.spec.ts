@@ -25,7 +25,6 @@ const env = process.env.NODE_ENV;
 
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
-import { Configuration } from '../../../lib/configuration';
 import nock = require('nock');
 
 describe('Connection Count', () => {
@@ -96,16 +95,7 @@ describe('Connection Count', () => {
         .get('/connection/count?walletId=')
         .reply(400, errInvalidWalletId)
         .get('/connection/count?walletId=walletId')
-        .reply(500, errInternal)
-        .get('/connection/count?walletId=walletId')
-        .reply(401, errUnauthorized)
-        .post('/register/refresh')
-        .reply(200, {
-          accessToken: 'accessToken',
-          refreshToken: 'refreshToken',
-        })
-        .get('/connection/count?walletId=walletId')
-        .reply(200, responseData);
+        .reply(500, errInternal);
     }
 
     try {
@@ -164,19 +154,4 @@ describe('Connection Count', () => {
       }
     });
   }
-
-  it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
-    const inputParams = {
-      walletId,
-    };
-
-    Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
-
-    try {
-      await pSdk.connection.count(inputParams);
-    } catch (error) {
-      expect(error.response.status).toEqual(401);
-      expect(error.response.data.message).toEqual(errUnauthorized.message);
-    }
-  });
 });

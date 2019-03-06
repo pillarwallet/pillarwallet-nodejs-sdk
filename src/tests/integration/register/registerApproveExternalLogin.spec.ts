@@ -25,8 +25,6 @@ const env = process.env.NODE_ENV;
 
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
-import { Register } from '../../../lib/register';
-import { Configuration } from '../../../lib/configuration';
 import nock = require('nock');
 
 describe('approveExternalLogin method', () => {
@@ -44,7 +42,7 @@ describe('approveExternalLogin method', () => {
   const responseData = {
     status: 'success',
     data: {
-      expires: 'YYYY-mm-ddTHH:MM:ssZ',
+      loginApproved: true,
     },
   };
 
@@ -117,48 +115,33 @@ describe('approveExternalLogin method', () => {
     }
   });
 
-  it('expects to return a 200 response and success status', async () => {
-    const inputParams = {
-      loginToken: 'test',
-    };
-
-    const response = await pSdk.register.approveExternalLogin(inputParams);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      status: 'success',
-      data: {
-        expires: expect.any(String),
-      },
-    });
-  });
-
   if (env === 'test') {
-    it('should return 500 due internal server error', async () => {
+    it('expects to return a 200 response and success status', async () => {
       const inputParams = {
         loginToken: 'test',
       };
 
-      try {
-        await pSdk.register.approveExternalLogin(inputParams);
-      } catch (error) {
-        expect(error.response.status).toEqual(500);
-        expect(error.response.data.message).toEqual(errInternal.message);
-      }
+      const response = await pSdk.register.approveExternalLogin(inputParams);
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual({
+        status: 'success',
+        data: {
+          loginApproved: true,
+        },
+      });
     });
   }
 
-  it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
+  it('should return 500 due invalid login attempt', async () => {
     const inputParams = {
       loginToken: 'test',
     };
 
-    Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
-
     try {
       await pSdk.register.approveExternalLogin(inputParams);
     } catch (error) {
-      expect(error.response.status).toEqual(401);
-      expect(error.response.data.message).toEqual(errUnauthorized.message);
+      expect(error.response.status).toEqual(500);
+      expect(error.response.data.message).toEqual(errInternal.message);
     }
   });
 });
