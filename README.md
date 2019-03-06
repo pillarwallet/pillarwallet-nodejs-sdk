@@ -73,14 +73,13 @@ For example, if you give us version=2.3.1, and this is picked up by circle's 492
 
 #### 1 - Create An Instance
 
-Instantiate the Pillar SDK, then set the apiUrl (optional), notificationsUrl (optional) and wallet privateKey variables.
+Instantiate the Pillar SDK, then set the apiUrl (optional) and notificationsUrl (optional).
 
 ```
 const pillarSdk = new PillarSdk({
   apiUrl: 'https://localhost:8080',
   notificationsUrl: 'https://localhost:8081',
   investmentsUrl: 'https://localhost:8082',
-  privateKey: '3eA19bddb978Db62344Ffba5d37Ba41C83C579173eA19bddb978Db62344Ffba5d37Ba41C83C57917',
 });
 ```
 

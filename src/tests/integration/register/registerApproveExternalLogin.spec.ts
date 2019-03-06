@@ -122,7 +122,7 @@ describe('approveExternalLogin method', () => {
       loginToken: 'test',
     };
 
-    const response = await Register.approveExternalLogin(inputParams);
+    const response = await pSdk.register.approveExternalLogin(inputParams);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'success',
@@ -139,7 +139,7 @@ describe('approveExternalLogin method', () => {
       };
 
       try {
-        await Register.approveExternalLogin(inputParams);
+        await pSdk.register.approveExternalLogin(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
@@ -155,7 +155,7 @@ describe('approveExternalLogin method', () => {
     Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
 
     try {
-      await Register.approveExternalLogin(inputParams);
+      await pSdk.register.approveExternalLogin(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(401);
       expect(error.response.data.message).toEqual(errUnauthorized.message);

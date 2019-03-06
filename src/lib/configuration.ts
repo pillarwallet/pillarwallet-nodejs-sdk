@@ -221,11 +221,6 @@ export class Configuration {
               new Error('Failed to sign headers with updated oAuth tokens!'),
             );
           }
-        } else {
-          request.headers['X-API-Signature'] = this.checkSignature(
-            payload,
-            Configuration.accessKeys.privateKey,
-          );
         }
       }
     }

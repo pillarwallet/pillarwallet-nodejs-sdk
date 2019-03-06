@@ -46,22 +46,7 @@ describe('Badge Class', () => {
   });
 
   describe('.my', () => {
-    it('should successfully call with valid data with key signature header', () => {
-      const userBadgesData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
-
-      pSdk.badge.my(userBadgesData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith({
-        ...getConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        params: userBadgesData,
-        url: 'https://localhost:8080/badge/my',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const userBadgesData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -92,23 +77,7 @@ describe('Badge Class', () => {
   });
 
   describe('.selfAward', () => {
-    it('should successfully call with valid data with key signature header', () => {
-      const selfAwardBadgeData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        event: 'test-event',
-      };
-
-      pSdk.badge.selfAward(selfAwardBadgeData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        data: selfAwardBadgeData,
-        url: 'https://localhost:8080/badge/self-award',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const selfAwardBadgeData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',

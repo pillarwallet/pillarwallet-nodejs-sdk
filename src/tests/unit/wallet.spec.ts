@@ -56,26 +56,8 @@ describe('Wallet Class', () => {
   });
 
   describe('.register', () => {
-    it('should successfully call with valid data', () => {
-      const walletRegistrationData = {
-        fcmToken: '987qwe',
-        username: 'sdfsdfs',
-      };
-
-      pSdk.wallet.register(walletRegistrationData);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-        data: walletRegistrationData,
-        url: 'https://localhost:8080/wallet/register',
-      });
-    });
-
     it(
-      'when accessToken is set, should successfully call' +
-        ' with valid data with Authorization header',
+      'should successfully call' + ' with valid data and Authorization header',
       () => {
         Configuration.setAuthTokens(accessToken, '');
         const walletRegistrationData = {
@@ -233,26 +215,8 @@ describe('Wallet Class', () => {
   });
 
   describe('.update', () => {
-    it('should successfully call with valid data', () => {
-      const walletUpdateData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        fcmToken: '987qwe',
-      };
-
-      pSdk.wallet.update(walletUpdateData);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-        data: walletUpdateData,
-        url: 'https://localhost:8080/wallet/update',
-      });
-    });
-
     it(
-      'when accessToken is set, should successfully call' +
-        ' with valid data with Authorization header',
+      'should successfully call' + ' with valid data and Authorization header',
       () => {
         Configuration.setAuthTokens(accessToken, '');
         const walletUpdateData = {
@@ -289,28 +253,8 @@ describe('Wallet Class', () => {
   });
 
   describe('.registerAddress', () => {
-    it('should successfully call with valid data', () => {
-      const walletRegisterAddressData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        blockchain: 'ethereum',
-        blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
-        fcmToken: 'sdcxxczdsds',
-      };
-
-      pSdk.wallet.registerAddress(walletRegisterAddressData);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-        data: walletRegisterAddressData,
-        url: 'https://localhost:8080/wallet/register-address',
-      });
-    });
-
     it(
-      'when accessToken is set, should successfully call' +
-        ' with valid data with Authorization header',
+      'should successfully call' + ' with valid data and Authorization header',
       () => {
         Configuration.setAuthTokens(accessToken, '');
         const walletRegisterAddressData = {
@@ -350,27 +294,8 @@ describe('Wallet Class', () => {
   });
 
   describe('.unregisterAddress', () => {
-    it('should successfully call with valid data', () => {
-      const walletUnregisterAddressData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        blockchain: 'ethereum',
-        blockchainAddress: '0x3eA19bddb978Db62344Ffba5d37Ba41C83C57917',
-      };
-
-      pSdk.wallet.unregisterAddress(walletUnregisterAddressData);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        data: walletUnregisterAddressData,
-        url: 'https://localhost:8080/wallet/unregister-address',
-      });
-    });
-
     it(
-      'when accessToken is set, should successfully call' +
-        ' with valid data with Authorization header',
+      'should successfully call' + ' with valid data and Authorization header',
       () => {
         Configuration.setAuthTokens(accessToken, '');
         const walletUnregisterAddressData = {

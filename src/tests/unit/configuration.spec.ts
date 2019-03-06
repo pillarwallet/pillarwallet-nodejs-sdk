@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import { AxiosPromise } from 'axios';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
@@ -228,7 +227,7 @@ describe('The Configuration Class', () => {
         });
       });
 
-      it('if there is NO access token, then executes the request with the `X-API-Signature` header', () => {
+      it('if there is NO access token, then executes the request without any header', () => {
         Configuration.setAuthTokens('', '');
         configuration.executeRequest({
           data,
@@ -241,7 +240,7 @@ describe('The Configuration Class', () => {
           data,
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
-          headers: { 'X-API-Signature': expect.any(String) },
+          headers: {},
         });
       });
     });

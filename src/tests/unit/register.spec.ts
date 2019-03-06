@@ -221,7 +221,10 @@ describe('Register Class', () => {
     };
 
     it('should send http request containing loginToken', () => {
-      Configuration.accessKeys.oAuthTokens = { refreshToken: 'myRefreshToken', accessToken: 'myAccessToken' };
+      Configuration.accessKeys.oAuthTokens = {
+        refreshToken: 'myRefreshToken',
+        accessToken: 'myAccessToken',
+      };
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
       pSdk.register.approveExternalLogin(approveExternalLoginData);
       expect(Requester.execute).toHaveBeenCalledWith({

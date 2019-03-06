@@ -51,25 +51,7 @@ describe('Notification Class', () => {
   });
 
   describe('.list', () => {
-    it('should successfully call with valid data with key signature header', () => {
-      const notificationData = {
-        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
-        fromTimestamp: '2016-05-24T15:54:14.876Z',
-        type: 'message',
-      };
-
-      pSdk.notification.list(notificationData);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...getConfiguration,
-        headers: { 'X-API-Signature': expect.stringMatching(/.+/) },
-        params: notificationData,
-        url: 'http://localhost:8081/notification/list',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       const notificationData = {
         walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
         fromTimestamp: '2016-05-24T15:54:14.876Z',
