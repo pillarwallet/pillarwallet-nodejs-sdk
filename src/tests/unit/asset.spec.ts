@@ -33,10 +33,7 @@ describe('Asset Class', () => {
   const accesToken = 'myAccessToken';
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {

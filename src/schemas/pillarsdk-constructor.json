@@ -4,11 +4,6 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "privateKey": {
-      "description": "Private Key buffer",
-      "type": [ "string" ],
-      "pattern":"[a-fA-F0-9]{64}$"
-    },
     "updateOAuthFn": {
       "description": "Callback function called when tokens are updated"
     },
@@ -31,6 +26,5 @@
       "type": [ "string" ],
       "format": "uri"
     }
-  },
-  "required": [ "privateKey" ]
+  }
 }

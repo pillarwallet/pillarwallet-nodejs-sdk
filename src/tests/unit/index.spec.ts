@@ -30,11 +30,7 @@ import { Investments } from '../../lib/investments';
 
 describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
-    const pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-    });
+    const pSdk = new PillarSdk({});
 
     expect(pSdk).toBeInstanceOf(PillarSdk);
     expect(pSdk.asset).toBeInstanceOf(Asset);
@@ -48,9 +44,6 @@ describe('The Pillar SDK Class', () => {
 
   it('should correctly instantiate with all properties', () => {
     const pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
       oAuthTokens: {
         accessToken: 'oneAccessToken',
         refreshToken: 'oneRefreshToken',
@@ -84,22 +77,6 @@ describe('The Pillar SDK Class', () => {
     try {
       new PillarSdk({
         apiUrl: 'localhos8080',
-        privateKey:
-          'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-      });
-    } catch (e) {
-      errorThrown = e;
-    }
-
-    expect(errorThrown).toBeInstanceOf(Error);
-  });
-
-  it('should fail to call due invalid privatekey', () => {
-    let errorThrown;
-    try {
-      new PillarSdk({
-        apiUrl: 'https://localhost:8080',
-        privateKey: 'increasethepeace',
       });
     } catch (e) {
       errorThrown = e;

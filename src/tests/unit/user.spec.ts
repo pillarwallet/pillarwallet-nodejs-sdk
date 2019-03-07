@@ -29,16 +29,12 @@ import { default as getConfiguration } from '../../utils/requester-configuration
 import { default as putConfiguration } from '../../utils/requester-configurations/put';
 import { Readable } from 'stream';
 import { PillarSdk } from '../..';
-const https = require('https');
 
 const profileImageSchema = require('../../schemas/user/profileImage.json');
-const uploadProfileImageSchema = require('../../schemas/user/uploadProfileImage.json');
 const userInfoByIdSchema = require('../../schemas/user/infoById.json');
 const imageByUserIdSchema = require('../../schemas/user/imageByUserId.json');
 
 describe('User Class', () => {
-  const privateKey: string =
-    'aef23212dbaadfa322321231231313123131312312312312312312312312312a';
   const accessToken = 'myAccessToken';
   let pSdk: PillarSdk;
   let user: User;
@@ -55,9 +51,7 @@ describe('User Class', () => {
   beforeEach(() => {
     user = new User();
     user.initialise({});
-    pSdk = new PillarSdk({
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
     jest.spyOn(user, 'validation');
     jest
       .spyOn(user, 'checkSignature')
@@ -421,13 +415,15 @@ describe('User Class', () => {
         image: new Buffer('scggdfgd'),
       };
 
+      Configuration.setAuthTokens(accessToken, '');
+
       user.uploadProfileImageFormData(walletId, data);
 
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toBeCalledWith({
         data,
         headers: {
-          'X-API-Signature': 'signature',
+          Authorization: `Bearer ${accessToken}`,
         },
         method: 'POST',
         params: undefined,

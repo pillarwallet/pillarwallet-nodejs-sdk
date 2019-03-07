@@ -31,7 +31,6 @@ const keys = require('../../utils/generateKeyPair');
 describe('registerKeys method', () => {
   // Keypair generation
   const publicKey = keys.publicKey;
-  const privateKey = keys.privateKey;
   // Responses
   const regKeysResponse = {
     expiresAt: expect.any(String),
@@ -50,10 +49,7 @@ describe('registerKeys method', () => {
   let uuid: string;
 
   beforeAll(() => {
-    new PillarSdk({
-      privateKey,
-      apiUrl: 'https://localhost:8080',
-    });
+    new PillarSdk({});
     uuid = uuidV4();
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');

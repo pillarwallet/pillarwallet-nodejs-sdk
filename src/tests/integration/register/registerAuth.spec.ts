@@ -65,10 +65,7 @@ describe('registerAuth method', () => {
 
   beforeAll(async () => {
     // Set SDK Config
-    new PillarSdk({
-      privateKey,
-      apiUrl: 'https://localhost:8080',
-    });
+    new PillarSdk({});
     // Generate Register unique Id
     uuid = uuidV4();
 

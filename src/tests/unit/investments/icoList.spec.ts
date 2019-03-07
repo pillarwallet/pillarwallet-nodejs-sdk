@@ -26,11 +26,7 @@ describe('The Investment Class', () => {
   let pSdk: PillarSdk;
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-      investmentsUrl: 'http://localhost:8082',
-    });
+    pSdk = new PillarSdk({});
     jest
       .spyOn(Requester, 'execute')
       .mockImplementationOnce(() => Promise.resolve());

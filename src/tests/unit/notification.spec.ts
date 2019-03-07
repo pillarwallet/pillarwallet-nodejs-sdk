@@ -34,11 +34,7 @@ describe('Notification Class', () => {
   spy.mockImplementation(() => {});
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-      notificationsUrl: 'http://localhost:8081',
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {

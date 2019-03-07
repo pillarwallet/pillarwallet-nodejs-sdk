@@ -46,10 +46,7 @@ describe('POST RegisterAuthServer', () => {
     walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
   };
 
-  const pSdk = new PillarSdk({
-    apiUrl: 'https://localhost:8080',
-    privateKey: keys.privateKey,
-  });
+  const pSdk = new PillarSdk({});
   let walletRegister = {};
 
   beforeAll(async () => {

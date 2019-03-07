@@ -22,8 +22,6 @@ SOFTWARE.
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
-import { ProofKey } from '../../utils/pkce';
-import { Register } from '../../lib/register';
 
 describe('The Configuration Class', () => {
   let configuration: Configuration;
@@ -33,7 +31,7 @@ describe('The Configuration Class', () => {
 
   beforeEach(() => {
     configuration = new Configuration();
-    configuration.initialise({ privateKey: 'onePrivateKey' });
+    configuration.initialise({});
     apiUrl = Configuration.accessKeys.apiUrl;
   });
 
@@ -244,87 +242,6 @@ describe('The Configuration Class', () => {
         });
       });
     });
-
-    it(
-      'check if registerTokens method is called when updateOAuthFn' +
-        ' is set but oAuthTokens property is not.',
-      async () => {
-        jest
-          .spyOn(ProofKey, 'codeVerifierGenerator')
-          .mockImplementation(() => 'codeVerifier');
-        jest.spyOn(Register, 'registerTokens').mockImplementation(() =>
-          Promise.resolve({
-            data: {
-              accessToken: 'oneAccessToken',
-              refreshToken: 'oneRefreshToken',
-            },
-          }),
-        );
-        Configuration.setAuthTokens('', '');
-        Configuration.accessKeys.updateOAuthFn = () => {
-          return 'oneUpdateOAuthFn';
-        };
-
-        await configuration.executeRequest({
-          data,
-          schema,
-          defaultRequest,
-          url,
-        });
-
-        expect(Register.registerTokens).toHaveBeenCalledWith('codeVerifier');
-        expect(Requester.execute).toHaveBeenCalledWith({
-          data,
-          method: 'POST',
-          url: 'https://localhost:8080/user/validate',
-          headers: { Authorization: expect.any(String) },
-        });
-
-        Register.registerTokens.mockRestore();
-        ProofKey.codeVerifierGenerator.mockRestore();
-      },
-    );
-
-    it(
-      'check if registerTokens method is called when updateOAuthFn' +
-        ' is set but oAuthTokens property is not.',
-      async () => {
-        expect.assertions(2);
-        jest
-          .spyOn(ProofKey, 'codeVerifierGenerator')
-          .mockImplementation(() => 'codeVerifier');
-        jest.spyOn(Configuration, 'setAuthTokens').mockImplementation(() => '');
-        jest.spyOn(Register, 'registerTokens').mockImplementation(() =>
-          Promise.resolve({
-            data: {
-              accessToken: 'oneAccessToken',
-              refreshToken: 'oneRefreshToken',
-            },
-          }),
-        );
-        Configuration.setAuthTokens('', '');
-        Configuration.accessKeys.updateOAuthFn = () => {
-          return 'oneUpdateOAuthFn';
-        };
-        try {
-          await configuration.executeRequest({
-            data,
-            schema,
-            defaultRequest,
-            url,
-          });
-        } catch (e) {
-          expect(e.message).toEqual(
-            'Failed to sign headers with updated oAuth tokens!',
-          );
-          expect(Register.registerTokens).toHaveBeenCalledWith('codeVerifier');
-        }
-
-        Register.registerTokens.mockRestore();
-        ProofKey.codeVerifierGenerator.mockRestore();
-        Configuration.setAuthTokens.mockRestore();
-      },
-    );
   });
 
   describe('getTokens method', () => {

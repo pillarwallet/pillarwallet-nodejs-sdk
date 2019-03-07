@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 interface PillarSdkConfiguration {
-  privateKey: string;
   updateOAuthFn?: (x: { accessToken: string; refreshToken: string }) => any;
   oAuthTokens?: { accessToken: string; refreshToken: string };
   apiUrl?: string;

@@ -39,10 +39,7 @@ describe('Wallet Class', () => {
     .mockImplementation(() => Promise.resolve());
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey: keys.privateKey,
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {

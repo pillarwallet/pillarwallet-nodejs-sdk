@@ -31,8 +31,13 @@ describe('sdkInstantiation', () => {
     .toString(36)
     .substring(7)}`;
   let responseValidate: any;
+  const ethAddress = keys.ethAddress.toString();
+  const publicKey = keys.publicKey.toString();
+
   const walletRegister = {
     username,
+    publicKey,
+    ethAddress,
     fcmToken: '987qwe',
   };
 
@@ -113,7 +118,6 @@ describe('sdkInstantiation', () => {
         apiUrl: 'https://localhost:8080',
         notificationsUrl: 'http://localhost:8081',
         investmentsUrl: 'http://localhost:8082',
-        privateKey: keys.privateKey,
       });
       const response = await pSdk.wallet.register(walletRegister);
       expect(response.status).toEqual(200);
@@ -127,7 +131,6 @@ describe('sdkInstantiation', () => {
         apiUrl: 'https://localhost:8080',
         notificationsUrl: 'http://localhost:8081',
         investmentsUrl: 'http://localhost:8082',
-        privateKey: keys.privateKey,
         updateOAuthFn: () => {
           return 'oneCallbackFunction';
         },

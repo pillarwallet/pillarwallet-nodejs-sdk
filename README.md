@@ -87,7 +87,6 @@ const pillarSdk = new PillarSdk({
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
 | apiUrl  | URL where API is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
 | notificationsUrl  | URL where the Notifications Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |
 | investmentsUrl  | URL where the Investments Service is hosted. String with URL format. e.g. "http://<url>".| String  | Optional  |

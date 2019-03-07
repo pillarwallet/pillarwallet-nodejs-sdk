@@ -55,15 +55,8 @@ describe('Connection Map Identity Keys', () => {
     message: 'Internal Server Error',
   };
 
-  const errUnauthorized = {
-    message: 'Signature not verified',
-  };
-
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
     pSdk.configuration.setUsername('username');
 
     const walletRegister = {

@@ -28,14 +28,11 @@ import { AxiosResponse } from 'axios';
 import { ErrorMessages } from './constants/errorMessages';
 import { Authentication } from '../utils/authentication';
 import { Requester } from '../utils/requester';
-import { Register } from './register';
-import { ProofKey } from '../utils/pkce';
 
 let ajv: any;
 
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
-    privateKey: '',
     updateOAuthFn: undefined,
     oAuthTokens: { accessToken: '', refreshToken: '' },
     apiUrl: '',
@@ -198,30 +195,6 @@ export class Configuration {
         request.headers['Authorization'] = `Bearer ${
           Configuration.accessKeys.oAuthTokens.accessToken
         }`;
-      } else {
-        if (Configuration.accessKeys.updateOAuthFn) {
-          // Generate code verifier
-          const codeVerifier = await ProofKey.codeVerifierGenerator();
-          const registerTokensServerResponse = await Register.registerTokens(
-            codeVerifier.toString(),
-          );
-          Configuration.setAuthTokens(
-            registerTokensServerResponse.data.accessToken,
-            registerTokensServerResponse.data.refreshToken,
-          );
-          if (
-            Configuration.accessKeys.oAuthTokens &&
-            Configuration.accessKeys.oAuthTokens.accessToken
-          ) {
-            request.headers['Authorization'] = `Bearer ${
-              Configuration.accessKeys.oAuthTokens.accessToken
-            }`;
-          } else {
-            return Promise.reject(
-              new Error('Failed to sign headers with updated oAuth tokens!'),
-            );
-          }
-        }
       }
     }
 

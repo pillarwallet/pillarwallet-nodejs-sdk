@@ -67,10 +67,7 @@ describe('User Badges', () => {
   };
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
     pSdk.configuration.setUsername('username');
 
     const walletRegister = {
