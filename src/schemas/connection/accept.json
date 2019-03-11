@@ -8,6 +8,10 @@
       "description": "The target user ID",
       "type": "string"
     },
+    "sourceUserAccessKey": {
+      "description": "The source user shared access key",
+      "type": "string"
+    },
     "targetUserAccessKey": {
       "description": "The target user shared access key",
       "type": "string"
