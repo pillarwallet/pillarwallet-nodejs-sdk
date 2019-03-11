@@ -22,6 +22,7 @@ SOFTWARE.
 import axios, { AxiosPromise } from 'axios';
 import { Register } from '../lib/register';
 import { Configuration } from '../lib/configuration';
+import { ProofKey } from '../utils/pkce';
 
 export class Requester {
   /**
@@ -35,19 +36,46 @@ export class Requester {
       return axios(incomingRequestOptions).catch(error => {
         // TODO: What would happen if we banned the user and the server would always return 401?
         if (error.config && error.response && error.response.status === 401) {
-          return Register.refreshAuthToken().then((response: any) => {
-            // Set auth Tokens
-            const tokens = { ...response.data };
-            this.setTokens(tokens);
-            const options = {
-              ...error.config,
-              headers: {
-                ...error.config.headers,
-                Authorization: `Bearer ${tokens.accessToken}`,
-              },
-            };
-            return axios(options);
-          });
+          return Register.refreshAuthToken()
+            .then((response: any) => {
+              // Set auth Tokens
+              const tokens = { ...response.data };
+              this.setTokens(tokens);
+              const options = {
+                ...error.config,
+                headers: {
+                  ...error.config.headers,
+                  Authorization: `Bearer ${tokens.accessToken}`,
+                },
+              };
+              return axios(options);
+            })
+            .catch(async error => {
+              if (
+                error.response.status === 400 &&
+                error.response.data &&
+                error.response.data.message ===
+                  'Invalid grant: refresh token has expired'
+              ) {
+                const refreshTokenCallback = async (privateKey: string) => {
+                  const codeVerifier = await ProofKey.codeVerifierGenerator();
+                  return Register.registerTokens(
+                    codeVerifier.toString(),
+                    privateKey,
+                  ).then((response: any) => {
+                    // Set auth Tokens
+                    const tokens = { ...response.data };
+                    this.setTokens(tokens);
+                    incomingRequestOptions.headers.Authorization = `Bearer ${
+                      tokens.accessToken
+                    }`;
+                    return axios(incomingRequestOptions);
+                  });
+                };
+                error.cb = refreshTokenCallback;
+              }
+              throw error;
+            });
         }
         throw error;
       });

@@ -34,7 +34,7 @@ import nock = require('nock');
  */
 if (env !== 'test') {
   jest.useRealTimers();
-  jest.setTimeout(17000);
+  jest.setTimeout(18000);
 }
 
 describe('Authentication scenarios', () => {
@@ -180,7 +180,7 @@ describe('Authentication scenarios', () => {
           id: expect.any(String),
           username,
         });
-      }, 7000);
+      }, 7000); // wait 7 seconds, to ensure accessToken expires
     } else {
       const response = await pSdk.user.info(inputParams);
       expect(response.status).toBe(200);
@@ -191,21 +191,33 @@ describe('Authentication scenarios', () => {
     }
   });
 
-  it('with an invalid accessToken and refreshToken', async () => {
+  it('with an invalid accessToken and expired refreshToken', async () => {
     if (env !== 'test') {
-      await new Promise(res =>
-        setTimeout(async () => {
-          const inputParams = {
-            walletId,
-          };
-          const response = await pSdk.user.info(inputParams);
-          expect(response.status).toBe(200);
-          expect(response.data).toEqual({
-            id: expect.any(String),
-            username,
-          });
-          res();
-        }, 11000),
+      await new Promise(
+        res =>
+          setTimeout(async () => {
+            const inputParams = {
+              walletId,
+            };
+            try {
+              await pSdk.user.info(inputParams);
+            } catch (error) {
+              if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message ===
+                  'Invalid grant: refresh token has expired'
+              ) {
+                const response = await error.cb(privateKey);
+                expect(response.status).toBe(200);
+                expect(response.data).toEqual({
+                  id: expect.any(String),
+                  username,
+                });
+              }
+            }
+            res();
+          }, 15000), // wait 15 seconds, to ensure accessToken and refreshToken expires
       );
     } else {
       const inputParams = {
