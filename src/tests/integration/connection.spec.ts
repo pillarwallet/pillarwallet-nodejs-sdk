@@ -39,7 +39,6 @@ describe('Connection Class', () => {
   it('.invite', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
@@ -58,7 +57,6 @@ describe('Connection Class', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      sourceUserAccessKey: 'hello',
       targetUserAccessKey: 'hello',
     };
 

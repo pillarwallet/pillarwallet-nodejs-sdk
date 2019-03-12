@@ -376,7 +376,6 @@ Creates a connection invitation for a user to create a relationship with another
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| accessKey  | The Access Key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
@@ -400,7 +399,6 @@ Accepts a connection invitation from another user.
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
-| sourceUserAccessKey  | Source User Access Key. | String  | Required  |
 | targetUserAccessKey  | Target User Access Key. | String  | Required  |
 
 **Expected Output**

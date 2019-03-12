@@ -52,54 +52,46 @@ describe('Connection Class', () => {
    * Connection: Invite method
    */
   describe('.invite', () => {
-    it(
-      'should successfully call' + ' with valid data and Authorization header',
-      () => {
-        Configuration.setAuthTokens(accessToken, '');
-        const connectionInviteData = {
-          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-          accessKey: 'abc123',
-          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        };
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionInviteData = {
+        targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
 
-        pSdk.connection.invite(connectionInviteData);
+      pSdk.connection.invite(connectionInviteData);
 
-        expect(Requester.execute).toHaveBeenCalledWith({
-          ...postConfiguration,
-          headers: { Authorization: 'Bearer myAccessToken' },
-          data: connectionInviteData,
-          url: 'https://localhost:8080/connection/invite',
-        });
-      },
-    );
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: connectionInviteData,
+        url: 'https://localhost:8080/connection/invite',
+      });
+    });
   });
 
   /**
    * Connection: Accept method
    */
   describe('.accept', () => {
-    it(
-      'should successfully call' + ' with valid data and Authorization header',
-      () => {
-        Configuration.setAuthTokens(accessToken, '');
-        const connectionAcceptData = {
-          targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-          walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-          sourceUserAccessKey: 'hello',
-          targetUserAccessKey: 'hello',
-        };
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionAcceptData = {
+        targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        targetUserAccessKey: 'hello',
+      };
 
-        pSdk.connection.accept(connectionAcceptData);
+      pSdk.connection.accept(connectionAcceptData);
 
-        expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-        expect(Requester.execute).toHaveBeenCalledWith({
-          ...postConfiguration,
-          headers: { Authorization: 'Bearer myAccessToken' },
-          data: connectionAcceptData,
-          url: 'https://localhost:8080/connection/accept',
-        });
-      },
-    );
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: connectionAcceptData,
+        url: 'https://localhost:8080/connection/accept',
+      });
+    });
   });
 
   /**
