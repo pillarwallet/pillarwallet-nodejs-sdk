@@ -21,6 +21,6 @@ SOFTWARE.
 */
 interface ConnectionInvite {
   targetUserId: string;
-  accessKey: string;
+  accessKey?: string;
   walletId: string;
 }

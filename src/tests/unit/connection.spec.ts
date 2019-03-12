@@ -58,7 +58,6 @@ describe('Connection Class', () => {
     it('should successfully call with valid data', () => {
       const connectionInviteData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        accessKey: 'abc123',
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
@@ -80,7 +79,6 @@ describe('Connection Class', () => {
         Configuration.setAuthTokens(accessToken, '');
         const connectionInviteData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-          accessKey: 'abc123',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         };
 
@@ -104,7 +102,6 @@ describe('Connection Class', () => {
       const connectionAcceptData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceUserAccessKey: 'hello',
         targetUserAccessKey: 'hello',
       };
 
@@ -127,7 +124,6 @@ describe('Connection Class', () => {
         const connectionAcceptData = {
           targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
           walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-          sourceUserAccessKey: 'hello',
           targetUserAccessKey: 'hello',
         };
 
