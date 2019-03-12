@@ -54,8 +54,10 @@ export class Requester {
               if (
                 error.response.status === 400 &&
                 error.response.data &&
-                error.response.data.message ===
-                  'Invalid grant: refresh token has expired'
+                (error.response.data.message ===
+                  'Invalid grant: refresh token has expired' ||
+                  error.response.data.message ===
+                    'Invalid grant: refresh token is invalid')
               ) {
                 const refreshTokenCallback = async (privateKey: string) => {
                   const codeVerifier = await ProofKey.codeVerifierGenerator();
