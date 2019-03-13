@@ -88,7 +88,7 @@ describe('Requester utility', () => {
       });
 
       it('tries to refresh access tokens', async () => {
-        expect.assertions(4);
+        expect.assertions(3);
 
         const errorResponseRefreshToken = {
           response: {
@@ -107,7 +107,6 @@ describe('Requester utility', () => {
         } catch (e) {
           expect(Register.refreshAuthToken).toHaveBeenCalledTimes(1);
           expect(e.response.status).toBe(400);
-          expect(e.cb).toEqual(expect.any(Function));
           expect(axios).toHaveBeenCalledTimes(2);
         }
       });

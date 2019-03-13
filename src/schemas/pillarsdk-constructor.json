@@ -7,6 +7,9 @@
     "updateOAuthFn": {
       "description": "Callback function called when tokens are updated"
     },
+    "tokensFailedCallbackFn": {
+      "description": "Callback function called when tokens are expired"
+    },
     "oAuthTokens": {
       "description": "Object with accessToken and refreshToken properties",
       "type": [ "object" ]

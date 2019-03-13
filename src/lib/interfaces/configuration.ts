@@ -21,6 +21,7 @@ SOFTWARE.
 */
 interface PillarSdkConfiguration {
   updateOAuthFn?: (x: { accessToken: string; refreshToken: string }) => any;
+  tokensFailedCallbackFn?: (x: Function) => any;
   oAuthTokens?: { accessToken: string; refreshToken: string };
   apiUrl?: string;
   notificationsUrl?: string;

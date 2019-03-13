@@ -54,7 +54,12 @@ describe('Authentication scenarios', () => {
   };
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({});
+    pSdk = new PillarSdk({
+      tokensFailedCallbackFn: cb => {
+        console.log('Callback called');
+        cb(privateKey);
+      },
+    });
 
     pSdk.configuration.setUsername(username);
 
@@ -208,12 +213,7 @@ describe('Authentication scenarios', () => {
                 error.response.data.message ===
                   'Invalid grant: refresh token has expired'
               ) {
-                const response = await error.cb(privateKey);
-                expect(response.status).toBe(200);
-                expect(response.data).toEqual({
-                  id: expect.any(String),
-                  username,
-                });
+                // tokensFailedCallbackFn should be called, chekcs for 'Callback called' message in console
               }
             }
             res();

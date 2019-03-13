@@ -134,6 +134,10 @@ describe('sdkInstantiation', () => {
         updateOAuthFn: () => {
           return 'oneCallbackFunction';
         },
+        tokensFailedCallbackFn: cb => {
+          console.log('Callback called');
+          cb(keys.privateKey.toString());
+        },
       });
     });
 

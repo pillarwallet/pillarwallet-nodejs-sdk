@@ -54,6 +54,10 @@ describe('The Pillar SDK Class', () => {
       }) => {
         return `Callback called: ${response}`;
       },
+      tokensFailedCallbackFn: (cb: Function) => {
+        console.log('Callback called');
+        cb('aef23212dbaadfa322321231231313123131312312312312312312312312312a');
+      },
       notificationsUrl: 'http://localhost:8081',
       investmentsUrl: 'http://localhost:8082',
     });

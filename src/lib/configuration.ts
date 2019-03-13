@@ -34,6 +34,7 @@ let ajv: any;
 export class Configuration {
   public static accessKeys: PillarSdkConfiguration = {
     updateOAuthFn: undefined,
+    tokensFailedCallbackFn: undefined,
     oAuthTokens: { accessToken: '', refreshToken: '' },
     apiUrl: '',
     notificationsUrl: '',
