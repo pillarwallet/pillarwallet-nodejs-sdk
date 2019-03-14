@@ -545,7 +545,9 @@ Returns the number of connections a user has
 | Name  | Output | Type |
 | ------------- | ------------- | ------------- |
 | userId  | The User Identifier | String  |
-| count  | The number of connections | Number  |
+| currentConnectionsCount  | The number of connections with sourceIdentityKey | Number  |
+| oldConnectionsCount  | The number of connections without sourceIdentityKey | Number  |
+
 
 ### Connection Map Identity Keys
 

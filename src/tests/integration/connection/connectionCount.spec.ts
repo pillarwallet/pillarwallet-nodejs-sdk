@@ -42,7 +42,8 @@ describe('Connection Count', () => {
 
   const responseData = {
     userId: 'userId',
-    count: 0,
+    currentConnectionsCount: 0,
+    oldConnectionsCount: 0,
   };
 
   const errInvalidWalletId = {
@@ -51,10 +52,6 @@ describe('Connection Count', () => {
 
   const errInternal = {
     message: 'Internal Server Error',
-  };
-
-  const errUnauthorized = {
-    message: 'Signature not verified',
   };
 
   beforeAll(async () => {
@@ -120,7 +117,8 @@ describe('Connection Count', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       userId,
-      count: 0,
+      currentConnectionsCount: 0,
+      oldConnectionsCount: 0,
     });
   });
 
