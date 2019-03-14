@@ -65,17 +65,14 @@ describe('Requester utility', () => {
     };
 
     jest.spyOn(Register, 'refreshAuthToken');
-    jest.spyOn(Register, 'registerTokens');
 
     beforeEach(() => {
       Configuration.setAuthTokens('accessToken', 'refreshToken');
-      Configuration.accessKeys.privateKey = 'onePrivateKey';
       Configuration.accessKeys.username = 'refreshedUser';
     });
 
     afterEach(() => {
       Register.refreshAuthToken.mockClear();
-      Register.registerTokens.mockClear();
     });
 
     describe('when response is 401', () => {
@@ -96,6 +93,9 @@ describe('Requester utility', () => {
         const errorResponseRefreshToken = {
           response: {
             status: 400,
+            data: {
+              message: 'Invalid grant: refresh token has expired',
+            },
           },
         };
         axios.mockImplementationOnce(() =>
@@ -145,59 +145,6 @@ describe('Requester utility', () => {
           expect(options.headers.Authorization).toBe('Bearer access');
         });
       });
-
-      describe('when refresh token is expired', () => {
-        beforeEach(() => {
-          const errorResponseRefreshToken = {
-            response: {
-              status: 400,
-              data: {
-                message: 'Invalid grant: refresh token has expired',
-              },
-            },
-          };
-          axios.mockImplementationOnce(() =>
-            Promise.reject(errorResponseRefreshToken),
-          );
-        });
-
-        it('stores updated tokens', async () => {
-          axios.mockImplementationOnce(() =>
-            Promise.resolve({
-              data: {
-                accessToken: 'updatedAccessToken',
-                refreshToken: 'updatedRefreshToken',
-              },
-            }),
-          );
-
-          await Requester.execute(options);
-
-          expect(Configuration.accessKeys.oAuthTokens.accessToken).toBe(
-            'updatedAccessToken',
-          );
-          expect(Configuration.accessKeys.oAuthTokens.refreshToken).toBe(
-            'updatedRefreshToken',
-          );
-          expect(axios).toHaveBeenCalledTimes(4);
-        });
-
-        it('tries to refresh access tokens', async () => {
-          axios.mockImplementationOnce(() =>
-            Promise.reject(new Error('registerTokens error')),
-          );
-
-          try {
-            await Requester.execute(options);
-          } catch (e) {
-            expect(Register.refreshAuthToken).toHaveBeenCalledTimes(1);
-            expect(Register.registerTokens).toHaveBeenCalledTimes(1);
-            expect(e).toBeInstanceOf(Error);
-            expect(e.message).toBe('registerTokens error');
-            expect(axios).toHaveBeenCalledTimes(3);
-          }
-        });
-      });
     });
 
     it('returns a rejected promise when original request config is missing', async () => {
@@ -218,9 +165,8 @@ describe('Requester utility', () => {
 
     it('returns a rejected promise when response is not 401', async () => {
       const anotherError = {
-        config: options,
         response: {
-          statusCode: 400,
+          statusCode: 401,
         },
       };
 
@@ -229,7 +175,7 @@ describe('Requester utility', () => {
       try {
         await Requester.execute(options);
       } catch (e) {
-        expect(e).toBe(anotherError);
+        expect(e).toEqual(anotherError);
       }
     });
   });

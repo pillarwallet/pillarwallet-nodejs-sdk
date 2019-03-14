@@ -59,18 +59,27 @@ export class Requester {
                   error.response.data.message ===
                     'Invalid grant: refresh token is invalid')
               ) {
-                const codeVerifier = await ProofKey.codeVerifierGenerator();
-                return Register.registerTokens(codeVerifier.toString()).then(
-                  (response: any) => {
-                    // Set auth Tokens
-                    const tokens = { ...response.data };
-                    this.setTokens(tokens);
-                    incomingRequestOptions.headers.Authorization = `Bearer ${
-                      tokens.accessToken
-                    }`;
-                    return axios(incomingRequestOptions);
-                  },
-                );
+                if (Configuration.accessKeys.tokensFailedCallbackFn) {
+                  const refreshTokenCallback = async (privateKey: string) => {
+                    const codeVerifier = await ProofKey.codeVerifierGenerator();
+                    return Register.registerTokens(
+                      codeVerifier.toString(),
+                      privateKey,
+                    ).then((response: any) => {
+                      // Set auth Tokens
+                      const tokens = { ...response.data };
+                      this.setTokens(tokens);
+                      incomingRequestOptions.headers.Authorization = `Bearer ${
+                        tokens.accessToken
+                      }`;
+                      return axios(incomingRequestOptions);
+                    });
+                  };
+                  // Callback function to frontEnd
+                  Configuration.accessKeys.tokensFailedCallbackFn(
+                    refreshTokenCallback,
+                  );
+                }
               }
               throw error;
             });

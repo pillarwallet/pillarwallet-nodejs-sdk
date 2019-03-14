@@ -152,15 +152,17 @@ export class Register {
 
   /**
    * @name registerTokens
-   * @description Method to authenticate when tokens are not provided in the initialise method
+   * @description Method to authenticate when refresh token expires
    * @param {string} codeVerifier
    * @returns {AxiosPromise}
    */
-  static registerTokens(codeVerifier: string): AxiosPromise {
+
+  static registerTokens(
+    codeVerifier: string,
+    privateKey: string,
+  ): AxiosPromise {
     const data = {
-      publicKey: PrivateKeyDerivatives.getPublicKey(
-        Configuration.accessKeys.privateKey,
-      ),
+      publicKey: PrivateKeyDerivatives.getPublicKey(privateKey),
       uuid: uuidV4(),
       codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier),
       codeVerifier: codeVerifier.toString(),
@@ -176,7 +178,7 @@ export class Register {
     // Signing Header
     config.headers['X-API-Signature'] = new Configuration().checkSignature(
       header,
-      Configuration.accessKeys.privateKey,
+      privateKey,
     );
 
     // HTTP request
