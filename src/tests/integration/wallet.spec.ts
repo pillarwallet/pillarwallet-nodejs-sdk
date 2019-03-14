@@ -20,26 +20,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 // tslint:disable: object-shorthand-properties-first
-const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
-import { Register } from '../../lib/register';
 import { PillarSdk } from '../..';
 
 // TODO: TECHNICAL DEPT!! Create a configurable way to use or one Mock for api (e.g. nock library)
 // TODO: or the real api that is currently being used.
 
 describe('wallet endpoints', () => {
-  const username = `User${Math.random()
-    .toString(36)
-    .substring(7)}`;
   const requesterExecuteSpy: any = jest.spyOn(Requester, 'execute');
   let pSdk: PillarSdk;
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey: keys.privateKey,
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {
@@ -85,7 +77,7 @@ describe('wallet endpoints', () => {
         fcmToken: 'increaseThePeace',
       };
 
-      const result = pSdk.wallet
+      pSdk.wallet
         .update(inputParams)
         .then((response: any) => {
           return response;

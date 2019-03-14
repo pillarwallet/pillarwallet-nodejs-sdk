@@ -23,7 +23,6 @@ const fs = require('fs');
 const path = require('path');
 const FormData = require('form-data');
 
-const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
@@ -33,10 +32,7 @@ describe.skip('user endpoints', () => {
   let pSdk: PillarSdk;
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey: keys.privateKey,
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {

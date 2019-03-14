@@ -21,8 +21,6 @@ SOFTWARE.
 */
 // tslint:disable: object-shorthand-properties-first
 // check node environment
-const env = process.env.NODE_ENV;
-
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
@@ -69,10 +67,7 @@ describe('User Badges', () => {
   };
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
     pSdk.configuration.setUsername('username');
 
     const walletRegister = {
@@ -81,41 +76,39 @@ describe('User Badges', () => {
       username,
     };
 
-    if (env === 'test') {
-      const mockApi = nock('https://localhost:8080');
-      mockApi
-        .post('/register/keys')
-        .reply(200, {
-          expiresAt: '2015-03-21T05:41:32Z',
-          nonce: 'AxCDF23232',
-        })
-        .post('/register/auth')
-        .reply(200, {
-          authorizationCode: 'Authorization code',
-          expiresAt: '2011-06-14T04:12:36Z',
-        })
-        .post('/register/access')
-        .reply(200, {
-          accessToken: 'accessToken',
-          refreshToken: 'refreshToken',
-          walletId: 'walletId',
-        })
-        .get('/badge/my?walletId=walletId')
-        .reply(200, responseData)
-        .get('/badge/my?walletId=')
-        .reply(400, errInvalidWalletId)
-        .get('/badge/my?walletId=walletId')
-        .reply(500, errInternal)
-        .get('/badge/my?walletId=walletId')
-        .reply(401, errUnauthorized)
-        .post('/register/refresh')
-        .reply(200, {
-          accessToken: 'accessToken',
-          refreshToken: 'refreshToken',
-        })
-        .get('/badge/my?walletId=walletId')
-        .reply(200, responseData);
-    }
+    const mockApi = nock('https://localhost:8080');
+    mockApi
+      .post('/register/keys')
+      .reply(200, {
+        expiresAt: '2015-03-21T05:41:32Z',
+        nonce: 'AxCDF23232',
+      })
+      .post('/register/auth')
+      .reply(200, {
+        authorizationCode: 'Authorization code',
+        expiresAt: '2011-06-14T04:12:36Z',
+      })
+      .post('/register/access')
+      .reply(200, {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+        walletId: 'walletId',
+      })
+      .get('/badge/my?walletId=walletId')
+      .reply(200, responseData)
+      .get('/badge/my?walletId=')
+      .reply(400, errInvalidWalletId)
+      .get('/badge/my?walletId=walletId')
+      .reply(500, errInternal)
+      .get('/badge/my?walletId=walletId')
+      .reply(401, errUnauthorized)
+      .post('/register/refresh')
+      .reply(200, {
+        accessToken: 'accessToken',
+        refreshToken: 'refreshToken',
+      })
+      .get('/badge/my?walletId=walletId')
+      .reply(200, responseData);
 
     try {
       const response = await pSdk.wallet.registerAuthServer(walletRegister);
@@ -127,9 +120,7 @@ describe('User Badges', () => {
 
   afterAll(() => {
     jest.restoreAllMocks();
-    if (env === 'test') {
-      nock.cleanAll();
-    }
+    nock.cleanAll();
   });
 
   it('expects to return array containing badges and status 200', async () => {
@@ -155,20 +146,18 @@ describe('User Badges', () => {
     }
   });
 
-  if (env === 'test') {
-    it('should return 500 due internal server error', async () => {
-      const inputParams = {
-        walletId,
-      };
+  it('should return 500 due internal server error', async () => {
+    const inputParams = {
+      walletId,
+    };
 
-      try {
-        await pSdk.badge.my(inputParams);
-      } catch (error) {
-        expect(error.response.status).toEqual(500);
-        expect(error.response.data.message).toEqual(errInternal.message);
-      }
-    });
-  }
+    try {
+      await pSdk.badge.my(inputParams);
+    } catch (error) {
+      expect(error.response.status).toEqual(500);
+      expect(error.response.data.message).toEqual(errInternal.message);
+    }
+  });
 
   it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
     const inputParams = {

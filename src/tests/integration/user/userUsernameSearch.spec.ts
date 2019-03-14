@@ -40,18 +40,17 @@ describe('userUsernameSearch method', () => {
   };
 
   const ethAddress = keys.ethAddress.toString();
+  const publicKey = keys.publicKey.toString();
 
   const walletParams = {
     username,
+    publicKey,
     ethAddress,
     fcmToken: 'abc123',
   };
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey: keys.privateKey,
-    });
+    pSdk = new PillarSdk({});
 
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');

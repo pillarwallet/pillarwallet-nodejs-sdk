@@ -1,24 +1,22 @@
-/*
-Copyright (C) 2019 Stiftung Pillar Project
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+/*	
+Copyright (C) 2019 Stiftung Pillar Project	
+ Permission is hereby granted, free of charge, to any person obtaining a copy	
+of this software and associated documentation files (the "Software"), to deal	
+in the Software without restriction, including without limitation the rights	
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell	
+copies of the Software, and to permit persons to whom the Software is	
+furnished to do so, subject to the following conditions:	
+ The above copyright notice and this permission notice shall be included in all	
+copies or substantial portions of the Software.	
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR	
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,	
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE	
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER	
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,	
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE	
+SOFTWARE.	
 */
+
 // tslint:disable: object-shorthand-properties-first
 const env = process.env.NODE_ENV;
 
@@ -48,10 +46,7 @@ describe('registerTokens method', () => {
   let pSdk: PillarSdk;
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
     const walletRegister = {
       privateKey,
       fcmToken: '987qwe',
@@ -109,6 +104,7 @@ describe('registerTokens method', () => {
 
     const reponseRegisterTokens = await Register.registerTokens(
       codeVerifier.toString(),
+      privateKey,
     );
 
     expect(reponseRegisterTokens.status).toBe(200);
@@ -126,7 +122,7 @@ describe('registerTokens method', () => {
     Configuration.accessKeys.privateKey =
       '97ddae0f3a25b92268175400149d65d6887b9cefaf28ea2c078e05cdc15a3c0a';
     try {
-      await Register.registerTokens(codeVerifier.toString());
+      await Register.registerTokens(codeVerifier.toString(), privateKey);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidPrivaeKey.message);
@@ -138,7 +134,7 @@ describe('registerTokens method', () => {
       const codeVerifier = await ProofKey.codeVerifierGenerator();
 
       try {
-        await Register.registerTokens(codeVerifier.toString());
+        await Register.registerTokens(codeVerifier.toString(), privateKey);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);

@@ -28,22 +28,14 @@ import axios from 'axios';
 jest.mock('axios');
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
 import { default as getConfiguration } from '../../utils/requester-configurations/get';
-import { ProofKey } from '../../utils/pkce';
-import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
 import { PillarSdk } from '../..';
-const keys = require('../utils/generateKeyPair');
-const https = require('https');
 
 describe('Register Class', () => {
   const apiUrl = Configuration.accessKeys.apiUrl;
   Configuration.accessKeys.apiUrl = 'https://localhost:8080';
-  Configuration.accessKeys.privateKey = keys.privateKey.toString();
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
-  const pSdk = new PillarSdk({
-    privateKey:
-      'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-  });
+  const pSdk = new PillarSdk({});
   let uuid;
 
   beforeEach(() => {
@@ -164,50 +156,6 @@ describe('Register Class', () => {
     });
   });
 
-  describe('registerTokens', () => {
-    const regTokensResponse = {
-      status: 200,
-      data: {
-        accessToken: 'myAccessToken',
-        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        refreshToken: 'myRefreshToken',
-        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-      },
-    };
-
-    it('should send http request', async () => {
-      jest.spyOn(Requester, 'execute').mockResolvedValue('');
-
-      const codeVerifier = await ProofKey.codeVerifierGenerator();
-
-      const data = {
-        publicKey: PrivateKeyDerivatives.getPublicKey(
-          Configuration.accessKeys.privateKey,
-        ),
-        uuid: expect.any(String),
-        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-        codeVerifier: codeVerifier.toString(),
-      };
-
-      Register.registerTokens(codeVerifier.toString());
-
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.any(String) },
-        data,
-        url: 'https://localhost:8080/register/tokens',
-      });
-    });
-
-    it('expects response to resolve with data', async () => {
-      jest.spyOn(Requester, 'execute').mockResolvedValue(regTokensResponse);
-      const codeVerifier = await ProofKey.codeVerifierGenerator();
-      const response = await Register.registerTokens(codeVerifier.toString());
-      expect(response.status).toEqual(200);
-      expect(response.data).toEqual(regTokensResponse.data);
-    });
-  });
-
   describe('approveExternalLogin', () => {
     const approveExternalLoginResponse = {
       status: 'success',
@@ -221,7 +169,10 @@ describe('Register Class', () => {
     };
 
     it('should send http request containing loginToken', () => {
-      Configuration.accessKeys.oAuthTokens = { refreshToken: 'myRefreshToken', accessToken: 'myAccessToken' };
+      Configuration.accessKeys.oAuthTokens = {
+        refreshToken: 'myRefreshToken',
+        accessToken: 'myAccessToken',
+      };
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
       pSdk.register.approveExternalLogin(approveExternalLoginData);
       expect(Requester.execute).toHaveBeenCalledWith({

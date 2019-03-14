@@ -33,10 +33,7 @@ describe('Asset Class', () => {
   const accesToken = 'myAccessToken';
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      privateKey:
-        'aef23212dbaadfa322321231231313123131312312312312312312312312312a',
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {
@@ -45,22 +42,7 @@ describe('Asset Class', () => {
   });
 
   describe('.defaults', () => {
-    it('should successfully call with valid data with key signature header', () => {
-      const assetDefaultsData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
-
-      pSdk.asset.defaults(assetDefaultsData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith({
-        ...getConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        params: assetDefaultsData,
-        url: 'https://localhost:8080/asset/defaults',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const assetDefaultsData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -91,22 +73,7 @@ describe('Asset Class', () => {
   });
 
   describe('.preferred', () => {
-    it('should successfully call with valid data with key signature header', () => {
-      const assetPreferredData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
-
-      pSdk.asset.preferred(assetPreferredData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith({
-        ...getConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        params: assetPreferredData,
-        url: 'https://localhost:8080/asset/preferred',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const assetPreferredData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -137,23 +104,7 @@ describe('Asset Class', () => {
   });
 
   describe('.search', () => {
-    it('should successfully call with valid data with key signature header', () => {
-      const assetSearchData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        query: 'searchthis',
-      };
-
-      pSdk.asset.search(assetSearchData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith({
-        ...getConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        params: assetSearchData,
-        url: 'https://localhost:8080/asset/search',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const assetSearchData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
@@ -187,23 +138,7 @@ describe('Asset Class', () => {
   });
 
   describe('.list', () => {
-    it('should successfully call with an additional array of symbols to return', async () => {
-      const assetListData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
-      };
-
-      pSdk.asset.list(assetListData);
-
-      expect(requesterExecuteSpy).toHaveBeenCalledWith({
-        ...getConfiguration,
-        headers: { 'X-API-Signature': expect.anything() },
-        params: assetListData,
-        url: 'https://localhost:8080/asset/list',
-      });
-    });
-
-    it('should successfully call with valid data with Authorization header', () => {
+    it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const assetListData = {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
