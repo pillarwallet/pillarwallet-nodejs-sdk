@@ -23,25 +23,24 @@ SOFTWARE.
 // check node environment
 const env = process.env.NODE_ENV;
 
-const EC = require('elliptic').ec;
-const ecSecp256k1 = new EC('secp256k1');
+const keys = require('../../utils/generateKeyPair');
 
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
 import nock = require('nock');
 
 describe('Connection Update Identity Keys', () => {
-  const sourceUserPrivateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
-  const targetUserPrivateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
+  // Key pairs
+  const privateKey = keys.privateKey.toString();
+
+  // Generate random username
+  const username = `User${Math.random()
+    .toString(36)
+    .substring(7)}`;
 
   let sourceUserWalletId: string;
   let sourceUserAccessKey: string;
+  let targetUserAccessKey: string;
   let targetUserId: string;
   let pSdk: PillarSdk;
 
@@ -49,13 +48,15 @@ describe('Connection Update Identity Keys', () => {
     {
       sourceConnection: {
         userId: 'userId',
-        targetUserId: 'target-user-id',
+        accessKey: 'source-access-key',
         sourceIdentityKey: 'abc',
+        targetIdentityKey: null,
         status: 'pending',
       },
       targetConnection: {
         userId: 'target-user-id',
-        targetUserId: 'userId',
+        accessKey: 'target-access-key',
+        sourceIdentityKey: null,
         targetIdentityKey: 'abc',
         status: 'pending',
       },
@@ -64,7 +65,7 @@ describe('Connection Update Identity Keys', () => {
 
   const responseDataConnectionInvite = {
     result: 'success',
-    message: 'UpConnection invitation was successfully sentdated connections',
+    message: 'Connection invitation was successfully sent.',
   };
 
   const errInvalidWalletId = {
@@ -80,10 +81,8 @@ describe('Connection Update Identity Keys', () => {
   };
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey: sourceUserPrivateKey,
-    });
+    pSdk = new PillarSdk({});
+    pSdk.configuration.setUsername('username');
 
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');
@@ -142,15 +141,8 @@ describe('Connection Update Identity Keys', () => {
     }
 
     try {
-      // Generate random username
-      let username = `User${Math.random()
-        .toString(36)
-        .substring(7)}`;
-
-      pSdk.configuration.setUsername('username');
-
       let walletRegister = {
-        privateKey: targetUserPrivateKey,
+        privateKey,
         fcmToken: '987qwe1',
         username,
       };
@@ -158,13 +150,8 @@ describe('Connection Update Identity Keys', () => {
       let response = await pSdk.wallet.registerAuthServer(walletRegister);
       targetUserId = response.data.userId;
 
-      // Generate random username
-      username = `User${Math.random()
-        .toString(36)
-        .substring(7)}`;
-
       walletRegister = {
-        privateKey: sourceUserPrivateKey,
+        privateKey,
         fcmToken: '987qwe2',
         username,
       };
@@ -173,6 +160,10 @@ describe('Connection Update Identity Keys', () => {
       sourceUserWalletId = response.data.walletId;
 
       sourceUserAccessKey = Math.random()
+        .toString(36)
+        .substring(7);
+
+      targetUserAccessKey = Math.random()
         .toString(36)
         .substring(7);
 
@@ -195,12 +186,13 @@ describe('Connection Update Identity Keys', () => {
     }
   });
 
-  it('expects to return a success message when connection status is pending', async () => {
+  it('expects to return a result when connection status is pending', async () => {
     const inputParams = {
       walletId: sourceUserWalletId,
       connections: [
         {
           sourceUserAccessKey,
+          targetUserAccessKey,
           sourceIdentityKey: Math.random()
             .toString(36)
             .substring(7),
@@ -218,13 +210,15 @@ describe('Connection Update Identity Keys', () => {
       {
         sourceConnection: {
           userId: expect.any(String),
-          targetUserId: expect.any(String),
+          accessKey: expect.any(String),
           sourceIdentityKey: expect.any(String),
+          targetIdentityKey: null,
           status: 'pending',
         },
         targetConnection: {
           userId: expect.any(String),
-          targetUserId: expect.any(String),
+          accessKey: expect.any(String),
+          sourceIdentityKey: null,
           targetIdentityKey: expect.any(String),
           status: 'pending',
         },
