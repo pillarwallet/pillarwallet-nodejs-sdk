@@ -27,17 +27,15 @@ import { v4 as uuidV4 } from 'uuid';
 import axios from 'axios';
 jest.mock('axios');
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
-import { ProofKey } from '../../utils/pkce';
-import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
-const keys = require('../utils/generateKeyPair');
-const https = require('https');
+import { default as getConfiguration } from '../../utils/requester-configurations/get';
+import { PillarSdk } from '../..';
 
 describe('Register Class', () => {
   const apiUrl = Configuration.accessKeys.apiUrl;
   Configuration.accessKeys.apiUrl = 'https://localhost:8080';
-  Configuration.accessKeys.privateKey = keys.privateKey.toString();
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
+  const pSdk = new PillarSdk({});
   let uuid;
 
   beforeEach(() => {
@@ -158,47 +156,45 @@ describe('Register Class', () => {
     });
   });
 
-  describe('registerTokens', () => {
-    const regTokensResponse = {
-      status: 200,
+  describe('approveExternalLogin', () => {
+    const approveExternalLoginResponse = {
+      status: 'success',
       data: {
-        accessToken: 'myAccessToken',
-        accessTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
-        refreshToken: 'myRefreshToken',
-        refreshTokenExpiresAt: 'YYYY-mm-ddTHH:MM:ssZ',
+        expires: '2011-06-14T04:12:36Z',
       },
     };
 
-    it('should send http request', async () => {
-      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+    const approveExternalLoginData = {
+      loginToken: 'loginToken',
+    };
 
-      const codeVerifier = await ProofKey.codeVerifierGenerator();
-
-      const data = {
-        publicKey: PrivateKeyDerivatives.getPublicKey(
-          Configuration.accessKeys.privateKey,
-        ),
-        uuid: expect.any(String),
-        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-        codeVerifier: codeVerifier.toString(),
+    it('should send http request containing loginToken', () => {
+      Configuration.accessKeys.oAuthTokens = {
+        refreshToken: 'myRefreshToken',
+        accessToken: 'myAccessToken',
       };
-
-      Register.registerTokens(codeVerifier.toString());
-
+      jest.spyOn(Requester, 'execute').mockResolvedValue('');
+      pSdk.register.approveExternalLogin(approveExternalLoginData);
       expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        headers: { 'X-API-Signature': expect.any(String) },
-        data,
-        url: 'https://localhost:8080/register/tokens',
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: undefined,
+        params: {
+          ...approveExternalLoginData,
+        },
+        url: 'https://localhost:8080/register/approve-external-login',
       });
     });
 
     it('expects response to resolve with data', async () => {
-      jest.spyOn(Requester, 'execute').mockResolvedValue(regTokensResponse);
-      const codeVerifier = await ProofKey.codeVerifierGenerator();
-      const response = await Register.registerTokens(codeVerifier.toString());
-      expect(response.status).toEqual(200);
-      expect(response.data).toEqual(regTokensResponse.data);
+      jest
+        .spyOn(Requester, 'execute')
+        .mockResolvedValue(approveExternalLoginResponse);
+      const response = await pSdk.register.approveExternalLogin(
+        approveExternalLoginData,
+      );
+      expect(response.status).toEqual('success');
+      expect(response).toEqual(approveExternalLoginResponse);
     });
   });
 

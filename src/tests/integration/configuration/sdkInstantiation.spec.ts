@@ -25,16 +25,22 @@ import { PillarSdk } from '../../..';
 import nock = require('nock');
 
 const keys = require('../../utils/generateKeyPair');
-const username = `User${Math.random()
-  .toString(36)
-  .substring(7)}`;
-let responseValidate: any;
-const walletRegister = {
-  username,
-  fcmToken: '987qwe',
-};
 
-if (env === 'test') {
+describe('sdkInstantiation', () => {
+  const username = `User${Math.random()
+    .toString(36)
+    .substring(7)}`;
+  let responseValidate: any;
+  const ethAddress = keys.ethAddress.toString();
+  const publicKey = keys.publicKey.toString();
+
+  const walletRegister = {
+    username,
+    publicKey,
+    ethAddress,
+    fcmToken: '987qwe',
+  };
+
   const responseRegister = {
     userId: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
     walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
@@ -79,90 +85,95 @@ if (env === 'test') {
     },
   };
 
-  nock('https://localhost:8080')
-    .post('/wallet/register')
-    .reply(200, responseRegister);
-
-  nock('https://localhost:8080')
-    .post('/user/validate')
-    .reply(200, responseUserValidate);
-
-  nock('https://localhost:8080')
-    .post('/register/keys')
-    .reply(200, responseRegisterKey);
-
-  nock('https://localhost:8080')
-    .post('/register/auth')
-    .reply(200, responseRegisterAuth);
-
-  nock('https://localhost:8080')
-    .post('/register/access')
-    .reply(200, responseRegisterAccess);
-
-  nock('https://localhost:8080')
-    .get('/user/info?walletId=' + responseRegisterAccess.walletId)
-    .reply(200, responseUserInfo);
-}
-
-describe('First Step - register wallet', () => {
-  it('responds with access payload', async () => {
-    const pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      notificationsUrl: 'http://localhost:8081',
-      investmentsUrl: 'http://localhost:8082',
-      privateKey: keys.privateKey,
-    });
-    const response = await pSdk.wallet.register(walletRegister);
-    expect(response.status).toEqual(200);
+  beforeAll(async () => {
+    // If env is test use HTTP server mocking library, else use localhost
+    if (env === 'test') {
+      const mockApi = nock('https://localhost:8080');
+      mockApi
+        .post('/wallet/register')
+        .reply(200, responseRegister)
+        .post('/user/validate')
+        .reply(200, responseUserValidate)
+        .post('/register/keys')
+        .reply(200, responseRegisterKey)
+        .post('/register/auth')
+        .reply(200, responseRegisterAuth)
+        .post('/register/access')
+        .reply(200, responseRegisterAccess)
+        .get('/user/info?walletId=' + responseRegisterAccess.walletId)
+        .reply(200, responseUserInfo);
+    }
   });
-});
 
-describe('Reproducing wallet import flow', () => {
-  let pSdk2: any;
-  beforeAll(() => {
-    pSdk2 = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      notificationsUrl: 'http://localhost:8081',
-      investmentsUrl: 'http://localhost:8082',
-      privateKey: keys.privateKey,
-      updateOAuthFn: () => {
-        return 'oneCallbackFunction';
-      },
+  afterAll(() => {
+    jest.restoreAllMocks();
+    if (env === 'test') {
+      nock.cleanAll();
+    }
+  });
+
+  describe('First Step - register wallet', () => {
+    it('responds with access payload', async () => {
+      const pSdk = new PillarSdk({
+        apiUrl: 'https://localhost:8080',
+        notificationsUrl: 'http://localhost:8081',
+        investmentsUrl: 'http://localhost:8082',
+      });
+      const response = await pSdk.wallet.register(walletRegister);
+      expect(response.status).toEqual(200);
     });
   });
 
-  it('should be able to call user.validate', async () => {
-    responseValidate = await pSdk2.user.validate({
-      blockchainAddress: keys.ethAddress,
+  describe('Reproducing wallet import flow', () => {
+    let pSdk2: any;
+    beforeAll(() => {
+      pSdk2 = new PillarSdk({
+        apiUrl: 'https://localhost:8080',
+        notificationsUrl: 'http://localhost:8081',
+        investmentsUrl: 'http://localhost:8082',
+        updateOAuthFn: () => {
+          return 'oneCallbackFunction';
+        },
+        tokensFailedCallbackFn: cb => {
+          console.log('Callback called');
+          cb(keys.privateKey.toString());
+        },
+      });
     });
 
-    expect(responseValidate.data).toEqual({
-      id: expect.any(String),
-      username: expect.any(String),
-      walletId: expect.any(String),
+    it('should be able to call user.validate', async () => {
+      responseValidate = await pSdk2.user.validate({
+        blockchainAddress: keys.ethAddress,
+      });
+
+      expect(responseValidate.data).toEqual({
+        id: expect.any(String),
+        username: expect.any(String),
+        walletId: expect.any(String),
+      });
     });
-  });
 
-  it('should register wallet and generate new Oauth Tokens', async () => {
-    const registerAuthPayload = {
-      username,
-      privateKey: keys.privateKey,
-      fcmToken: 'anotherFcm',
-    };
+    it('should register wallet and generate new Oauth Tokens', async () => {
+      const registerAuthPayload = {
+        username,
+        privateKey: keys.privateKey,
+        fcmToken: 'anotherFcm',
+      };
 
-    const responseAuthServer = await pSdk2.wallet.registerAuthServer(
-      registerAuthPayload,
-    );
-    expect(responseAuthServer.status).toEqual(200);
-  });
-
-  it('should call user.info, after registerAuthServer, with Authorization header', async () => {
-    const responseUserInfo = await pSdk2.user.info({
-      walletId: responseValidate.data.walletId,
+      const responseAuthServer = await pSdk2.wallet.registerAuthServer(
+        registerAuthPayload,
+      );
+      expect(responseAuthServer.status).toEqual(200);
     });
-    expect(responseUserInfo.status).toEqual(200);
-    expect(responseUserInfo.config.headers.Authorization).toEqual(
-      expect.any(String),
-    );
+
+    it('should call user.info, after registerAuthServer, with Authorization header', async () => {
+      const responseUserInfo = await pSdk2.user.info({
+        walletId: responseValidate.data.walletId,
+      });
+      expect(responseUserInfo.status).toEqual(200);
+      expect(responseUserInfo.config.headers.Authorization).toEqual(
+        expect.any(String),
+      );
+    });
   });
 });

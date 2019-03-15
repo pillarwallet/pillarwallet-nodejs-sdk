@@ -17,5 +17,5 @@
       "type": "string"
     }
   },
-  "required": [ "targetUserId", "accessKey", "walletId" ]
+  "required": [ "targetUserId", "walletId" ]
 }

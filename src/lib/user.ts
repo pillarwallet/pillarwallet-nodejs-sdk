@@ -56,16 +56,9 @@ const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePa
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
 const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
 
-const setAuthHeader = ({
-  checkSignature,
-  payload,
-}: {
-  checkSignature: Function;
-  payload: object;
-}) => {
+const setAuthHeader = () => {
   const headers = {
     Authorization: '',
-    'X-API-Signature': '',
   };
 
   if (
@@ -75,13 +68,6 @@ const setAuthHeader = ({
     headers.Authorization = `Bearer ${
       Configuration.accessKeys.oAuthTokens.accessToken
     }`;
-    delete headers['X-API-Signature'];
-  } else {
-    headers['X-API-Signature'] = checkSignature(
-      payload,
-      Configuration.accessKeys.privateKey,
-    );
-    delete headers.Authorization;
   }
 
   return headers;
@@ -218,10 +204,7 @@ export class User extends Configuration {
       return Promise.reject(e);
     }
 
-    const headers = setAuthHeader({
-      checkSignature: this.checkSignature,
-      payload: query,
-    });
+    const headers = setAuthHeader();
 
     return this.executeRequest({
       auth: false,
@@ -266,10 +249,7 @@ export class User extends Configuration {
      */
 
     const headers = {
-      ...setAuthHeader({
-        checkSignature: this.checkSignature,
-        payload: { walletId },
-      }),
+      ...setAuthHeader(),
       'Content-Type': '',
     };
 

@@ -53,14 +53,14 @@ export class Wallet extends Configuration {
    */
   register(walletRegister: WalletRegister): AxiosPromise {
     // validating Input
-    if (!walletRegister.publicKey) {
+    if (!walletRegister.publicKey && walletRegister.privateKey) {
       walletRegister.publicKey = PrivateKeyDerivatives.getPublicKey(
-        Configuration.accessKeys.privateKey,
+        walletRegister.privateKey,
       );
     }
-    if (!walletRegister.ethAddress) {
+    if (!walletRegister.ethAddress && walletRegister.privateKey) {
       walletRegister.ethAddress = PrivateKeyDerivatives.getEthAddress(
-        Configuration.accessKeys.privateKey,
+        walletRegister.privateKey,
       );
     }
 

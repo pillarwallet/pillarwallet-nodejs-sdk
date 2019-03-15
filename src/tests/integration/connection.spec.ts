@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-const keys = require('../utils/generateKeyPair');
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
 
@@ -30,9 +29,7 @@ describe('Connection Class', () => {
   requesterExecuteSpy.mockImplementation(() => {});
 
   beforeEach(() => {
-    pSdk = new PillarSdk({
-      privateKey: keys.privateKey,
-    });
+    pSdk = new PillarSdk({});
   });
 
   afterEach(() => {
@@ -42,7 +39,6 @@ describe('Connection Class', () => {
   it('.invite', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      accessKey: 'abc123',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
     };
 
@@ -61,7 +57,6 @@ describe('Connection Class', () => {
     const inputParams = {
       targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      sourceUserAccessKey: 'hello',
       targetUserAccessKey: 'hello',
     };
 

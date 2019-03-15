@@ -25,7 +25,6 @@ const env = process.env.NODE_ENV;
 
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
-import { Configuration } from '../../../lib/configuration';
 import nock = require('nock');
 
 describe('Connection Count', () => {
@@ -43,7 +42,8 @@ describe('Connection Count', () => {
 
   const responseData = {
     userId: 'userId',
-    count: 0,
+    currentConnectionsCount: 0,
+    oldConnectionsCount: 0,
   };
 
   const errInvalidWalletId = {
@@ -54,15 +54,8 @@ describe('Connection Count', () => {
     message: 'Internal Server Error',
   };
 
-  const errUnauthorized = {
-    message: 'Signature not verified',
-  };
-
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
     pSdk.configuration.setUsername('username');
 
     const walletRegister = {
@@ -96,16 +89,7 @@ describe('Connection Count', () => {
         .get('/connection/count?walletId=')
         .reply(400, errInvalidWalletId)
         .get('/connection/count?walletId=walletId')
-        .reply(500, errInternal)
-        .get('/connection/count?walletId=walletId')
-        .reply(401, errUnauthorized)
-        .post('/register/refresh')
-        .reply(200, {
-          accessToken: 'accessToken',
-          refreshToken: 'refreshToken',
-        })
-        .get('/connection/count?walletId=walletId')
-        .reply(200, responseData);
+        .reply(500, errInternal);
     }
 
     try {
@@ -133,7 +117,8 @@ describe('Connection Count', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       userId,
-      count: 0,
+      currentConnectionsCount: 0,
+      oldConnectionsCount: 0,
     });
   });
 
@@ -164,19 +149,4 @@ describe('Connection Count', () => {
       }
     });
   }
-
-  it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
-    const inputParams = {
-      walletId,
-    };
-
-    Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
-
-    try {
-      await pSdk.connection.count(inputParams);
-    } catch (error) {
-      expect(error.response.status).toEqual(401);
-      expect(error.response.data.message).toEqual(errUnauthorized.message);
-    }
-  });
 });

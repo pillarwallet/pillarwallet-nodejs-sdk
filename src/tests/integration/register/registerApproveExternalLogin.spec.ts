@@ -27,7 +27,7 @@ const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import nock = require('nock');
 
-describe('Connection Map Identity Keys', () => {
+describe('approveExternalLogin method', () => {
   // Key pairs
   const privateKey = keys.privateKey.toString();
 
@@ -36,23 +36,22 @@ describe('Connection Map Identity Keys', () => {
     .toString(36)
     .substring(7)}`;
 
-  let walletId: string;
-  let userId: string;
   let pSdk: PillarSdk;
 
-  const responseData = [
-    {
-      sourceIdentityKey: 'abc',
-      targetIdentityKey: 'xyz',
+  // Responses
+  const responseData = {
+    status: 'success',
+    data: {
+      loginApproved: true,
     },
-  ];
-
-  const errInvalidWalletId = {
-    message: 'Could not find a Wallet ID to search by.',
   };
 
   const errInternal = {
     message: 'Internal Server Error',
+  };
+
+  const errUnauthorized = {
+    message: 'Signature not verified',
   };
 
   beforeAll(async () => {
@@ -83,21 +82,24 @@ describe('Connection Map Identity Keys', () => {
           accessToken: 'accessToken',
           refreshToken: 'refreshToken',
           walletId: 'walletId',
-          userId: 'userId',
         })
-        .post('/connection/map-identity-keys')
+        .get('/register/approve-external-login?loginToken=test')
         .reply(200, responseData)
-        .post('/connection/map-identity-keys')
-        .reply(400, errInvalidWalletId)
-        .post('/connection/map-identity-keys')
+        .get('/register/approve-external-login?loginToken=test')
         .reply(500, errInternal)
-        .post('/connection/map-identity-keys');
+        .get('/register/approve-external-login?loginToken=test')
+        .reply(401, errUnauthorized)
+        .post('/register/refresh')
+        .reply(200, {
+          accessToken: 'accessToken',
+          refreshToken: 'refreshToken',
+        })
+        .get('/register/approve-external-login?loginToken=test')
+        .reply(200, responseData);
     }
 
     try {
-      const response = await pSdk.wallet.registerAuthServer(walletRegister);
-      walletId = response.data.walletId;
-      userId = response.data.userId;
+      await pSdk.wallet.registerAuthServer(walletRegister);
     } catch (e) {
       throw e;
     }
@@ -110,54 +112,33 @@ describe('Connection Map Identity Keys', () => {
     }
   });
 
-  it('expects to return a list of connection objects and status 200', async () => {
-    const inputParams = {
-      walletId,
-      identityKeys: [
-        {
-          sourceIdentityKey: 'abc',
-          targetIdentityKey: 'xyz',
+  if (env === 'test') {
+    it('expects to return a 200 response and success status', async () => {
+      const inputParams = {
+        loginToken: 'test',
+      };
+
+      const response = await pSdk.register.approveExternalLogin(inputParams);
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual({
+        status: 'success',
+        data: {
+          loginApproved: true,
         },
-      ],
-    };
+      });
+    });
+  }
 
-    const response = await pSdk.connection.mapIdentityKeys(inputParams);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual([
-      {
-        sourceIdentityKey: 'abc',
-        targetIdentityKey: 'xyz',
-      },
-    ]);
-  });
-
-  it('should return 400 due invalid params', async () => {
+  it('should return 500 due invalid login attempt', async () => {
     const inputParams = {
-      walletId: '',
-      identityKeys: [],
+      loginToken: 'test',
     };
 
     try {
-      await pSdk.connection.mapIdentityKeys(inputParams);
+      await pSdk.register.approveExternalLogin(inputParams);
     } catch (error) {
-      expect(error.response.status).toEqual(400);
-      expect(error.response.data.message).toEqual(errInvalidWalletId.message);
+      expect(error.response.status).toEqual(500);
+      expect(error.response.data.message).toEqual(errInternal.message);
     }
   });
-
-  if (env === 'test') {
-    it('should return 500 due internal server error', async () => {
-      const inputParams = {
-        walletId,
-        identityKeys: [],
-      };
-
-      try {
-        await pSdk.connection.mapIdentityKeys(inputParams);
-      } catch (error) {
-        expect(error.response.status).toEqual(500);
-        expect(error.response.data.message).toEqual(errInternal.message);
-      }
-    });
-  }
 });

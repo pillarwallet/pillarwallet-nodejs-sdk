@@ -25,6 +25,7 @@ export enum HttpEndpoints {
   REGISTER_ACCESS = '/register/access',
   REGISTER_REFRESH = '/register/refresh',
   REGISTER_TOKENS = '/register/tokens',
+  REGISTER_APPROVE_EXTERNAL_LOGIN = '/register/approve-external-login',
   WALLET_REGISTER = '/wallet/register',
   WALLET_REGISTER_ADDRESS = '/wallet/register-address',
   WALLET_UNREGISTER_ADDRESS = '/wallet/unregister-address',

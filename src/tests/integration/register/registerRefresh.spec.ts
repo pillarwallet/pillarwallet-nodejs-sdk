@@ -57,10 +57,7 @@ describe('registerRefresh method', () => {
   let pSdk: PillarSdk;
 
   beforeAll(async () => {
-    pSdk = new PillarSdk({
-      apiUrl: 'https://localhost:8080',
-      privateKey,
-    });
+    pSdk = new PillarSdk({});
 
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');
