@@ -25,6 +25,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Disconnect](#connection-disconnect)
     - [Connection Count](#connection-count)
     - [Connection Map Identity Keys](#connection-map-identity-keys)
+    - [Connection Update Identity Keys](#connection-update-identity-keys)
     - [Notification List](#notification-list)
     - [Investments ICO List](#investments-ico-list)
     - [Investments Deposit Request](#investments-deposit-request)
@@ -561,6 +562,25 @@ Returns an array of user's connection mapped by identity keys
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | identityKeys  | The Identity Keys of a user. | Array  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | A list of connections | Array  |
+
+### Connection Update Identity Keys
+
+```typescript
+pillarSdk.connection.updateIdentityKeys(inputParams)
+```
+
+Updates the connection's identity keys
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| connections  | The Connections of a user. | Array  | Required  |
 
 **Expected Output**
 

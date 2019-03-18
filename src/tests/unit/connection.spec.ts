@@ -282,4 +282,27 @@ describe('Connection Class', () => {
       },
     );
   });
+
+  /**
+   * Connection: Update Identity Keys
+   */
+  describe('.updateIdentityKeys', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionUpdateIdentityKeysData = {
+        walletId: '8cc06db4-ec05-11e8-8eb2-f2801f1b9fd1',
+        connections: [],
+      };
+
+      pSdk.connection.updateIdentityKeys(connectionUpdateIdentityKeysData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: connectionUpdateIdentityKeysData,
+        url: 'https://localhost:8080/connection/update-identity-keys',
+      });
+    });
+  });
 });
