@@ -44,6 +44,7 @@ const connectionMuteSchema = require('../schemas/connection/mute.json');
 const connectionDisconnectSchema = require('../schemas/connection/disconnect.json');
 const connectionCountSchema = require('../schemas/connection/count.json');
 const connectionMapIdentityKeysSchema = require('../schemas/connection/mapIdentityKeys.json');
+const connectionUpdateIdentityKeysSchema = require('../schemas/connection/updateIdentityKeys.json');
 
 export class Connection extends Configuration {
   /**
@@ -195,6 +196,25 @@ export class Connection extends Configuration {
       schema: connectionMapIdentityKeysSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_MAP_IDENTITY_KEYS
+      }`,
+    });
+  }
+
+  /**
+   * @name updateIdentityKeys
+   * @desc Updates the connection's identity keys
+   * @param {ConnectionUpdateIdentityKeys} updateIdentityKeysConfiguration
+   * @returns {AxiosPromise}
+   */
+  updateIdentityKeys(
+    updateIdentityKeysConfiguration: ConnectionUpdateIdentityKeys,
+  ): AxiosPromise {
+    return this.executeRequest({
+      data: updateIdentityKeysConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionUpdateIdentityKeysSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_UPDATE_IDENTITY_KEYS
       }`,
     });
   }

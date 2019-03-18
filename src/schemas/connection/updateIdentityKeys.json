@@ -1,0 +1,20 @@
+{
+    "title": "Connection Model - updateIdentityKeys",
+    "description": "Schema definition for Connection Model - updateIdentityKeys method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "connections": {
+        "description": "The connections to be updated",
+        "type": "array"
+      }
+    },
+    "required": [
+      "walletId",
+      "connections"
+    ]
+  }
