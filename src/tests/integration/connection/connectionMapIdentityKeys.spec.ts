@@ -42,8 +42,13 @@ describe('Connection Map Identity Keys', () => {
 
   const responseData = [
     {
+      userId: 'userId',
+      targetUserId: 'target-user-id',
+      sourceUserAccessKey: 'source-access-key',
+      targetUserAccessKey: 'target-access-key',
       sourceIdentityKey: 'abc',
       targetIdentityKey: 'xyz',
+      status: 'pending',
     },
   ];
 
@@ -125,8 +130,13 @@ describe('Connection Map Identity Keys', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual([
       {
+        userId: expect.any(String),
+        targetUserId: expect.any(String),
+        sourceUserAccessKey: expect.any(String),
+        targetUserAccessKey: expect.any(String),
         sourceIdentityKey: 'abc',
         targetIdentityKey: 'xyz',
+        status: 'pending',
       },
     ]);
   });

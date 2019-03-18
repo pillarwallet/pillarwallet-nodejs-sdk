@@ -46,20 +46,14 @@ describe('Connection Update Identity Keys', () => {
 
   const responseData = [
     {
-      sourceConnection: {
-        userId: 'userId',
-        accessKey: 'source-access-key',
-        sourceIdentityKey: 'abc',
-        targetIdentityKey: null,
-        status: 'pending',
-      },
-      targetConnection: {
-        userId: 'target-user-id',
-        accessKey: 'target-access-key',
-        sourceIdentityKey: null,
-        targetIdentityKey: 'abc',
-        status: 'pending',
-      },
+      userId: 'userId',
+      targetUserId: 'target-user-id',
+      sourceUserAccessKey: 'source-access-key',
+      targetUserAccessKey: 'target-access-key',
+      sourceIdentityKey: 'abc',
+      targetIdentityKey: 'xyz',
+      status: 'pending',
+      updated: true,
     },
   ];
 
@@ -208,20 +202,14 @@ describe('Connection Update Identity Keys', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual([
       {
-        sourceConnection: {
-          userId: expect.any(String),
-          accessKey: expect.any(String),
-          sourceIdentityKey: expect.any(String),
-          targetIdentityKey: null,
-          status: 'pending',
-        },
-        targetConnection: {
-          userId: expect.any(String),
-          accessKey: expect.any(String),
-          sourceIdentityKey: null,
-          targetIdentityKey: expect.any(String),
-          status: 'pending',
-        },
+        userId: expect.any(String),
+        targetUserId: expect.any(String),
+        sourceUserAccessKey: expect.any(String),
+        targetUserAccessKey: expect.any(String),
+        sourceIdentityKey: 'abc',
+        targetIdentityKey: 'xyz',
+        status: 'pending',
+        updated: true,
       },
     ]);
   });
