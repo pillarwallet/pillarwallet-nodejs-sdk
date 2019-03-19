@@ -17,6 +17,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Asset Search](#asset-search)
     - [Asset List](#asset-list)
     - [Connection Invite](#connection-invite)
+    - [Connection v2 Invite](#connection-v2-invite)
     - [Connection Accept](#connection-accept)
     - [Connection Reject](#connection-reject)
     - [Connection Cancel](#connection-cancel)
@@ -377,6 +378,30 @@ Creates a connection invitation for a user to create a relationship with another
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation was successfully sent' | String  |
+
+### Connection v2 Invite
+
+```typescript
+pillarSdk.connectionV2.invite(inputParams)
+```
+
+Creates a connection invitation for a user to create a relationship with another contact.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| sourceIdentityKey  | Generated source identity key. | String  | Required  |
+| targetIdentityKey  | Generated target identity key. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**

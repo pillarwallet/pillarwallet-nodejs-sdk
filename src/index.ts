@@ -23,6 +23,7 @@ import { Wallet } from './lib/wallet';
 import { Register } from './lib/register';
 import { Asset } from './lib/asset';
 import { Connection } from './lib/connection';
+import { ConnectionV2 } from './lib/connectionV2';
 import { User } from './lib/user';
 import { Notification } from './lib/notification';
 import { Configuration } from './lib/configuration';
@@ -40,6 +41,7 @@ export class PillarSdk extends Configuration {
   wallet: Wallet = new Wallet();
   asset: Asset = new Asset();
   connection: Connection = new Connection();
+  connectionV2: ConnectionV2 = new ConnectionV2();
   user: User = new User();
   notification: Notification = new Notification();
   configuration: Configuration = new Configuration();
