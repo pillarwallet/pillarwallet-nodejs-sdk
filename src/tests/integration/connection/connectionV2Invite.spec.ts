@@ -23,33 +23,47 @@ SOFTWARE.
 // check node environment
 const env = process.env.NODE_ENV;
 
-const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import nock = require('nock');
 
-describe('Connection Map Identity Keys', () => {
+describe('Connection v2 Invite', () => {
   // Key pairs
-  const privateKey = keys.privateKey.toString();
+  const EC = require('elliptic').ec;
+  const ecSecp256k1 = new EC('secp256k1');
+
+  let targetPrivateKey = ecSecp256k1
+    .genKeyPair()
+    .getPrivate()
+    .toString('hex');
+
+  if (targetPrivateKey.length !== 64) {
+    targetPrivateKey =
+      '86efe0326991a41a50e210241bae0366c6c5027eae7658cf4914f953d811745d';
+  }
+
+  let sourcePrivateKey = ecSecp256k1
+    .genKeyPair()
+    .getPrivate()
+    .toString('hex');
+
+  if (sourcePrivateKey.length !== 64) {
+    sourcePrivateKey =
+      '22f8f182a11f90e1a64d693c7cbf44ca017c50b6efc51445ea2f319210875c09';
+  }
 
   // Generate random username
-  const username = `User${Math.random()
+  let username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
 
-  let walletId: string;
+  let sourceUserWalletId: string;
+  let targetUserId: string;
   let pSdk: PillarSdk;
 
-  const responseData = [
-    {
-      userId: null,
-      targetUserId: null,
-      sourceUserAccessKey: null,
-      targetUserAccessKey: null,
-      sourceIdentityKey: 'abc',
-      targetIdentityKey: 'xyz',
-      status: null,
-    },
-  ];
+  const responseData = {
+    result: 'success',
+    message: 'Connection invitation was successfully sent',
+  };
 
   const errInvalidWalletId = {
     message: 'Could not find a Wallet ID to search by.',
@@ -62,12 +76,6 @@ describe('Connection Map Identity Keys', () => {
   beforeAll(async () => {
     pSdk = new PillarSdk({});
     pSdk.configuration.setUsername('username');
-
-    const walletRegister = {
-      privateKey,
-      fcmToken: '987qwe',
-      username,
-    };
 
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');
@@ -86,21 +94,57 @@ describe('Connection Map Identity Keys', () => {
         .reply(200, {
           accessToken: 'accessToken',
           refreshToken: 'refreshToken',
-          walletId: 'walletId',
-          userId: 'userId',
+          walletId: 'targetWalletId',
+          userId: 'targetUserId',
         })
-        .post('/connection/map-identity-keys')
+        .post('/register/keys')
+        .reply(200, {
+          expiresAt: '2015-03-21T05:41:32Z',
+          nonce: 'AxCDF23232',
+        })
+        .post('/register/auth')
+        .reply(200, {
+          authorizationCode: 'Authorization code',
+          expiresAt: '2011-06-14T04:12:36Z',
+        })
+        .post('/register/access')
+        .reply(200, {
+          accessToken: 'accessToken',
+          refreshToken: 'refreshToken',
+          walletId: 'sourceWalletId',
+          userId: 'sourceUserId',
+        })
+        .post('/connection/v2/invite')
         .reply(200, responseData)
-        .post('/connection/map-identity-keys')
+        .post('/connection/v2/invite')
         .reply(400, errInvalidWalletId)
-        .post('/connection/map-identity-keys')
+        .post('/connection/v2/invite')
         .reply(500, errInternal)
-        .post('/connection/map-identity-keys');
+        .post('/connection/v2/invite');
     }
 
     try {
-      const response = await pSdk.wallet.registerAuthServer(walletRegister);
-      walletId = response.data.walletId;
+      let walletRegister = {
+        privateKey: targetPrivateKey,
+        fcmToken: '987qwe1',
+        username,
+      };
+
+      let response = await pSdk.wallet.registerAuthServer(walletRegister);
+      targetUserId = response.data.userId;
+
+      username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
+      walletRegister = {
+        privateKey: sourcePrivateKey,
+        fcmToken: '987qwe2',
+        username,
+      };
+
+      response = await pSdk.wallet.registerAuthServer(walletRegister);
+      sourceUserWalletId = response.data.walletId;
     } catch (e) {
       throw e;
     }
@@ -113,30 +157,37 @@ describe('Connection Map Identity Keys', () => {
     }
   });
 
-  it('expects to return a list of connection objects and status 200', async () => {
+  it('expects to return a success message and status 200', async () => {
     const inputParams = {
-      walletId,
-      identityKeys: [
-        {
-          sourceIdentityKey: 'abc',
-          targetIdentityKey: 'xyz',
-        },
-      ],
+      targetUserId,
+      sourceIdentityKey: Math.random()
+        .toString(36)
+        .substring(7),
+      targetIdentityKey: Math.random()
+        .toString(36)
+        .substring(7),
+      walletId: sourceUserWalletId,
     };
 
-    const response = await pSdk.connection.mapIdentityKeys(inputParams);
+    const response = await pSdk.connectionV2.invite(inputParams);
     expect(response.status).toBe(200);
     expect(response.data).toEqual(responseData);
   });
 
   it('should return 400 due invalid params', async () => {
     const inputParams = {
+      targetUserId,
+      sourceIdentityKey: Math.random()
+        .toString(36)
+        .substring(7),
+      targetIdentityKey: Math.random()
+        .toString(36)
+        .substring(7),
       walletId: '',
-      identityKeys: [],
     };
 
     try {
-      await pSdk.connection.mapIdentityKeys(inputParams);
+      await pSdk.connectionV2.invite(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidWalletId.message);
@@ -146,12 +197,18 @@ describe('Connection Map Identity Keys', () => {
   if (env === 'test') {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
-        walletId,
-        identityKeys: [],
+        targetUserId,
+        sourceIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        targetIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        walletId: sourceUserWalletId,
       };
 
       try {
-        await pSdk.connection.mapIdentityKeys(inputParams);
+        await pSdk.connectionV2.invite(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
