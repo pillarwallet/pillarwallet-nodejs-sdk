@@ -23,18 +23,37 @@ SOFTWARE.
 // check node environment
 const env = process.env.NODE_ENV;
 
-const keys = require('../../utils/generateKeyPair');
-
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
 import nock = require('nock');
 
 describe('Connection Update Identity Keys', () => {
   // Key pairs
-  const privateKey = keys.privateKey.toString();
+  const EC = require('elliptic').ec;
+  const ecSecp256k1 = new EC('secp256k1');
+
+  let targetPrivateKey = ecSecp256k1
+    .genKeyPair()
+    .getPrivate()
+    .toString('hex');
+
+  if (targetPrivateKey.length !== 64) {
+    targetPrivateKey =
+      '82fbb791bc5dfa267b15fba480bae1206626ec0250065057f959d2b36c4638f5';
+  }
+
+  let sourcePrivateKey = ecSecp256k1
+    .genKeyPair()
+    .getPrivate()
+    .toString('hex');
+
+  if (sourcePrivateKey.length !== 64) {
+    sourcePrivateKey =
+      '5731d22487631cb89968933dc23fd53d047cfbc01f6f2078b8879bb220f73caa';
+  }
 
   // Generate random username
-  const username = `User${Math.random()
+  let username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
 
@@ -136,7 +155,7 @@ describe('Connection Update Identity Keys', () => {
 
     try {
       let walletRegister = {
-        privateKey,
+        privateKey: targetPrivateKey,
         fcmToken: '987qwe1',
         username,
       };
@@ -144,8 +163,12 @@ describe('Connection Update Identity Keys', () => {
       let response = await pSdk.wallet.registerAuthServer(walletRegister);
       targetUserId = response.data.userId;
 
+      username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
       walletRegister = {
-        privateKey,
+        privateKey: sourcePrivateKey,
         fcmToken: '987qwe2',
         username,
       };
@@ -206,8 +229,8 @@ describe('Connection Update Identity Keys', () => {
         targetUserId: expect.any(String),
         sourceUserAccessKey: expect.any(String),
         targetUserAccessKey: expect.any(String),
-        sourceIdentityKey: 'abc',
-        targetIdentityKey: 'xyz',
+        sourceIdentityKey: expect.any(String),
+        targetIdentityKey: expect.any(String),
         status: 'pending',
         updated: true,
       },
