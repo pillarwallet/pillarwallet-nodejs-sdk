@@ -97,13 +97,8 @@ describe('Connection Map Identity Keys', () => {
         .reply(500, errInternal)
         .post('/connection/map-identity-keys');
     }
-
-    try {
-      const response = await pSdk.wallet.registerAuthServer(walletRegister);
-      walletId = response.data.walletId;
-    } catch (e) {
-      throw e;
-    }
+    const response = await pSdk.wallet.registerAuthServer(walletRegister);
+    walletId = response.data.walletId;
   });
 
   afterAll(() => {

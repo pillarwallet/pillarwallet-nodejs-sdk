@@ -22,9 +22,6 @@ SOFTWARE.
 /**
  * Import required classes / libraries / constants
  */
-/**
- * Import required classes / libraries / constants
- */
 import { HttpEndpoints } from './constants/httpEndpoints';
 import { Configuration } from './configuration';
 import { AxiosPromise } from 'axios';
@@ -38,6 +35,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const connectionInviteSchema = require('../schemas/connection/v2/invite.json');
+const connectionCancelSchema = require('../schemas/connection/v2/cancel.json');
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -53,6 +51,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionInviteSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_INVITE_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name cancel
+   * @desc Cancels a connection invitation that a user previously initiated
+   * @param {ConnectionCancelV2} inviteConfiguration
+   * @returns {AxiosPromise}
+   */
+  cancel(cancelConfiguration: ConnectionCancelV2): AxiosPromise {
+    return this.executeRequest({
+      data: cancelConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionCancelSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_CANCEL_V2
       }`,
     });
   }

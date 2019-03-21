@@ -153,47 +153,43 @@ describe('Connection Update Identity Keys', () => {
         .reply(200, responseData);
     }
 
-    try {
-      let walletRegister = {
-        privateKey: targetPrivateKey,
-        fcmToken: '987qwe1',
-        username,
-      };
+    let walletRegister = {
+      privateKey: targetPrivateKey,
+      fcmToken: '987qwe1',
+      username,
+    };
 
-      let response = await pSdk.wallet.registerAuthServer(walletRegister);
-      targetUserId = response.data.userId;
+    let response = await pSdk.wallet.registerAuthServer(walletRegister);
+    targetUserId = response.data.userId;
 
-      username = `User${Math.random()
-        .toString(36)
-        .substring(7)}`;
+    username = `User${Math.random()
+      .toString(36)
+      .substring(7)}`;
 
-      walletRegister = {
-        privateKey: sourcePrivateKey,
-        fcmToken: '987qwe2',
-        username,
-      };
+    walletRegister = {
+      privateKey: sourcePrivateKey,
+      fcmToken: '987qwe2',
+      username,
+    };
 
-      response = await pSdk.wallet.registerAuthServer(walletRegister);
-      sourceUserWalletId = response.data.walletId;
+    response = await pSdk.wallet.registerAuthServer(walletRegister);
+    sourceUserWalletId = response.data.walletId;
 
-      sourceUserAccessKey = Math.random()
-        .toString(36)
-        .substring(7);
+    sourceUserAccessKey = Math.random()
+      .toString(36)
+      .substring(7);
 
-      targetUserAccessKey = Math.random()
-        .toString(36)
-        .substring(7);
+    targetUserAccessKey = Math.random()
+      .toString(36)
+      .substring(7);
 
-      const inputParams = {
-        targetUserId,
-        accessKey: sourceUserAccessKey,
-        walletId: sourceUserWalletId,
-      };
+    const inputParams = {
+      targetUserId,
+      accessKey: sourceUserAccessKey,
+      walletId: sourceUserWalletId,
+    };
 
-      await pSdk.connection.invite(inputParams);
-    } catch (e) {
-      throw e;
-    }
+    await pSdk.connection.invite(inputParams);
   });
 
   afterAll(() => {
