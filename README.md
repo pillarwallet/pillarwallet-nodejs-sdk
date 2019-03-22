@@ -434,6 +434,30 @@ Accepts a connection invitation from another user.
 | result  | 'success' | String  |
 | message  | 'Connection invitation accepted' | String  |
 
+### Connection v2 Accept
+
+```typescript
+pillarSdk.connectionV2.accept(inputParams)
+```
+
+Accepts a connection invitation from another user.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| sourceUserIdentityKeys  | Object containing generated sourceIdentityKey and targetIdentityKey for source user. | Object  | Required  |
+| targetUserIdentityKeys  | Object containing generated sourceIdentityKey and targetIdentityKey for target user. | Object  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection invitation accepted' | String  |
+
 ### Connection Reject
 
 ```typescript
