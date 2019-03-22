@@ -153,32 +153,34 @@ describe('Connection v2 Accept', () => {
     }
   });
 
-  it('expects to return a success message and status 200', async () => {
-    const inputParams = {
-      targetUserId,
-      sourceUserIdentityKeys: {
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-      },
-      targetUserIdentityKeys: {
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-      },
-      walletId: sourceUserWalletId,
-    };
+  if (env === 'test') {
+    it('expects to return a success message and status 200', async () => {
+      const inputParams = {
+        targetUserId,
+        sourceUserIdentityKeys: {
+          sourceIdentityKey: Math.random()
+            .toString(36)
+            .substring(7),
+          targetIdentityKey: Math.random()
+            .toString(36)
+            .substring(7),
+        },
+        targetUserIdentityKeys: {
+          sourceIdentityKey: Math.random()
+            .toString(36)
+            .substring(7),
+          targetIdentityKey: Math.random()
+            .toString(36)
+            .substring(7),
+        },
+        walletId: sourceUserWalletId,
+      };
 
-    const response = await pSdk.connectionV2.accept(inputParams);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual(responseData);
-  });
+      const response = await pSdk.connectionV2.accept(inputParams);
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual(responseData);
+    });
+  }
 
   it('should return 400 due invalid params', async () => {
     const inputParams = {
