@@ -1,0 +1,49 @@
+{
+    "title": "Connection Model - Invite v2",
+    "description": "Schema definition for Connection Model - invite v2 method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "targetUserId": {
+        "description": "The target user ID",
+        "type": "string"
+      },
+      "sourceUserIdentityKeys": {
+        "description": "Generated source and target identity keys for the source user",
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "sourceIdentityKey": {
+            "description": "Generated source identity key",
+            "type": "string"
+          },
+          "targetIdentityKey": {
+            "description": "Generated target identity key",
+            "type": "string"
+          }
+        },
+        "required": [ "sourceIdentityKey", "targetIdentityKey" ]
+      },
+      "targetUserIdentityKeys": {
+        "description": "Generated source and target identity keys for the target user",
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "sourceIdentityKey": {
+            "description": "Generated source identity key",
+            "type": "string"
+          },
+          "targetIdentityKey": {
+            "description": "Generated target identity key",
+            "type": "string"
+          }
+        },
+        "required": [ "sourceIdentityKey", "targetIdentityKey" ]
+      },
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      }
+    },
+    "required": [ "targetUserId", "sourceUserIdentityKeys", "targetUserIdentityKeys", "walletId" ]
+  }

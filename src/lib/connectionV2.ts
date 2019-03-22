@@ -35,7 +35,9 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const connectionInviteSchema = require('../schemas/connection/v2/invite.json');
+const connectionAcceptSchema = require('../schemas/connection/v2/accept.json');
 const connectionCancelSchema = require('../schemas/connection/v2/cancel.json');
+
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -51,6 +53,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionInviteSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_INVITE_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name accept
+   * @desc Accepts a connection invitation from another user
+   * @param {ConnectionAcceptV2} acceptConfiguration
+   * @returns {AxiosPromise}
+   */
+  accept(acceptConfiguration: ConnectionAcceptV2): AxiosPromise {
+    return this.executeRequest({
+      data: acceptConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionAcceptSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_ACCEPT_V2
       }`,
     });
   }
