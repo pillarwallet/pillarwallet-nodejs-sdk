@@ -1,0 +1,26 @@
+{
+    "title": "Connection Model - Reject v2",
+    "description": "Schema definition for Connection Model - reject v2 method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "targetUserId": {
+        "description": "The target user ID",
+        "type": "string"
+      },
+      "sourceIdentityKey": {
+        "description": "Generated source identity key",
+        "type": "string"
+      },
+      "targetIdentityKey": {
+        "description": "Generated target identity key",
+        "type": "string"
+      },
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      }
+    },
+    "required": [ "targetUserId", "sourceIdentityKey", "targetIdentityKey", "walletId" ]
+  }
+  
