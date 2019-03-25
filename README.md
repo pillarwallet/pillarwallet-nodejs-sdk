@@ -21,6 +21,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Accept](#connection-accept)
     - [Connection Reject](#connection-reject)
     - [Connection Cancel](#connection-cancel)
+    - [Connection v2 Cancel](#connection-v2-cancel)
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
     - [Connection Disconnect](#connection-disconnect)
@@ -400,8 +401,8 @@ Creates a connection invitation for a user to create a relationship with another
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| sourceIdentityKey  | Generated source identity key. | String  | Required  |
-| targetIdentityKey  | Generated target identity key. | String  | Required  |
+| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
+| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
@@ -496,6 +497,31 @@ Cancels a connection invitation from another user.
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection canceled' | String  |
+
+### Connection v2 Cancel
+
+```typescript
+pillarSdk.connectionV2.cancel(inputParams)
+```
+
+Cancels a connection invitation from another user.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
+| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 

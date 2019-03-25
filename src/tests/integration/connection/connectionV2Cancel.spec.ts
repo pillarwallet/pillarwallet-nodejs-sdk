@@ -1,17 +1,14 @@
 /*
 Copyright (C) 2019 Stiftung Pillar Project
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
+ Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
+ The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -26,7 +23,7 @@ const env = process.env.NODE_ENV;
 import { PillarSdk } from '../../..';
 import nock = require('nock');
 
-describe('Connection v2 Invite', () => {
+describe('Connection v2 Accept', () => {
   // Key pairs
   const EC = require('elliptic').ec;
   const ecSecp256k1 = new EC('secp256k1');
@@ -56,13 +53,26 @@ describe('Connection v2 Invite', () => {
     .toString(36)
     .substring(7)}`;
 
+  const sourceIdentityKey = Math.random()
+    .toString(36)
+    .substring(7);
+
+  const targetIdentityKey = Math.random()
+    .toString(36)
+    .substring(7);
+
   let sourceUserWalletId: string;
   let targetUserId: string;
   let pSdk: PillarSdk;
 
   const responseData = {
     result: 'success',
-    message: 'Connection invitation was successfully sent',
+    message: 'Connection cancelled',
+  };
+
+  const responseDataConnectionInvite = {
+    result: 'success',
+    message: 'Connection invitation was successfully sent.',
   };
 
   const errInvalidWalletId = {
@@ -115,10 +125,12 @@ describe('Connection v2 Invite', () => {
           userId: 'sourceUserId',
         })
         .post('/connection/v2/invite')
+        .reply(200, responseDataConnectionInvite)
+        .post('/connection/v2/cancel')
         .reply(200, responseData)
-        .post('/connection/v2/invite')
+        .post('/connection/v2/cancel')
         .reply(400, errInvalidWalletId)
-        .post('/connection/v2/invite')
+        .post('/connection/v2/cancel')
         .reply(500, errInternal);
     }
 
@@ -143,6 +155,15 @@ describe('Connection v2 Invite', () => {
 
     response = await pSdk.wallet.registerAuthServer(walletRegister);
     sourceUserWalletId = response.data.walletId;
+
+    const inputParams = {
+      targetUserId,
+      sourceIdentityKey,
+      targetIdentityKey,
+      walletId: sourceUserWalletId,
+    };
+
+    await pSdk.connectionV2.invite(inputParams);
   });
 
   afterAll(() => {
@@ -155,16 +176,12 @@ describe('Connection v2 Invite', () => {
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
-      targetIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
+      sourceIdentityKey,
+      targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
-    const response = await pSdk.connectionV2.invite(inputParams);
+    const response = await pSdk.connectionV2.cancel(inputParams);
     expect(response.status).toBe(200);
     expect(response.data).toEqual(responseData);
   });
@@ -182,7 +199,7 @@ describe('Connection v2 Invite', () => {
     };
 
     try {
-      await pSdk.connectionV2.invite(inputParams);
+      await pSdk.connectionV2.cancel(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidWalletId.message);
@@ -203,7 +220,7 @@ describe('Connection v2 Invite', () => {
       };
 
       try {
-        await pSdk.connectionV2.invite(inputParams);
+        await pSdk.connectionV2.cancel(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
