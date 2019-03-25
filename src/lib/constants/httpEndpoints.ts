@@ -40,6 +40,7 @@ export enum HttpEndpoints {
   CONNECTION_ACCEPT_V2 = '/connection/v2/accept',
   CONNECTION_REJECT = '/connection/reject',
   CONNECTION_CANCEL = '/connection/cancel',
+  CONNECTION_CANCEL_V2 = '/connection/v2/cancel',
   CONNECTION_BLOCK = '/connection/block',
   CONNECTION_MUTE = '/connection/mute',
   CONNECTION_DISCONNECT = '/connection/disconnect',

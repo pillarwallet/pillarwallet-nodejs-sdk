@@ -92,13 +92,9 @@ describe('Connection Count', () => {
         .reply(500, errInternal);
     }
 
-    try {
-      const response = await pSdk.wallet.registerAuthServer(walletRegister);
-      walletId = response.data.walletId;
-      userId = response.data.userId;
-    } catch (e) {
-      throw e;
-    }
+    const response = await pSdk.wallet.registerAuthServer(walletRegister);
+    walletId = response.data.walletId;
+    userId = response.data.userId;
   });
 
   afterAll(() => {
