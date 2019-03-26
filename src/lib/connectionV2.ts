@@ -36,8 +36,8 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  */
 const connectionInviteSchema = require('../schemas/connection/v2/invite.json');
 const connectionAcceptSchema = require('../schemas/connection/v2/accept.json');
+const connectionRejectSchema = require('../schemas/connection/v2/reject.json');
 const connectionCancelSchema = require('../schemas/connection/v2/cancel.json');
-
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -70,6 +70,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionAcceptSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_ACCEPT_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name reject
+   * @desc Reject a connection invitation from another user
+   * @param {ConnectionRejectV2} rejectConfiguration
+   * @returns {AxiosPromise}
+   */
+  reject(rejectConfiguration: ConnectionRejectV2): AxiosPromise {
+    return this.executeRequest({
+      data: rejectConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionRejectSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_REJECT_V2
       }`,
     });
   }
