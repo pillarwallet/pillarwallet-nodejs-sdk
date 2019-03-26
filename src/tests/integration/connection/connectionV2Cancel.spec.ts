@@ -23,7 +23,7 @@ const env = process.env.NODE_ENV;
 import { PillarSdk } from '../../..';
 import nock = require('nock');
 
-describe('Connection v2 Accept', () => {
+describe('Connection v2 Cancel', () => {
   // Key pairs
   const EC = require('elliptic').ec;
   const ecSecp256k1 = new EC('secp256k1');

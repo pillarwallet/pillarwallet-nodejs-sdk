@@ -24,7 +24,7 @@ import { PillarSdk } from '../../..';
 import nock = require('nock');
 import { Configuration } from '../../../lib/configuration';
 
-describe('Connection v2 Reject', () => {
+describe('Connection v2 Mute', () => {
   // Key pairs
   const EC = require('elliptic').ec;
   const ecSecp256k1 = new EC('secp256k1');
@@ -57,6 +57,7 @@ describe('Connection v2 Reject', () => {
   const sourceIdentityKey = Math.random()
     .toString(36)
     .substring(7);
+
   const targetIdentityKey = Math.random()
     .toString(36)
     .substring(7);
@@ -64,18 +65,29 @@ describe('Connection v2 Reject', () => {
   let sourceUserWalletId: string;
   let targetUserWalletId: string;
   let targetUserId: string;
+  let sourceUserAccessToken: string;
   let targetUserAccessToken: string;
   let sourceUserId: string;
   let pSdk: PillarSdk;
 
-  const responseData = {
+  const responseDataMute = {
     result: 'success',
-    message: 'Connection invitation rejected',
+    message: `Connection status is updated to 'muted'`,
+  };
+
+  const responseDataUnMute = {
+    result: 'success',
+    message: `Connection status is updated to 'accepted'`,
   };
 
   const responseDataConnectionInvite = {
     result: 'success',
     message: 'Connection invitation was successfully sent.',
+  };
+
+  const responseDataConnectionAccept = {
+    result: 'success',
+    message: 'Connection invitation accepted',
   };
 
   const errInvalidWalletId = {
@@ -129,11 +141,15 @@ describe('Connection v2 Reject', () => {
         })
         .post('/connection/v2/invite')
         .reply(200, responseDataConnectionInvite)
-        .post('/connection/v2/reject')
-        .reply(200, responseData)
-        .post('/connection/v2/reject')
+        .post('/connection/v2/accept')
+        .reply(200, responseDataConnectionAccept)
+        .post('/connection/v2/mute')
+        .reply(200, responseDataMute)
+        .post('/connection/v2/mute')
+        .reply(200, responseDataUnMute)
+        .post('/connection/v2/mute')
         .reply(400, errInvalidWalletId)
-        .post('/connection/v2/reject')
+        .post('/connection/v2/mute')
         .reply(500, errInternal);
     }
 
@@ -161,15 +177,37 @@ describe('Connection v2 Reject', () => {
     response = await pSdk.wallet.registerAuthServer(walletRegister);
     sourceUserWalletId = response.data.walletId;
     sourceUserId = response.data.userId;
+    sourceUserAccessToken = Configuration.accessKeys.oAuthTokens.accessToken;
 
-    const inputParams = {
+    const inviteParams = {
       targetUserId,
       sourceIdentityKey,
       targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
-    await pSdk.connectionV2.invite(inputParams);
+    await pSdk.connectionV2.invite(inviteParams);
+
+    Configuration.accessKeys.oAuthTokens.accessToken = targetUserAccessToken;
+
+    const acceptParams = {
+      targetUserId: sourceUserId,
+      sourceUserIdentityKeys: {
+        sourceIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        targetIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+      },
+      targetUserIdentityKeys: {
+        sourceIdentityKey,
+        targetIdentityKey,
+      },
+      walletId: targetUserWalletId,
+    };
+
+    await pSdk.connectionV2.accept(acceptParams);
   });
 
   afterAll(() => {
@@ -181,33 +219,37 @@ describe('Connection v2 Reject', () => {
 
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
-      targetUserId: sourceUserId,
+      targetUserId,
       sourceIdentityKey,
       targetIdentityKey,
-      walletId: targetUserWalletId,
+      walletId: sourceUserWalletId,
+      mute: true,
     };
 
-    Configuration.accessKeys.oAuthTokens.accessToken = targetUserAccessToken;
+    Configuration.accessKeys.oAuthTokens.accessToken = sourceUserAccessToken;
 
-    const response = await pSdk.connectionV2.reject(inputParams);
+    let response = await pSdk.connectionV2.mute(inputParams);
     expect(response.status).toBe(200);
-    expect(response.data).toEqual(responseData);
+    expect(response.data).toEqual(responseDataMute);
+
+    inputParams.mute = false;
+
+    response = await pSdk.connectionV2.mute(inputParams);
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual(responseDataUnMute);
   });
 
   it('should return 400 due invalid params', async () => {
     const inputParams = {
-      targetUserId: sourceUserId,
-      sourceIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
-      targetIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
+      targetUserId,
+      sourceIdentityKey,
+      targetIdentityKey,
       walletId: '',
+      mute: true,
     };
 
     try {
-      await pSdk.connectionV2.reject(inputParams);
+      await pSdk.connectionV2.mute(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidWalletId.message);
@@ -217,18 +259,15 @@ describe('Connection v2 Reject', () => {
   if (env === 'test') {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
-        targetUserId: sourceUserId,
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        walletId: targetUserWalletId,
+        targetUserId,
+        sourceIdentityKey,
+        targetIdentityKey,
+        walletId: sourceUserWalletId,
+        mute: true,
       };
 
       try {
-        await pSdk.connectionV2.reject(inputParams);
+        await pSdk.connectionV2.mute(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
