@@ -610,7 +610,7 @@ Mutes/unmutes future communication from another contact.
 ### Connection v2 Mute
 
 ```typescript
-pillarSdk.connection.mute(inputParams)
+pillarSdk.connectionV2.mute(inputParams)
 ```
 
 Mutes/unmutes future communication from another contact.
