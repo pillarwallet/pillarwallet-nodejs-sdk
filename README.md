@@ -25,6 +25,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection v2 Cancel](#connection-v2-cancel)
     - [Connection Block](#connection-block)
     - [Connection Mute](#connection-mute)
+    - [Connection Mute](#connection-v2-mute)
     - [Connection Disconnect](#connection-disconnect)
     - [Connection Count](#connection-count)
     - [Connection Map Identity Keys](#connection-map-identity-keys)
@@ -595,6 +596,31 @@ Mutes/unmutes future communication from another contact.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | accessKey  | The Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| mute  | True/false to mute/unmute the connection. | Boolean  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection status is updated to muted/accepted' | String  |
+
+### Connection v2 Mute
+
+```typescript
+pillarSdk.connectionV2.mute(inputParams)
+```
+
+Mutes/unmutes future communication from another contact.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
+| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | mute  | True/false to mute/unmute the connection. | Boolean  | Required  |

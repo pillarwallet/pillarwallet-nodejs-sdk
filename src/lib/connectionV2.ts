@@ -38,6 +38,7 @@ const connectionInviteSchema = require('../schemas/connection/v2/invite.json');
 const connectionAcceptSchema = require('../schemas/connection/v2/accept.json');
 const connectionRejectSchema = require('../schemas/connection/v2/reject.json');
 const connectionCancelSchema = require('../schemas/connection/v2/cancel.json');
+const connectionMuteSchema = require('../schemas/connection/v2/mute.json');
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -104,6 +105,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionCancelSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_CANCEL_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name mute
+   * @desc Mutes another user
+   * @param {ConnectionMuteV2} muteConfiguration
+   * @returns {AxiosPromise}
+   */
+  mute(muteConfiguration: ConnectionMuteV2): AxiosPromise {
+    return this.executeRequest({
+      data: muteConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionMuteSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_MUTE_V2
       }`,
     });
   }

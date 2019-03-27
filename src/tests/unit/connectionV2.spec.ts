@@ -149,7 +149,7 @@ describe('Connection v2 Class', () => {
   describe('.cancel', () => {
     it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accessToken, '');
-      const connectionCanceltData = {
+      const connectionCancelData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         sourceIdentityKey: Math.random()
           .toString(36)
@@ -160,14 +160,44 @@ describe('Connection v2 Class', () => {
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
-      pSdk.connectionV2.cancel(connectionCanceltData);
+      pSdk.connectionV2.cancel(connectionCancelData);
 
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
-        data: connectionCanceltData,
+        data: connectionCancelData,
         url: 'https://localhost:8080/connection/v2/cancel',
+      });
+    });
+  });
+
+  /**
+   * Connection: Mute method
+   */
+  describe('.mute', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionMuteData = {
+        targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        sourceIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        targetIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        mute: true,
+      };
+
+      pSdk.connectionV2.mute(connectionMuteData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: connectionMuteData,
+        url: 'https://localhost:8080/connection/v2/mute',
       });
     });
   });
