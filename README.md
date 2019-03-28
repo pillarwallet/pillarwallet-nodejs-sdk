@@ -27,6 +27,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Mute](#connection-mute)
     - [Connection Mute](#connection-v2-mute)
     - [Connection Disconnect](#connection-disconnect)
+    - [Connection v2 Disconnect](#connection-v2-disconnect)
     - [Connection Count](#connection-count)
     - [Connection Map Identity Keys](#connection-map-identity-keys)
     - [Connection Update Identity Keys](#connection-update-identity-keys)
@@ -647,6 +648,30 @@ Disconnects a connection between two users.
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | sourceUserAccessKey  | Source User Access Key. | String  | Required  |
 | targetUserAccessKey  | Target User Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection is successfully disconnected' | String  |
+
+### Connection v2 Disconnect
+
+```typescript
+pillarSdk.connectionV2.disconnect(inputParams)
+```
+
+Disconnects a connection between two users.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
+| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**

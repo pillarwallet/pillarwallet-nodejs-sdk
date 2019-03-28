@@ -201,4 +201,33 @@ describe('Connection v2 Class', () => {
       });
     });
   });
+
+  /**
+   * Connection: Disconnect method
+   */
+  describe('.disconnect', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionDisconnectData = {
+        targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        sourceIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        targetIdentityKey: Math.random()
+          .toString(36)
+          .substring(7),
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
+
+      pSdk.connectionV2.disconnect(connectionDisconnectData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: connectionDisconnectData,
+        url: 'https://localhost:8080/connection/v2/disconnect',
+      });
+    });
+  });
 });

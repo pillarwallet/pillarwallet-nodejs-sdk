@@ -39,6 +39,7 @@ const connectionAcceptSchema = require('../schemas/connection/v2/accept.json');
 const connectionRejectSchema = require('../schemas/connection/v2/reject.json');
 const connectionCancelSchema = require('../schemas/connection/v2/cancel.json');
 const connectionMuteSchema = require('../schemas/connection/v2/mute.json');
+const connectionDisconnectSchema = require('../schemas/connection/v2/disconnect.json');
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -122,6 +123,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionMuteSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_MUTE_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name disconnect
+   * @desc Disconnects a connection between two users
+   * @param {ConnectionDisconnectV2} disconnectConfiguration
+   * @returns {AxiosPromise}
+   */
+  disconnect(disconnectConfiguration: ConnectionDisconnectV2): AxiosPromise {
+    return this.executeRequest({
+      data: disconnectConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionDisconnectSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_DISCONNECT_V2
       }`,
     });
   }
