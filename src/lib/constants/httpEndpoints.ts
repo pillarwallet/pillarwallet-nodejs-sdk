@@ -47,6 +47,7 @@ export enum HttpEndpoints {
   CONNECTION_MUTE = '/connection/mute',
   CONNECTION_MUTE_V2 = '/connection/v2/mute',
   CONNECTION_DISCONNECT = '/connection/disconnect',
+  CONNECTION_DISCONNECT_V2 = '/connection/v2/disconnect',
   CONNECTION_COUNT = '/connection/count',
   CONNECTION_MAP_IDENTITY_KEYS = '/connection/map-identity-keys',
   CONNECTION_UPDATE_IDENTITY_KEYS = '/connection/update-identity-keys',
