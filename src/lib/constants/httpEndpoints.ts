@@ -44,6 +44,7 @@ export enum HttpEndpoints {
   CONNECTION_CANCEL_V2 = '/connection/v2/cancel',
   CONNECTION_BLOCK = '/connection/block',
   CONNECTION_BLOCK_V2 = '/connection/v2/block',
+  CONNECTION_BLACKLIST_V2 = '/connection/v2/blacklist',
   CONNECTION_MUTE = '/connection/mute',
   CONNECTION_MUTE_V2 = '/connection/v2/mute',
   CONNECTION_DISCONNECT = '/connection/disconnect',

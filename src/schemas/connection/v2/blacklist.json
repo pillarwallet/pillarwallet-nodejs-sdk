@@ -1,0 +1,25 @@
+{
+    "title": "Connection Model - Blacklist v2",
+    "description": "Schema definition for Connection Model - blacklist v2 method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "targetUserId": {
+        "description": "The target user ID to blacklist",
+        "type": "string"
+      },
+      "blacklist": {
+        "description": "True/false value to block/unblock the user without having a previous connection",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "walletId",
+      "targetUserId",
+      "blacklist"
+    ]
+  }
