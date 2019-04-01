@@ -24,9 +24,11 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Connection Cancel](#connection-cancel)
     - [Connection v2 Cancel](#connection-v2-cancel)
     - [Connection Block](#connection-block)
+    - [Connection v2 Block](#connection-v2-block)
     - [Connection Mute](#connection-mute)
-    - [Connection Mute](#connection-v2-mute)
+    - [Connection v2 Mute](#connection-v2-mute)
     - [Connection Disconnect](#connection-disconnect)
+    - [Connection v2 Disconnect](#connection-v2-disconnect)
     - [Connection Count](#connection-count)
     - [Connection Map Identity Keys](#connection-map-identity-keys)
     - [Connection Update Identity Keys](#connection-update-identity-keys)
@@ -583,6 +585,31 @@ Blocks/unblocks a connection request from another user.
 | result  | 'success' | String  |
 | message  | 'Connection blocked/accepted' | String  |
 
+### Connection v2 Block
+
+```typescript
+pillarSdk.connectionV2.block(inputParams)
+```
+
+Blocks/unblocks future communication from another contact.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
+| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| block  | True/false to block/unblock the connection. | Boolean  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection status is updated to blocked/accepted' | String  |
+
 ### Connection Mute
 
 ```typescript
@@ -647,6 +674,30 @@ Disconnects a connection between two users.
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | sourceUserAccessKey  | Source User Access Key. | String  | Required  |
 | targetUserAccessKey  | Target User Access Key. | String  | Required  |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Connection is successfully disconnected' | String  |
+
+### Connection v2 Disconnect
+
+```typescript
+pillarSdk.connectionV2.disconnect(inputParams)
+```
+
+Disconnects a connection between two users.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
+| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**

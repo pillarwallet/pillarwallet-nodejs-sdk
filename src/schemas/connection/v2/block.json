@@ -1,0 +1,35 @@
+{
+    "title": "Connection Model - Block v2",
+    "description": "Schema definition for Connection Model - block v2 method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "sourceIdentityKey": {
+        "description": "Generated source identity key for the source user",
+        "type": "string"
+      },
+      "targetIdentityKey": {
+        "description": "Generated target identity key for the source user",
+        "type": "string"
+      },
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "targetUserId": {
+        "description": "The target user ID",
+        "type": "string"
+      },
+      "block": {
+        "description": "True/false value to block/unblock the connection",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "sourceIdentityKey",
+      "targetIdentityKey",
+      "walletId",
+      "targetUserId",
+      "block"
+    ]
+  }
