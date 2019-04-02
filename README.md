@@ -610,6 +610,29 @@ Blocks/unblocks future communication from another contact.
 | result  | 'success' | String  |
 | message  | 'Connection status is updated to blocked/accepted' | String  |
 
+### Connection v2 Blacklist
+
+```typescript
+pillarSdk.connectionV2.blacklist(inputParams)
+```
+
+Adds/removes a user from another user's blacklist.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| targetUserId  | The Contact User Identifier. | UUID  | Required  |
+| blacklist  | True/false to add/remove a user to another user's blacklist. | Boolean  | Required  |
+
+**Expected Output**
+
+| Name  | Output | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'User successfully added to blacklist.' | String  |
+
 ### Connection Mute
 
 ```typescript

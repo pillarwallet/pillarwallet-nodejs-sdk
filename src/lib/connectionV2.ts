@@ -41,6 +41,7 @@ const connectionCancelSchema = require('../schemas/connection/v2/cancel.json');
 const connectionMuteSchema = require('../schemas/connection/v2/mute.json');
 const connectionDisconnectSchema = require('../schemas/connection/v2/disconnect.json');
 const connectionBlockSchema = require('../schemas/connection/v2/block.json');
+const connectionBlacklistSchema = require('../schemas/connection/v2/blacklist.json');
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -141,6 +142,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionBlockSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_BLOCK_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name blacklist
+   * @desc Blacklists another user
+   * @param {ConnectionBlacklistV2} blacklistConfiguration
+   * @returns {AxiosPromise}
+   */
+  blacklist(blacklistConfiguration: ConnectionBlacklistV2): AxiosPromise {
+    return this.executeRequest({
+      data: blacklistConfiguration,
+      defaultRequest: postConfiguration,
+      schema: connectionBlacklistSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_BLACKLIST_V2
       }`,
     });
   }
