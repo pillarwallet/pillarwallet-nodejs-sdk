@@ -233,6 +233,30 @@ describe('Connection v2 Class', () => {
   });
 
   /**
+   * Connection: Blacklist method
+   */
+  describe('.blacklist', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionBlacklistData = {
+        targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        blacklist: true,
+      };
+
+      pSdk.connectionV2.blacklist(connectionBlacklistData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: connectionBlacklistData,
+        url: 'https://localhost:8080/connection/v2/blacklist',
+      });
+    });
+  });
+
+  /**
    * Connection: Disconnect method
    */
   describe('.disconnect', () => {
