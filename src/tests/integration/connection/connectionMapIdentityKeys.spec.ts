@@ -48,6 +48,8 @@ describe('Connection Map Identity Keys', () => {
       targetUserAccessKey: null,
       sourceIdentityKey: 'abc',
       targetIdentityKey: 'xyz',
+      createdAt: null,
+      updatedAt: null,
       status: null,
     },
   ];
