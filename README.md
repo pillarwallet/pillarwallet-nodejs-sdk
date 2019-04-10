@@ -748,8 +748,8 @@ Returns the number of connections a user has
 | ------------- | ------------- | ------------- |
 | userId  | The User Identifier | String  |
 | currentConnectionsCount  | The number of connections with sourceIdentityKey | Number  |
-| oldConnectionsCount  | The number of connections without sourceIdentityKey | Number  |
-
+| oldConnectionsCount  | The number of connections to be updated with identity keys | Number  |
+| newReceivedConnectonsCount  | The number of connections to not be updated with identity keys | Number  |
 
 ### Connection Map Identity Keys
 
