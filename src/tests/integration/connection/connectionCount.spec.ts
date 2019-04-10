@@ -44,6 +44,7 @@ describe('Connection Count', () => {
     userId: 'userId',
     currentConnectionsCount: 0,
     oldConnectionsCount: 0,
+    newReceivedConnectonsCount: 0,
   };
 
   const errInvalidWalletId = {
@@ -115,6 +116,7 @@ describe('Connection Count', () => {
       userId,
       currentConnectionsCount: 0,
       oldConnectionsCount: 0,
+      newReceivedConnectonsCount: 0,
     });
   });
 
