@@ -71,7 +71,7 @@ describe('Connection Update Identity Keys', () => {
       targetUserAccessKey: 'target-access-key',
       sourceIdentityKey: 'abc',
       targetIdentityKey: 'xyz',
-      status: 'pending',
+      status: 'accepted',
       updated: true,
     },
   ];
@@ -199,7 +199,7 @@ describe('Connection Update Identity Keys', () => {
     }
   });
 
-  it('expects to return a result when connection status is pending', async () => {
+  it('expects to return a result when connection status is accepted', async () => {
     const inputParams = {
       walletId: sourceUserWalletId,
       connections: [
@@ -227,7 +227,7 @@ describe('Connection Update Identity Keys', () => {
         targetUserAccessKey: expect.any(String),
         sourceIdentityKey: expect.any(String),
         targetIdentityKey: expect.any(String),
-        status: 'pending',
+        status: 'accepted',
         updated: true,
       },
     ]);
