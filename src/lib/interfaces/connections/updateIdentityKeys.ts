@@ -21,7 +21,7 @@ interface ConnectionUpdateIdentityKeys {
   connections: [
     {
       sourceUserAccessKey: string;
-      targetUserAccessKey: string;
+      targetUserAccessKey?: string;
       sourceIdentityKey: string;
       targetIdentityKey: string;
       targetUserId: string;
