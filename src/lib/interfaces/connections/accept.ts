@@ -24,4 +24,12 @@ interface ConnectionAccept {
   walletId: string;
   sourceUserAccessKey?: string;
   targetUserAccessKey: string;
+  sourceUserIdentityKeys?: {
+    sourceIdentityKey: string;
+    targetIdentityKey: string;
+  };
+  targetUserIdentityKeys?: {
+    sourceIdentityKey: string;
+    targetIdentityKey: string;
+  };
 }

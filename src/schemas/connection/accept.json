@@ -8,18 +8,54 @@
       "description": "The target user ID",
       "type": "string"
     },
-    "sourceUserAccessKey": {
-      "description": "The source user shared access key",
+    "targetUserAccessKey": {
+      "description": "The target user access key",
       "type": "string"
     },
-    "targetUserAccessKey": {
-      "description": "The target user shared access key",
+    "sourceUserAccessKey": {
+      "description": "The source user access key",
       "type": "string"
+    },
+    "sourceUserIdentityKeys": {
+      "description": "Generated source and target identity keys for the source user",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "sourceIdentityKey": {
+          "description": "Generated source identity key",
+          "type": "string"
+        },
+        "targetIdentityKey": {
+          "description": "Generated target identity key",
+          "type": "string"
+        }
+      },
+      "required": [ "sourceIdentityKey", "targetIdentityKey" ]
+    },
+    "targetUserIdentityKeys": {
+      "description": "Generated source and target identity keys for the target user",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "sourceIdentityKey": {
+          "description": "Generated source identity key",
+          "type": "string"
+        },
+        "targetIdentityKey": {
+          "description": "Generated target identity key",
+          "type": "string"
+        }
+      },
+      "required": [ "sourceIdentityKey", "targetIdentityKey" ]
     },
     "walletId": {
       "description": "The wallet ID",
       "type": "string"
     }
   },
-  "required": [ "targetUserId", "targetUserAccessKey", "walletId" ]
+  "required": [
+    "targetUserId",
+    "targetUserAccessKey",
+    "walletId"
+  ]
 }
