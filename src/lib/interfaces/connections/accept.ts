@@ -28,8 +28,4 @@ interface ConnectionAccept {
     sourceIdentityKey: string;
     targetIdentityKey: string;
   };
-  targetUserIdentityKeys?: {
-    sourceIdentityKey: string;
-    targetIdentityKey: string;
-  };
 }
