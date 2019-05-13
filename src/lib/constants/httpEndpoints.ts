@@ -27,6 +27,7 @@ export enum HttpEndpoints {
   REGISTER_TOKENS = '/register/tokens',
   REGISTER_APPROVE_EXTERNAL_LOGIN = '/register/approve-external-login',
   WALLET_REGISTER = '/wallet/register',
+  SMART_WALLET_REGISTER = '/wallet/register-smart-wallet',
   WALLET_REGISTER_ADDRESS = '/wallet/register-address',
   WALLET_UNREGISTER_ADDRESS = '/wallet/unregister-address',
   WALLET_UPDATE = '/wallet/update',
