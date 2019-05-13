@@ -13,6 +13,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [Wallet Register Auth Server](#wallet-register-auth-server)
     - [Wallet Register Address](#wallet-register-address)
     - [Wallet Unregister Address](#wallet-unregister-address)
+    - [Smart Wallet Register](#smart-wallet-register)
     - [Asset Defaults](#asset-defaults)
     - [Asset Search](#asset-search)
     - [Asset List](#asset-list)
@@ -296,6 +297,35 @@ JSON collection of objects with respective values:
 | whitepaper  | The Token Whitepaper | String  |
 | isDefault  | isDefault Flag for Token | Boolean  |
 | icos  | Ico details of one Token. | Array  |
+
+### Smart Wallet Register
+
+```typescript
+pillarSdk.wallet.registerSmartWallet(inputParams)
+```
+
+Register a second wallet in the Backend and register in BCX.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| publicKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| ethAddress  | The ethereum Address of target user | String  | Required  |
+
+**Expected Output**
+
+JSON collection of objects with respective values:
+
+| Name  | Output/Description | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Wallet registered successfully.' | String  |
+| walletId  | The Wallet Identifier | String  |
+| userId  | The User Identifier | Integer  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  |
 
 ### Asset Search
 
