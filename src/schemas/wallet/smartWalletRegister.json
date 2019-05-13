@@ -1,0 +1,34 @@
+{
+    "title": "Wallet Model - RegisterSmartWallet",
+    "description": "Schema definition for Wallet Model - registerSmartWallet method",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "publicKey": {
+        "description": "The publicKey of one wallet",
+        "type": "string",
+        "pattern":"[a-fA-F0-9]{128}$"
+      },
+      "ethAddress": {
+        "description": "The Ethereum address of one wallet",
+        "type": "string",
+        "pattern":"^0x[a-fA-F0-9]{40}$",
+        "maxLength": 42
+      },
+      "fcmToken": {
+        "description": "The Firebase Cloud Messaging Token  of one wallet",
+        "type": "string"
+      },
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      }
+    },
+    "required": [
+      "publicKey",
+      "ethAddress",
+      "fcmToken",
+      "walletId"
+    ]
+  }
+  

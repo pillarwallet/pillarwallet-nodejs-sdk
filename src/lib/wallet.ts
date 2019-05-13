@@ -39,6 +39,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const walletRegisterSchema = require('../schemas/wallet/register.json');
+const smartWalletRegisterSchema = require('../schemas/wallet/smartWalletRegister.json');
 const walletRegisterAuthSchema = require('../schemas/wallet/registerAuthServer.json');
 const walletUpdateSchema = require('../schemas/wallet/update.json');
 const walletRegisterAddressSchema = require('../schemas/wallet/registerAddress.json');
@@ -69,6 +70,23 @@ export class Wallet extends Configuration {
       data: walletRegister,
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.WALLET_REGISTER}`,
+    });
+  }
+
+  /**
+   * @name registerSmartWallet
+   * @desc Method to Register a second wallet in the Backend and register in BCX.
+   * @param {SmartWalletRegister} smartWalletRegister
+   * @returns {AxiosPromise}
+   */
+  registerSmartWallet(smartWalletRegister: SmartWalletRegister): AxiosPromise {
+    return this.executeRequest({
+      data: smartWalletRegister,
+      defaultRequest: postConfiguration,
+      schema: smartWalletRegisterSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.SMART_WALLET_REGISTER
+      }`,
     });
   }
 

@@ -90,6 +90,46 @@ describe('Wallet Class', () => {
     });
   });
 
+  describe('.registerSmartWallet', () => {
+    it(
+      'should successfully call' + ' with valid data and Authorization header',
+      () => {
+        Configuration.setAuthTokens(accessToken, '');
+        const registerSmartWalletData = {
+          fcmToken: '987qwe',
+          walletId: 'sdfsdfs',
+          publicKey: keys.publicKey,
+          ethAddress: '0xabcdef1234567890abcdef123456789012345678',
+        };
+
+        pSdk.wallet.registerSmartWallet(registerSmartWalletData);
+
+        expect(Requester.execute).toHaveBeenCalledWith({
+          ...postConfiguration,
+          headers: { Authorization: 'Bearer myAccessToken' },
+          data: registerSmartWalletData,
+          url: 'https://localhost:8080/wallet/register-smart-wallet',
+        });
+      },
+    );
+
+    it('validates data', async () => {
+      expect.assertions(3);
+
+      try {
+        await pSdk.wallet.register({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error);
+        expect(e.message).toMatch(
+          "data should have required property 'fcmToken'",
+        );
+        expect(e.message).toMatch(
+          "data should have required property 'username'",
+        );
+      }
+    });
+  });
+
   describe('.registerAuthServer', () => {
     const walletRegistrationData = {
       privateKey: keys.privateKey,
