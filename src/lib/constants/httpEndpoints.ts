@@ -58,6 +58,7 @@ export enum HttpEndpoints {
   INVESTMENTS_USER_ICO = '/users',
   USER_UPDATE = '/user/update',
   USER_INFO = '/user/info',
+  USER_INFO_SMART_WALLET = '/user',
   USER_INFO_BY_ID = '/user/info/',
   USER_SEARCH = '/user/search',
   USER_DELETE = '/user/delete',

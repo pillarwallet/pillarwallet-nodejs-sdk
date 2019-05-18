@@ -105,6 +105,23 @@ export class User extends Configuration {
   }
 
   /**
+   * @name infoSmartWallet
+   * @desc Retrieve information from a user and his wallets
+   * @param {UserInfo} userInfo
+   * @returns {AxiosPromise}
+   */
+  infoSmartWallet(userInfo: UserInfo): AxiosPromise {
+    return this.executeRequest({
+      defaultRequest: getConfiguration,
+      params: userInfo,
+      schema: userInfoSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_INFO_SMART_WALLET
+      }`,
+    });
+  }
+
+  /**
    * @name infoById
    * @desc Provides the user data by the target user id and users access keys
    * @param {string} targetUserId
