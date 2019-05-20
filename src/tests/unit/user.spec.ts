@@ -136,6 +136,37 @@ describe('User Class', () => {
     });
   });
 
+  describe('.infoSmartWallet', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      const userInfoData = {
+        walletId: '56b540e9-927a-4ced-a1be-61b059f33f2b',
+      };
+
+      Configuration.setAuthTokens(accessToken, '');
+
+      user.infoSmartWallet(userInfoData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: userInfoData,
+        url: 'https://localhost:8080/user',
+      });
+    });
+
+    it('returns a rejected promise when validation fails', async () => {
+      expect.assertions(2);
+
+      try {
+        await user.infoSmartWallet({});
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toBe("data should have required property 'walletId'");
+      }
+    });
+  });
+
   describe('.infoById', () => {
     let targetUserId: string;
     let query: UserInfoById;

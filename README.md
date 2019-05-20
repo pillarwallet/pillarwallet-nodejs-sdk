@@ -40,6 +40,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [User Delete](#user-delete)
     - [User Delete Profile Image](#user-delete-profile-image)
     - [User Info](#user-info)
+    - [User Info Smart Wallet](#user-info-smart-wallet)
     - [User Image by User Id](#user-image-by-user-id)
     - [User Info By Id](#user-info-by-id)
     - [User Profile Image](#user-profile-image)
@@ -1122,6 +1123,30 @@ JSON collection of objects with respective values:
 | taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
+
+### User Info Smart Wallet
+
+```typescript
+pillarSdk.user.infoSmartWallet(inputParams);
+```
+
+Retrieve information from a user and his wallets
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+
+
+**Expected Output**
+
+JSON collection of objects with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| user  | An object with information related to the user | Object  |
+| wallets  | An array containing the user's wallets | Array  |
 
 ### User Info by Id
 
