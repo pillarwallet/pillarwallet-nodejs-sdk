@@ -19,17 +19,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+/* tslint:disable object-shorthand-properties-first */
 const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../..';
 import nock = require('nock');
 const keys = require('../../utils/generateKeyPair');
 
-describe('Connection v2 Invite', () => {
+describe('Wallet register-smart-wallet', () => {
   // Key pairs
   const EC = require('elliptic').ec;
   const ecSecp256k1 = new EC('secp256k1');
-  const publicKey = keys.publicKey.toString();
   const ethAddress = keys.ethAddress.toString();
 
   const privateKey = ecSecp256k1
@@ -122,7 +122,7 @@ describe('Connection v2 Invite', () => {
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
       walletId: userWalletId,
-      publicKey,
+      privateKey,
       ethAddress,
       fcmToken: '987qwe1',
     };
@@ -141,7 +141,7 @@ describe('Connection v2 Invite', () => {
   it('expects to return a conflict message and status 409', async () => {
     const inputParams = {
       walletId: userWalletId,
-      publicKey,
+      privateKey,
       ethAddress,
       fcmToken: '987qwe1',
     };
@@ -160,7 +160,7 @@ describe('Connection v2 Invite', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       walletId: '',
-      publicKey,
+      privateKey,
       ethAddress,
       fcmToken: '987qwe1',
     };
@@ -177,7 +177,7 @@ describe('Connection v2 Invite', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         walletId: userWalletId,
-        publicKey,
+        privateKey,
         ethAddress,
         fcmToken: '987qwe1',
       };

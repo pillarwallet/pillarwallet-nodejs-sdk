@@ -19,11 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+/* tslint:disable object-shorthand-properties-first */
 import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
 import { Register } from '../../lib/register';
 import { PillarSdk } from '../..';
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
+import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
 const keys = require('../utils/generateKeyPair');
 
 describe('Wallet Class', () => {
@@ -98,16 +100,24 @@ describe('Wallet Class', () => {
         const registerSmartWalletData = {
           fcmToken: '987qwe',
           walletId: 'sdfsdfs',
-          publicKey: keys.publicKey,
+          privateKey: keys.privateKey,
           ethAddress: '0xabcdef1234567890abcdef123456789012345678',
         };
 
         pSdk.wallet.registerSmartWallet(registerSmartWalletData);
 
+        const data = {
+          ...registerSmartWalletData,
+          publicKey: PrivateKeyDerivatives.getPublicKey(
+            registerSmartWalletData.privateKey,
+          ),
+        };
+        delete data.privateKey;
+
         expect(Requester.execute).toHaveBeenCalledWith({
           ...postConfiguration,
           headers: { Authorization: 'Bearer myAccessToken' },
-          data: registerSmartWalletData,
+          data,
           url: 'https://localhost:8080/wallet/register-smart-wallet',
         });
       },

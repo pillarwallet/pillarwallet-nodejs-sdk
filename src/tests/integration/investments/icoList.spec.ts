@@ -19,13 +19,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+const env = process.env.NODE_ENV;
+import nock = require('nock');
 import { PillarSdk } from '../../../index';
 
 describe('The Investment Class', () => {
   let pSdk: PillarSdk;
 
+  const responseData = {
+    result: 'success',
+    data: [],
+  };
+
   beforeEach(() => {
     pSdk = new PillarSdk({});
+
+    if (env === 'test') {
+      const mockApi = nock('http://localhost:8082');
+      mockApi
+        .get('/users/56b540e9-927a-4ced-a1be-61b059f33f2b/icos')
+        .reply(200, responseData);
+    }
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+    if (env === 'test') {
+      nock.cleanAll();
+    }
   });
 
   describe('icoList method', () => {
