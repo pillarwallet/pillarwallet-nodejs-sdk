@@ -80,8 +80,15 @@ export class Wallet extends Configuration {
    * @returns {AxiosPromise}
    */
   registerSmartWallet(smartWalletRegister: SmartWalletRegister): AxiosPromise {
+    const data = {
+      ...smartWalletRegister,
+      publicKey: PrivateKeyDerivatives.getPublicKey(
+        smartWalletRegister.privateKey,
+      ),
+    };
+    delete data.privateKey;
     return this.executeRequest({
-      data: smartWalletRegister,
+      data,
       defaultRequest: postConfiguration,
       schema: smartWalletRegisterSchema,
       url: `${Configuration.accessKeys.apiUrl}${

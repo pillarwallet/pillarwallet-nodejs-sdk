@@ -21,7 +21,7 @@ SOFTWARE.
 */
 interface SmartWalletRegister {
   walletId: string;
-  publicKey: string;
+  privateKey: string;
   ethAddress: string;
   fcmToken: string;
 }
