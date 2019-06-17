@@ -73,6 +73,53 @@ describe('Badge Class', () => {
     });
   });
 
+  describe('.get', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accesToken, '');
+      const getBadgesData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        userId: 'userId',
+      };
+
+      pSdk.badge.get(getBadgesData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        params: getBadgesData,
+        url: 'https://localhost:8080/badge',
+      });
+    });
+
+    it('should throw an error if called with invalid data, walletId', async () => {
+      const getBadgesData = {
+        walletId: null,
+        userId: 'userId',
+      };
+
+      try {
+        await pSdk.badge.get(getBadgesData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toMatch('data.walletId should be string');
+      }
+    });
+
+    it('should throw an error if called with invalid data, userId', async () => {
+      const getBadgesData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        userId: null,
+      };
+
+      try {
+        await pSdk.badge.get(getBadgesData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toMatch('data.userId should be string');
+      }
+    });
+  });
+
   describe('.selfAward', () => {
     it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
