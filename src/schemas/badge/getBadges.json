@@ -1,0 +1,18 @@
+{
+    "title": "User Badge Model - List",
+    "description": "Schema definition for User Badge Model - list method",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "userId": {
+        "description": "The user ID",
+        "type": "string"
+      }
+    },
+    "required": [ "walletId", "userId" ]
+  }
+  
