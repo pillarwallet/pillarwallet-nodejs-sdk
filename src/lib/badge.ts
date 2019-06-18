@@ -36,6 +36,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const userBadgesSchema = require('../schemas/badge/userBadges.json');
+const getBadgesSchema = require('../schemas/badge/getBadges.json');
 const selfAwardBadgeSchema = require('../schemas/badge/selfAwardBadge.json');
 
 export class Badge extends Configuration {
@@ -51,6 +52,21 @@ export class Badge extends Configuration {
       schema: userBadgesSchema,
       defaultRequest: getConfiguration,
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.USER_BADGES,
+    });
+  }
+
+  /**
+   * @name get
+   * @desc Returns a list of user badges.
+   * @param {GetBadges} params
+   * @returns {AxiosPromise}
+   */
+  get(params: GetBadges): AxiosPromise {
+    return this.executeRequest({
+      params,
+      schema: getBadgesSchema,
+      defaultRequest: getConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.GET_BADGES,
     });
   }
 
