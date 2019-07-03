@@ -99,9 +99,6 @@ workflows:
       - test:
           requires:
             - build
-      - whitesource:
-          requires:
-            - test
       - publish:
           requires:
             - test
