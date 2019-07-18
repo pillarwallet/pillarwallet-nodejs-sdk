@@ -290,6 +290,7 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
+| patternUrl  | The Token Icon (bigger) | String  |
 | email  | The Token Email | String  |
 | socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
@@ -356,6 +357,7 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
+| patternUrl  | The Token Icon (bigger) | String  |
 | email  | The Token Email | String  |
 | socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
@@ -392,6 +394,7 @@ JSON collection of objects with respective values:
 | symbol  | The Token Ticker Symbol | String  |
 | wallpaperUrl  | One Predefined Wallpaper For Token | String  |
 | iconUrl  | The Token Icon | String  |
+| patternUrl  | The Token Icon (bigger) | String  |
 | email  | The Token Email | String  |
 | socialMedia  | The token's social media. | Array  |
 | telegram  | The Token Telegram | String  |
