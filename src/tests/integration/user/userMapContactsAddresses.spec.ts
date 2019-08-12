@@ -20,59 +20,103 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 // tslint:disable: object-shorthand-properties-first
+// check node environment
 const env = process.env.NODE_ENV;
 
-import { PillarSdk } from '../../../index';
-const nock = require('nock');
-const keys = require('../../utils/generateKeyPair');
+import { PillarSdk } from '../../..';
+import { Configuration } from '../../../lib/configuration';
+import nock = require('nock');
 
-describe('userMapContactsAddresses method', () => {
-  let pSdk: PillarSdk;
+describe('User Map Contracts Addresses', () => {
+  // Key pairs
+  const EC = require('elliptic').ec;
+  const ecSecp256k1 = new EC('secp256k1');
+
+  let privateKey = ecSecp256k1
+    .genKeyPair()
+    .getPrivate()
+    .toString('hex');
+
+  if (privateKey.length !== 64) {
+    privateKey =
+      '5731d22487631cb89968933dc23fd53d047cfbc01f6f2078b8879bb220f73caa';
+  }
 
   // Generate random username
   const username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
 
-  // Expected responses
-  const inappropriateUsernameErr = {
-    message: 'Inappropriate username',
+  let walletId: string;
+  let pSdk: PillarSdk;
+
+  const responseData = {
+    result: 'success',
+    message: 'Contact smart addresses successfully mapped',
+    smartWallets: [],
   };
 
-  const ethAddress = keys.ethAddress.toString();
-  const publicKey = keys.publicKey.toString();
-
-  const walletParams = {
-    username,
-    publicKey,
-    ethAddress,
-    fcmToken: 'abc123',
+  const errInvalidWalletId = {
+    message: 'Could not find a Wallet ID to search by.',
   };
 
-  let wallet;
+  const errInternal = {
+    message: 'Internal Server Error',
+  };
+
+  const errUnauthorized = {
+    message: 'Unauthorized',
+  };
 
   beforeAll(async () => {
     pSdk = new PillarSdk({});
+    pSdk.configuration.setUsername(username);
 
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');
       mockApi
-        .post('/wallet/register')
-        .reply(200)
-        .post(`/user/map-contacts-addresses`)
+        .post('/register/keys')
         .reply(200, {
-          result: 'success',
-          message: 'Contact smart addresses successfully mapped',
-          smartWallets: [],
+          expiresAt: '2015-03-21T05:41:32Z',
+          nonce: 'AxCDF23232',
+        })
+        .post('/register/auth')
+        .reply(200, {
+          authorizationCode: 'Authorization code',
+          expiresAt: '2011-06-14T04:12:36Z',
+        })
+        .post('/register/access')
+        .reply(200, {
+          accessToken: 'accessToken',
+          refreshToken: 'refreshToken',
+          walletId: 'walletId',
+          userId: 'userId',
         })
         .post('/user/map-contacts-addresses')
-        .reply(404, {
-          statusCode: 404,
-          message: 'Could not find User.',
-        });
+        .reply(200, responseData)
+        .post('/user/map-contacts-addresses')
+        .reply(400, errInvalidWalletId)
+        .post('/user/map-contacts-addresses')
+        .reply(500, errInternal)
+        .post('/user/map-contacts-addresses')
+        .reply(401, errUnauthorized)
+        .post('/register/refresh')
+        .reply(200, {
+          accessToken: 'accessToken',
+          refreshToken: 'refreshToken',
+        })
+        .post('/user/map-contacts-addresses')
+        .reply(200, responseData);
     }
 
-    wallet = await pSdk.wallet.register(walletParams);
+    const walletRegister = {
+      privateKey,
+      fcmToken: '987qwe2',
+      username,
+    };
+
+    const response = await pSdk.wallet.registerAuthServer(walletRegister);
+    walletId = response.data.walletId;
   });
 
   afterAll(() => {
@@ -83,27 +127,58 @@ describe('userMapContactsAddresses method', () => {
   });
 
   it('expects response to resolve with data and status code 200', async () => {
-    const response = await pSdk.user.mapContactsAddresses({
-      walletId: 'wallet-id',
+    const inputParams = {
+      walletId,
       contacts: [],
-    });
-    expect(response.status).toEqual(200);
-    expect(response.data).toEqual({
-      result: 'success',
-      message: 'Contact smart addresses successfully mapped',
-      smartWallets: [],
-    });
+    };
+    const response = await pSdk.user.mapContactsAddresses(inputParams);
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual(responseData);
   });
 
-  it('should return 400 error due to invalid wallet user', async () => {
+  it('should return 400 due invalid params', async () => {
+    const inputParams = {
+      walletId: '',
+      contacts: [],
+    };
+
     try {
-      await pSdk.user.mapContactsAddresses({
-        walletId: 'invalid-wallet-id',
-        contacts: [],
-      });
+      await pSdk.user.mapContactsAddresses(inputParams);
     } catch (error) {
-      expect(error.response.status).toEqual(404);
-      expect(error.response.data.message).toEqual('Could not find User.');
+      expect(error.response.status).toEqual(400);
+      expect(error.response.data.message).toEqual(errInvalidWalletId.message);
+    }
+  });
+
+  if (env === 'test') {
+    it('should return 500 due internal server error', async () => {
+      const inputParams = {
+        walletId,
+        contacts: [],
+      };
+
+      try {
+        await pSdk.user.mapContactsAddresses(inputParams);
+      } catch (error) {
+        expect(error.response.status).toEqual(500);
+        expect(error.response.data.message).toEqual(errInternal.message);
+      }
+    });
+  }
+
+  it('expects to return 401 (unauthorized) due to invalid accessToken', async () => {
+    const inputParams = {
+      walletId,
+      contacts: [],
+    };
+
+    Configuration.accessKeys.oAuthTokens.accessToken = 'invalid';
+
+    try {
+      await pSdk.user.mapContactsAddresses(inputParams);
+    } catch (error) {
+      expect(error.response.status).toEqual(401);
+      expect(error.response.data.message).toEqual(errUnauthorized.message);
     }
   });
 });
