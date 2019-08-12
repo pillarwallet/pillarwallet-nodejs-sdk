@@ -823,4 +823,40 @@ describe('User Class', () => {
       }
     });
   });
+
+  describe('.mapContactsAddresses', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      const data = { walletId: 'wallet-id', contacts: [] };
+
+      Configuration.setAuthTokens(accessToken, '');
+
+      user.mapContactsAddresses(data);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        url: 'https://localhost:8080/user/map-contacts-addresses',
+      });
+    });
+
+    it('should fail due to schema validation', async () => {
+      expect.assertions(2);
+      const message = "data should have required property 'walletId'";
+
+      const inputParams = {
+        contacts: [],
+      };
+
+      try {
+        await pSdk.user.mapContactsAddresses(inputParams);
+      } catch (error) {
+        expect(error).toBeInstanceOf(TypeError);
+        expect(error.message).toEqual(message);
+      }
+    });
+  });
 });

@@ -55,6 +55,7 @@ const imageByUserIdSchema = require('../schemas/user/imageByUserId.json');
 const userCreateOneTimePasswordSchema = require('../schemas/user/createOneTimePassword.json');
 const userValidateEmailSchema = require('../schemas/user/validateEmail.json');
 const userValidatePhoneSchema = require('../schemas/user/validatePhone.json');
+const userMapContactsAddressesSchema = require('../schemas/user/mapContactsAddresses.json');
 
 const setAuthHeader = () => {
   const headers = {
@@ -420,6 +421,24 @@ export class User extends Configuration {
       schema: userInfoSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.USER_ACCESS_TOKENS
+      }`,
+    });
+  }
+
+  /**
+   * @name mapContactsAddresses
+   * @desc Returns Smart Wallet addresses for the contacts of a given user
+   *
+   * @param {MapContactsAddresses} data
+   * @returns {AxiosPromise}
+   */
+  mapContactsAddresses(data: MapContactsAddresses): AxiosPromise {
+    return this.executeRequest({
+      data,
+      schema: userMapContactsAddressesSchema,
+      defaultRequest: postConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_MAP_CONTACTS_ADDRESSES
       }`,
     });
   }

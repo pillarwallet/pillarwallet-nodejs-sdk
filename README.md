@@ -1030,6 +1030,30 @@ JSON object with respective values:
 | fundsDeposit  | Activate/Deactivate notification when funds were deposited in user account | Boolean  | Optional  |
 | transactionEvent  | Activate/Deactivate notification for user transactions | Boolean  | Optional  |
 
+### User Map Contacts Addresses
+
+```typescript
+pillarSdk.user.mapContactsAddresses(inputParams);
+```
+
+Maps contacts smart wallet addresses for given user.
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The Wallet Identifier. | UUID  | Required  |
+| contacts  | An array of contact user information object (contactId, accessKeys?, connectionKeys?) | Array  | Optional  |
+
+**Expected Output**
+
+JSON array with respective values:
+
+| Element  | Description | Type |
+| ------------- | ------------- | ------------- |
+| userId  | The Contact User Identifier | UUID  |
+| smartWallets  | An array of smart wallet addresses for the contact user  | Array  | Required  |
+
 ### User Image by User Id
 
 ```typescript
