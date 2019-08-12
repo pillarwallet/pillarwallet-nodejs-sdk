@@ -1,0 +1,65 @@
+{
+    "title": "User Model - Map Contacts Addresses",
+    "description": "Schema definition for User Model - mapContactsAddresses method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "contacts": {
+        "description": "An array of contact's information objects",
+        "additionalProperties": false,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "contactId": {
+              "description": "The contact ID",
+              "type": "string"
+            },
+            "accessKeys": {
+              "description": "The access keys for the connection",
+              "additionalProperties": false,
+              "type": "object",
+              "properties": {
+                "userAccessKey": {
+                  "description": "The user's Access Key",
+                  "type": "string"
+                },
+                "contactAccessKey": {
+                  "description": "The contact's Access Key",
+                  "type": "string"
+                }
+              },
+              "required": [ "userAccessKey", "contactAccessKey" ]
+            },
+            "connectionKeys": {
+              "description": "The identity keys for the connection",
+              "additionalProperties": false,
+              "type": "object",
+              "properties": {
+                "sourceIdentityKey": {
+                  "description": "Generated source identity key",
+                  "type": "string"
+                },
+                "targetIdentityKey": {
+                  "description": "Generated target identity key",
+                  "type": "string"
+                }
+              },
+              "required": [ "sourceIdentityKey", "targetIdentityKey" ]
+            }
+          },
+          "required": [ "contactId" ],
+          "anyOf": [{
+            "required" : ["connectionKeys"]
+          }, {
+            "required" : ["accessKeys"]
+          }]
+        }
+      }
+    },
+    "required": [ "walletId", "contacts" ]
+  }
