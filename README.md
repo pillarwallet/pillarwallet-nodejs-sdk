@@ -62,7 +62,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
 
 Install the npm package:
 
-`npm i @pillarwallet/pillarwallet-nodejs-sdk`
+`npm i @pillarwallet/pillarwallet-nodejs-sdk` (this throws a 404 error, please let us know how to fix it)
 
 In your project:
 
