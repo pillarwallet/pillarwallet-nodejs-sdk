@@ -956,6 +956,7 @@ Updates data elements on a wallet user.
 | taglineStatus  | Whether the user has completed a tagline for their profile | Boolean  | Optional  |
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean  | Optional  |
 | profileImage  | The Profile Image of the user | String(Url)  | Optional  |
+| betaProgramParticipant  | Flag to check if user is beta program participant | Boolean  | Optional  |
 
 **Expected Output**
 
@@ -988,6 +989,7 @@ JSON collection of objects with respective values:
 | profileImage  | The profile image of the user | String(Url) |
 | icoService  | Information related to the user's account with a service provider for ICOs. | Object |
 | status  | The user status in the system. | String |
+| betaProgramParticipant  | Flag to check if user is beta program participant | Boolean  |
 
 ### User Update Notification Preferences
 
@@ -1150,6 +1152,7 @@ JSON collection of objects with respective values:
 | taglineStatus  | Whether the user has completed a tagline for their profile | Boolean |
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
+| betaProgramParticipant  | Flag to check if user is beta program participant | Boolean  |
 
 ### User Info Smart Wallet
 
