@@ -48,6 +48,10 @@
     "userSearchable": {
       "description": "Conditional for this user be searchable by others",
       "type": "boolean"
+    },
+    "betaProgramParticipant": {
+      "description": "Flag to check if user is beta program participant",
+      "type": "boolean"
     }
   },
   "required": ["walletId"]
