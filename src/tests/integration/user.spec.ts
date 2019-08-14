@@ -53,6 +53,7 @@ describe.skip('user endpoints', () => {
         tagline: 'Social media consultant',
         taglineStatus: false,
         userSearchable: true,
+        betaProgramParticipant: true,
       };
 
       pSdk.user

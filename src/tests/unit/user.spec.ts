@@ -78,6 +78,7 @@ describe('User Class', () => {
         tagline: 'Social media consultant',
         taglineStatus: false,
         userSearchable: true,
+        betaProgramParticipant: true,
       };
 
       Configuration.setAuthTokens(accessToken, '');

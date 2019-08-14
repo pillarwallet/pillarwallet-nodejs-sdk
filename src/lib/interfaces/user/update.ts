@@ -31,4 +31,5 @@ interface UserUpdate {
   tagline?: string;
   taglineStatus?: boolean;
   userSearchable?: boolean;
+  betaProgramParticipant?: boolean;
 }
