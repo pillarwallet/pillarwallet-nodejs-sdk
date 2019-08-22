@@ -1340,7 +1340,6 @@ Validate a one-time password sent via email.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The wallet Identifier | UUID | Required |
-| email  | User's email | String  | Required |
 | oneTimePassword  | User's one time password | String  | Required |
 
 **Expected Output**

@@ -580,7 +580,6 @@ describe('User Class', () => {
     it('makes a POST request with Authorization header', () => {
       const data = {
         walletId: 'walletId',
-        email: 'foo@bar.com',
         oneTimePassword: '12345',
       };
 
@@ -597,36 +596,13 @@ describe('User Class', () => {
       });
     });
 
-    it('makes a POST request with Authorization header', () => {
-      const data = {
-        walletId: 'walletId',
-        email: 'foo@bar.com',
-        oneTimePassword: '12345',
-      };
-
-      Configuration.setAuthTokens(accessToken, '');
-
-      user.validateEmail(data);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        data,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        url: 'https://localhost:8080/user/validate-email',
-      });
-    });
-
     it('validates input data based on schema', async () => {
-      expect.assertions(4);
+      expect.assertions(3);
 
       try {
         await user.validateEmail({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch(/data should have required property 'email'/);
         expect(e.message).toMatch(
           /data should have required property 'oneTimePassword'/,
         );
