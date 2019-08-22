@@ -73,7 +73,7 @@ describe('usercreateOneTimePasswod method', () => {
   };
 
   const errUserWhitoutEmail = {
-    message: 'User without email',
+    message: 'No email provided for OTP.',
   };
 
   const errInvalidWalletId = {
