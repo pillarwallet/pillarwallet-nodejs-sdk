@@ -337,13 +337,8 @@ export class User extends Configuration {
    * @returns {AxiosPromise}
    */
   createOneTimePassword(data: UserCreateOneTimePassword): AxiosPromise {
-    const formattedPhone: string | undefined = formatters.phone(data.phone);
-    const formattedData: UserCreateOneTimePassword = formattedPhone
-      ? { ...data, phone: formattedPhone }
-      : { ...data };
-
     return this.executeRequest({
-      data: formattedData,
+      data,
       schema: userCreateOneTimePasswordSchema,
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${

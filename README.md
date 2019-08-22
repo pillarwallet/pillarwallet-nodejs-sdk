@@ -912,16 +912,14 @@ JSON Investments with respective values::
 pillarSdk.user.createOneTimePassword(inputParams);
 ```
 
-Create a one-time password for email or phone,
+Create a one-time password for email,
 store it on the user record,
-then send an email or SMS to the wallet user.
+then send an email to the wallet user.
 
 **Input Parameters**
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| email  | The user's email address. | String  | one of email/phone field is required |
-| phone  | The phone associated of one user | String  | one of email/phone field is required|
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
@@ -930,7 +928,7 @@ then send an email or SMS to the wallet user.
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'One-time password sent.' | String  |
-| walletId  | The Wallet Identifier. | UUID  | Required  |
+| userId  | The User Identifier. | UUID  | Required  |
 
 ### User Update
 
