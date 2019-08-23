@@ -72,7 +72,7 @@ describe('userValidateEmail method', () => {
   };
 
   const errUserWhitoutEmail = {
-    message: 'No email provided for OTP.',
+    message: 'No email provided for validation.',
   };
 
   const errInvalidOTP = {
