@@ -26,12 +26,11 @@ import { PillarSdk } from '../../../index';
 import { Configuration } from '../../../lib/configuration';
 const nock = require('nock');
 
-describe('userCreateOneTimePasswod method', () => {
+describe('userValidateEmail method', () => {
   let pSdk: PillarSdk;
   let firstWalletId: string;
   let firstUserAccessToken: string;
   let secondWalletId: string;
-  let secondUserId: string;
   let secondUserAccessToken: string;
 
   const EC = require('elliptic').ec;
@@ -68,12 +67,20 @@ describe('userCreateOneTimePasswod method', () => {
 
   const responseData = {
     result: 'success',
-    message: 'One-time password sent.',
+    message: 'Email validated.',
     userId: 'secondUserId',
   };
 
   const errUserWhitoutEmail = {
-    message: 'No email provided for OTP.',
+    message: 'No email provided for validation.',
+  };
+
+  const errInvalidOTP = {
+    message: 'One-time password is not valid.',
+  };
+
+  const errExpiredOTP = {
+    message: 'One-time password expired.',
   };
 
   const errInvalidWalletId = {
@@ -127,13 +134,17 @@ describe('userCreateOneTimePasswod method', () => {
         })
         .post('/user/update')
         .reply(200)
-        .post('/user/create-one-time-password')
+        .post('/user/validate-email')
         .reply(404, errUserWhitoutEmail)
-        .post('/user/create-one-time-password')
-        .reply(200, responseData)
-        .post('/user/create-one-time-password')
+        .post('/user/validate-email')
+        .reply(404, errInvalidOTP)
+        .post('/user/validate-email')
         .reply(400, errInvalidWalletId)
-        .post('/user/create-one-time-password')
+        .post('/user/validate-email')
+        .reply(422, errExpiredOTP)
+        .post('/user/validate-email')
+        .reply(200, responseData)
+        .post('/user/validate-email')
         .reply(500, errInternal);
     }
 
@@ -155,7 +166,6 @@ describe('userCreateOneTimePasswod method', () => {
 
     response = await pSdk.wallet.registerAuthServer(walletRegister);
     secondWalletId = response.data.walletId;
-    secondUserId = response.data.userId;
     secondUserAccessToken = Configuration.accessKeys.oAuthTokens.accessToken;
 
     const userUpdateParams = {
@@ -176,38 +186,43 @@ describe('userCreateOneTimePasswod method', () => {
   it('should return 404 response due user without email defined', async () => {
     const inputParams = {
       walletId: firstWalletId,
+      oneTimePassword: 'test',
     };
 
     Configuration.accessKeys.oAuthTokens.accessToken = firstUserAccessToken;
 
     try {
-      await pSdk.user.createOneTimePassword(inputParams);
+      await pSdk.user.validateEmail(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(404);
       expect(error.response.data.message).toEqual(errUserWhitoutEmail.message);
     }
   });
 
-  it('expects to return a success message and status 200', async () => {
+  it('should return 404 response due to invalid OTP', async () => {
     const inputParams = {
       walletId: secondWalletId,
+      oneTimePassword: 'invalid',
     };
 
     Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
 
-    const response = await pSdk.user.createOneTimePassword(inputParams);
-    expect(response.status).toBe(200);
-    responseData.userId = secondUserId;
-    expect(response.data).toEqual(responseData);
+    try {
+      await pSdk.user.validateEmail(inputParams);
+    } catch (error) {
+      expect(error.response.status).toEqual(404);
+      expect(error.response.data.message).toEqual(errInvalidOTP.message);
+    }
   });
 
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       walletId: '',
+      oneTimePassword: '',
     };
 
     try {
-      await pSdk.user.createOneTimePassword(inputParams);
+      await pSdk.user.validateEmail(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidWalletId.message);
@@ -215,13 +230,43 @@ describe('userCreateOneTimePasswod method', () => {
   });
 
   if (env === 'test') {
+    it('should return 422 response due to expired OTP', async () => {
+      const inputParams = {
+        walletId: secondWalletId,
+        oneTimePassword: 'expired',
+      };
+
+      Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
+
+      try {
+        await pSdk.user.validateEmail(inputParams);
+      } catch (error) {
+        expect(error.response.status).toEqual(422);
+        expect(error.response.data.message).toEqual(errExpiredOTP.message);
+      }
+    });
+
+    it('expects to return a success message and status 200', async () => {
+      const inputParams = {
+        walletId: secondWalletId,
+        oneTimePassword: 'test',
+      };
+
+      Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
+
+      const response = await pSdk.user.validateEmail(inputParams);
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual(responseData);
+    });
+
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         walletId: secondWalletId,
+        oneTimePassword: 'test',
       };
 
       try {
-        await pSdk.user.createOneTimePassword(inputParams);
+        await pSdk.user.validateEmail(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
