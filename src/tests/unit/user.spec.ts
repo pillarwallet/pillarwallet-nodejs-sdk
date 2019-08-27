@@ -546,9 +546,8 @@ describe('User Class', () => {
   });
 
   describe('.createOneTimePassword', () => {
-    it('successfully calls with email address and Authorization header', () => {
+    it('successfully calls with walletId and Authorization header', () => {
       const data = {
-        email: 'foo@email.com',
         walletId: '12345',
       };
 
@@ -563,49 +562,9 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         url: 'https://localhost:8080/user/create-one-time-password',
       });
-    });
-
-    it('successfully calls with phone number and Authorization header', () => {
-      const data = {
-        phone: '+447321450233',
-        walletId: '12345',
-      };
-
-      Configuration.setAuthTokens(accessToken, '');
-
-      user.createOneTimePassword(data);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        data,
-        headers: { Authorization: `Bearer ${accessToken}` },
-        url: 'https://localhost:8080/user/create-one-time-password',
-      });
-    });
-
-    it('formats phone number', () => {
-      const u = {
-        phone: ' +44 (7777) 123-456.',
-        walletId: '12345',
-      };
-
-      user.createOneTimePassword(u);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: {
-            phone: '+447777123456',
-            walletId: '12345',
-          },
-        }),
-      );
     });
 
     it('throws an error when user data is missing', async () => {
-      expect.assertions(2);
-
       try {
         await user.createOneTimePassword({});
       } catch (e) {
@@ -615,31 +574,12 @@ describe('User Class', () => {
         );
       }
     });
-
-    it('validates phone number', async () => {
-      expect.assertions(2);
-
-      const u = {
-        phone: '+12345',
-        walletId: 'abc-123',
-      };
-
-      try {
-        await user.createOneTimePassword(u);
-      } catch (e) {
-        expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch(
-          'data.phone should match pattern "^\\+[0-9]{6,}$"',
-        );
-      }
-    });
   });
 
   describe('.validateEmail', () => {
     it('makes a POST request with Authorization header', () => {
       const data = {
         walletId: 'walletId',
-        email: 'foo@bar.com',
         oneTimePassword: '12345',
       };
 
@@ -656,36 +596,13 @@ describe('User Class', () => {
       });
     });
 
-    it('makes a POST request with Authorization header', () => {
-      const data = {
-        walletId: 'walletId',
-        email: 'foo@bar.com',
-        oneTimePassword: '12345',
-      };
-
-      Configuration.setAuthTokens(accessToken, '');
-
-      user.validateEmail(data);
-
-      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
-      expect(Requester.execute).toHaveBeenCalledWith({
-        ...postConfiguration,
-        data,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        url: 'https://localhost:8080/user/validate-email',
-      });
-    });
-
     it('validates input data based on schema', async () => {
-      expect.assertions(4);
+      expect.assertions(3);
 
       try {
         await user.validateEmail({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch(/data should have required property 'email'/);
         expect(e.message).toMatch(
           /data should have required property 'oneTimePassword'/,
         );
@@ -700,7 +617,6 @@ describe('User Class', () => {
     it('makes a POST request with formatted phone number and Authorization header', () => {
       const data = {
         walletId: 'walletId',
-        phone: '+1 (2) 34-56',
         oneTimePassword: '54321',
       };
 
@@ -711,7 +627,7 @@ describe('User Class', () => {
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
-        data: { ...data, phone: '+123456' },
+        data,
         headers: { Authorization: `Bearer ${accessToken}` },
         url: 'https://localhost:8080/user/validate-phone',
       });
@@ -720,7 +636,6 @@ describe('User Class', () => {
     it('makes a POST request with Authorization header', () => {
       const data = {
         walletId: 'walletId',
-        phone: '+1 (2) 34-56',
         oneTimePassword: '54321',
       };
 
@@ -731,7 +646,7 @@ describe('User Class', () => {
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
-        data: { ...data, phone: '+123456' },
+        data,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -740,13 +655,12 @@ describe('User Class', () => {
     });
 
     it('validates input data based on schema', async () => {
-      expect.assertions(4);
+      expect.assertions(3);
 
       try {
         await user.validatePhone({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch(/data should have required property 'phone'/);
         expect(e.message).toMatch(
           /data should have required property 'oneTimePassword'/,
         );
