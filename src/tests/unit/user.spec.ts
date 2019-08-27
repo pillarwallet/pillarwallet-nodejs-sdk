@@ -617,7 +617,6 @@ describe('User Class', () => {
     it('makes a POST request with formatted phone number and Authorization header', () => {
       const data = {
         walletId: 'walletId',
-        phone: '+1 (2) 34-56',
         oneTimePassword: '54321',
       };
 
@@ -628,7 +627,7 @@ describe('User Class', () => {
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
-        data: { ...data, phone: '+123456' },
+        data,
         headers: { Authorization: `Bearer ${accessToken}` },
         url: 'https://localhost:8080/user/validate-phone',
       });
@@ -637,7 +636,6 @@ describe('User Class', () => {
     it('makes a POST request with Authorization header', () => {
       const data = {
         walletId: 'walletId',
-        phone: '+1 (2) 34-56',
         oneTimePassword: '54321',
       };
 
@@ -648,7 +646,7 @@ describe('User Class', () => {
       expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
-        data: { ...data, phone: '+123456' },
+        data,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -657,13 +655,12 @@ describe('User Class', () => {
     });
 
     it('validates input data based on schema', async () => {
-      expect.assertions(4);
+      expect.assertions(3);
 
       try {
         await user.validatePhone({});
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
-        expect(e.message).toMatch(/data should have required property 'phone'/);
         expect(e.message).toMatch(
           /data should have required property 'oneTimePassword'/,
         );
