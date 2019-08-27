@@ -24,7 +24,6 @@ SOFTWARE.
  */
 import { AxiosPromise } from 'axios';
 import { Readable } from 'stream';
-import * as formatters from '@pillarwallet/common-formatters';
 import { Configuration } from './configuration';
 import { HttpEndpoints } from './constants/httpEndpoints';
 
@@ -367,13 +366,10 @@ export class User extends Configuration {
   /**
    * @name validatePhone
    * @desc Validate a one-time password sent via SMS
-   * @param {UserValidatePhone} userValidatePhone
+   * @param {UserValidatePhone} data
    * @returns {AxiosPromise}
    */
-  validatePhone(userValidatePhone: UserValidatePhone): AxiosPromise {
-    const formattedPhone: string = formatters.phone(userValidatePhone.phone);
-    const data = { ...userValidatePhone, phone: formattedPhone };
-
+  validatePhone(data: UserValidatePhone): AxiosPromise {
     return this.executeRequest({
       data,
       schema: userValidatePhoneSchema,

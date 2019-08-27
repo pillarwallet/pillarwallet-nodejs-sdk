@@ -1363,7 +1363,6 @@ Validate a one-time password sent via SMS.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The wallet Identifier | UUID | Required |
-| phone  | User's phone | String  | Required |
 | oneTimePassword  | User's one time password | String  | Required |
 
 **Expected Output**
