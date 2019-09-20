@@ -27,4 +27,5 @@ interface PillarSdkConfiguration {
   notificationsUrl?: string;
   investmentsUrl?: string;
   username?: string;
+  network?: string;
 }
