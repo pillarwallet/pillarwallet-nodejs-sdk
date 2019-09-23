@@ -58,6 +58,23 @@ describe('Asset Class', () => {
       });
     });
 
+    it('should successfully call with valid data, Authorization and Network header', () => {
+      Configuration.setAuthTokens(accesToken, '');
+      pSdk.setNetwork('mainnet');
+      const assetDefaultsData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
+
+      pSdk.asset.defaults(assetDefaultsData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
+        params: assetDefaultsData,
+        url: 'https://localhost:8080/asset/defaults',
+      });
+    });
+
     it('should throw an error if called with invalid data', async () => {
       const assetDefaultData = {
         walletId: null,
@@ -84,6 +101,23 @@ describe('Asset Class', () => {
       expect(requesterExecuteSpy).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
+        params: assetPreferredData,
+        url: 'https://localhost:8080/asset/preferred',
+      });
+    });
+
+    it('should successfully call with valid data, Authorization and Network header', () => {
+      Configuration.setAuthTokens(accesToken, '');
+      pSdk.setNetwork('mainnet');
+      const assetPreferredData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
+
+      pSdk.asset.preferred(assetPreferredData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
         params: assetPreferredData,
         url: 'https://localhost:8080/asset/preferred',
       });
@@ -121,6 +155,24 @@ describe('Asset Class', () => {
       });
     });
 
+    it('should successfully call with valid data, Authorization and Network header', () => {
+      Configuration.setAuthTokens(accesToken, '');
+      pSdk.setNetwork('mainnet');
+      const assetSearchData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        query: 'searchthis',
+      };
+
+      pSdk.asset.search(assetSearchData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
+        params: assetSearchData,
+        url: 'https://localhost:8080/asset/search',
+      });
+    });
+
     it('should throw an error if called with invalid data', async () => {
       const assetSearchData = {
         walletId: null,
@@ -150,6 +202,24 @@ describe('Asset Class', () => {
       expect(requesterExecuteSpy).toHaveBeenCalledWith({
         ...getConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
+        params: assetListData,
+        url: 'https://localhost:8080/asset/list',
+      });
+    });
+
+    it('should successfully call with valid data, Authorization and Network header', () => {
+      Configuration.setAuthTokens(accesToken, '');
+      pSdk.setNetwork('mainnet');
+      const assetListData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
+      };
+
+      pSdk.asset.list(assetListData);
+
+      expect(requesterExecuteSpy).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
         params: assetListData,
         url: 'https://localhost:8080/asset/list',
       });

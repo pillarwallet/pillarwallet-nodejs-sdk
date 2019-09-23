@@ -200,7 +200,7 @@ export class Configuration {
     }
 
     if (Configuration.accessKeys.network) {
-      request.header['Network'] = Configuration.accessKeys.network;
+      request.headers['Network'] = Configuration.accessKeys.network;
     }
 
     if (auth) {
