@@ -53,6 +53,7 @@ export enum HttpEndpoints {
   CONNECTION_COUNT = '/connection/count',
   CONNECTION_MAP_IDENTITY_KEYS = '/connection/map-identity-keys',
   CONNECTION_UPDATE_IDENTITY_KEYS = '/connection/update-identity-keys',
+  CONNECTION_PATCH_IDENTITY_KEYS = '/connection/patch-identity-keys',
   NOTIFICATION_LIST = '/notification/list',
   INVESTMENTS_DEPOSIT_REQUEST = '/investment/wallet/deposit-request',
   INVESTMENTS_USER_ICO = '/users',
