@@ -40,6 +40,7 @@ export class Configuration {
     notificationsUrl: '',
     investmentsUrl: '',
     username: undefined,
+    network: undefined,
   };
 
   constructor() {
@@ -79,6 +80,16 @@ export class Configuration {
   setUsername(incomingUsername: string) {
     Configuration.accessKeys.username = incomingUsername;
     return incomingUsername;
+  }
+
+  /**
+   * @name setNetwork
+   * @description Sets what network the API should use.
+   *
+   * @param network the network, supported values are: "mainnet" and "rinkeby"
+   */
+  setNetwork(network: string) {
+    Configuration.accessKeys.network = network;
   }
 
   /**
@@ -186,6 +197,10 @@ export class Configuration {
     if (sendParams) {
       request.data = data;
       request.params = params;
+    }
+
+    if (Configuration.accessKeys.network) {
+      request.headers['Network'] = Configuration.accessKeys.network;
     }
 
     if (auth) {
