@@ -24,6 +24,8 @@ import { default as getConfiguration } from '../../utils/requester-configuration
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 
+const defaultWalletId = '6e081b82-dbed-4485-bdbc-a808ad911758';
+
 describe('Asset Class', () => {
   let pSdk: PillarSdk;
 
@@ -44,9 +46,7 @@ describe('Asset Class', () => {
   describe('.defaults', () => {
     it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
-      const assetDefaultsData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
+      const assetDefaultsData = { walletId: defaultWalletId };
 
       pSdk.asset.defaults(assetDefaultsData);
 
@@ -61,9 +61,7 @@ describe('Asset Class', () => {
     it('should successfully call with valid data, Authorization and Network header', () => {
       Configuration.setAuthTokens(accesToken, '');
       pSdk.setNetwork('mainnet');
-      const assetDefaultsData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
+      const assetDefaultsData = { walletId: defaultWalletId };
 
       pSdk.asset.defaults(assetDefaultsData);
 
@@ -92,9 +90,7 @@ describe('Asset Class', () => {
   describe('.preferred', () => {
     it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
-      const assetPreferredData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
+      const assetPreferredData = { walletId: defaultWalletId };
 
       pSdk.asset.preferred(assetPreferredData);
 
@@ -109,9 +105,7 @@ describe('Asset Class', () => {
     it('should successfully call with valid data, Authorization and Network header', () => {
       Configuration.setAuthTokens(accesToken, '');
       pSdk.setNetwork('mainnet');
-      const assetPreferredData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-      };
+      const assetPreferredData = { walletId: defaultWalletId };
 
       pSdk.asset.preferred(assetPreferredData);
 
@@ -141,7 +135,7 @@ describe('Asset Class', () => {
     it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const assetSearchData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: defaultWalletId,
         query: 'searchthis',
       };
 
@@ -159,7 +153,7 @@ describe('Asset Class', () => {
       Configuration.setAuthTokens(accesToken, '');
       pSdk.setNetwork('mainnet');
       const assetSearchData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: defaultWalletId,
         query: 'searchthis',
       };
 
@@ -193,7 +187,7 @@ describe('Asset Class', () => {
     it('should successfully call with valid data and Authorization header', () => {
       Configuration.setAuthTokens(accesToken, '');
       const assetListData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: defaultWalletId,
         symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
       };
 
@@ -211,7 +205,7 @@ describe('Asset Class', () => {
       Configuration.setAuthTokens(accesToken, '');
       pSdk.setNetwork('mainnet');
       const assetListData = {
-        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+        walletId: defaultWalletId,
         symbols: ['SYM', 'BOL', 'LOG', 'NASE'],
       };
 
