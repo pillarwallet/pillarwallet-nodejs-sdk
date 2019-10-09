@@ -21,4 +21,5 @@ SOFTWARE.
 */
 interface UserCreateOneTimePassword {
   walletId: string;
+  smsNotification: boolean;
 }
