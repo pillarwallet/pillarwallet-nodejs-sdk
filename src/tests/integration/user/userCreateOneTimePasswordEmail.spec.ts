@@ -26,7 +26,7 @@ import { PillarSdk } from '../../../index';
 import { Configuration } from '../../../lib/configuration';
 const nock = require('nock');
 
-describe('userCreateOneTimePasswod method', () => {
+describe('userCreateOneTimePasswod Email method', () => {
   let pSdk: PillarSdk;
   let firstWalletId: string;
   let firstUserAccessToken: string;
