@@ -50,16 +50,16 @@ describe('User v2 Class', () => {
     it('should send http request containing data and privateKey', () => {
       jest.spyOn(Requester, 'execute').mockResolvedValue('');
 
-      const data = {
+      const validateData = {
         blockchainAddress: 'address',
         publicKey: 'publicKey',
       };
 
-      pSdk.userV2.validate(data, 'myPrivateKey');
+      pSdk.userV2.validate(validateData, 'myPrivateKey');
       expect(Requester.execute).toHaveBeenCalledWith({
-        data,
         ...postConfiguration,
         headers: { 'X-API-Signature': expect.any(String) },
+        data: validateData,
         url: 'https://localhost:8080/user/v2/validate',
       });
     });
