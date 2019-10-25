@@ -189,6 +189,11 @@ export class User extends Configuration {
     });
   }
 
+  /**
+   * @name validate
+   * @deprecated
+   * @returns {AxiosPromise}
+   */
   validate(data: UserValidate): AxiosPromise {
     return this.executeRequest({
       data,

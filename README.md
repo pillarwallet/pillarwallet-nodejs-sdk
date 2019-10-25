@@ -49,7 +49,8 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [User Upload Profile Image](#user-upload-profile-image)
     - [User Update Notification Preferences](#user-update-notification-preferences)
     - [User Username Search](#user-username-search)
-    - [User Validate](#user-validate)
+    - [User Validate (deprecated)](#user-validate)
+    - [User v2 Validate](#user-v2-validate)
     - [User Validate Email](#user-validate-email)
     - [User Validate Phone](#user-validate-phone)
 - [Tests](#tests)
@@ -1305,7 +1306,7 @@ Returns an error message if the username is Inappropriate.
 | message  | Inappropriate username |
 | statusCode  | 400 |
 
-### User Validate
+### User Validate (deprecated)
 
 ```typescript
 pillarSdk.user.validate(inputParams);
@@ -1327,6 +1328,30 @@ Retrieve the id of an validated wallet user.
 | id  | The wallet Identifier | UUID  |
 | username  | The Username | String  |
 | walletId  | The wallet Identifier | UUID  |
+
+### User v2 Validate
+
+```typescript
+pillarSdk.userV2.validate(inputParams, privateKey);
+```
+
+Validates a blockchain address, and returns user and wallet information
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| publicKey  | Wallet's publicKey | String  | required |
+| blockchainAddress  | User's blockchainAddress | String  | required |
+| privateKey  | Wallet's privateKey | String  | required |
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| username  | The Username | String  |
+| walletId  | The wallet Identifier | UUID  |
+| profileImage  | User's profile image | String  |
 
 ### User Validate Email
 
