@@ -65,6 +65,7 @@ export enum HttpEndpoints {
   USER_DELETE = '/user/delete',
   USER_USERNAME_SEARCH = '/user/search-username',
   USER_VALIDATE = '/user/validate',
+  USER_VALIDATE_V2 = '/user/v2/validate',
   USER_IMAGE = '/user/image',
   USER_IMAGE_BY_USER_ID = '/user/image-by-userid',
   USER_CREATE_ONE_TIME_PASSWORD = '/user/create-one-time-password',
