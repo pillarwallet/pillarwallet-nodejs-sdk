@@ -25,7 +25,7 @@ const env = process.env.NODE_ENV;
 import { PillarSdk } from '../../../index';
 const nock = require('nock');
 
-describe('userInfoSmartWallet method', () => {
+describe('info method', () => {
   let pSdk: PillarSdk;
   let walletId: string;
 
@@ -42,16 +42,21 @@ describe('userInfoSmartWallet method', () => {
     .toString('hex');
 
   const responseData = {
-    user: {
-      username,
-      id: 'userId',
-      secretId: 'superSecret',
+    username,
+    id: 'userId',
+    secretId: 'superSecret',
+    featureFlags: {
+      SMART_WALLET_ENABLED: false,
+      BITCOIN_ENABLED: false,
     },
-    wallets: [],
   };
 
   const errInvalidWalletId = {
     message: 'Could not find a Wallet ID to search by.',
+  };
+
+  const errUserFeaturesFlags = {
+    message: 'Could not find user features flags',
   };
 
   const errInternal = {
@@ -87,11 +92,13 @@ describe('userInfoSmartWallet method', () => {
           walletId: 'walletId',
           userId: 'userId',
         })
-        .get('/user?walletId=walletId')
+        .get('/user/info?walletId=walletId')
         .reply(200, responseData)
-        .get('/user?walletId=')
+        .get('/user/info?walletId=')
         .reply(400, errInvalidWalletId)
-        .get('/user?walletId=walletId')
+        .get('/user/info?walletId=walletId')
+        .reply(404, errUserFeaturesFlags)
+        .get('/user/info?walletId=walletId')
         .reply(500, errInternal);
     }
 
@@ -117,15 +124,17 @@ describe('userInfoSmartWallet method', () => {
       walletId,
     };
 
-    const response = await pSdk.user.infoSmartWallet(inputParams);
+    const response = await pSdk.user.info(inputParams);
+
     expect(response.status).toEqual(200);
     expect(response.data).toEqual({
-      user: {
-        username,
-        id: expect.any(String),
-        secretId: expect.any(String),
+      id: expect.any(String),
+      username,
+      secretId: expect.any(String),
+      featureFlags: {
+        SMART_WALLET_ENABLED: false,
+        BITCOIN_ENABLED: false,
       },
-      wallets: expect.any(Array),
     });
   });
 
@@ -135,7 +144,7 @@ describe('userInfoSmartWallet method', () => {
     };
 
     try {
-      await pSdk.user.infoSmartWallet(inputParams);
+      await pSdk.user.info(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidWalletId.message);
@@ -143,13 +152,28 @@ describe('userInfoSmartWallet method', () => {
   });
 
   if (env === 'test') {
+    it('should return 404 due a problem with user features flags', async () => {
+      const inputParams = {
+        walletId,
+      };
+
+      try {
+        await pSdk.user.info(inputParams);
+      } catch (error) {
+        expect(error.response.status).toEqual(404);
+        expect(error.response.data.message).toEqual(
+          errUserFeaturesFlags.message,
+        );
+      }
+    });
+
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         walletId,
       };
 
       try {
-        await pSdk.user.infoSmartWallet(inputParams);
+        await pSdk.user.info(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
