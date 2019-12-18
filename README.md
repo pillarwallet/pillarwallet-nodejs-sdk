@@ -1153,6 +1153,7 @@ JSON collection of objects with respective values:
 | userSearchable  | Whether the user's profile is searchable in the address book | Boolean |
 | profileImage  | The profile image of the user | String(Url) |
 | betaProgramParticipant  | Flag to check if user is beta program participant | Boolean  |
+| featureFlags  | Object with features flags | Object  |
 
 ### User Info Smart Wallet
 

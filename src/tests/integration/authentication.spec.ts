@@ -105,6 +105,11 @@ describe('Authentication scenarios', () => {
         .reply(200, {
           id: 'id',
           username,
+          secretId: 'superSecret',
+          featureFlags: {
+            SMART_WALLET_ENABLED: false,
+            BITCOIN_ENABLED: false,
+          },
         })
         .get('/user/info?walletId=walletId')
         .reply(401, {
@@ -124,6 +129,11 @@ describe('Authentication scenarios', () => {
         .reply(200, {
           id: 'id',
           username,
+          secretId: 'superSecret',
+          featureFlags: {
+            SMART_WALLET_ENABLED: false,
+            BITCOIN_ENABLED: false,
+          },
         })
         .get('/user/info?walletId=walletId')
         .reply(401, {
@@ -147,6 +157,11 @@ describe('Authentication scenarios', () => {
         .reply(200, {
           id: 'id',
           username,
+          secretId: 'superSecret',
+          featureFlags: {
+            SMART_WALLET_ENABLED: false,
+            BITCOIN_ENABLED: false,
+          },
         });
     }
 
@@ -169,6 +184,11 @@ describe('Authentication scenarios', () => {
     expect(response.data).toEqual({
       id: expect.any(String),
       username,
+      secretId: expect.any(String),
+      featureFlags: {
+        SMART_WALLET_ENABLED: false,
+        BITCOIN_ENABLED: false,
+      },
     });
   });
 
@@ -184,6 +204,11 @@ describe('Authentication scenarios', () => {
         expect(response.data).toEqual({
           id: expect.any(String),
           username,
+          secretId: expect.any(String),
+          featureFlags: {
+            SMART_WALLET_ENABLED: false,
+            BITCOIN_ENABLED: false,
+          },
         });
       }, 7000); // wait 7 seconds, to ensure accessToken expires
     } else {
@@ -192,6 +217,11 @@ describe('Authentication scenarios', () => {
       expect(response.data).toEqual({
         id: expect.any(String),
         username,
+        secretId: expect.any(String),
+        featureFlags: {
+          SMART_WALLET_ENABLED: false,
+          BITCOIN_ENABLED: false,
+        },
       });
     }
   });
@@ -228,6 +258,11 @@ describe('Authentication scenarios', () => {
       expect(response.data).toEqual({
         id: expect.any(String),
         username,
+        secretId: expect.any(String),
+        featureFlags: {
+          SMART_WALLET_ENABLED: false,
+          BITCOIN_ENABLED: false,
+        },
       });
     }
   });
