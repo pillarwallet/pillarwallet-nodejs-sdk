@@ -446,9 +446,8 @@ export class User extends Configuration {
    * @param {SupportHmac} data
    * @returns {AxiosPromise}
    */
-  supportHmac(data: SupportHmac): AxiosPromise {
+  supportHmac(): AxiosPromise {
     return this.executeRequest({
-      data,
       defaultRequest: postConfiguration,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.USER_SUPPORT_HMAC

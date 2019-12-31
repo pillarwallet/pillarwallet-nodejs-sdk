@@ -27,7 +27,6 @@ const nock = require('nock');
 
 describe('supportHmac method', () => {
   let pSdk: PillarSdk;
-  let walletId: string;
 
   const EC = require('elliptic').ec;
   const ecSecp256k1 = new EC('secp256k1');
@@ -91,8 +90,7 @@ describe('supportHmac method', () => {
       username,
     };
 
-    const response = await pSdk.wallet.registerAuthServer(walletRegister);
-    walletId = response.data.walletId;
+    await pSdk.wallet.registerAuthServer(walletRegister);
   });
 
   afterAll(() => {
@@ -103,11 +101,7 @@ describe('supportHmac method', () => {
   });
 
   it('expects to return a success message and status 200', async () => {
-    const data = {
-      walletId,
-    };
-
-    const response = await pSdk.user.supportHmac(data);
+    const response = await pSdk.user.supportHmac();
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'success',
@@ -117,12 +111,8 @@ describe('supportHmac method', () => {
 
   if (env === 'test') {
     it('should return 500 due internal server error', async () => {
-      const inputParams = {
-        walletId,
-      };
-
       try {
-        await pSdk.user.supportHmac(inputParams);
+        await pSdk.user.supportHmac();
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);

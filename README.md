@@ -1404,14 +1404,8 @@ Validate a one-time password sent via SMS.
 ### User Support Hmac
 
 ```typescript
-pillarSdk.user.supportHmac(inputParams);
+pillarSdk.user.supportHmac();
 ```
-
-**Input Parameters**
-
-| Name  | Description | Type | Required |
-| ------------- | ------------- | ------------- | ------------- |
-| walletId  | The wallet Identifier | UUID | Required |
 
 **Expected Output**
 
