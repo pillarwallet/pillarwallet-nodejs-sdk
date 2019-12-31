@@ -438,4 +438,21 @@ export class User extends Configuration {
       }`,
     });
   }
+
+  /**
+   * @name supportHmac
+   * @desc Returns a HMAC for Intercom
+   *
+   * @param {SupportHmac} data
+   * @returns {AxiosPromise}
+   */
+  supportHmac(data: SupportHmac): AxiosPromise {
+    return this.executeRequest({
+      data,
+      defaultRequest: postConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.USER_SUPPORT_HMAC
+      }`,
+    });
+  }
 }

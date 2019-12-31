@@ -74,6 +74,7 @@ export enum HttpEndpoints {
   USER_NOTIFICATION_PREFERENCES = '/user/update-notification-preferences',
   USER_MAP_CONTACTS_ADDRESSES = '/user/map-contacts-addresses',
   USER_ACCESS_TOKENS = '/user/access-tokens',
+  USER_SUPPORT_HMAC = '/user/support-hmac',
   USER_BADGES = '/badge/my',
   GET_BADGES = '/badge',
   SELF_AWARD_BADGE = '/badge/self-award',
