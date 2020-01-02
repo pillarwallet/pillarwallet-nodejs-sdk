@@ -54,6 +54,10 @@ describe('supportHmac method', () => {
     message: 'Internal Server Error',
   };
 
+  const errInvalidProject = {
+    message: 'data.project should be equal to one of the allowed values',
+  };
+
   beforeAll(async () => {
     pSdk = new PillarSdk({});
     pSdk.configuration.setUsername(username);
@@ -81,6 +85,8 @@ describe('supportHmac method', () => {
         .post('/user/support-hmac')
         .reply(200, responseData)
         .post('/user/support-hmac')
+        .reply(400, errInvalidProject)
+        .post('/user/support-hmac')
         .reply(500, errInternal);
     }
 
@@ -101,7 +107,12 @@ describe('supportHmac method', () => {
   });
 
   it('expects to return a success message and status 200', async () => {
-    const response = await pSdk.user.supportHmac();
+    const inputParams = {
+      project: 'ios',
+    };
+
+    const response = await pSdk.user.supportHmac(inputParams);
+
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'success',
@@ -109,10 +120,27 @@ describe('supportHmac method', () => {
     });
   });
 
+  it('expects to return a error message due invalid project', async () => {
+    try {
+      const inputParams = {
+        project: 'invalid',
+      };
+
+      await pSdk.user.supportHmac(inputParams);
+    } catch (error) {
+      expect(error.response.status).toEqual(400);
+      expect(error.response.data.message).toEqual(errInvalidProject.message);
+    }
+  });
+
   if (env === 'test') {
     it('should return 500 due internal server error', async () => {
       try {
-        await pSdk.user.supportHmac();
+        const inputParams = {
+          project: 'ios',
+        };
+
+        await pSdk.user.supportHmac(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);
