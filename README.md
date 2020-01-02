@@ -53,6 +53,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [User v2 Validate](#user-v2-validate)
     - [User Validate Email](#user-validate-email)
     - [User Validate Phone](#user-validate-phone)
+    - [User Support Hmac](#user-support-hmac)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
 - [Versioning](#versioning)
@@ -1399,6 +1400,19 @@ Validate a one-time password sent via SMS.
 | result  | 'success' | String  |
 | message  | 'Phone validated.' | String  |
 | userId  | The user Identifier | UUID |
+
+### User Support Hmac
+
+```typescript
+pillarSdk.user.supportHmac();
+```
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| status  | 'success' | String  |
+| hmac  | HMAC for Intercom' | String  |
 
 ## Types
 
