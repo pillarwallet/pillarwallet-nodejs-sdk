@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+import nock = require('nock');
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
@@ -58,7 +59,7 @@ describe('The Configuration Class', () => {
     });
 
     afterEach(() => {
-      Requester.execute.mockRestore();
+      jest.restoreAllMocks();
     });
 
     it('validates the schema', () => {
@@ -241,6 +242,56 @@ describe('The Configuration Class', () => {
           headers: {},
         });
       });
+    });
+
+    it('returns an exception when request reaches timeout', async () => {
+      Requester.execute.mockRestore();
+
+      const mockApi = nock(apiUrl);
+      mockApi
+        .get(HttpEndpoints.USER_INFO)
+        .delay(500)
+        .reply(200, { someResponse: {} });
+
+      const res = await configuration
+        .executeRequest({
+          data,
+          schema,
+          defaultRequest: {
+            method: 'GET',
+            timeout: 300,
+          },
+          url: apiUrl + HttpEndpoints.USER_INFO,
+        })
+        .then(response => response.data)
+        .catch(error => ({ error }));
+
+      expect(res).toEqual({ error: new Error('timeout of 300ms exceeded') });
+    });
+
+    it('does not return an exception if request does not reach timeout', async () => {
+      Requester.execute.mockRestore();
+
+      const mockApi = nock(apiUrl);
+      mockApi
+        .get(HttpEndpoints.USER_INFO)
+        .delay(300)
+        .reply(200, { someResponse: {} });
+
+      const res = await configuration
+        .executeRequest({
+          data,
+          schema,
+          defaultRequest: {
+            method: 'GET',
+            timeout: 500,
+          },
+          url: apiUrl + HttpEndpoints.USER_INFO,
+        })
+        .then(response => response.data)
+        .catch(error => ({ error }));
+
+      expect(res).toEqual({ someResponse: expect.any(Object) });
     });
   });
 
