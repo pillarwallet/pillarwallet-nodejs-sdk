@@ -224,6 +224,7 @@ describe('Register Class', () => {
         },
         url: 'https://localhost:8080/register/refresh',
         json: true,
+        timeout: 10000,
         httpsAgent: expect.any(Object),
       });
     });
