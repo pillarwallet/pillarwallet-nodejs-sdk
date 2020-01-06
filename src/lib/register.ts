@@ -212,6 +212,7 @@ export class Register {
         url: `${Configuration.accessKeys.apiUrl}${
           HttpEndpoints.REGISTER_REFRESH
         }`,
+        timeout: Configuration.accessKeys.requestTimeout,
       };
 
       return axios(config);

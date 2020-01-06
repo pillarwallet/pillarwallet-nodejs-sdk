@@ -32,7 +32,7 @@ describe('The Configuration Class', () => {
 
   beforeEach(() => {
     configuration = new Configuration();
-    configuration.initialise({});
+    configuration.initialise({ requestTimeout: 300 });
     apiUrl = Configuration.accessKeys.apiUrl;
   });
 
@@ -204,6 +204,7 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
           headers: {},
+          timeout: 300,
         });
       });
     });
@@ -223,6 +224,7 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
           headers: { Authorization: 'Bearer oneAccessToken' },
+          timeout: 300,
         });
       });
 
@@ -240,6 +242,7 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
           headers: {},
+          timeout: 300,
         });
       });
     });
@@ -250,17 +253,14 @@ describe('The Configuration Class', () => {
       const mockApi = nock(apiUrl);
       mockApi
         .get(HttpEndpoints.USER_INFO)
-        .delay(500)
+        .delay(350)
         .reply(200, { someResponse: {} });
 
       const res = await configuration
         .executeRequest({
           data,
           schema,
-          defaultRequest: {
-            method: 'GET',
-            timeout: 300,
-          },
+          defaultRequest: { method: 'GET' },
           url: apiUrl + HttpEndpoints.USER_INFO,
         })
         .then(response => response.data)
@@ -275,17 +275,14 @@ describe('The Configuration Class', () => {
       const mockApi = nock(apiUrl);
       mockApi
         .get(HttpEndpoints.USER_INFO)
-        .delay(300)
+        .delay(250)
         .reply(200, { someResponse: {} });
 
       const res = await configuration
         .executeRequest({
           data,
           schema,
-          defaultRequest: {
-            method: 'GET',
-            timeout: 500,
-          },
+          defaultRequest: { method: 'GET' },
           url: apiUrl + HttpEndpoints.USER_INFO,
         })
         .then(response => response.data)

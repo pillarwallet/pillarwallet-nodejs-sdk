@@ -26,7 +26,7 @@ export default {
   method: 'GET',
   headers: {},
   params: {},
-  timeout: 10000,
+  timeout: 0,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false,
   }),

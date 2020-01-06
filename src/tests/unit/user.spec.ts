@@ -52,6 +52,7 @@ describe('User Class', () => {
     user = new User();
     user.initialise({});
     pSdk = new PillarSdk({});
+    pSdk.setRequestTimeout(300);
     jest.spyOn(user, 'validation');
     jest
       .spyOn(user, 'checkSignature')
@@ -91,6 +92,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         data: userUpdateData,
         url: 'https://localhost:8080/user/update',
+        timeout: 300,
       });
     });
 
@@ -122,6 +124,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
         url: 'https://localhost:8080/user/info',
+        timeout: 300,
       });
     });
 
@@ -153,6 +156,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
         url: 'https://localhost:8080/user',
+        timeout: 300,
       });
     });
 
@@ -202,6 +206,7 @@ describe('User Class', () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        timeout: 300,
       });
     });
   });
@@ -225,6 +230,7 @@ describe('User Class', () => {
         },
         params: userSearchData,
         url: 'https://localhost:8080/user/search',
+        timeout: 300,
       });
     });
 
@@ -259,6 +265,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         data: userInfoData,
         url: 'https://localhost:8080/user/delete',
+        timeout: 300,
       });
     });
 
@@ -290,6 +297,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: usernameSearch,
         url: 'https://localhost:8080/user/search-username',
+        timeout: 300,
       });
     });
 
@@ -316,6 +324,7 @@ describe('User Class', () => {
         ...postConfiguration,
         data,
         url: `https://localhost:8080${HttpEndpoints.USER_VALIDATE}`,
+        timeout: 300,
       });
     });
 
@@ -353,6 +362,7 @@ describe('User Class', () => {
           data.imageName
         }`,
         responseType: 'stream',
+        timeout: 300,
       });
     });
 
@@ -387,6 +397,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: query,
         url: `https://localhost:8080${HttpEndpoints.USER_IMAGE}`,
+        timeout: 300,
       });
     });
 
@@ -426,8 +437,8 @@ describe('User Class', () => {
         method: 'POST',
         params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
-        timeout: 10000,
         httpsAgent: expect.any(Object),
+        timeout: 300,
       });
     });
 
@@ -461,8 +472,8 @@ describe('User Class', () => {
         method: 'POST',
         params: undefined,
         url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.USER_IMAGE}`,
-        timeout: 10000,
         httpsAgent: expect.any(Object),
+        timeout: 300,
       });
     });
   });
@@ -483,6 +494,7 @@ describe('User Class', () => {
           Authorization: `Bearer ${accessToken}`,
         },
         url: 'https://localhost:8080' + HttpEndpoints.USER_IMAGE,
+        timeout: 300,
       });
     });
 
@@ -542,8 +554,8 @@ describe('User Class', () => {
         method: 'GET',
         url: 'https://localhost:8080/user/image-by-userid/userId',
         params: { walletId: 'walletId' },
-        timeout: 10000,
         httpsAgent: expect.any(Object),
+        timeout: 300,
       });
     });
   });
@@ -564,6 +576,7 @@ describe('User Class', () => {
         data,
         headers: { Authorization: `Bearer ${accessToken}` },
         url: 'https://localhost:8080/user/create-one-time-password',
+        timeout: 300,
       });
     });
 
@@ -596,6 +609,7 @@ describe('User Class', () => {
         data,
         headers: { Authorization: `Bearer ${accessToken}` },
         url: 'https://localhost:8080/user/validate-email',
+        timeout: 300,
       });
     });
 
@@ -633,6 +647,7 @@ describe('User Class', () => {
         data,
         headers: { Authorization: `Bearer ${accessToken}` },
         url: 'https://localhost:8080/user/validate-phone',
+        timeout: 300,
       });
     });
 
@@ -654,6 +669,7 @@ describe('User Class', () => {
           Authorization: `Bearer ${accessToken}`,
         },
         url: 'https://localhost:8080/user/validate-phone',
+        timeout: 300,
       });
     });
 
@@ -690,6 +706,7 @@ describe('User Class', () => {
           Authorization: `Bearer ${accessToken}`,
         },
         url: 'https://localhost:8080/user/update-notification-preferences',
+        timeout: 300,
       });
     });
 
@@ -727,6 +744,7 @@ describe('User Class', () => {
         headers: { Authorization: `Bearer ${accessToken}` },
         params: userInfoData,
         url: 'https://localhost:8080/user/access-tokens',
+        timeout: 300,
       });
     });
 
@@ -758,6 +776,7 @@ describe('User Class', () => {
           Authorization: `Bearer ${accessToken}`,
         },
         url: 'https://localhost:8080/user/map-contacts-addresses',
+        timeout: 300,
       });
     });
 
