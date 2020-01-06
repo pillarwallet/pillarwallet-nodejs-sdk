@@ -27,7 +27,7 @@ const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
 import { Register } from '../../../lib/register';
-import nock = require('nock');
+import * as nock from 'nock';
 
 describe('registerRefresh method', () => {
   // Key pairs

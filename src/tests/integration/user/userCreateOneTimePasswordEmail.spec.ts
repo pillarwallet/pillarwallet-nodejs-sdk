@@ -24,7 +24,7 @@ const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../../index';
 import { Configuration } from '../../../lib/configuration';
-const nock = require('nock');
+import * as nock from 'nock';
 
 describe('userCreateOneTimePasswod Email method', () => {
   let pSdk: PillarSdk;

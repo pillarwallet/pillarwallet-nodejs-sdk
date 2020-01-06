@@ -25,7 +25,7 @@ const env = process.env.NODE_ENV;
 
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
-import nock = require('nock');
+import * as nock from 'nock';
 
 describe('Connection Map Identity Keys', () => {
   // Key pairs

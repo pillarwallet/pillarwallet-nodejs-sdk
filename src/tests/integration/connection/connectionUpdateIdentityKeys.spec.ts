@@ -25,7 +25,7 @@ const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
-import nock = require('nock');
+import * as nock from 'nock';
 
 describe('Connection Update Identity Keys', () => {
   // Key pairs

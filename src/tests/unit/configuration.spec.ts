@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import nock = require('nock');
+import * as nock from 'nock';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
