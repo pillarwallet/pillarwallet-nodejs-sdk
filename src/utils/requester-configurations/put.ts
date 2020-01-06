@@ -27,6 +27,7 @@ export default {
   headers: {},
   data: {},
   json: true,
+  timeout: 0,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false,
   }),

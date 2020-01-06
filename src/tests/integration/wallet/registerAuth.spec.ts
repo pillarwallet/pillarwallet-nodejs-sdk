@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 const env = process.env.NODE_ENV;
-import nock = require('nock');
+import * as nock from 'nock';
 import { PillarSdk } from '../../..';
 
 const keys = require('../../utils/generateKeyPair');

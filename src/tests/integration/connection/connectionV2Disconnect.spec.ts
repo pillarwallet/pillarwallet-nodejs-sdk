@@ -21,7 +21,7 @@ SOFTWARE.
 const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../..';
-import nock = require('nock');
+import * as nock from 'nock';
 import { Configuration } from '../../../lib/configuration';
 
 describe('Connection v2 Disconnect', () => {

@@ -31,11 +31,11 @@ import { default as getConfiguration } from '../../utils/requester-configuration
 import { PillarSdk } from '../..';
 
 describe('Register Class', () => {
+  const pSdk = new PillarSdk({ apiUrl: 'https://localhost:8080' });
+  pSdk.setRequestTimeout(300);
   const apiUrl = Configuration.accessKeys.apiUrl;
-  Configuration.accessKeys.apiUrl = 'https://localhost:8080';
   const publicKey = 'myPub';
   const privateKey = 'myPrivateKey';
-  const pSdk = new PillarSdk({});
   let uuid;
 
   beforeEach(() => {
@@ -66,6 +66,7 @@ describe('Register Class', () => {
           uuid,
         },
         url: 'https://localhost:8080/register/keys',
+        timeout: 300,
       });
     });
 
@@ -105,6 +106,7 @@ describe('Register Class', () => {
         headers: { 'X-API-Signature': expect.any(String) },
         data: regAuthData,
         url: 'https://localhost:8080/register/auth',
+        timeout: 300,
       });
     });
 
@@ -145,6 +147,7 @@ describe('Register Class', () => {
         headers: { 'X-API-Signature': expect.any(String) },
         data: regAccessData,
         url: 'https://localhost:8080/register/access',
+        timeout: 300,
       });
     });
 
@@ -183,6 +186,7 @@ describe('Register Class', () => {
           ...approveExternalLoginData,
         },
         url: 'https://localhost:8080/register/approve-external-login',
+        timeout: 300,
       });
     });
 
@@ -224,6 +228,7 @@ describe('Register Class', () => {
         },
         url: 'https://localhost:8080/register/refresh',
         json: true,
+        timeout: 300,
         httpsAgent: expect.any(Object),
       });
     });

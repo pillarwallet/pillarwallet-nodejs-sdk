@@ -36,6 +36,7 @@ describe('Connection Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -66,6 +67,7 @@ describe('Connection Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionInviteData,
         url: 'https://localhost:8080/connection/invite',
+        timeout: 300,
       });
     });
   });
@@ -90,6 +92,7 @@ describe('Connection Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionAcceptData,
         url: 'https://localhost:8080/connection/accept',
+        timeout: 300,
       });
     });
   });
@@ -115,6 +118,7 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionRejectData,
           url: 'https://localhost:8080/connection/reject',
+          timeout: 300,
         });
       },
     );
@@ -142,6 +146,7 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionCancelData,
           url: 'https://localhost:8080/connection/cancel',
+          timeout: 300,
         });
       },
     );
@@ -170,6 +175,7 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionBlockData,
           url: 'https://localhost:8080/connection/block',
+          timeout: 300,
         });
       },
     );
@@ -198,6 +204,7 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionMuteData,
           url: 'https://localhost:8080/connection/mute',
+          timeout: 300,
         });
       },
     );
@@ -226,6 +233,7 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionDisconnectData,
           url: 'https://localhost:8080/connection/disconnect',
+          timeout: 300,
         });
       },
     );
@@ -252,6 +260,7 @@ describe('Connection Class', () => {
           data: undefined,
           params: connectionCountData,
           url: 'https://localhost:8080/connection/count',
+          timeout: 300,
         });
       },
     );
@@ -278,6 +287,7 @@ describe('Connection Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: connectionMapIdentityKeysData,
           url: 'https://localhost:8080/connection/map-identity-keys',
+          timeout: 300,
         });
       },
     );
@@ -302,6 +312,7 @@ describe('Connection Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionUpdateIdentityKeysData,
         url: 'https://localhost:8080/connection/update-identity-keys',
+        timeout: 300,
       });
     });
   });

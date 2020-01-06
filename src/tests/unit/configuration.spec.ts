@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+import * as nock from 'nock';
 import { Requester } from '../../utils/requester';
 import { Configuration } from '../../lib/configuration';
 import { HttpEndpoints } from '../../lib/constants/httpEndpoints';
@@ -31,7 +32,7 @@ describe('The Configuration Class', () => {
 
   beforeEach(() => {
     configuration = new Configuration();
-    configuration.initialise({});
+    configuration.initialise({ requestTimeout: 300 });
     apiUrl = Configuration.accessKeys.apiUrl;
   });
 
@@ -58,7 +59,7 @@ describe('The Configuration Class', () => {
     });
 
     afterEach(() => {
-      Requester.execute.mockRestore();
+      jest.restoreAllMocks();
     });
 
     it('validates the schema', () => {
@@ -203,6 +204,7 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
           headers: {},
+          timeout: 300,
         });
       });
     });
@@ -222,6 +224,7 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
           headers: { Authorization: 'Bearer oneAccessToken' },
+          timeout: 300,
         });
       });
 
@@ -239,8 +242,53 @@ describe('The Configuration Class', () => {
           method: 'POST',
           url: 'https://localhost:8080/user/validate',
           headers: {},
+          timeout: 300,
         });
       });
+    });
+
+    it('returns an exception when request reaches timeout', async () => {
+      Requester.execute.mockRestore();
+
+      const mockApi = nock(apiUrl);
+      mockApi
+        .get(HttpEndpoints.USER_INFO)
+        .delay(350)
+        .reply(200, { someResponse: {} });
+
+      const res = await configuration
+        .executeRequest({
+          data,
+          schema,
+          defaultRequest: { method: 'GET' },
+          url: apiUrl + HttpEndpoints.USER_INFO,
+        })
+        .then(response => response.data)
+        .catch(error => ({ error }));
+
+      expect(res).toEqual({ error: new Error('timeout of 300ms exceeded') });
+    });
+
+    it('does not return an exception if request does not reach timeout', async () => {
+      Requester.execute.mockRestore();
+
+      const mockApi = nock(apiUrl);
+      mockApi
+        .get(HttpEndpoints.USER_INFO)
+        .delay(250)
+        .reply(200, { someResponse: {} });
+
+      const res = await configuration
+        .executeRequest({
+          data,
+          schema,
+          defaultRequest: { method: 'GET' },
+          url: apiUrl + HttpEndpoints.USER_INFO,
+        })
+        .then(response => response.data)
+        .catch(error => ({ error }));
+
+      expect(res).toEqual({ someResponse: expect.any(Object) });
     });
   });
 

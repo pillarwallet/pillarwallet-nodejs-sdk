@@ -23,7 +23,8 @@ SOFTWARE.
 const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../..';
-import nock = require('nock');
+import * as nock from 'nock';
+
 const keys = require('../../utils/generateKeyPair');
 
 describe('Wallet register-smart-wallet', () => {

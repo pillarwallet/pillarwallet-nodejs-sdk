@@ -23,7 +23,7 @@ const env = process.env.NODE_ENV;
 
 import { Register } from '../../../lib/register';
 import { PillarSdk } from '../../../index';
-import nock = require('nock');
+import * as nock from 'nock';
 import { v4 as uuidV4 } from 'uuid';
 
 const keys = require('../../utils/generateKeyPair');
