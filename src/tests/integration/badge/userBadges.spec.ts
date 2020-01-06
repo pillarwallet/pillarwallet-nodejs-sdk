@@ -24,7 +24,7 @@ SOFTWARE.
 const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
-import nock = require('nock');
+import * as nock from 'nock';
 
 describe('User Badges', () => {
   // Key pairs

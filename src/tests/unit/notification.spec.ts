@@ -35,6 +35,7 @@ describe('Notification Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.configuration.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -64,6 +65,7 @@ describe('Notification Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: notificationData,
         url: 'http://localhost:8081/notification/list',
+        timeout: 300,
       });
     });
 

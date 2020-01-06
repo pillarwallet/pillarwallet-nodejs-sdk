@@ -35,6 +35,7 @@ describe('Badge Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.configuration.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -56,6 +57,7 @@ describe('Badge Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: userBadgesData,
         url: 'https://localhost:8080/badge/my',
+        timeout: 300,
       });
     });
 
@@ -88,6 +90,7 @@ describe('Badge Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: getBadgesData,
         url: 'https://localhost:8080/badge',
+        timeout: 300,
       });
     });
 
@@ -135,6 +138,7 @@ describe('Badge Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: selfAwardBadgeData,
         url: 'https://localhost:8080/badge/self-award',
+        timeout: 300,
       });
     });
 

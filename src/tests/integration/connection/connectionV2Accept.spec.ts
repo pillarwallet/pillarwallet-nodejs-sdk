@@ -24,7 +24,7 @@ SOFTWARE.
 const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../..';
-import nock = require('nock');
+import * as nock from 'nock';
 
 describe('Connection v2 Accept', () => {
   // Key pairs

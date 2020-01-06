@@ -32,6 +32,7 @@ import { Requester } from '../utils/requester';
 let ajv: any;
 
 export class Configuration {
+  // TODO: make config name not `accessKeys`?
   public static accessKeys: PillarSdkConfiguration = {
     updateOAuthFn: undefined,
     tokensFailedCallbackFn: undefined,
@@ -41,6 +42,7 @@ export class Configuration {
     investmentsUrl: '',
     username: undefined,
     network: undefined,
+    requestTimeout: 0,
   };
 
   constructor() {
@@ -65,6 +67,16 @@ export class Configuration {
         ...Configuration.accessKeys.oAuthTokens,
       });
     }
+  }
+
+  /**
+   * @name setRequestTimeout
+   * @description Sets the timeout config used for axios requests.
+   *
+   * @param timeout the request timeout config value
+   */
+  setRequestTimeout(timeout: number) {
+    Configuration.accessKeys.requestTimeout = timeout;
   }
 
   /**
@@ -191,6 +203,7 @@ export class Configuration {
       ...defaultRequest,
       url,
       headers: { ...defaultRequest.headers },
+      timeout: Configuration.accessKeys.requestTimeout,
     };
 
     // check if method needs data to be sent or if it uses data within the url

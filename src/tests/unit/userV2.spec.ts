@@ -34,6 +34,7 @@ describe('User v2 Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.configuration.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -61,6 +62,7 @@ describe('User v2 Class', () => {
         headers: { 'X-API-Signature': expect.any(String) },
         data: validateData,
         url: 'https://localhost:8080/user/v2/validate',
+        timeout: 300,
       });
     });
   });

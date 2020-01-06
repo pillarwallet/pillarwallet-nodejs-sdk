@@ -42,6 +42,7 @@ describe('Wallet Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -71,6 +72,7 @@ describe('Wallet Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletRegistrationData,
           url: 'https://localhost:8080/wallet/register',
+          timeout: 300,
         });
       },
     );
@@ -119,6 +121,7 @@ describe('Wallet Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data,
           url: 'https://localhost:8080/wallet/register-smart-wallet',
+          timeout: 300,
         });
       },
     );
@@ -278,6 +281,7 @@ describe('Wallet Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletUpdateData,
           url: 'https://localhost:8080/wallet/update',
+          timeout: 300,
         });
       },
     );
@@ -318,6 +322,7 @@ describe('Wallet Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletRegisterAddressData,
           url: 'https://localhost:8080/wallet/register-address',
+          timeout: 300,
         });
       },
     );
@@ -358,6 +363,7 @@ describe('Wallet Class', () => {
           headers: { Authorization: 'Bearer myAccessToken' },
           data: walletUnregisterAddressData,
           url: 'https://localhost:8080/wallet/unregister-address',
+          timeout: 300,
         });
       },
     );

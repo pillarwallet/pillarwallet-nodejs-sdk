@@ -36,6 +36,7 @@ describe('Asset Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.configuration.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -55,6 +56,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetDefaultsData,
         url: 'https://localhost:8080/asset/defaults',
+        timeout: 300,
       });
     });
 
@@ -70,6 +72,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
         params: assetDefaultsData,
         url: 'https://localhost:8080/asset/defaults',
+        timeout: 300,
       });
     });
 
@@ -99,6 +102,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetPreferredData,
         url: 'https://localhost:8080/asset/preferred',
+        timeout: 300,
       });
     });
 
@@ -114,6 +118,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
         params: assetPreferredData,
         url: 'https://localhost:8080/asset/preferred',
+        timeout: 300,
       });
     });
 
@@ -146,6 +151,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetSearchData,
         url: 'https://localhost:8080/asset/search',
+        timeout: 300,
       });
     });
 
@@ -164,6 +170,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
         params: assetSearchData,
         url: 'https://localhost:8080/asset/search',
+        timeout: 300,
       });
     });
 
@@ -198,6 +205,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         params: assetListData,
         url: 'https://localhost:8080/asset/list',
+        timeout: 300,
       });
     });
 
@@ -216,6 +224,7 @@ describe('Asset Class', () => {
         headers: { Authorization: 'Bearer myAccessToken', Network: 'mainnet' },
         params: assetListData,
         url: 'https://localhost:8080/asset/list',
+        timeout: 300,
       });
     });
 

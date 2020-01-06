@@ -35,6 +35,7 @@ describe('Connection v2 Class', () => {
 
   beforeEach(() => {
     pSdk = new PillarSdk({});
+    pSdk.configuration.setRequestTimeout(300);
   });
 
   afterEach(() => {
@@ -71,6 +72,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionInviteData,
         url: 'https://localhost:8080/connection/v2/invite',
+        timeout: 300,
       });
     });
   });
@@ -110,6 +112,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionAcceptData,
         url: 'https://localhost:8080/connection/v2/accept',
+        timeout: 300,
       });
     });
   });
@@ -139,6 +142,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionRejectData,
         url: 'https://localhost:8080/connection/v2/reject',
+        timeout: 300,
       });
     });
   });
@@ -168,6 +172,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionCancelData,
         url: 'https://localhost:8080/connection/v2/cancel',
+        timeout: 300,
       });
     });
   });
@@ -198,6 +203,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionMuteData,
         url: 'https://localhost:8080/connection/v2/mute',
+        timeout: 300,
       });
     });
   });
@@ -228,6 +234,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionBlockData,
         url: 'https://localhost:8080/connection/v2/block',
+        timeout: 300,
       });
     });
   });
@@ -252,6 +259,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionBlacklistData,
         url: 'https://localhost:8080/connection/v2/blacklist',
+        timeout: 300,
       });
     });
   });
@@ -281,6 +289,7 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionDisconnectData,
         url: 'https://localhost:8080/connection/v2/disconnect',
+        timeout: 300,
       });
     });
   });

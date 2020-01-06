@@ -28,4 +28,5 @@ interface PillarSdkConfiguration {
   investmentsUrl?: string;
   username?: string;
   network?: string;
+  requestTimeout?: number;
 }
