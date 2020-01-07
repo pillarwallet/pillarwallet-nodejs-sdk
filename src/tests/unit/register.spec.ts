@@ -227,7 +227,6 @@ describe('Register Class', () => {
           username: Configuration.accessKeys.username,
         },
         url: 'https://localhost:8080/register/refresh',
-        json: true,
         timeout: 300,
         httpsAgent: expect.any(Object),
       });

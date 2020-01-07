@@ -19,16 +19,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+import { AxiosRequestConfig } from 'axios';
 const https = require('https');
 
-export default {
+const postConfig: AxiosRequestConfig = {
   url: '',
   method: 'POST',
   headers: {},
   data: {},
-  json: true,
   timeout: 0,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false,
   }),
 };
+
+export default postConfig;
