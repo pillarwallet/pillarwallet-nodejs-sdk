@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import axios, { AxiosPromise } from 'axios';
+import axios, { AxiosError, AxiosPromise } from 'axios';
 import { Register } from '../lib/register';
 import { Configuration } from '../lib/configuration';
 import { ProofKey } from '../utils/pkce';
@@ -50,8 +50,9 @@ export class Requester {
               };
               return axios(options);
             })
-            .catch(async error => {
+            .catch(async (error: AxiosError) => {
               if (
+                error.response &&
                 error.response.status === 400 &&
                 error.response.data &&
                 (error.response.data.message ===

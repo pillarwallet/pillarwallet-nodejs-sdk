@@ -279,7 +279,6 @@ export class User extends Configuration {
       ...postConfiguration,
       headers,
     };
-    delete baseRequest.json;
 
     if (formData._boundary) {
       baseRequest.headers['Content-Type'] = `multipart/form-data; boundary=${
