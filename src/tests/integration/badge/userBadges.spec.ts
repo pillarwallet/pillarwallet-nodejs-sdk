@@ -21,14 +21,14 @@ SOFTWARE.
 */
 // tslint:disable: object-shorthand-properties-first
 // check node environment
-const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
 import * as nock from 'nock';
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('User Badges', () => {
   // Key pairs
-  const privateKey = keys.privateKey.toString();
+  const privateKey = generatePrivateKey();
 
   // Generate random username
   const username = `User${Math.random()

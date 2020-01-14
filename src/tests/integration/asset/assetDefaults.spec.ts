@@ -23,13 +23,13 @@ SOFTWARE.
 // check node environment
 const env = process.env.NODE_ENV;
 
-const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import * as nock from 'nock';
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('Asset Default', () => {
   // Key pairs
-  const privateKey = keys.privateKey.toString();
+  const privateKey = generatePrivateKey();
 
   // Generate random username
   const username = `User${Math.random()

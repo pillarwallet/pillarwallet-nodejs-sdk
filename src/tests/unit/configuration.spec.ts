@@ -254,7 +254,7 @@ describe('The Configuration Class', () => {
       mockApi
         .get(HttpEndpoints.USER_INFO)
         .delay(350)
-        .reply(200, { someResponse: {} });
+        .reply(504);
 
       const res = await configuration
         .executeRequest({
@@ -266,7 +266,9 @@ describe('The Configuration Class', () => {
         .then(response => response.data)
         .catch(error => ({ error }));
 
-      expect(res).toEqual({ error: new Error('timeout of 300ms exceeded') });
+      expect(res).toEqual({
+        error: new Error('Request failed with status code 504'),
+      });
     });
 
     it('does not return an exception if request does not reach timeout', async () => {
