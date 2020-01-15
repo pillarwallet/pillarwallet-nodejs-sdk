@@ -22,10 +22,12 @@ SOFTWARE.
 const env = process.env.NODE_ENV;
 import * as nock from 'nock';
 import { PillarSdk } from '../../..';
-
-const keys = require('../../utils/generateKeyPair');
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('POST RegisterAuthServer', () => {
+  // Key pairs
+  const privateKey = generatePrivateKey();
+
   const responseRegisterKey = {
     nonce: '3yy1uy3u13yu1y3uy3',
     expiresAt: '2011-06-14T04:12:36Z',
@@ -100,7 +102,7 @@ describe('POST RegisterAuthServer', () => {
       .substring(7)}`;
     walletRegister = {
       username,
-      privateKey: keys.privateKey,
+      privateKey,
       fcmToken: '987qwe',
     };
   });

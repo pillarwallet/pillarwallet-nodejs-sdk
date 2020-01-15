@@ -18,8 +18,7 @@
     },
     "email": {
       "description": "The user's email",
-      "type": "string",
-      "format": "email"
+      "type": "string"
     },
     "phone": {
       "description": "The user's phone",

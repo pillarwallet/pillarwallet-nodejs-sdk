@@ -23,31 +23,12 @@ const env = process.env.NODE_ENV;
 import { PillarSdk } from '../../..';
 import * as nock from 'nock';
 import { Configuration } from '../../../lib/configuration';
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('Connection v2 Reject', () => {
   // Key pairs
-  const EC = require('elliptic').ec;
-  const ecSecp256k1 = new EC('secp256k1');
-
-  let targetPrivateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
-
-  if (targetPrivateKey.length !== 64) {
-    targetPrivateKey =
-      '86efe0326991a41a50e210241bae0366c6c5027eae7658cf4914f953d811745d';
-  }
-
-  let sourcePrivateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
-
-  if (sourcePrivateKey.length !== 64) {
-    sourcePrivateKey =
-      '22f8f182a11f90e1a64d693c7cbf44ca017c50b6efc51445ea2f319210875c09';
-  }
+  const targetPrivateKey = generatePrivateKey();
+  const sourcePrivateKey = generatePrivateKey();
 
   // Generate random username
   let username = `User${Math.random()

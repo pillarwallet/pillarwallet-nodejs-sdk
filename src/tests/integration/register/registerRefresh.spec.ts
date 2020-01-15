@@ -23,15 +23,15 @@ SOFTWARE.
 // check node environment
 const env = process.env.NODE_ENV;
 
-const keys = require('../../utils/generateKeyPair');
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
 import { Register } from '../../../lib/register';
 import * as nock from 'nock';
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('registerRefresh method', () => {
   // Key pairs
-  const privateKey = keys.privateKey.toString();
+  const privateKey = generatePrivateKey();
 
   // Generate random username
   const username = `User${Math.random()
