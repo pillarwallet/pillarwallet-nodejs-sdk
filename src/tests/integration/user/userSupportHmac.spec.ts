@@ -24,22 +24,13 @@ const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../../index';
 const nock = require('nock');
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('supportHmac method', () => {
   let pSdk: PillarSdk;
 
-  const EC = require('elliptic').ec;
-  const ecSecp256k1 = new EC('secp256k1');
-
   // Key pairs
-
-  let privateKey;
-  do {
-    privateKey = ecSecp256k1
-      .genKeyPair()
-      .getPrivate()
-      .toString('hex');
-  } while (privateKey.length !== 64);
+  const privateKey = generatePrivateKey();
 
   const username = `User${Math.random()
     .toString(36)

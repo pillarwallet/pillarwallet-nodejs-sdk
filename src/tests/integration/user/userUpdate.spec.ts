@@ -27,7 +27,7 @@ import { Configuration } from '../../../lib/configuration';
 const nock = require('nock');
 const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
-describe('userValidateEmail method', () => {
+describe('update method', () => {
   let pSdk: PillarSdk;
   let firstWalletId: string;
   let firstUserAccessToken: string;
@@ -48,24 +48,31 @@ describe('userValidateEmail method', () => {
 
   const responseData = {
     result: 'success',
-    message: 'Email validated.',
-    userId: 'secondUserId',
-  };
-
-  const errUserWhitoutEmail = {
-    message: 'No email provided for validation.',
-  };
-
-  const errInvalidOTP = {
-    message: 'One-time password is not valid.',
-  };
-
-  const errExpiredOTP = {
-    message: 'One-time password expired.',
+    message: 'User was successfully updated',
+    user: {
+      id: 'c2058d7b-cf63-4b2e-905c-55a02e30812a',
+      username: `${secondUsername}`,
+      firstName: 'Luke',
+      lastName: 'Skywalker',
+      email: `${secondUsername}@pillar.com`,
+      phone: '+44 77 1111 2222',
+      country: 'UK',
+      state: 'CA',
+      city: 'London',
+      tagline: 'Social media consultant',
+      taglineStatus: false,
+      userSearchable: true,
+      secretId: '0f165e37-5b50-405a-8ef5-df4532cbcfbb',
+      betaProgramParticipant: true,
+    },
   };
 
   const errInvalidWalletId = {
     message: 'Could not find a Wallet ID to search by.',
+  };
+
+  const errEmailDuplicated = {
+    message: 'Email already exists!',
   };
 
   const errInternal = {
@@ -114,18 +121,23 @@ describe('userValidateEmail method', () => {
           userId: 'secondUserId',
         })
         .post('/user/update')
-        .reply(200)
-        .post('/user/validate-email')
-        .reply(404, errUserWhitoutEmail)
-        .post('/user/validate-email')
-        .reply(404, errInvalidOTP)
-        .post('/user/validate-email')
-        .reply(400, errInvalidWalletId)
-        .post('/user/validate-email')
-        .reply(422, errExpiredOTP)
-        .post('/user/validate-email')
         .reply(200, responseData)
-        .post('/user/validate-email')
+        .post('/user/update')
+        .reply(409, errEmailDuplicated)
+        .post('/user/update')
+        .reply(200, responseData)
+        .post('/user/update')
+        .reply(200, {
+          result: 'success',
+          message: 'User was successfully updated',
+          user: {
+            id: 'c2058d7b-cf63-4b2e-905c-55a02e30812a',
+            email: `${secondUsername}@pillar.com`,
+            secretId: 'c2058d7b-cf63-4b2e-905c-55a02e30812a',
+            username: firstUsername,
+          },
+        })
+        .post('/user/update')
         .reply(500, errInternal);
     }
 
@@ -148,13 +160,6 @@ describe('userValidateEmail method', () => {
     response = await pSdk.wallet.registerAuthServer(walletRegister);
     secondWalletId = response.data.walletId;
     secondUserAccessToken = Configuration.accessKeys.oAuthTokens.accessToken;
-
-    const userUpdateParams = {
-      email: 'damian.salaverry@tarmac.io',
-      walletId: secondWalletId,
-    };
-
-    await pSdk.user.update(userUpdateParams);
   });
 
   afterAll(() => {
@@ -164,90 +169,123 @@ describe('userValidateEmail method', () => {
     }
   });
 
-  it('should return 404 response due user without email defined', async () => {
+  it('expects to return a success message and status 200', async () => {
+    const inputParams = {
+      walletId: secondWalletId,
+      firstName: 'Luke',
+      lastName: 'Skywalker',
+      email: `${secondUsername}@pillar.com`,
+      phone: '+44 77 1111 2222',
+      country: 'UK',
+      state: 'CA',
+      city: 'London',
+      tagline: 'Social media consultant',
+      taglineStatus: false,
+      userSearchable: true,
+      betaProgramParticipant: true,
+    };
+
+    Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
+
+    const response = await pSdk.user.update(inputParams);
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({
+      result: 'success',
+      message: 'User was successfully updated',
+      user: {
+        id: expect.any(String),
+        username: `${secondUsername}`,
+        firstName: 'Luke',
+        lastName: 'Skywalker',
+        email: `${secondUsername}@pillar.com`,
+        phone: '+44 77 1111 2222',
+        country: 'UK',
+        state: 'CA',
+        city: 'London',
+        tagline: 'Social media consultant',
+        taglineStatus: false,
+        userSearchable: true,
+        secretId: expect.any(String),
+        betaProgramParticipant: true,
+      },
+    });
+  });
+
+  it('expects to return a conflict error due duplicated email', async () => {
     const inputParams = {
       walletId: firstWalletId,
-      oneTimePassword: 'test',
+      firstName: 'Darth',
+      lastName: 'Vader',
+      email: `${secondUsername}@pillar.com`,
+      phone: '+44 77 1111 2222',
+      country: 'UK',
+      state: 'CA',
+      city: 'London',
+      tagline: 'Social media consultant',
+      taglineStatus: false,
+      userSearchable: true,
+      betaProgramParticipant: true,
     };
 
     Configuration.accessKeys.oAuthTokens.accessToken = firstUserAccessToken;
 
     try {
-      await pSdk.user.validateEmail(inputParams);
+      await pSdk.user.update(inputParams);
     } catch (error) {
-      expect(error.response.status).toEqual(404);
-      expect(error.response.data.message).toEqual(errUserWhitoutEmail.message);
+      expect(error.response.status).toEqual(409);
+      expect(error.response.data.message).toEqual(errEmailDuplicated.message);
     }
   });
 
-  it('should return 404 response due to invalid OTP', async () => {
-    const inputParams = {
+  it('first user deletes email and now second user can use his email', async () => {
+    let inputParams = {
       walletId: secondWalletId,
-      oneTimePassword: 'invalid',
+      email: '',
     };
 
     Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
+    await pSdk.user.update(inputParams);
 
-    try {
-      await pSdk.user.validateEmail(inputParams);
-    } catch (error) {
-      expect(error.response.status).toEqual(404);
-      expect(error.response.data.message).toEqual(errInvalidOTP.message);
-    }
-  });
+    Configuration.accessKeys.oAuthTokens.accessToken = firstUserAccessToken;
 
-  it('should return 400 due invalid params', async () => {
-    const inputParams = {
-      walletId: '',
-      oneTimePassword: '',
+    inputParams = {
+      walletId: firstWalletId,
+      email: `${secondUsername}@pillar.com`,
     };
 
-    try {
-      await pSdk.user.validateEmail(inputParams);
-    } catch (error) {
-      expect(error.response.status).toEqual(400);
-      expect(error.response.data.message).toEqual(errInvalidWalletId.message);
-    }
+    const response = await pSdk.user.update(inputParams);
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({
+      result: 'success',
+      message: 'User was successfully updated',
+      user: {
+        id: expect.any(String),
+        email: `${secondUsername}@pillar.com`,
+        secretId: expect.any(String),
+        username: firstUsername,
+      },
+    });
   });
 
   if (env === 'test') {
-    it('should return 422 response due to expired OTP', async () => {
-      const inputParams = {
-        walletId: secondWalletId,
-        oneTimePassword: 'expired',
-      };
-
-      Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
-
-      try {
-        await pSdk.user.validateEmail(inputParams);
-      } catch (error) {
-        expect(error.response.status).toEqual(422);
-        expect(error.response.data.message).toEqual(errExpiredOTP.message);
-      }
-    });
-
-    it('expects to return a success message and status 200', async () => {
-      const inputParams = {
-        walletId: secondWalletId,
-        oneTimePassword: 'test',
-      };
-
-      Configuration.accessKeys.oAuthTokens.accessToken = secondUserAccessToken;
-
-      const response = await pSdk.user.validateEmail(inputParams);
-      expect(response.status).toBe(200);
-      expect(response.data).toEqual(responseData);
-    });
-
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         walletId: secondWalletId,
-        oneTimePassword: 'test',
+        firstName: 'Luke',
+        lastName: 'Skywalker',
+        email: `${secondUsername}@pillar.com`,
+        phone: '+44 77 1111 2222',
+        country: 'UK',
+        state: 'CA',
+        city: 'London',
+        tagline: 'Social media consultant',
+        taglineStatus: false,
+        userSearchable: true,
+        betaProgramParticipant: true,
       };
 
       try {
-        await pSdk.user.validateEmail(inputParams);
+        await pSdk.user.update(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);

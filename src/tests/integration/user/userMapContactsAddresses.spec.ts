@@ -26,21 +26,11 @@ const env = process.env.NODE_ENV;
 import { PillarSdk } from '../../..';
 import { Configuration } from '../../../lib/configuration';
 import * as nock from 'nock';
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('User Map Contracts Addresses', () => {
   // Key pairs
-  const EC = require('elliptic').ec;
-  const ecSecp256k1 = new EC('secp256k1');
-
-  let privateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
-
-  if (privateKey.length !== 64) {
-    privateKey =
-      '5731d22487631cb89968933dc23fd53d047cfbc01f6f2078b8879bb220f73caa';
-  }
+  const privateKey = generatePrivateKey();
 
   // Generate random username
   const username = `User${Math.random()

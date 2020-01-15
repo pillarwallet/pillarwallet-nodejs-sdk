@@ -25,11 +25,11 @@ import { Register } from '../../../lib/register';
 import { ProofKey } from '../../../utils/pkce';
 import { Configuration } from '../../../lib/configuration';
 const nock = require('nock');
-const keys = require('../../utils/generateKeyPair');
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('registerTokens method', () => {
   // Key pairs
-  const privateKey = keys.privateKey.toString();
+  const privateKey = generatePrivateKey();
 
   // Generate random username
   const username = `User${Math.random()

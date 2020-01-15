@@ -25,6 +25,7 @@ const env = process.env.NODE_ENV;
 import { PillarSdk } from '../../../index';
 import { Configuration } from '../../../lib/configuration';
 const nock = require('nock');
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('userCreateOneTimePasswod SMS method', () => {
   let pSdk: PillarSdk;
@@ -34,29 +35,9 @@ describe('userCreateOneTimePasswod SMS method', () => {
   let secondUserId: string;
   let secondUserAccessToken: string;
 
-  const EC = require('elliptic').ec;
-  const ecSecp256k1 = new EC('secp256k1');
-
   // Key pairs
-  let firstPrivateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
-
-  if (firstPrivateKey.length !== 64) {
-    firstPrivateKey =
-      '86efe0326991a41a50e210241bae0366c6c5027eae7658cf4914f953d811745d';
-  }
-
-  let secondPrivateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
-
-  if (secondPrivateKey.length !== 64) {
-    secondPrivateKey =
-      '22f8f182a11f90e1a64d693c7cbf44ca017c50b6efc51445ea2f319210875c09';
-  }
+  const firstPrivateKey = generatePrivateKey();
+  const secondPrivateKey = generatePrivateKey();
 
   const firstUsername = `User${Math.random()
     .toString(36)

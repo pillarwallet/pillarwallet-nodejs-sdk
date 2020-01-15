@@ -24,24 +24,15 @@ const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../../index';
 import { PrivateKeyDerivatives } from '../../../utils/private-key-derivatives';
-
 const nock = require('nock');
-const EC = require('elliptic').ec;
-const ecSecp256k1 = new EC('secp256k1');
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('User v2 Validate', () => {
   let pSdk: PillarSdk;
   let walletId: string;
 
   // Key pairs
-  let privateKey;
-
-  do {
-    privateKey = ecSecp256k1
-      .genKeyPair()
-      .getPrivate()
-      .toString('hex');
-  } while (privateKey.length !== 64);
+  const privateKey = generatePrivateKey();
 
   // Generate public key and address from private key.
   const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);

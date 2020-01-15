@@ -24,19 +24,12 @@ const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../..';
 import * as nock from 'nock';
-
-const keys = require('../../utils/generateKeyPair');
+const generateKeyPair = require('../../utils/generateKeyPair');
 
 describe('Wallet register-smart-wallet', () => {
   // Key pairs
-  const EC = require('elliptic').ec;
-  const ecSecp256k1 = new EC('secp256k1');
-  const ethAddress = keys.ethAddress.toString();
-
-  const privateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
+  const privateKey = generateKeyPair.privateKey;
+  const ethAddress = generateKeyPair.ethAddress.toString();
 
   // Generate random username
   const username = `User${Math.random()

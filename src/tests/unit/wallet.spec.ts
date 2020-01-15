@@ -26,9 +26,20 @@ import { Register } from '../../lib/register';
 import { PillarSdk } from '../..';
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
 import { PrivateKeyDerivatives } from '../../utils/private-key-derivatives';
-const keys = require('../utils/generateKeyPair');
 
 describe('Wallet Class', () => {
+  const EC = require('elliptic').ec;
+  const ecSecp256k1 = new EC('secp256k1');
+
+  // Key pairs
+  let privateKey;
+  do {
+    privateKey = ecSecp256k1
+      .genKeyPair()
+      .getPrivate()
+      .toString('hex');
+  } while (privateKey.length !== 64);
+
   let pSdk: PillarSdk;
   const accessToken = 'myAccessToken';
 
@@ -102,7 +113,7 @@ describe('Wallet Class', () => {
         const registerSmartWalletData = {
           fcmToken: '987qwe',
           walletId: 'sdfsdfs',
-          privateKey: keys.privateKey,
+          privateKey,
           ethAddress: '0xabcdef1234567890abcdef123456789012345678',
         };
 
@@ -145,7 +156,7 @@ describe('Wallet Class', () => {
 
   describe('.registerAuthServer', () => {
     const walletRegistrationData = {
-      privateKey: keys.privateKey,
+      privateKey,
       fcmToken: '987qwe',
       username: 'sdfsdfs',
     };

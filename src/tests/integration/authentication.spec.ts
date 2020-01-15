@@ -23,7 +23,6 @@ SOFTWARE.
 // check node environment
 const env = process.env.NODE_ENV;
 
-const keys = require('../utils/generateKeyPair');
 import { PillarSdk } from '../..';
 import * as nock from 'nock';
 
@@ -38,7 +37,17 @@ if (env !== 'test') {
 }
 
 describe('Authentication scenarios', () => {
-  const privateKey = keys.privateKey.toString();
+  const EC = require('elliptic').ec;
+  const ecSecp256k1 = new EC('secp256k1');
+
+  // Key pairs
+  let privateKey;
+  do {
+    privateKey = ecSecp256k1
+      .genKeyPair()
+      .getPrivate()
+      .toString('hex');
+  } while (privateKey.length !== 64);
 
   const username = `User${Math.random()
     .toString(36)

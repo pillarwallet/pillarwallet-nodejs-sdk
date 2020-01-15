@@ -40,65 +40,6 @@ describe.skip('user endpoints', () => {
   });
 
   describe('User', () => {
-    it('User update', () => {
-      const inputParams = {
-        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
-        firstName: 'Bob',
-        lastName: 'Jones',
-        email: 'bob@acme-corp.com',
-        phone: '+44 77 1111 2222',
-        country: 'UK',
-        state: 'CA',
-        city: 'London',
-        tagline: 'Social media consultant',
-        taglineStatus: false,
-        userSearchable: true,
-        betaProgramParticipant: true,
-      };
-
-      pSdk.user
-        .update(inputParams)
-        .then((response: any) => {
-          // Successful response!
-          return response;
-        })
-        .catch((error: any) => {
-          // Unsuccessful response.
-          return error;
-        });
-
-      /**
-       * TODO: Currently waiting on a development
-       * or testing environment before we can asset
-       * a correct / expected response. For now, just
-       * using a spy to ensure that the request was made.
-       */
-      expect(requesterExecuteSpy).toHaveBeenCalled();
-    });
-
-    it('User info', () => {
-      const inputParams = {
-        walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',
-      };
-
-      pSdk.user
-        .info(inputParams)
-        .then((response: any) => {
-          return response;
-        })
-        .catch((error: any) => {
-          return error;
-        });
-
-      /**
-       * TODO: Currently waiting on a development
-       * or testing environment before we can asset
-       * a correct / expected response. For now, just
-       * using a spy to ensure that the request was made.
-       */
-      expect(requesterExecuteSpy).toHaveBeenCalled();
-    });
-
     it('User search', () => {
       const inputParams = {
         walletId: 'efcbe336-c6fc-4165-af68-b4a216c0f287',

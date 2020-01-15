@@ -24,22 +24,17 @@ const env = process.env.NODE_ENV;
 
 import { PillarSdk } from '../../../index';
 const nock = require('nock');
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
 describe('info method', () => {
   let pSdk: PillarSdk;
   let walletId: string;
 
-  const EC = require('elliptic').ec;
-  const ecSecp256k1 = new EC('secp256k1');
-
   const username = `User${Math.random()
     .toString(36)
     .substring(7)}`;
 
-  let privateKey = ecSecp256k1
-    .genKeyPair()
-    .getPrivate()
-    .toString('hex');
+  const privateKey = generatePrivateKey();
 
   const responseData = {
     username,
@@ -62,11 +57,6 @@ describe('info method', () => {
   const errInternal = {
     message: 'Internal Server Error',
   };
-
-  if (privateKey.length !== 64) {
-    privateKey =
-      'e2bcc130170e71f6d30befd0d4a2ac39a1cd1dfb3b5ae064d0b49ebc10db55c9';
-  }
 
   beforeAll(async () => {
     pSdk = new PillarSdk({});
