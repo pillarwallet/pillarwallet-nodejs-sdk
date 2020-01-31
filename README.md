@@ -54,6 +54,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [User Validate Email](#user-validate-email)
     - [User Validate Phone](#user-validate-phone)
     - [User Support Hmac](#user-support-hmac)
+    - [Referral Send Invitation](#referral-send-invitation)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
 - [Versioning](#versioning)
@@ -1419,6 +1420,30 @@ pillarSdk.user.supportHmac(inputParams);
 | ------------- | ------------- | ------------- |
 | status  | 'success' | String  |
 | hmac  | HMAC for Intercom' | String  |
+
+### Referral Send Invitation
+
+```typescript
+pillarSdk.referral.sendInvitation(inputParams);
+```
+
+Sends an invitation through Email or SMS
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| ------------- | ------------- | ------------- | ------------- |
+| walletId  | The wallet Identifier | UUID | Required |
+| referralLink  | The Branch.io link to invite the user | String  | Required |
+| email  | The user's email address to send the invitation | String  | Optional |
+| phone  | The user's phone to send the invitation | String  | Optional |
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ------------- | ------------- | ------------- |
+| result  | 'success' | String  |
+| message  | 'Invitation sent' | String  |
 
 ## Types
 

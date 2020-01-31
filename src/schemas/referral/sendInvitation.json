@@ -1,0 +1,33 @@
+{
+  "title": "Referral Model - Send Invitation",
+  "description": "Schema definition for Referral Model - sendInvitation method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "Wallet ID",
+      "type": "string"
+    },
+    "referralLink": {
+      "description": "The Branch.io link to invite the user",
+      "type": "string"
+    },
+    "email": {
+      "description": "The user's email address to send the invitation",
+      "type": "string"
+    },
+    "phone": {
+      "description": "The user's phone to send the invitation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "walletId",
+    "referralLink"
+  ],
+  "anyOf": [{
+    "required" : ["email"]
+  }, {
+    "required" : ["phone"]
+  }]
+}
