@@ -62,7 +62,7 @@ describe('Referral Class', () => {
         ...postConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
         data: referralInvitationData,
-        url: 'https://localhost:8080/referral/send-invitation',
+        url: 'https://localhost:8080/referral/invite',
         timeout: 300,
       });
     });

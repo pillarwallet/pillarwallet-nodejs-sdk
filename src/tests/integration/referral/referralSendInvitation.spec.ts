@@ -90,21 +90,21 @@ describe('Referral Send Invitation', () => {
           walletId: 'firstWalletId',
           userId: 'firstUserId',
         })
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(400, errInvalidWalletId)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(400, errUserWhitoutEmailValidated)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(400, errUserInvalidEmail)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(400, errUserWhitoutPhoneValidated)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(400, errUserInvalidPhone)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(500, errInternal)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(200, responseData)
-        .post('/referral/send-invitation')
+        .post('/referral/invite')
         .reply(200, responseData);
     }
 

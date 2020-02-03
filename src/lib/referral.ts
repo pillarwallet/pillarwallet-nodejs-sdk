@@ -50,7 +50,7 @@ export class Referral extends Configuration {
       defaultRequest: postConfiguration,
       schema: referralSendInvitationSchema,
       url: `${Configuration.accessKeys.apiUrl}${
-        HttpEndpoints.REFERRAL_SEND_INVITATION
+        HttpEndpoints.REFERRAL_INVITE
       }`,
     });
   }
