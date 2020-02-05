@@ -54,6 +54,14 @@ describe('Referral Send Invitation', () => {
     message: 'data.email should match format "email"',
   };
 
+  const errEmailInvited = {
+    message: 'Email already invited',
+  };
+
+  const errPhoneInvited = {
+    message: 'Phone already invited',
+  };
+
   const errUserInvalidPhone = {
     message: 'data.phone should match pattern "^\\+[0-9]{6,}$"',
   };
@@ -105,7 +113,11 @@ describe('Referral Send Invitation', () => {
         .post('/referral/invite')
         .reply(200, responseData)
         .post('/referral/invite')
-        .reply(200, responseData);
+        .reply(400, errEmailInvited)
+        .post('/referral/invite')
+        .reply(200, responseData)
+        .post('/referral/invite')
+        .reply(400, errPhoneInvited);
     }
 
     const walletRegister = {
@@ -241,6 +253,21 @@ describe('Referral Send Invitation', () => {
         expect(response.status).toBe(200);
         expect(response.data).toEqual(responseData);
       });
+
+      it('should return 400 response due email already invited', async () => {
+        const inputParams = {
+          walletId,
+          referralLink: 'branchiotestLink',
+          email: 'test@test',
+        };
+
+        try {
+          await pSdk.referral.sendInvitation(inputParams);
+        } catch (error) {
+          expect(error.response.status).toEqual(400);
+          expect(error.response.data.message).toEqual(errEmailInvited.message);
+        }
+      });
     });
 
     describe('phone invitation', () => {
@@ -255,6 +282,21 @@ describe('Referral Send Invitation', () => {
 
         expect(response.status).toBe(200);
         expect(response.data).toEqual(responseData);
+      });
+
+      it('should return 400 response due phone already invited', async () => {
+        const inputParams = {
+          walletId,
+          referralLink: 'branchiotestLink',
+          phone: '999999',
+        };
+
+        try {
+          await pSdk.referral.sendInvitation(inputParams);
+        } catch (error) {
+          expect(error.response.status).toEqual(400);
+          expect(error.response.data.message).toEqual(errPhoneInvited.message);
+        }
       });
     });
   }
