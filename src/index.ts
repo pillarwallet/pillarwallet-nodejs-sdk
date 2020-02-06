@@ -30,6 +30,7 @@ import { Notification } from './lib/notification';
 import { Configuration } from './lib/configuration';
 import { Investments } from './lib/investments';
 import { Badge } from './lib/badge';
+import { Referral } from './lib/referral';
 
 import * as Ajv from 'ajv';
 
@@ -49,6 +50,7 @@ export class PillarSdk extends Configuration {
   configuration: Configuration = new Configuration();
   register: Register = new Register();
   badge: Badge = new Badge();
+  referral: Referral = new Referral();
 
   /**
    * Set the SDK variables
