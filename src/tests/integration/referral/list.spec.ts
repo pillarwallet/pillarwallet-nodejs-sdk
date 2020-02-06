@@ -39,7 +39,15 @@ describe('Referral List', () => {
 
   const responseData = {
     result: 'success',
-    data: [],
+    data: [
+      {
+        userId: 'user-id',
+        email: '123@xyz.com',
+        phone: null,
+        claimed: false,
+        invitedUserId: null,
+      },
+    ],
   };
 
   const errInvalidWalletId = {
@@ -98,17 +106,15 @@ describe('Referral List', () => {
     }
   });
 
-  it('expects to return array container referral invitations and status 200', async () => {
+  it('expects to return array containing referral invitations and status 200', async () => {
     const inputParams = {
       walletId,
     };
 
     const response = await pSdk.referral.list(inputParams);
     expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      result: 'success',
-      data: [],
-    });
+    expect(response.data.result).toEqual('success');
+    expect(response.data).toEqual(responseData);
   });
 
   it('should return 400 due invalid params', async () => {
