@@ -37,7 +37,10 @@ describe('Referral List', () => {
     .toString(36)
     .substring(7)}`;
 
-  const responseData = [];
+  const responseData = {
+    result: 'success',
+    data: [],
+  };
 
   const errInvalidWalletId = {
     message: 'Could not find a Wallet ID to search by.',
@@ -102,7 +105,10 @@ describe('Referral List', () => {
 
     const response = await pSdk.referral.list(inputParams);
     expect(response.status).toBe(200);
-    expect(response.data).toEqual([]);
+    expect(response.data).toEqual({
+      result: 'success',
+      data: [],
+    });
   });
 
   it('should return 400 due invalid params', async () => {
