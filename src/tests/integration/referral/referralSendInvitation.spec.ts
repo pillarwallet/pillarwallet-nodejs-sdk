@@ -140,7 +140,7 @@ describe('Referral Send Invitation', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       walletId: '',
-      referralLink: 'branchiotestLink',
+      referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
       email: 'test@test',
     };
 
@@ -156,7 +156,7 @@ describe('Referral Send Invitation', () => {
     it('should return 400 response due user without email validated', async () => {
       const inputParams = {
         walletId,
-        referralLink: 'branchiotestLink',
+        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         email: 'test@test',
       };
 
@@ -173,7 +173,7 @@ describe('Referral Send Invitation', () => {
     it('should return 400 response due invalid email', async () => {
       const inputParams = {
         walletId,
-        referralLink: 'branchiotestLink',
+        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         email: 'invalid',
       };
 
@@ -192,7 +192,7 @@ describe('Referral Send Invitation', () => {
     it('should return 400 response due user without phone validated', async () => {
       const inputParams = {
         walletId,
-        referralLink: 'branchiotestLink',
+        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         phone: '999999',
       };
 
@@ -209,7 +209,7 @@ describe('Referral Send Invitation', () => {
     it('should return 400 response due invalid phone', async () => {
       const inputParams = {
         walletId,
-        referralLink: 'branchiotestLink',
+        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         phone: 'invalid',
       };
 
@@ -228,7 +228,7 @@ describe('Referral Send Invitation', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         walletId,
-        referralLink: 'branchiotestLink',
+        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         phone: '999999',
       };
 
@@ -244,7 +244,7 @@ describe('Referral Send Invitation', () => {
       it('expects to return a success message and status 200', async () => {
         const inputParams = {
           walletId,
-          referralLink: 'branchiotestLink',
+          referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           email: 'test@test',
         };
 
@@ -257,7 +257,7 @@ describe('Referral Send Invitation', () => {
       it('should return 400 response due email already invited', async () => {
         const inputParams = {
           walletId,
-          referralLink: 'branchiotestLink',
+          referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           email: 'test@test',
         };
 
@@ -274,7 +274,7 @@ describe('Referral Send Invitation', () => {
       it('expects to return a success message and status 200', async () => {
         const inputParams = {
           walletId,
-          referralLink: 'branchiotestLink',
+          referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           phone: '999999',
         };
 
@@ -287,7 +287,7 @@ describe('Referral Send Invitation', () => {
       it('should return 400 response due phone already invited', async () => {
         const inputParams = {
           walletId,
-          referralLink: 'branchiotestLink',
+          referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           phone: '999999',
         };
 
