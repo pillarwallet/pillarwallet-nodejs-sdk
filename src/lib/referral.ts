@@ -19,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
 /**
  * Import required classes / libraries / constants
  */
@@ -31,11 +30,13 @@ import { HttpEndpoints } from './constants/httpEndpoints';
  * Import HTTP Request Configurations
  */
 import { default as getConfiguration } from '../utils/requester-configurations/get';
+import { default as postConfiguration } from '../utils/requester-configurations/post';
 
 /**
  * Import Validation Schemas
  */
 const referralListSchema = require('../schemas/referral/list.json');
+const referralSendInvitationSchema = require('../schemas/referral/sendInvitation.json');
 
 export class Referral extends Configuration {
   /**
@@ -51,6 +52,22 @@ export class Referral extends Configuration {
       schema: referralListSchema,
       defaultRequest: getConfiguration,
       url: Configuration.accessKeys.apiUrl + HttpEndpoints.REFERRAL_LIST,
+    });
+  }
+
+  /**
+   * @name sendInvitation
+   * @desc Sends an invitation through Email or SMS
+   * @param {ReferralSendInvitation} data
+   *
+   * @returns {AxiosPromise}
+   */
+  sendInvitation(data: ReferralSendInvitation): AxiosPromise {
+    return this.executeRequest({
+      data,
+      defaultRequest: postConfiguration,
+      schema: referralSendInvitationSchema,
+      url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REFERRAL_INVITE}`,
     });
   }
 }

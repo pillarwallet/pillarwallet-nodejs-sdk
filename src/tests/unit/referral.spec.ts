@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+import { default as postConfiguration } from '../../utils/requester-configurations/post';
 import { default as getConfiguration } from '../../utils/requester-configurations/get';
 import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
@@ -46,6 +47,26 @@ describe('Referral Class', () => {
 
   afterAll(() => {
     jest.restoreAllMocks();
+  });
+
+  describe('.sendInvitation', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      const referralInvitationData = {
+        walletId: 'abc-123',
+        referralLink: 'branchioLink',
+        email: 'test@test',
+      };
+
+      pSdk.referral.sendInvitation(referralInvitationData);
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: referralInvitationData,
+        url: 'https://localhost:8080/referral/invite',
+        timeout: 300,
+      });
+    });
   });
 
   describe('.list', () => {

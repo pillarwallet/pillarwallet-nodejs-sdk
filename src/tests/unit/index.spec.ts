@@ -27,6 +27,11 @@ import { Notification } from '../../lib/notification';
 import { User } from '../../lib/user';
 import { Wallet } from '../../lib/wallet';
 import { Investments } from '../../lib/investments';
+import { ConnectionV2 } from '../../lib/connectionV2';
+import { UserV2 } from '../../lib/userV2';
+import { Register } from '../../lib/register';
+import { Badge } from '../../lib/badge';
+import { Referral } from '../../lib/referral';
 
 describe('The Pillar SDK Class', () => {
   it('should correctly instantiate and expose all sub-classes', () => {
@@ -34,12 +39,17 @@ describe('The Pillar SDK Class', () => {
 
     expect(pSdk).toBeInstanceOf(PillarSdk);
     expect(pSdk.asset).toBeInstanceOf(Asset);
-    expect(pSdk.connection).toBeInstanceOf(Connection);
-    expect(pSdk.notification).toBeInstanceOf(Notification);
-    expect(pSdk.user).toBeInstanceOf(User);
-    expect(pSdk.wallet).toBeInstanceOf(Wallet);
+    expect(pSdk.badge).toBeInstanceOf(Badge);
     expect(pSdk.configuration).toBeInstanceOf(Configuration);
+    expect(pSdk.connection).toBeInstanceOf(Connection);
+    expect(pSdk.connectionV2).toBeInstanceOf(ConnectionV2);
     expect(pSdk.investments).toBeInstanceOf(Investments);
+    expect(pSdk.notification).toBeInstanceOf(Notification);
+    expect(pSdk.referral).toBeInstanceOf(Referral);
+    expect(pSdk.register).toBeInstanceOf(Register);
+    expect(pSdk.user).toBeInstanceOf(User);
+    expect(pSdk.userV2).toBeInstanceOf(UserV2);
+    expect(pSdk.wallet).toBeInstanceOf(Wallet);
   });
 
   it('should correctly instantiate with all properties', () => {
@@ -64,12 +74,17 @@ describe('The Pillar SDK Class', () => {
 
     expect(pSdk).toBeInstanceOf(PillarSdk);
     expect(pSdk.asset).toBeInstanceOf(Asset);
-    expect(pSdk.connection).toBeInstanceOf(Connection);
-    expect(pSdk.notification).toBeInstanceOf(Notification);
-    expect(pSdk.user).toBeInstanceOf(User);
-    expect(pSdk.wallet).toBeInstanceOf(Wallet);
+    expect(pSdk.badge).toBeInstanceOf(Badge);
     expect(pSdk.configuration).toBeInstanceOf(Configuration);
+    expect(pSdk.connection).toBeInstanceOf(Connection);
+    expect(pSdk.connectionV2).toBeInstanceOf(ConnectionV2);
     expect(pSdk.investments).toBeInstanceOf(Investments);
+    expect(pSdk.notification).toBeInstanceOf(Notification);
+    expect(pSdk.referral).toBeInstanceOf(Referral);
+    expect(pSdk.register).toBeInstanceOf(Register);
+    expect(pSdk.user).toBeInstanceOf(User);
+    expect(pSdk.userV2).toBeInstanceOf(UserV2);
+    expect(pSdk.wallet).toBeInstanceOf(Wallet);
     expect(pSdk.getTokens()).toEqual({
       accessToken: 'oneAccessToken',
       refreshToken: 'oneRefreshToken',
