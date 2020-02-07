@@ -55,6 +55,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [User Validate Phone](#user-validate-phone)
     - [User Support Hmac](#user-support-hmac)
     - [Referral Send Invitation](#referral-send-invitation)
+    - [Referral List](#referral-list)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
 - [Versioning](#versioning)
@@ -1420,6 +1421,27 @@ pillarSdk.user.supportHmac(inputParams);
 | ------------- | ------------- | ------------- |
 | status  | 'success' | String  |
 | hmac  | HMAC for Intercom' | String  |
+
+### Referral List
+
+```typescript
+pillarSdk.referral.list(inputParams);
+```
+
+Returns a list of referral invitations
+
+**Input Parameters**
+
+| Name  | Description | Type | Required |
+| --------- | --------- | --------- | --------- |
+| walletId  | The wallet Identifier | UUID | Required |
+
+**Expected Output**
+
+| Name  | Description | Type |
+| ---- | ----------- | ---- |
+| result | 'success' | String |
+| data | List of Referral Invitations | Array |
 
 ### Referral Send Invitation
 

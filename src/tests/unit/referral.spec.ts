@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
+import { default as getConfiguration } from '../../utils/requester-configurations/get';
 import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
 import { PillarSdk } from '../..';
@@ -65,6 +66,37 @@ describe('Referral Class', () => {
         url: 'https://localhost:8080/referral/invite',
         timeout: 300,
       });
+    });
+  });
+
+  describe('.list', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      const referralListData = {
+        walletId: 'abc-123',
+      };
+
+      pSdk.referral.list(referralListData);
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        params: referralListData,
+        url: 'https://localhost:8080/referral/list',
+        timeout: 300,
+      });
+    });
+
+    it('should throw an error if called with invalid data', async () => {
+      const referralListData = {
+        walletId: null,
+      };
+
+      try {
+        await pSdk.referral.list(referralListData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual('data.walletId should be string');
+      }
     });
   });
 });

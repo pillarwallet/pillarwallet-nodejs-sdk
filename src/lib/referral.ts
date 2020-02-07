@@ -29,14 +29,32 @@ import { HttpEndpoints } from './constants/httpEndpoints';
 /**
  * Import HTTP Request Configurations
  */
+import { default as getConfiguration } from '../utils/requester-configurations/get';
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 
 /**
  * Import Validation Schemas
  */
+const referralListSchema = require('../schemas/referral/list.json');
 const referralSendInvitationSchema = require('../schemas/referral/sendInvitation.json');
 
 export class Referral extends Configuration {
+  /**
+   * @name list
+   * @desc Returns a list of all referral invitations for the user
+   * @param {ReferralList} data
+   *
+   * @returns {AxiosPromise}
+   */
+  list(params: ReferralList): AxiosPromise {
+    return this.executeRequest({
+      params,
+      schema: referralListSchema,
+      defaultRequest: getConfiguration,
+      url: Configuration.accessKeys.apiUrl + HttpEndpoints.REFERRAL_LIST,
+    });
+  }
+
   /**
    * @name sendInvitation
    * @desc Sends an invitation through Email or SMS
