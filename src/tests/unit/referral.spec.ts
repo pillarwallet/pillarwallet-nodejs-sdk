@@ -99,4 +99,35 @@ describe('Referral Class', () => {
       }
     });
   });
+
+  describe('.inviteToken', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      const referralInviteTokenData = {
+        walletId: 'abc-123',
+      };
+
+      pSdk.referral.inviteToken(referralInviteTokenData);
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: referralInviteTokenData,
+        url: 'https://localhost:8080/referral/invite-token',
+        timeout: 300,
+      });
+    });
+
+    it('should throw an error if called with invalid data', async () => {
+      const referralInviteTokenData = {
+        walletId: null,
+      };
+
+      try {
+        await pSdk.referral.inviteToken(referralInviteTokenData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual('data.walletId should be string');
+      }
+    });
+  });
 });

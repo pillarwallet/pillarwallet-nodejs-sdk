@@ -79,5 +79,6 @@ export enum HttpEndpoints {
   GET_BADGES = '/badge',
   SELF_AWARD_BADGE = '/badge/self-award',
   REFERRAL_INVITE = '/referral/invite',
+  REFERRAL_INVITE_TOKEN = '/referral/invite-token',
   REFERRAL_LIST = '/referral/list',
 }
