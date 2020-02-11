@@ -55,6 +55,7 @@ describe('Referral Class', () => {
         walletId: 'abc-123',
         referralLink: 'branchioLink',
         email: 'test@test',
+        token: 'testToken',
       };
 
       pSdk.referral.sendInvitation(referralInvitationData);

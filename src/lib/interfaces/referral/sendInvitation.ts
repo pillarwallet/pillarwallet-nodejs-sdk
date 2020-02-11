@@ -22,6 +22,7 @@ SOFTWARE.
 interface ReferralSendInvitation {
   walletId: string;
   referralLink: string;
+  token: string;
   email?: string;
   phone?: string;
 }
