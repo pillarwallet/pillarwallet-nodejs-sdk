@@ -42,7 +42,7 @@ describe('Referral Send Invitation', () => {
     message: 'Invitation sent',
   };
 
-  const responseDataInviteToken = {
+  const responseDataGenerateToken = {
     result: 'success',
     token: 'testToken',
   };
@@ -105,34 +105,34 @@ describe('Referral Send Invitation', () => {
         })
         .post('/referral/invite')
         .reply(400, errInvalidWalletId)
-        .post('/referral/invite-token')
-        .reply(200, responseDataInviteToken)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errUserWhitoutEmailValidated)
         .post('/referral/invite')
         .reply(400, errUserInvalidEmail)
-        .post('/referral/invite-token')
-        .reply(200, responseDataInviteToken)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errUserWhitoutPhoneValidated)
         .post('/referral/invite')
         .reply(400, errUserInvalidPhone)
         .post('/referral/invite')
         .reply(500, errInternal)
-        .post('/referral/invite-token')
-        .reply(200, responseDataInviteToken)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(200, responseData)
-        .post('/referral/invite-token')
-        .reply(200, responseDataInviteToken)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errEmailInvited)
-        .post('/referral/invite-token')
-        .reply(200, responseDataInviteToken)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(200, responseData)
-        .post('/referral/invite-token')
-        .reply(200, responseDataInviteToken)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errPhoneInvited);
     }
@@ -176,7 +176,7 @@ describe('Referral Send Invitation', () => {
         walletId,
       };
       try {
-        const res = await pSdk.referral.inviteToken(tokenInputParams);
+        const res = await pSdk.referral.generateToken(tokenInputParams);
 
         const inputParams = {
           walletId,
@@ -219,7 +219,7 @@ describe('Referral Send Invitation', () => {
         walletId,
       };
       try {
-        const res = await pSdk.referral.inviteToken(tokenInputParams);
+        const res = await pSdk.referral.generateToken(tokenInputParams);
 
         const inputParams = {
           walletId,
@@ -279,7 +279,7 @@ describe('Referral Send Invitation', () => {
           walletId,
         };
 
-        const res = await pSdk.referral.inviteToken(tokenInputParams);
+        const res = await pSdk.referral.generateToken(tokenInputParams);
 
         const inputParams = {
           walletId,
@@ -299,7 +299,7 @@ describe('Referral Send Invitation', () => {
           walletId,
         };
 
-        const res = await pSdk.referral.inviteToken(tokenInputParams);
+        const res = await pSdk.referral.generateToken(tokenInputParams);
 
         const inputParams = {
           walletId,
@@ -323,7 +323,7 @@ describe('Referral Send Invitation', () => {
           walletId,
         };
 
-        const res = await pSdk.referral.inviteToken(tokenInputParams);
+        const res = await pSdk.referral.generateToken(tokenInputParams);
 
         const inputParams = {
           walletId,
@@ -343,7 +343,7 @@ describe('Referral Send Invitation', () => {
           walletId,
         };
 
-        const res = await pSdk.referral.inviteToken(tokenInputParams);
+        const res = await pSdk.referral.generateToken(tokenInputParams);
 
         const inputParams = {
           walletId,

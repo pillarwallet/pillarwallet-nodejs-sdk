@@ -55,7 +55,7 @@ The Pillar Wallet SDK aims to make it easy for developers to get started using
     - [User Validate Phone](#user-validate-phone)
     - [User Support Hmac](#user-support-hmac)
     - [Referral Send Invitation](#referral-send-invitation)
-    - [Referral Invite Token](#referral-invite-token)
+    - [Referral Generate Token](#referral-generate-token)
     - [Referral List](#referral-list)
 - [Tests](#tests)
 - [Coding Style Guide](#coding-style-guide)
@@ -1468,10 +1468,10 @@ Sends an invitation through Email or SMS
 | result  | 'success' | String  |
 | message  | 'Invitation sent' | String  |
 
-### Referral Invite Token
+### Referral Generate Token
 
 ```typescript
-pillarSdk.referral.inviteToken(inputParams);
+pillarSdk.referral.generateToken(inputParams);
 ```
 
 Generates a referral token invitation

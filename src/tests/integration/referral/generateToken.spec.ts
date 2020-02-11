@@ -27,7 +27,7 @@ import * as nock from 'nock';
 import { Configuration } from '../../../lib/configuration';
 const { generatePrivateKey } = require('../../utils/generateKeyPair');
 
-describe('Referral List', () => {
+describe('Referral Generate Token', () => {
   let pSdk: PillarSdk;
   let firstUserWalletId: string;
   let secondUserWalletId: string;
@@ -103,15 +103,15 @@ describe('Referral List', () => {
           refreshToken: 'refreshTokenSecondUser',
           walletId: 'walletIdSecondUser',
         })
-        .post('/referral/invite-token')
+        .post('/referral/generate-token')
         .reply(200, responseData)
-        .post('/referral/invite-token')
+        .post('/referral/generate-token')
         .reply(200, responseDataSameToken)
-        .post('/referral/invite-token')
+        .post('/referral/generate-token')
         .reply(200, responseDataSameToken)
-        .post('/referral/invite-token')
+        .post('/referral/generate-token')
         .reply(400, errInvalidWalletId)
-        .post('/referral/invite-token')
+        .post('/referral/generate-token')
         .reply(500, errInternal);
     }
 
@@ -150,7 +150,7 @@ describe('Referral List', () => {
 
     Configuration.accessKeys.oAuthTokens.accessToken = firstUserAccessToken;
 
-    const response = await pSdk.referral.inviteToken(inputParams);
+    const response = await pSdk.referral.generateToken(inputParams);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       result: 'success',
@@ -166,7 +166,7 @@ describe('Referral List', () => {
 
     Configuration.accessKeys.oAuthTokens.accessToken = secondUserWalletId;
 
-    let response = await pSdk.referral.inviteToken(inputParams);
+    let response = await pSdk.referral.generateToken(inputParams);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       result: 'success',
@@ -175,7 +175,7 @@ describe('Referral List', () => {
 
     token = response.data.token;
 
-    response = await pSdk.referral.inviteToken(inputParams);
+    response = await pSdk.referral.generateToken(inputParams);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       result: 'success',
@@ -189,7 +189,7 @@ describe('Referral List', () => {
     };
 
     try {
-      await pSdk.referral.inviteToken(inputParams);
+      await pSdk.referral.generateToken(inputParams);
     } catch (error) {
       expect(error.response.status).toEqual(400);
       expect(error.response.data.message).toEqual(errInvalidWalletId.message);
@@ -203,7 +203,7 @@ describe('Referral List', () => {
       };
 
       try {
-        await pSdk.referral.inviteToken(inputParams);
+        await pSdk.referral.generateToken(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(500);
         expect(error.response.data.message).toEqual(errInternal.message);

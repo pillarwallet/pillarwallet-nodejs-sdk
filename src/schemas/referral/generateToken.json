@@ -1,6 +1,6 @@
 {
-  "title": "Referral Model - Invite Token",
-  "description": "Schema definition for Referral Model - inviteToken method",
+  "title": "Referral Model - Generate Token",
+  "description": "Schema definition for Referral Model - generateToken method",
   "type": "object",
   "additionalProperties": false,
   "properties": {

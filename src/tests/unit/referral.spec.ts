@@ -101,30 +101,30 @@ describe('Referral Class', () => {
     });
   });
 
-  describe('.inviteToken', () => {
+  describe('.generateToken', () => {
     it('should successfully call with valid data and Authorization header', () => {
-      const referralInviteTokenData = {
+      const referralGenerateTokenData = {
         walletId: 'abc-123',
       };
 
-      pSdk.referral.inviteToken(referralInviteTokenData);
+      pSdk.referral.generateToken(referralGenerateTokenData);
 
       expect(Requester.execute).toHaveBeenCalledWith({
         ...postConfiguration,
         headers: { Authorization: 'Bearer myAccessToken' },
-        data: referralInviteTokenData,
-        url: 'https://localhost:8080/referral/invite-token',
+        data: referralGenerateTokenData,
+        url: 'https://localhost:8080/referral/generate-token',
         timeout: 300,
       });
     });
 
     it('should throw an error if called with invalid data', async () => {
-      const referralInviteTokenData = {
+      const referralGenerateTokenData = {
         walletId: null,
       };
 
       try {
-        await pSdk.referral.inviteToken(referralInviteTokenData);
+        await pSdk.referral.generateToken(referralGenerateTokenData);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
         expect(e.message).toEqual('data.walletId should be string');
