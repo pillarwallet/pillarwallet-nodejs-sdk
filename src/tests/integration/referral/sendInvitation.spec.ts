@@ -42,6 +42,11 @@ describe('Referral Send Invitation', () => {
     message: 'Invitation sent',
   };
 
+  const responseDataGenerateToken = {
+    result: 'success',
+    token: 'testToken',
+  };
+
   const errUserWhitoutEmailValidated = {
     message: 'Email not validated',
   };
@@ -100,22 +105,34 @@ describe('Referral Send Invitation', () => {
         })
         .post('/referral/invite')
         .reply(400, errInvalidWalletId)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errUserWhitoutEmailValidated)
         .post('/referral/invite')
         .reply(400, errUserInvalidEmail)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errUserWhitoutPhoneValidated)
         .post('/referral/invite')
         .reply(400, errUserInvalidPhone)
         .post('/referral/invite')
         .reply(500, errInternal)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(200, responseData)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errEmailInvited)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(200, responseData)
+        .post('/referral/generate-token')
+        .reply(200, responseDataGenerateToken)
         .post('/referral/invite')
         .reply(400, errPhoneInvited);
     }
@@ -142,6 +159,7 @@ describe('Referral Send Invitation', () => {
       walletId: '',
       referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
       email: 'test@test',
+      token: 'testToken',
     };
 
     try {
@@ -154,13 +172,19 @@ describe('Referral Send Invitation', () => {
 
   describe('email invitation', () => {
     it('should return 400 response due user without email validated', async () => {
-      const inputParams = {
+      const tokenInputParams = {
         walletId,
-        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
-        email: 'test@test',
       };
-
       try {
+        const res = await pSdk.referral.generateToken(tokenInputParams);
+
+        const inputParams = {
+          walletId,
+          referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
+          email: 'test@test',
+          token: res.data.token,
+        };
+
         await pSdk.referral.sendInvitation(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(400);
@@ -175,6 +199,7 @@ describe('Referral Send Invitation', () => {
         walletId,
         referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         email: 'invalid',
+        token: 'testToken',
       };
 
       try {
@@ -190,13 +215,19 @@ describe('Referral Send Invitation', () => {
 
   describe('phone invitation', () => {
     it('should return 400 response due user without phone validated', async () => {
-      const inputParams = {
+      const tokenInputParams = {
         walletId,
-        referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
-        phone: '999999',
       };
-
       try {
+        const res = await pSdk.referral.generateToken(tokenInputParams);
+
+        const inputParams = {
+          walletId,
+          referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
+          phone: '999999',
+          token: res.data.token,
+        };
+
         await pSdk.referral.sendInvitation(inputParams);
       } catch (error) {
         expect(error.response.status).toEqual(400);
@@ -211,6 +242,7 @@ describe('Referral Send Invitation', () => {
         walletId,
         referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         phone: 'invalid',
+        token: 'testToken',
       };
 
       try {
@@ -230,6 +262,7 @@ describe('Referral Send Invitation', () => {
         walletId,
         referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
         phone: '999999',
+        token: 'testToken',
       };
 
       try {
@@ -242,10 +275,17 @@ describe('Referral Send Invitation', () => {
 
     describe('email invitation', () => {
       it('expects to return a success message and status 200', async () => {
+        const tokenInputParams = {
+          walletId,
+        };
+
+        const res = await pSdk.referral.generateToken(tokenInputParams);
+
         const inputParams = {
           walletId,
           referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           email: 'test@test',
+          token: res.data.token,
         };
 
         const response = await pSdk.referral.sendInvitation(inputParams);
@@ -255,10 +295,17 @@ describe('Referral Send Invitation', () => {
       });
 
       it('should return 400 response due email already invited', async () => {
+        const tokenInputParams = {
+          walletId,
+        };
+
+        const res = await pSdk.referral.generateToken(tokenInputParams);
+
         const inputParams = {
           walletId,
           referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           email: 'test@test',
+          token: res.data.token,
         };
 
         try {
@@ -272,10 +319,17 @@ describe('Referral Send Invitation', () => {
 
     describe('phone invitation', () => {
       it('expects to return a success message and status 200', async () => {
+        const tokenInputParams = {
+          walletId,
+        };
+
+        const res = await pSdk.referral.generateToken(tokenInputParams);
+
         const inputParams = {
           walletId,
           referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           phone: '999999',
+          token: res.data.token,
         };
 
         const response = await pSdk.referral.sendInvitation(inputParams);
@@ -285,10 +339,17 @@ describe('Referral Send Invitation', () => {
       });
 
       it('should return 400 response due phone already invited', async () => {
+        const tokenInputParams = {
+          walletId,
+        };
+
+        const res = await pSdk.referral.generateToken(tokenInputParams);
+
         const inputParams = {
           walletId,
           referralLink: 'https://abgsz.test-app.link/Ug1ZYKACu3',
           phone: '999999',
+          token: res.data.token,
         };
 
         try {

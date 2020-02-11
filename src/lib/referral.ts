@@ -36,6 +36,7 @@ import { default as postConfiguration } from '../utils/requester-configurations/
  * Import Validation Schemas
  */
 const referralListSchema = require('../schemas/referral/list.json');
+const referralGenerateTokenSchema = require('../schemas/referral/generateToken.json');
 const referralSendInvitationSchema = require('../schemas/referral/sendInvitation.json');
 
 export class Referral extends Configuration {
@@ -68,6 +69,24 @@ export class Referral extends Configuration {
       defaultRequest: postConfiguration,
       schema: referralSendInvitationSchema,
       url: `${Configuration.accessKeys.apiUrl}${HttpEndpoints.REFERRAL_INVITE}`,
+    });
+  }
+
+  /**
+   * @name generateToken
+   * @desc Generates a referral token invitation
+   * @param {GenerateToken} data
+   *
+   * @returns {AxiosPromise}
+   */
+  generateToken(data: GenerateToken): AxiosPromise {
+    return this.executeRequest({
+      data,
+      defaultRequest: postConfiguration,
+      schema: referralGenerateTokenSchema,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.REFERRAL_GENERATE_TOKEN
+      }`,
     });
   }
 }

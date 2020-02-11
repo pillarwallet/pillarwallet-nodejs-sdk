@@ -55,6 +55,7 @@ describe('Referral Class', () => {
         walletId: 'abc-123',
         referralLink: 'branchioLink',
         email: 'test@test',
+        token: 'testToken',
       };
 
       pSdk.referral.sendInvitation(referralInvitationData);
@@ -93,6 +94,37 @@ describe('Referral Class', () => {
 
       try {
         await pSdk.referral.list(referralListData);
+      } catch (e) {
+        expect(e).toBeInstanceOf(TypeError);
+        expect(e.message).toEqual('data.walletId should be string');
+      }
+    });
+  });
+
+  describe('.generateToken', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      const referralGenerateTokenData = {
+        walletId: 'abc-123',
+      };
+
+      pSdk.referral.generateToken(referralGenerateTokenData);
+
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...postConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        data: referralGenerateTokenData,
+        url: 'https://localhost:8080/referral/generate-token',
+        timeout: 300,
+      });
+    });
+
+    it('should throw an error if called with invalid data', async () => {
+      const referralGenerateTokenData = {
+        walletId: null,
+      };
+
+      try {
+        await pSdk.referral.generateToken(referralGenerateTokenData);
       } catch (e) {
         expect(e).toBeInstanceOf(TypeError);
         expect(e.message).toEqual('data.walletId should be string');

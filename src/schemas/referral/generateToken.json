@@ -1,0 +1,13 @@
+{
+  "title": "Referral Model - Generate Token",
+  "description": "Schema definition for Referral Model - generateToken method",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "walletId": {
+      "description": "The wallet ID",
+      "type": "string"
+    }
+  },
+  "required": [ "walletId" ]
+}

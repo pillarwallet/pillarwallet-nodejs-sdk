@@ -19,10 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-interface ReferralSendInvitation {
+interface GenerateToken {
   walletId: string;
-  referralLink: string;
-  token: string;
-  email?: string;
-  phone?: string;
 }

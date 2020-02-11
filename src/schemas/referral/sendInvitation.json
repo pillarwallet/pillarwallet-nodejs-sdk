@@ -12,6 +12,10 @@
       "description": "The Branch.io link to invite the user",
       "type": "string"
     },
+    "token": {
+      "description": "Referral security token previously generated",
+      "type": "string"
+    },
     "email": {
       "description": "The user's email address to send the invitation",
       "type": "string"
@@ -23,7 +27,8 @@
   },
   "required": [
     "walletId",
-    "referralLink"
+    "referralLink",
+    "token"
   ],
   "anyOf": [{
     "required" : ["email"]
