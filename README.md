@@ -180,7 +180,7 @@ Updates Fcm Token in the backend.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
@@ -205,7 +205,7 @@ Wallet can not be created without username.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | privateKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
-| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  |
 | username  | The Username of One Wallet.  | String  | Required  |
 
 **Expected Output**
@@ -233,7 +233,7 @@ Register the specified blockchain address for notifications and for BCX monitori
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | blockchainAddress  | The blockchain address of one wallet | String  | Required  |
 | blockchain  | The blockchain environment | String  |  |
@@ -319,7 +319,7 @@ Register a second wallet in the Backend and register in BCX.
 | ------------- | ------------- | ------------- | ------------- |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | publicKey  | Hexadecimal string and 64 characters in length. | String  | Required  |
-| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  | Required  |
+| fcmToken  | The Firebase Cloud Message Token of One Wallet. | String  |
 | ethAddress  | The ethereum Address of target user | String  | Required  |
 
 **Expected Output**
