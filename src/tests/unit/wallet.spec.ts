@@ -89,15 +89,12 @@ describe('Wallet Class', () => {
     );
 
     it('validates data', async () => {
-      expect.assertions(3);
+      expect.assertions(2);
 
       try {
         await pSdk.wallet.register({});
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
-        expect(e.message).toMatch(
-          "data should have required property 'fcmToken'",
-        );
         expect(e.message).toMatch(
           "data should have required property 'username'",
         );
@@ -138,15 +135,12 @@ describe('Wallet Class', () => {
     );
 
     it('validates data', async () => {
-      expect.assertions(3);
+      expect.assertions(2);
 
       try {
         await pSdk.wallet.register({});
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
-        expect(e.message).toMatch(
-          "data should have required property 'fcmToken'",
-        );
         expect(e.message).toMatch(
           "data should have required property 'username'",
         );
@@ -265,7 +259,7 @@ describe('Wallet Class', () => {
       expect.assertions(1);
       const invalidWalletRegistrationData = {};
       const errMsg =
-        "data should have required property 'privateKey', data should have required property 'fcmToken', " +
+        "data should have required property 'privateKey', " +
         "data should have required property 'username'";
       try {
         await pSdk.wallet.registerAuthServer(invalidWalletRegistrationData);
@@ -298,7 +292,7 @@ describe('Wallet Class', () => {
     );
 
     it('validates data', async () => {
-      expect.assertions(3);
+      expect.assertions(2);
 
       try {
         await pSdk.wallet.update({});
@@ -306,9 +300,6 @@ describe('Wallet Class', () => {
         expect(e).toBeInstanceOf(Error);
         expect(e.message).toMatch(
           "data should have required property 'walletId'",
-        );
-        expect(e.message).toMatch(
-          "data should have required property 'fcmToken'",
         );
       }
     });

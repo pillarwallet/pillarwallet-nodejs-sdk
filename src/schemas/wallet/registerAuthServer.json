@@ -10,7 +10,7 @@
       "pattern":"[a-fA-F0-9]{64}$"
     },
     "fcmToken": {
-      "description": "The Firebase Cloud Messaging Token  of one wallet",
+      "description": "The Firebase Cloud Messaging Token of one wallet",
       "type": "string"
     },
     "username": {
@@ -20,7 +20,6 @@
   },
   "required": [
     "privateKey",
-    "fcmToken",
     "username"
   ]
 }

@@ -22,5 +22,5 @@
       "type": "string"
     }
   },
-  "required": [ "walletId", "blockchainAddress", "fcmToken" ]
+  "required": [ "walletId", "blockchainAddress" ]
 }

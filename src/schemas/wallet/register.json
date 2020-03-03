@@ -16,7 +16,7 @@
       "maxLength": 42
     },
     "fcmToken": {
-      "description": "The Firebase Cloud Messaging Token  of one wallet",
+      "description": "The Firebase Cloud Messaging Token of one wallet",
       "type": "string"
     },
     "username": {
@@ -25,7 +25,6 @@
     }
   },
   "required": [
-    "fcmToken",
     "username"
   ]
 }
