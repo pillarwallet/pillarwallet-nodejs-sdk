@@ -103,7 +103,6 @@ describe('POST RegisterAuthServer', () => {
     walletRegister = {
       username,
       privateKey,
-      fcmToken: '987qwe',
     };
   });
 
@@ -112,7 +111,7 @@ describe('POST RegisterAuthServer', () => {
     expect(response.data).toEqual({
       accessToken: expect.any(String),
       accessTokenExpiresAt: expect.any(String),
-      fcmToken: expect.any(String),
+      fcmToken: null,
       refreshToken: expect.any(String),
       refreshTokenExpiresAt: expect.any(String),
       userId: expect.any(String),

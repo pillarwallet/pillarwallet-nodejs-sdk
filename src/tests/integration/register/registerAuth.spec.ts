@@ -29,29 +29,29 @@ import { Register } from '../../../lib/register';
 import { ProofKey } from '../../../utils/pkce';
 // HTTP server mocking library
 const nock = require('nock');
-// Key pairs( Private, Public, Address )
-const keys = require('../../utils/generateKeyPair');
+
+const { generatePrivateKey } = require('../../utils/generateKeyPair');
+const pk = require('../../../utils/private-key-derivatives');
 
 describe('registerAuth method', () => {
-  // Key pairs
-  const publicKey = keys.publicKey.toString();
-  const privateKey = keys.privateKey.toString();
-  const ethAddress = keys.ethAddress.toString();
-  // Generate random username
-  const username = `User${Math.random()
-    .toString(36)
-    .substring(7)}`;
   // Generate code verifier from library
   const codeVerifier = ProofKey.codeVerifierGenerator();
+
   // Variables
+  let username: string;
+  let publicKey: string;
+  let privateKey: string;
+  let ethAddress: string;
   let data: any;
   let uuid: string;
   let nonce: string;
+
   // Expected responses
   const errMissingParams = {
     message:
-      'data.username should NOT be shorter than 4 characters, data.username should pass "regexp" keyword validation',
+      "data should have required property 'ethAddress', data should have required property 'username'",
   };
+
   const errInternal = {
     message: 'Internal Server Error',
   };
@@ -62,64 +62,43 @@ describe('registerAuth method', () => {
     authorizationCode: expect.any(String),
     expiresAt: expect.any(String),
   };
+  const responseRegisterKeys = {
+    expiresAt: '2015-03-21T05:41:32Z',
+    nonce: 'AxCDF23232',
+  };
 
   beforeAll(async () => {
     // Set SDK Config
     new PillarSdk({});
-    // Generate Register unique Id
-    uuid = uuidV4();
-
     // If env is test use HTTP server mocking library, else use localhost
     if (env === 'test') {
       const mockApi = nock('https://localhost:8080');
       mockApi
-        .post('/register/keys', { publicKey, uuid })
-        .reply(200, {
-          expiresAt: '2015-03-21T05:41:32Z',
-          nonce: 'AxCDF23232',
-        })
-        .post(
-          '/register/auth',
-          (body: {
-            codeChallenge: string;
-            ethAddress: string;
-            fcmToken: string;
-            username: string;
-            uuid: string;
-          }) => {
-            return (
-              body.uuid === '' ||
-              body.codeChallenge === '' ||
-              body.ethAddress === '' ||
-              body.fcmToken === '' ||
-              body.username === ''
-            );
-          },
-        )
-        .reply(400, errMissingParams)
-        .post('/register/auth')
-        .reply(500, errInternal)
-        .post('/register/auth')
-        .reply(401, errUnauthorized)
+        .post('/register/keys')
+        .reply(200, responseRegisterKeys)
         .post('/register/auth')
         .reply(200, {
           authorizationCode: 'Authorisation code',
           expiresAt: '2011-06-14T04:12:36Z',
-        });
+        })
+        .post('/register/keys')
+        .reply(200, responseRegisterKeys)
+        .post('/register/auth')
+        .reply(400, errMissingParams)
+        .post('/register/keys')
+        .reply(200, responseRegisterKeys)
+        .post('/register/auth')
+        .reply(401, errUnauthorized)
+        .post('/register/keys')
+        .reply(200, responseRegisterKeys)
+        .post('/register/auth')
+        .reply(200, {
+          authorizationCode: 'Authorisation code',
+          expiresAt: '2011-06-14T04:12:36Z',
+        })
+        .post('/register/auth')
+        .reply(500, errInternal);
     }
-    const response = await Register.registerKeys(publicKey, uuid);
-    // Use nonce for future requests
-    nonce = response.data.nonce;
-
-    // registerAuth Parameters
-    data = {
-      codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
-      ethAddress,
-      fcmToken: 'OneFcmToken',
-      username,
-      uuid,
-      nonce,
-    };
   });
 
   afterAll(() => {
@@ -129,17 +108,106 @@ describe('registerAuth method', () => {
     }
   });
 
-  it('should return 400 due missing params', async () => {
-    expect.assertions(2);
-    const regAuthData = { ...data };
-    // empty username
-    regAuthData.username = '';
-    try {
-      await Register.registerAuth(regAuthData, privateKey); // empty username
-    } catch (error) {
-      expect(error.response.status).toEqual(400);
-      expect(error.response.data.message).toEqual(errMissingParams.message);
-    }
+  describe('using fcmToken', () => {
+    beforeEach(async () => {
+      // Generate random username
+      username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
+      privateKey = generatePrivateKey();
+      publicKey = pk.PrivateKeyDerivatives.getPublicKey(privateKey).toString();
+      ethAddress = pk.PrivateKeyDerivatives.getEthAddress(
+        privateKey,
+      ).toString();
+
+      // Generate Register unique Id
+      uuid = uuidV4();
+
+      const response = await Register.registerKeys(publicKey, uuid);
+      // Use nonce for future requests
+      nonce = response.data.nonce;
+
+      // registerAuth Parameters
+      data = {
+        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+        ethAddress,
+        fcmToken: 'OneFcmToken',
+        username,
+        uuid,
+        nonce,
+      };
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAuthData = { ...data };
+      const response = await Register.registerAuth(regAuthData, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(responseRegisterAuth);
+    });
+
+    it('should return 400 due missing params', async () => {
+      const regAuthData = { ...data };
+
+      delete regAuthData.username;
+      delete regAuthData.ethAddress;
+
+      try {
+        await Register.registerAuth(regAuthData, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data.message).toEqual(errMissingParams.message);
+      }
+    });
+
+    it('expects to return unauthorised due to invalid signature', async () => {
+      const regAuthData = { ...data };
+      delete regAuthData.nonce;
+      try {
+        await Register.registerAuth(regAuthData, privateKey);
+      } catch (error) {
+        expect(error.response.status).toEqual(401);
+        expect(error.response.data.message).toEqual(errUnauthorized.message);
+      }
+    });
+  });
+
+  describe('without fcmToken', () => {
+    beforeEach(async () => {
+      // Generate random username
+      username = `User${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
+      privateKey = generatePrivateKey();
+      publicKey = pk.PrivateKeyDerivatives.getPublicKey(privateKey).toString();
+      ethAddress = pk.PrivateKeyDerivatives.getEthAddress(
+        privateKey,
+      ).toString();
+
+      // Generate Register unique Id
+      uuid = uuidV4();
+
+      const response = await Register.registerKeys(publicKey, uuid);
+      // Use nonce for future requests
+      nonce = response.data.nonce;
+
+      // registerAuth Parameters
+      data = {
+        codeChallenge: ProofKey.codeChallengeGenerator(codeVerifier.toString()),
+        ethAddress,
+        username,
+        uuid,
+        nonce,
+      };
+    });
+
+    it('expects response to resolve with data and status code 200', async () => {
+      const regAuthData = { ...data };
+      const response = await Register.registerAuth(regAuthData, privateKey);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual(responseRegisterAuth);
+    });
   });
 
   if (env === 'test') {
@@ -154,23 +222,4 @@ describe('registerAuth method', () => {
       }
     });
   }
-
-  it('expects to return unauthorised due to invalid signature', async () => {
-    expect.assertions(2);
-    const regAuthData = { ...data };
-    delete regAuthData.nonce;
-    try {
-      await Register.registerAuth(regAuthData, privateKey);
-    } catch (error) {
-      expect(error.response.status).toEqual(401);
-      expect(error.response.data.message).toEqual(errUnauthorized.message);
-    }
-  });
-
-  it('expects response to resolve with data and status code 200', async () => {
-    const regAuthData = { ...data };
-    const response = await Register.registerAuth(regAuthData, privateKey);
-    expect(response.status).toEqual(200);
-    expect(response.data).toEqual(responseRegisterAuth);
-  });
 });
