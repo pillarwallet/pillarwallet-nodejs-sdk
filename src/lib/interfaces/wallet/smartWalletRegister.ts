@@ -23,5 +23,5 @@ interface SmartWalletRegister {
   walletId: string;
   privateKey: string;
   ethAddress: string;
-  fcmToken: string;
+  fcmToken?: string;
 }
