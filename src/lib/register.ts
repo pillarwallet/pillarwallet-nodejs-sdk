@@ -77,6 +77,10 @@ export class Register {
       codeChallenge: string;
       ethAddress: string;
       fcmToken?: string;
+      recovery?: {
+        accountAddress: string;
+        deviceAddress: string;
+      };
       username: string;
       uuid: string;
       nonce: string;
