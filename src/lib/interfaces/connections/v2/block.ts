@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 interface ConnectionBlockV2 {
-  sourceIdentityKey: string;
-  targetIdentityKey: string;
+  sourceIdentityKey?: string;
+  targetIdentityKey?: string;
   walletId: string;
   targetUserId: string;
   block: boolean;

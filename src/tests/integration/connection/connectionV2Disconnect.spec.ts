@@ -35,14 +35,6 @@ describe('Connection v2 Disconnect', () => {
     .toString(36)
     .substring(7)}`;
 
-  const sourceIdentityKey = Math.random()
-    .toString(36)
-    .substring(7);
-
-  const targetIdentityKey = Math.random()
-    .toString(36)
-    .substring(7);
-
   let sourceUserWalletId: string;
   let targetUserWalletId: string;
   let targetUserId: string;
@@ -155,8 +147,6 @@ describe('Connection v2 Disconnect', () => {
 
     const inviteParams = {
       targetUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
@@ -166,18 +156,6 @@ describe('Connection v2 Disconnect', () => {
 
     const acceptParams = {
       targetUserId: sourceUserId,
-      sourceUserIdentityKeys: {
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-      },
-      targetUserIdentityKeys: {
-        sourceIdentityKey,
-        targetIdentityKey,
-      },
       walletId: targetUserWalletId,
     };
 
@@ -194,8 +172,6 @@ describe('Connection v2 Disconnect', () => {
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
@@ -209,8 +185,6 @@ describe('Connection v2 Disconnect', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: '',
     };
 
@@ -226,8 +200,6 @@ describe('Connection v2 Disconnect', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         targetUserId,
-        sourceIdentityKey,
-        targetIdentityKey,
         walletId: sourceUserWalletId,
       };
 

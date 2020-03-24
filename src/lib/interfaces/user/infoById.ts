@@ -21,6 +21,6 @@ SOFTWARE.
 */
 interface UserInfoById {
   walletId: string;
-  userAccessKey: string;
-  targetUserAccessKey: string;
+  userAccessKey?: string;
+  targetUserAccessKey?: string;
 }

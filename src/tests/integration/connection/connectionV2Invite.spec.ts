@@ -136,12 +136,6 @@ describe('Connection v2 Invite', () => {
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
-      targetIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
       walletId: sourceUserWalletId,
     };
 
@@ -153,12 +147,6 @@ describe('Connection v2 Invite', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
-      targetIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
       walletId: '',
     };
 
@@ -174,12 +162,6 @@ describe('Connection v2 Invite', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         targetUserId,
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: sourceUserWalletId,
       };
 

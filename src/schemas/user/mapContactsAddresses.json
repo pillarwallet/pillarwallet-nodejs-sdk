@@ -32,8 +32,7 @@
                   "description": "The contact's Access Key",
                   "type": "string"
                 }
-              },
-              "required": [ "userAccessKey", "contactAccessKey" ]
+              }
             },
             "connectionKeys": {
               "description": "The identity keys for the connection",
@@ -48,16 +47,10 @@
                   "description": "Generated target identity key",
                   "type": "string"
                 }
-              },
-              "required": [ "sourceIdentityKey", "targetIdentityKey" ]
+              }
             }
           },
-          "required": [ "contactId" ],
-          "anyOf": [{
-            "required" : ["connectionKeys"]
-          }, {
-            "required" : ["accessKeys"]
-          }]
+          "required": [ "contactId" ]
         }
       }
     },

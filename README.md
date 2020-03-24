@@ -444,8 +444,6 @@ Creates a connection invitation for a user to create a relationship with another
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
-| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**
@@ -492,8 +490,6 @@ Accepts a connection invitation from another user.
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
-| sourceUserIdentityKeys  | Object containing generated sourceIdentityKey and targetIdentityKey for source user. | Object  | Required  |
-| targetUserIdentityKeys  | Object containing generated sourceIdentityKey and targetIdentityKey for target user. | Object  | Required  |
 
 **Expected Output**
 
@@ -539,8 +535,6 @@ Rejects a connection invitation from another user.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
-| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 
@@ -588,8 +582,6 @@ Cancels a connection invitation from another user.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
-| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 
@@ -636,8 +628,6 @@ Blocks/unblocks future communication from another contact.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
-| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | block  | True/false to block/unblock the connection. | Boolean  | Required  |
@@ -708,8 +698,6 @@ Mutes/unmutes future communication from another contact.
 
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
-| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
-| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
 | mute  | True/false to mute/unmute the connection. | Boolean  | Required  |
@@ -758,8 +746,6 @@ Disconnects a connection between two users.
 | Name  | Description | Type | Required |
 | ------------- | ------------- | ------------- | ------------- |
 | targetUserId  | The Contact User Identifier. | UUID  | Required  |
-| sourceIdentityKey  | Generated source identity key for the source user. | String  | Required  |
-| targetIdentityKey  | Generated target identity key for the source user. | String  | Required  |
 | walletId  | The Wallet Identifier. | UUID  | Required  |
 
 **Expected Output**

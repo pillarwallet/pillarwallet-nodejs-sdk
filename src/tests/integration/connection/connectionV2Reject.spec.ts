@@ -35,13 +35,6 @@ describe('Connection v2 Reject', () => {
     .toString(36)
     .substring(7)}`;
 
-  const sourceIdentityKey = Math.random()
-    .toString(36)
-    .substring(7);
-  const targetIdentityKey = Math.random()
-    .toString(36)
-    .substring(7);
-
   let sourceUserWalletId: string;
   let targetUserWalletId: string;
   let targetUserId: string;
@@ -145,8 +138,6 @@ describe('Connection v2 Reject', () => {
 
     const inputParams = {
       targetUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
@@ -163,8 +154,6 @@ describe('Connection v2 Reject', () => {
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
       targetUserId: sourceUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: targetUserWalletId,
     };
 
@@ -178,12 +167,6 @@ describe('Connection v2 Reject', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       targetUserId: sourceUserId,
-      sourceIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
-      targetIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
       walletId: '',
     };
 
@@ -199,12 +182,6 @@ describe('Connection v2 Reject', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         targetUserId: sourceUserId,
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: targetUserWalletId,
       };
 

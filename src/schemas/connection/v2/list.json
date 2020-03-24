@@ -1,0 +1,13 @@
+{
+    "title": "Connection Model - List v2",
+    "description": "Schema definition for Connection Model - list v2 method",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      }
+    },
+    "required": [ "walletId" ]
+  }

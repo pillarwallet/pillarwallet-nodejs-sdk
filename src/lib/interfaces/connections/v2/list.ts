@@ -19,15 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-interface ConnectionAcceptV2 {
-  targetUserId: string;
-  sourceUserIdentityKeys?: {
-    sourceIdentityKey: string;
-    targetIdentityKey: string;
-  };
-  targetUserIdentityKeys?: {
-    sourceIdentityKey: string;
-    targetIdentityKey: string;
-  };
+interface ConnectionListV2 {
   walletId: string;
 }
