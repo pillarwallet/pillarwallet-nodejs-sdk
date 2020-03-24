@@ -21,13 +21,5 @@ SOFTWARE.
 */
 interface ConnectionAcceptV2 {
   targetUserId: string;
-  sourceUserIdentityKeys?: {
-    sourceIdentityKey: string;
-    targetIdentityKey: string;
-  };
-  targetUserIdentityKeys?: {
-    sourceIdentityKey: string;
-    targetIdentityKey: string;
-  };
   walletId: string;
 }

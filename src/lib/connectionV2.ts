@@ -188,7 +188,7 @@ export class ConnectionV2 extends Configuration {
    * @param {ConnectionListV2} listConfiguration
    * @returns {AxiosPromise}
    */
-  list(params: ConnectionDisconnectV2): AxiosPromise {
+  list(params: ConnectionListV2): AxiosPromise {
     return this.executeRequest({
       params,
       schema: connectionListSchema,
