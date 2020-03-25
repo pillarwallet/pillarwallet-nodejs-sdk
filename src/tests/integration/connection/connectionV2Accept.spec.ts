@@ -138,22 +138,6 @@ describe('Connection v2 Accept', () => {
     it('expects to return a success message and status 200', async () => {
       const inputParams = {
         targetUserId,
-        sourceUserIdentityKeys: {
-          sourceIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-          targetIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-        },
-        targetUserIdentityKeys: {
-          sourceIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-          targetIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-        },
         walletId: sourceUserWalletId,
       };
 
@@ -166,22 +150,6 @@ describe('Connection v2 Accept', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       targetUserId,
-      sourceUserIdentityKeys: {
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-      },
-      targetUserIdentityKeys: {
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-      },
       walletId: '',
     };
 
@@ -197,22 +165,6 @@ describe('Connection v2 Accept', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         targetUserId,
-        sourceUserIdentityKeys: {
-          sourceIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-          targetIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-        },
-        targetUserIdentityKeys: {
-          sourceIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-          targetIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-        },
         walletId: sourceUserWalletId,
       };
 

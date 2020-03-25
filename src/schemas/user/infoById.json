@@ -13,9 +13,9 @@
       "type": "string"
     },
     "targetUserAccessKey": {
-      "description": "The current user access key",
+      "description": "The target user access key",
       "type": "string"
     }
   },
-  "required": [ "walletId", "userAccessKey", "targetUserAccessKey" ]
+  "required": [ "walletId" ]
 }
