@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+import { default as getConfiguration } from '../../utils/requester-configurations/get';
 import { default as postConfiguration } from '../../utils/requester-configurations/post';
 import { Configuration } from '../../lib/configuration';
 import { Requester } from '../../utils/requester';
@@ -56,12 +57,6 @@ describe('Connection v2 Class', () => {
       Configuration.setAuthTokens(accessToken, '');
       const connectionInviteData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
@@ -86,22 +81,6 @@ describe('Connection v2 Class', () => {
       const connectionAcceptData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceUserIdentityKeys: {
-          sourceIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-          targetIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-        },
-        targetUserIdentityKeys: {
-          sourceIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-          targetIdentityKey: Math.random()
-            .toString(36)
-            .substring(7),
-        },
       };
 
       pSdk.connectionV2.accept(connectionAcceptData);
@@ -125,12 +104,6 @@ describe('Connection v2 Class', () => {
       Configuration.setAuthTokens(accessToken, '');
       const connectionRejectData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
@@ -155,12 +128,6 @@ describe('Connection v2 Class', () => {
       Configuration.setAuthTokens(accessToken, '');
       const connectionCancelData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
@@ -185,12 +152,6 @@ describe('Connection v2 Class', () => {
       Configuration.setAuthTokens(accessToken, '');
       const connectionMuteData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         mute: true,
       };
@@ -216,12 +177,6 @@ describe('Connection v2 Class', () => {
       Configuration.setAuthTokens(accessToken, '');
       const connectionBlockData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
         block: true,
       };
@@ -272,12 +227,6 @@ describe('Connection v2 Class', () => {
       Configuration.setAuthTokens(accessToken, '');
       const connectionDisconnectData = {
         targetUserId: '6e081b82-dbed-4485-bdbc-a808ad911758',
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
       };
 
@@ -289,6 +238,29 @@ describe('Connection v2 Class', () => {
         headers: { Authorization: 'Bearer myAccessToken' },
         data: connectionDisconnectData,
         url: 'https://localhost:8080/connection/v2/disconnect',
+        timeout: 300,
+      });
+    });
+  });
+
+    /**
+   * Connection: List method
+   */
+  describe('.list', () => {
+    it('should successfully call with valid data and Authorization header', () => {
+      Configuration.setAuthTokens(accessToken, '');
+      const connectionDisconnectData = {
+        walletId: '6e081b82-dbed-4485-bdbc-a808ad911758',
+      };
+
+      pSdk.connectionV2.list(connectionDisconnectData);
+
+      expect(Configuration.prototype.executeRequest).toHaveBeenCalledTimes(1);
+      expect(Requester.execute).toHaveBeenCalledWith({
+        ...getConfiguration,
+        headers: { Authorization: 'Bearer myAccessToken' },
+        params: connectionDisconnectData,
+        url: 'https://localhost:8080/connection/v2/list',
         timeout: 300,
       });
     });

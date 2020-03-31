@@ -45,5 +45,5 @@
         "type": "string"
       }
     },
-    "required": [ "targetUserId", "sourceUserIdentityKeys", "targetUserIdentityKeys", "walletId" ]
+    "required": [ "targetUserId", "walletId" ]
   }

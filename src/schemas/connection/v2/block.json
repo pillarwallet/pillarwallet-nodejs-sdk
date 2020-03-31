@@ -26,8 +26,6 @@
       }
     },
     "required": [
-      "sourceIdentityKey",
-      "targetIdentityKey",
       "walletId",
       "targetUserId",
       "block"

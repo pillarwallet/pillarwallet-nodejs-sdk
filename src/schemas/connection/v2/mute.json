@@ -25,6 +25,5 @@
         "type": "boolean"
       }
     },
-    "required": [ "targetUserId", "sourceIdentityKey", "targetIdentityKey", "walletId", "mute" ]
+    "required": [ "targetUserId", "walletId", "mute" ]
   }
-  

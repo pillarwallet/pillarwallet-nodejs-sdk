@@ -254,7 +254,7 @@ describe('The Configuration Class', () => {
       mockApi
         .get(HttpEndpoints.USER_INFO)
         .delay(350)
-        .reply(200, { someResponse: {} });
+        .reply(200, { error: new Error('timeout of 300ms exceeded') });
 
       const res = await configuration
         .executeRequest({

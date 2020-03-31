@@ -34,14 +34,6 @@ describe('Connection v2 Cancel', () => {
     .toString(36)
     .substring(7)}`;
 
-  const sourceIdentityKey = Math.random()
-    .toString(36)
-    .substring(7);
-
-  const targetIdentityKey = Math.random()
-    .toString(36)
-    .substring(7);
-
   let sourceUserWalletId: string;
   let targetUserId: string;
   let pSdk: PillarSdk;
@@ -139,8 +131,6 @@ describe('Connection v2 Cancel', () => {
 
     const inputParams = {
       targetUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
@@ -157,8 +147,6 @@ describe('Connection v2 Cancel', () => {
   it('expects to return a success message and status 200', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey,
-      targetIdentityKey,
       walletId: sourceUserWalletId,
     };
 
@@ -170,12 +158,6 @@ describe('Connection v2 Cancel', () => {
   it('should return 400 due invalid params', async () => {
     const inputParams = {
       targetUserId,
-      sourceIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
-      targetIdentityKey: Math.random()
-        .toString(36)
-        .substring(7),
       walletId: '',
     };
 
@@ -191,12 +173,6 @@ describe('Connection v2 Cancel', () => {
     it('should return 500 due internal server error', async () => {
       const inputParams = {
         targetUserId,
-        sourceIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
-        targetIdentityKey: Math.random()
-          .toString(36)
-          .substring(7),
         walletId: sourceUserWalletId,
       };
 

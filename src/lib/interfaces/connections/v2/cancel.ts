@@ -21,7 +21,5 @@ SOFTWARE.
 */
 interface ConnectionCancelV2 {
   targetUserId: string;
-  sourceIdentityKey: string;
-  targetIdentityKey: string;
   walletId: string;
 }

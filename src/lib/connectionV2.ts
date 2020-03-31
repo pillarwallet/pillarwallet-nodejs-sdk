@@ -29,6 +29,7 @@ import { AxiosPromise } from 'axios';
 /**
  * Import HTTP Request Configurations
  */
+import { default as getConfiguration } from '../utils/requester-configurations/get';
 import { default as postConfiguration } from '../utils/requester-configurations/post';
 
 /**
@@ -42,6 +43,7 @@ const connectionMuteSchema = require('../schemas/connection/v2/mute.json');
 const connectionDisconnectSchema = require('../schemas/connection/v2/disconnect.json');
 const connectionBlockSchema = require('../schemas/connection/v2/block.json');
 const connectionBlacklistSchema = require('../schemas/connection/v2/blacklist.json');
+const connectionListSchema = require('../schemas/connection/v2/list.json');
 
 export class ConnectionV2 extends Configuration {
   /**
@@ -176,6 +178,23 @@ export class ConnectionV2 extends Configuration {
       schema: connectionDisconnectSchema,
       url: `${Configuration.accessKeys.apiUrl}${
         HttpEndpoints.CONNECTION_DISCONNECT_V2
+      }`,
+    });
+  }
+
+  /**
+   * @name list
+   * @desc Lists all connections for a user
+   * @param {ConnectionListV2} listConfiguration
+   * @returns {AxiosPromise}
+   */
+  list(params: ConnectionListV2): AxiosPromise {
+    return this.executeRequest({
+      params,
+      schema: connectionListSchema,
+      defaultRequest: getConfiguration,
+      url: `${Configuration.accessKeys.apiUrl}${
+        HttpEndpoints.CONNECTION_LIST_V2
       }`,
     });
   }
