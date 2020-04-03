@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+
 jobs:
   build:
     working_directory: ~/pillarwallet-nodejs-sdk
@@ -30,8 +34,12 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - slack/status:
+          fail_only: true
+          failure_message: "Triggered by: *${CIRCLE_USERNAME}* \n\n Oops! Since *$CIRCLE_JOB* has failed no tests can be run! :circleci-fail:"
+          webhook: "${SLACK_WEBHOOK_URL}"
 
-  test:
+  tests:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:8.9.4
@@ -51,6 +59,11 @@ jobs:
       - run:
           name: Test
           command: npm run test:unit
+      - slack/status:
+          fail_only: true
+          failure_message: "Triggered by: *${CIRCLE_USERNAME}* \n\n Oops! *$CIRCLE_JOB* have failed, please fix them! :circleci-fail:"
+          webhook: "${SLACK_WEBHOOK_URL}"
+
   publish:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
@@ -63,7 +76,6 @@ jobs:
             git config user.email "devops@pillar.io"
             git config user.name "Issabot"
             npm version $(node -e "const currentVersion=require('./package.json').version; const firstTwoDots=currentVersion.substring(0, currentVersion.lastIndexOf('.')+1); console.log(firstTwoDots);")$CIRCLE_BUILD_NUM
-
       - run:
             name: Authenticate with registry
             command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
@@ -90,18 +102,22 @@ jobs:
           command: |
             chmod +x .circleci/announcePublish.sh
             .circleci/announcePublish.sh "Platform Core SDK" "$(node -e "console.log(require('./package.json').name)")@$(node -e "console.log(require('./package.json').version)")"
+      - slack/status:
+          fail_only: true
+          failure_message: "Triggered by: *${CIRCLE_USERNAME}* \n\n Failed, new package is not published! :circleci-fail:"
+          webhook: "${SLACK_WEBHOOK_URL}"
 
 workflows:
-  version: 2
+  version: 2.1
   build_test_and_deploy:
     jobs:
       - build
-      - test:
+      - tests:
           requires:
             - build
       - publish:
           requires:
-            - test
+            - tests
           filters:
             branches:
               only:

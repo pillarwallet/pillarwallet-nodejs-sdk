@@ -9,9 +9,9 @@ cat <<EOM
 {
     "attachments": [
         {
-            "fallback": "A new version of $applicationName is available for use.",
+            "fallback": "A new version of $applicationName is available for use. :circleci-pass:",
             "color": "#33CC66",
-            "pretext": "A new version of $applicationName is available for use.",
+            "pretext": "A new version of $applicationName is available for use. :circleci-pass:",
             "title": "$CIRCLE_PROJECT_REPONAME",
             "title_link": "https://circleci.com/workflow-run/$CIRCLE_WORKFLOW_WORKSPACE_ID",
             "text": "artifact published: $package",
