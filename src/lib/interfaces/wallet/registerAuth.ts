@@ -22,5 +22,5 @@ SOFTWARE.
 interface WalletRegisterAuth {
   privateKey: string;
   username: string;
-  fcmToken: string;
+  fcmToken?: string;
 }

@@ -76,7 +76,7 @@ export class Register {
     data: {
       codeChallenge: string;
       ethAddress: string;
-      fcmToken: string;
+      fcmToken?: string;
       username: string;
       uuid: string;
       nonce: string;
