@@ -118,6 +118,20 @@ export class Wallet extends Configuration {
     const publicKey = PrivateKeyDerivatives.getPublicKey(privateKey);
     const address = PrivateKeyDerivatives.getEthAddress(privateKey);
 
+    // If recovery present, check if provided device address equals derived address
+    if (walletRegister.recovery) {
+      if (
+        !walletRegister.recovery.accountAddress ||
+        !walletRegister.recovery.deviceAddress
+      ) {
+        throw new Error('Missing recovery addresses.');
+      }
+
+      if (walletRegister.recovery.deviceAddress !== address) {
+        throw new Error('Derived address does not match recovery address.');
+      }
+    }
+
     // Generate code verifier
     const codeVerifier = await ProofKey.codeVerifierGenerator();
 
@@ -137,6 +151,7 @@ export class Wallet extends Configuration {
         username: walletRegister.username,
         nonce: responseRegisterKeys.data.nonce,
         uuid, // tslint:disable-line object-shorthand-properties-first
+        recovery: walletRegister.recovery,
       };
 
       responseRegisterAuth = await Register.registerAuth(

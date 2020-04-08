@@ -23,4 +23,8 @@ interface WalletRegisterAuth {
   privateKey: string;
   username: string;
   fcmToken?: string;
+  recovery?: {
+    accountAddress: string;
+    deviceAddress: string;
+  };
 }
