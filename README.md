@@ -1453,6 +1453,7 @@ Sends an invitation through Email or SMS
 | ------------- | ------------- | ------------- |
 | result  | 'success' | String  |
 | message  | 'Invitation sent' | String  |
+| reward  | Object with token and amount | Object |
 
 ### Referral Generate Token
 
