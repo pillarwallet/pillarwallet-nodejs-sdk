@@ -40,6 +40,10 @@ describe('Referral Send Invitation', () => {
   const responseData = {
     result: 'success',
     message: 'Invitation sent',
+    reward: {
+      asset: 'PLR',
+      amount: 25,
+    },
   };
 
   const responseDataGenerateToken = {

@@ -243,7 +243,7 @@ describe('Connection v2 Class', () => {
     });
   });
 
-    /**
+  /**
    * Connection: List method
    */
   describe('.list', () => {
