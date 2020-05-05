@@ -1,0 +1,17 @@
+{
+    "title": "Referral Model - List Campaigns",
+    "description": "Schema definition for Referral Model - listCampaigns method",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "walletId": {
+        "description": "The wallet ID",
+        "type": "string"
+      },
+      "token": {
+        "description": "Referral security token previously generated",
+        "type": "string"
+      }
+    },
+    "required": [ "walletId", "token" ]
+  }
