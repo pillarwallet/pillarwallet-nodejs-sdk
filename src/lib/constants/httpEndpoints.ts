@@ -82,4 +82,5 @@ export enum HttpEndpoints {
   REFERRAL_INVITE = '/referral/invite',
   REFERRAL_GENERATE_TOKEN = '/referral/generate-token',
   REFERRAL_LIST = '/referral/list',
+  REFERRAL_LIST_CAMPAIGNS = '/referral/list-campaigns',
 }
