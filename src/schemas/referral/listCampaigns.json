@@ -13,5 +13,5 @@
         "type": "string"
       }
     },
-    "required": [ "walletId", "token" ]
+    "required": [ "walletId" ]
   }

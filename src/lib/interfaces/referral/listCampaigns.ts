@@ -21,5 +21,5 @@ SOFTWARE.
 */
 interface ReferralListCampaigns {
   walletId: string;
-  token: string;
+  token?: string;
 }
