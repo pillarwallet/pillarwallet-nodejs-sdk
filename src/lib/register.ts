@@ -81,7 +81,7 @@ export class Register {
         accountAddress: string;
         deviceAddress: string;
       };
-      username: string;
+      username?: string;
       uuid: string;
       nonce: string;
     },

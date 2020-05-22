@@ -7,7 +7,7 @@
     "privateKey": {
       "description": "Private Key buffer",
       "type": "string",
-      "pattern":"[a-fA-F0-9]{64}$"
+      "pattern": "[a-fA-F0-9]{64}$"
     },
     "fcmToken": {
       "description": "The Firebase Cloud Messaging Token of one wallet",
@@ -16,10 +16,47 @@
     "username": {
       "description": "The unique username associated of one wallet",
       "type": "string"
+    },
+    "recovery": {
+      "description": "Account and device addresses for wallet recovery",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "accountAddress": {
+          "description": "The account Ethereum address of a wallet",
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "maxLength": 42
+        },
+        "deviceAddress": {
+          "description": "The device Ethereum address of a wallet",
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "maxLength": 42
+        }
+      },
+      "required": [
+        "accountAddress",
+        "deviceAddress"
+      ]
     }
   },
-  "required": [
-    "privateKey",
-    "username"
-  ]
+  "if": {
+    "properties": {
+      "recovery": {
+        "enum": [ "undefined" ]
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "privateKey",
+      "username"
+    ]
+  },
+  "else": {
+    "required": [
+      "privateKey"
+    ]
+  }
 }
