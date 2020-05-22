@@ -260,7 +260,8 @@ describe('Wallet Class', () => {
       const invalidWalletRegistrationData = {};
       const errMsg =
         "data should have required property 'privateKey', " +
-        "data should have required property 'username'";
+        "data should have required property 'username', " +
+        'data should match "then" schema';
       try {
         await pSdk.wallet.registerAuthServer(invalidWalletRegistrationData);
       } catch (error) {
