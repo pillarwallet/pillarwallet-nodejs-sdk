@@ -127,7 +127,10 @@ export class Wallet extends Configuration {
         throw new Error('Missing recovery addresses.');
       }
 
-      if (walletRegister.recovery.deviceAddress !== address) {
+      if (
+        walletRegister.recovery.deviceAddress.toLowerCase() !==
+        address.toLowerCase()
+      ) {
         throw new Error('Derived address does not match recovery address.');
       }
     }
