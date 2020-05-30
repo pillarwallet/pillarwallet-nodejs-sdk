@@ -152,9 +152,9 @@ export class Wallet extends Configuration {
         ethAddress: address,
         fcmToken: walletRegister.fcmToken,
         username: walletRegister.username,
+        recovery: walletRegister.recovery,
         nonce: responseRegisterKeys.data.nonce,
         uuid, // tslint:disable-line object-shorthand-properties-first
-        recovery: walletRegister.recovery,
       };
 
       responseRegisterAuth = await Register.registerAuth(
