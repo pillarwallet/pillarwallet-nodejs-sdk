@@ -51,6 +51,10 @@
     "betaProgramParticipant": {
       "description": "Flag to check if user is beta program participant",
       "type": "boolean"
+    },
+    "profileImage": {
+      "description": "The user's profile picture",
+      "type": [ "string", "null" ]
     }
   },
   "required": ["walletId"]
