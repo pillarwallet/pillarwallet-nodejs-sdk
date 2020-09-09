@@ -13,11 +13,7 @@ jobs:
       - checkout
       - run:
             name: Authenticate with registry
-            # command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
             command: echo "//registry.npmjs.org/:_authToken=$PILLAR_NPM_TOKEN" > ~/pillarwallet-nodejs-sdk/.npmrc
-      # - run:
-      #       name: Set Registry
-      #       command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -53,11 +49,7 @@ jobs:
       - checkout
       - run:
           name: Authenticate with registry
-          # command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
           command: echo "//registry.npmjs.org/:_authToken=$PILLAR_NPM_TOKEN" > ~/pillarwallet-nodejs-sdk/.npmrc
-      # - run:
-      #     name: Set Registry
-      #     command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -89,11 +81,7 @@ jobs:
             npm version $(node -e "const currentVersion=require('./package.json').version; const firstTwoDots=currentVersion.substring(0, currentVersion.lastIndexOf('.')+1); console.log(firstTwoDots);")$CIRCLE_BUILD_NUM
       - run:
             name: Authenticate with registry
-            # command: curl -u $ARTIFACTORY_PUBLISHING_USER:$ARTIFACTORY_PUBLISHING_PASSWORD https://pillarproject.jfrog.io/pillarproject/api/npm/auth >> ~/pillarwallet-nodejs-sdk/.npmrc
             command: echo "//registry.npmjs.org/:_authToken=$PILLAR_NPM_TOKEN" > ~/pillarwallet-nodejs-sdk/.npmrc
-      # - run:
-      #     name: Set Registry
-      #     command: npm config set registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
       - run:
           name: Install Packages
           command: npm i
@@ -108,7 +96,6 @@ jobs:
           command: npm run build-production
       - run:
           name: Publish Package to npmjs
-          # command: npm publish   --registry https://pillarproject.jfrog.io/pillarproject/api/npm/npm/
           command: npm publish
       - run:
           name: Announce Publish
@@ -140,4 +127,4 @@ workflows:
           filters:
             branches:
               only:
-                - feature/deploy_to_npmjs
+                - master
