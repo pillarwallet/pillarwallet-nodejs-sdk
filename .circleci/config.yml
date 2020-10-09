@@ -2,13 +2,16 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@3.4.2
-  discord: antonioned/discord@0.0.4
+  discord: antonioned/discord@0.1.0
 
 jobs:
   build:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:8.9.4
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -45,6 +48,9 @@ jobs:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:8.9.4
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -71,6 +77,9 @@ jobs:
     working_directory: ~/pillarwallet-nodejs-sdk
     docker:
       - image: circleci/node:8.9.4
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -117,11 +126,14 @@ workflows:
   version: 2.1
   build_test_and_deploy:
     jobs:
-      - build
+      - build:
+          context: docker-hub-creds
       - tests:
+          context: docker-hub-creds
           requires:
             - build
       - publish:
+          context: docker-hub-creds
           requires:
             - tests
           filters:
