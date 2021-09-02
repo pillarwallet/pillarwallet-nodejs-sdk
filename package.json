@@ -55,7 +55,7 @@
     "@types/uuid": "3.4.4",
     "ajv": "6.4.0",
     "ajv-keywords": "3.2.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "crypto": "1.0.1",
     "ethereumjs-util": "5.2.0",
     "uuid": "3.3.2"
